@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
@@ -22,12 +23,16 @@
   <ItemGroup>
     <Folder Include="Driver\" />
     <Folder Include="Pages\Dashboard\" />
+    <Folder Include="Pages\Nav\BillingNav\" />
+    <Folder Include="Pages\Nav\AdminNav\" />
+    <Folder Include="Pages\Nav\UWNav\" />
+    <Folder Include="Selenium\" />
+    <Folder Include="Workflows\" />
     <Folder Include="Pages\Fnol\" />
     <Folder Include="Pages\Claims\" />
-    <Folder Include="Pages\Nav\" />
     <Folder Include="Pages\Grid\" />
     <Folder Include="Pages\Org\" />
-    <Folder Include="Selenium\" />
+    <Folder Include="Pages\Policy\" />
   </ItemGroup>
 
 </Project>

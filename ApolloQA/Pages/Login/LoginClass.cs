@@ -2,26 +2,37 @@
 using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+
 
 namespace ApolloQA.Pages.Login
 {
-    class Login
+    class LoginClass
     {
         private IWebDriver loginDriver;
-        public Login(IWebDriver driver)
+        public LoginClass(IWebDriver driver)
         {
             loginDriver = driver;
         }
 
         public void EnterUsername(string username)
         {
+            //wait until field is ready
+            IWait<IWebDriver> wait = new WebDriverWait(loginDriver, TimeSpan.FromSeconds(5));
+            IWebElement element = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(LoginLocs.locUsername)));
+
+            //enter username
             bool usernamePresent = string.IsNullOrEmpty(username);
-            loginDriver.FindElement(By.XPath(LoginLocs.locUsername)).SendKeys(usernamePresent ? "ApolloTestUserG301@biberk.com" : username);
+            element.SendKeys(usernamePresent ? "ApolloTestUserG301@biberk.com" : username);
         }
 
         public void EnterPassword(string password)
         {
-            loginDriver.FindElement(By.XPath(LoginLocs.locPassword)).SendKeys(password);
+            //wait until field is ready
+            IWait<IWebDriver> wait = new WebDriverWait(loginDriver, TimeSpan.FromSeconds(5));
+            IWebElement element = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(LoginLocs.locPassword)));
+
+            element.SendKeys(password);
         }
 
         public string GetUsername()
