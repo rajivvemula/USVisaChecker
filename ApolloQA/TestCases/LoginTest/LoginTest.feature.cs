@@ -112,6 +112,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 10
  testRunner.Then("User is shown the Dashboard", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+#line 11
+ testRunner.Then("User navigates to policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

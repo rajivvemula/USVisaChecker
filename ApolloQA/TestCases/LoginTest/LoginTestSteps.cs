@@ -9,6 +9,7 @@ using System.Diagnostics;
 //classes
 using ApolloQA.Pages.Login;
 using ApolloQA.Helpers;
+using ApolloQA.Pages.Policy;
 
 namespace ApolloQA.TestCases.LoginTest
 {
@@ -29,7 +30,7 @@ namespace ApolloQA.TestCases.LoginTest
 
         public void WhenUserInputAUsername()
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
 
             Login loginPage = new Login(driver);
             bool verifyPage = loginPage.VerifyLoginScreen();
@@ -56,7 +57,39 @@ namespace ApolloQA.TestCases.LoginTest
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             string pageTitle = driver.Title;
             Assert.AreEqual(pageTitle, "Home");
-            driver.Quit();
+            
+        }
+
+        [Then(@"User navigates to policy")]
+        public void ThenUserToPolicy()
+        {
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            PolicyMain policyPage = new PolicyMain(driver);
+            
+
+            driver.FindElement(By.ClassName("top-menu-item")).Click();
+            driver.FindElement(By.XPath("//button[@aria-label='Add Policy']")).Click();
+            PolicyCreation policyCreationPage = new PolicyCreation(driver);
+            
+            policyCreationPage.EnterInsuredOrg();
+            policyCreationPage.EnterAgency();
+            policyCreationPage.EnterLOB();
+            policyCreationPage.EnterBusType();
+            policyCreationPage.EnterYears();
+            policyCreationPage.EnterTaxIDType();
+            policyCreationPage.EnterTaxID();
+            policyCreationPage.ClickSubmitButton();
+            
+            /*
+            policyPage.NavigateToPolicy(11500);
+            policyPage.GoToSummary();
+            policyPage.GoToLocations();
+            policyPage.GoToContacts();
+            policyPage.GoToVehicles();
+            policyPage.GoToDrivers();
+            policyPage.GoToCoverages();
+            policyPage.GoToRates();
+            */
         }
 
     }

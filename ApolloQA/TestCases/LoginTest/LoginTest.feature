@@ -8,3 +8,4 @@ Scenario: User Logs in to admin account
 	Given User is on homepage and on log on screen
 	When User enters username and password
 	Then User is shown the Dashboard
+	Then User navigates to policy 
