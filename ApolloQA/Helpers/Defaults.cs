@@ -8,10 +8,7 @@ namespace ApolloQA.Helpers
     {
         public const string
             ADMIN_USERNAME = "ApolloTestUserG301@biberk.com",
-            DEFAULT_PASSWORD = "HashTagApollo#24",
-            QA_HOME_URL = "https://biberk-apollo-qa.azurewebsites.net/home",
-            QA_POLICY_URL = "https://biberk-apollo-qa.azurewebsites.net/policy",
-            QA_ORGANIZATION_URL = "https://biberk-apollo-qa.azurewebsites.net/organization";
+            DEFAULT_PASSWORD = "HashTagApollo#24";
 
         //QA URLs
         public static IDictionary<string, string> QA_URLS = new Dictionary<string, string>()

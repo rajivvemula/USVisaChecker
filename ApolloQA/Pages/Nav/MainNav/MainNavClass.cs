@@ -11,7 +11,7 @@ namespace ApolloQA.Pages.Nav.MainNav
     {
         private IWebDriver mainNavDriver;
 
-        private string[] tabs = {"Home", "Policy", "Organization"};
+        private string[] tabs = {"Home", "Policy", "Organization", "Home"};
 
         public MainNavClass(IWebDriver driver)
         {
@@ -34,10 +34,10 @@ namespace ApolloQA.Pages.Nav.MainNav
 
             //build Xpath based on tab name
             // find a button whose class includes 'top-menu-item' and has a child span containing the tab name
-            string xpath = "//button[contains(@class, 'top-menu-item') and contains(.//span, '" + tabName + "')]";
+            string xpath = MainNavLocs.MainNavXPaths[tabName];
 
             //wait for the button to be clickable
-            WebDriverWait wait = new WebDriverWait(mainNavDriver, TimeSpan.FromSeconds(5));
+            WebDriverWait wait = new WebDriverWait(mainNavDriver, TimeSpan.FromSeconds(10));
             IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(xpath)));
 
             //click it
