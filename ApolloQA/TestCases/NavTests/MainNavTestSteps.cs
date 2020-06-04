@@ -17,13 +17,13 @@ namespace ApolloQA.TestCases.NavTests
         public void GivenIAmLoggedIn()
         {
             driver = new ChromeDriver();
-            driver.Navigate().GoToUrl(Defaults.qaUrl);
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
 
             //login
             LoginClass loginPage = new LoginClass(driver);
-            loginPage.EnterUsername(Defaults.adminUsername);
+            loginPage.EnterUsername(Defaults.ADMIN_USERNAME);
             loginPage.ClickNextButton();
-            loginPage.EnterPassword(Defaults.defaultPassword);
+            loginPage.EnterPassword(Defaults.DEFAULT_PASSWORD);
             loginPage.ClickNextButton();
             loginPage.ClickNoButton();
         }
@@ -31,14 +31,14 @@ namespace ApolloQA.TestCases.NavTests
         [When(@"I navigate to the homepage")]
         public void WhenINavigateToTheHomepage()
         {
-            driver.Navigate().GoToUrl(Defaults.qaUrl);
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
         }
         
         [Then(@"The Main Navbar should display properly")]
         public void ThenTheMainNavbarShouldDisplayProperly()
         {
             MainNavClass mainNav1 = new MainNavClass(driver);
-            mainNav1.VerifyTabsArePresentAndClickable();
+            mainNav1.VerifyAllTabsArePresentAndClickable();
         }
     }
 }

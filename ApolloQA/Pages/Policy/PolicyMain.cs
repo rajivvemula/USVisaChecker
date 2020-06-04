@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ApolloQA.Helpers;
 using OpenQA.Selenium;
 
 namespace ApolloQA.Pages.Policy
@@ -15,12 +16,12 @@ namespace ApolloQA.Pages.Policy
 
         public void NavigateToPolicy(int policyNumber)
         {
-            policyDriver.Navigate().GoToUrl("https://biberk-apollo-qa.azurewebsites.net/policy/" + policyNumber);
+            policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"] + policyNumber);
         }
 
         public void NavigateToPolicyCreation()
         {
-            policyDriver.Navigate().GoToUrl("https://biberk-apollo-qa.azurewebsites.net/policy/insert");
+            policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"] + "/insert");
         }
 
         public void GoToSummary()

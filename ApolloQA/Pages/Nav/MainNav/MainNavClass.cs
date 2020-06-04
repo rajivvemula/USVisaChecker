@@ -1,13 +1,9 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using ApolloQA.Pages.Login;
-using ApolloQA.Helpers;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using ApolloQA.Helpers;
+
 
 namespace ApolloQA.Pages.Nav.MainNav
 {
@@ -15,30 +11,41 @@ namespace ApolloQA.Pages.Nav.MainNav
     {
         private IWebDriver mainNavDriver;
 
-        private string[] tabs = { "Policy", "Organization", "Claim", "FNOL"};
+        private string[] tabs = {"Home", "Policy", "Organization"};
 
         public MainNavClass(IWebDriver driver)
         {
             mainNavDriver = driver;
         }
 
-        public void VerifyTabsArePresentAndClickable()
+        //This is for smoke test - make sure we can click on all tabs (tabs listed in above array)
+        public void VerifyAllTabsArePresentAndClickable()
         {
             foreach(string tabName in tabs)
             {
-                //build Xpath based on tab name
-                string xpath = "//button//*[contains(text(), " + tabName + ")]";
-                //wait for the button to be clickable
-                WebDriverWait wait = new WebDriverWait(mainNavDriver, TimeSpan.FromSeconds(5));
-                IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(xpath)));
-
-                //REMOVE LATER
-                System.Threading.Thread.Sleep(5000);
-
-                //click it
-                target.Click();
+                this.ClickOnTab(tabName);
             }
         }
 
+        //Function for clicking individual tabs on navbar
+        public void ClickOnTab(string tabName)
+        {
+            string targetUrl = Defaults.QA_URLS[tabName];
+
+            //build Xpath based on tab name
+            // find a button whose class includes 'top-menu-item' and has a child span containing the tab name
+            string xpath = "//button[contains(@class, 'top-menu-item') and contains(.//span, '" + tabName + "')]";
+
+            //wait for the button to be clickable
+            WebDriverWait wait = new WebDriverWait(mainNavDriver, TimeSpan.FromSeconds(5));
+            IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(xpath)));
+
+            //click it
+            target.Click();
+
+            //asserts
+            // check current URL vs default URL for that tab
+            Assert.AreEqual(mainNavDriver.Url, Defaults.QA_URLS[tabName]);
+        }
     }
 }

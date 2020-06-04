@@ -23,7 +23,7 @@ namespace ApolloQA.TestCases.LoginTest
         public void GivenUserNavigatesToQaWebsite()
         {
             driver = new ChromeDriver();
-            driver.Navigate().GoToUrl(Defaults.qaUrl);
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
         }
 
         [When(@"User enters username and password")]
@@ -35,7 +35,7 @@ namespace ApolloQA.TestCases.LoginTest
             LoginClass loginPage = new LoginClass(driver);
             bool verifyPage = loginPage.VerifyLoginScreen();
             //Assert.AreEqual(verifyPage, true);
-            loginPage.EnterUsername(Defaults.adminUsername);
+            loginPage.EnterUsername(Defaults.ADMIN_USERNAME);
             string usernameVerify = loginPage.GetUsername();
             //Assert.AreEqual(Defaults.adminUsername, usernameVerify);
 
@@ -43,7 +43,7 @@ namespace ApolloQA.TestCases.LoginTest
 
             loginPage.ClickNextButton();
 
-            loginPage.EnterPassword(Defaults.defaultPassword);
+            loginPage.EnterPassword(Defaults.DEFAULT_PASSWORD);
             string passwordVerify = loginPage.GetPassword();
             //Assert.AreEqual(Defaults.defaultPassword, passwordVerify);
             loginPage.ClickNextButton();
