@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -26,12 +26,14 @@
     <Folder Include="Pages\Nav\BillingNav\" />
     <Folder Include="Pages\Nav\AdminNav\" />
     <Folder Include="Pages\Nav\UWNav\" />
+    <Folder Include="Pages\Organization\OrganizationView\" />
+    <Folder Include="Pages\Organization\OrganizationInsert\" />
+    <Folder Include="Pages\Organization\OrganizationGrid\" />
     <Folder Include="Selenium\" />
     <Folder Include="Workflows\" />
     <Folder Include="Pages\Fnol\" />
     <Folder Include="Pages\Claims\" />
     <Folder Include="Pages\Grid\" />
-    <Folder Include="Pages\Org\" />
     <Folder Include="Pages\Policy\" />
   </ItemGroup>
 
