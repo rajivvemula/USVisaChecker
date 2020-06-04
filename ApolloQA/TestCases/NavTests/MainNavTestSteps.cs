@@ -28,17 +28,23 @@ namespace ApolloQA.TestCases.NavTests
             loginPage.ClickNoButton();
         }
 
-        [When(@"I navigate to the homepage")]
-        public void WhenINavigateToTheHomepage()
+        [When(@"I click on the (.*) tab")]
+        public void WhenIClickOnTab(string tabName)
         {
-            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
+            driver.Navigate().GoToUrl(Defaults.QA_URLS[tabName]);
         }
         
-        [Then(@"The Main Navbar should display properly")]
-        public void ThenTheMainNavbarShouldDisplayProperly()
+        [Then(@"The (.*) tab should load properly")]
+        public void ThenTheTabShouldDisplayProperly(string tabName)
         {
             MainNavClass mainNav1 = new MainNavClass(driver);
-            mainNav1.VerifyAllTabsArePresentAndClickable();
+            mainNav1.ClickOnTab(tabName);
+        }
+
+        [AfterScenario]
+        public void DisposeWebDriver()
+        {
+            driver.Dispose();
         }
     }
 }
