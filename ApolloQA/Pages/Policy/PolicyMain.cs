@@ -16,7 +16,7 @@ namespace ApolloQA.Pages.Policy
 
         public void NavigateToPolicy(int policyNumber)
         {
-            policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"] + policyNumber);
+            policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"] + "/" + policyNumber);
         }
 
         public void NavigateToPolicyCreation()
