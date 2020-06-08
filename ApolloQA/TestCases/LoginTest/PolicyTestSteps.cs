@@ -43,12 +43,24 @@ namespace ApolloQA.TestCases.LoginTest
 
             PolicyMain policyPage = new PolicyMain(driver);
 
+            /*
             policyPage.GoToLocations();
 
             PolicyLocation policyLocation = new PolicyLocation(driver);
             policyLocation.ClickAddNew();
             policyLocation.AddLocationName();
             policyLocation.ClickSubmit();
+            policyLocation.removeLocation();
+            */
+            policyPage.GoToContacts();
+            PolicyContacts policyContacts = new PolicyContacts(driver);
+            policyContacts.ClickAddContact();
+            policyContacts.EmptyClick();
+            policyContacts.EnterPartyRole();
+            //policyContacts.EnterPhoneType();
+            policyContacts.EnterAllInputs();
+            policyContacts.SubmitContact();
+            policyPage.GoToContacts();
 
         }
         

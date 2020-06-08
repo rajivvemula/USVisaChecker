@@ -34,7 +34,6 @@
     <Folder Include="Pages\Fnol\" />
     <Folder Include="Pages\Claims\" />
     <Folder Include="Pages\Grid\" />
-    <Folder Include="Pages\Policy\" />
   </ItemGroup>
 
 </Project>
