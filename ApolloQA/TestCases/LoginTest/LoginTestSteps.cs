@@ -19,10 +19,14 @@ namespace ApolloQA.TestCases.LoginTest
 
         public IWebDriver driver;
 
+        public LoginTestSteps(IWebDriver Driver)
+        {
+            driver = Driver;
+        }
+
         [Given(@"User is on homepage and on log on screen")]
         public void GivenUserNavigatesToQaWebsite()
         {
-            driver = new ChromeDriver();
             driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
         }
 
@@ -68,6 +72,9 @@ namespace ApolloQA.TestCases.LoginTest
             
 
             driver.FindElement(By.ClassName("top-menu-item")).Click();
+
+            policyPage.NavigateToPolicy(12841);
+            /*
             driver.FindElement(By.XPath("//button[@aria-label='Add Policy']")).Click();
             PolicyCreation policyCreationPage = new PolicyCreation(driver);
             
@@ -80,8 +87,9 @@ namespace ApolloQA.TestCases.LoginTest
             policyCreationPage.EnterTaxID();
             policyCreationPage.ClickSubmitButton();
             
+            */
             /*
-            policyPage.NavigateToPolicy(11500);
+            policyPage.NavigateToPolicy(12841);
             policyPage.GoToSummary();
             policyPage.GoToLocations();
             policyPage.GoToContacts();

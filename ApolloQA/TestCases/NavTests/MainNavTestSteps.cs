@@ -12,11 +12,13 @@ namespace ApolloQA.TestCases.NavTests
     public class MainNavTestSteps
     {
         public IWebDriver driver;
-
+        public MainNavTestSteps(IWebDriver Driver)
+        {
+            driver = Driver;
+        }
         [Given(@"I am logged in")]
         public void GivenIAmLoggedIn()
         {
-            driver = new ChromeDriver();
             driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
 
             //login
@@ -41,10 +43,5 @@ namespace ApolloQA.TestCases.NavTests
             mainNav1.ClickOnTab(tabName);
         }
 
-        [AfterScenario]
-        public void DisposeWebDriver()
-        {
-            driver.Dispose();
-        }
     }
 }

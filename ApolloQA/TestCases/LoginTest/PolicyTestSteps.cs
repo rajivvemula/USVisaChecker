@@ -40,9 +40,16 @@ namespace ApolloQA.TestCases.LoginTest
             PolicySummary policySummary = new PolicySummary(driver);
             string writeStatus = policySummary.CheckPolicyStatus();
             Console.WriteLine(writeStatus);
-            policySummary.status.Click();
 
-            
+            PolicyMain policyPage = new PolicyMain(driver);
+
+            policyPage.GoToLocations();
+
+            PolicyLocation policyLocation = new PolicyLocation(driver);
+            policyLocation.ClickAddNew();
+            policyLocation.AddLocationName();
+            policyLocation.ClickSubmit();
+
         }
         
         [Then(@"user is shown the Summary screen")]
