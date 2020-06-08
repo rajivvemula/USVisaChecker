@@ -31,7 +31,6 @@
     <Folder Include="Pages\Organization\OrganizationGrid\" />
     <Folder Include="Selenium\" />
     <Folder Include="Workflows\" />
-    <Folder Include="Pages\Fnol\" />
     <Folder Include="Pages\Claims\" />
     <Folder Include="Pages\Grid\" />
   </ItemGroup>

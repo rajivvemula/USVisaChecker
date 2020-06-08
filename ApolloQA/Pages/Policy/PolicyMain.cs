@@ -14,6 +14,8 @@ namespace ApolloQA.Pages.Policy
             policyDriver = driver;
         }
 
+        public IWebElement documentLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Documents']"));
+
         public void NavigateToPolicy(int policyNumber)
         {
             policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"] + "/" + policyNumber);
@@ -51,6 +53,11 @@ namespace ApolloQA.Pages.Policy
         public void GoToRates()
         {
             policyDriver.FindElement(By.XPath(PolicyLocs.locPolicyRates)).Click();
+        }
+
+        public void GoToDocuments()
+        {
+            documentLink.Click();
         }
 
     }

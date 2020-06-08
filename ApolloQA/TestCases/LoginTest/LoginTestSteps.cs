@@ -67,13 +67,13 @@ namespace ApolloQA.TestCases.LoginTest
         [Then(@"User navigates to policy")]
         public void ThenUserToPolicy()
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
             PolicyMain policyPage = new PolicyMain(driver);
             
 
             driver.FindElement(By.ClassName("top-menu-item")).Click();
 
-            policyPage.NavigateToPolicy(12841);
+            policyPage.NavigateToPolicy(12890);
             /*
             driver.FindElement(By.XPath("//button[@aria-label='Add Policy']")).Click();
             PolicyCreation policyCreationPage = new PolicyCreation(driver);

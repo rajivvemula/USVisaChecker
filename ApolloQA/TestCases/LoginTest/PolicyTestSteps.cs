@@ -4,7 +4,7 @@ using TechTalk.SpecFlow;
 
 
 using ApolloQA.Pages.Policy;
-
+using System.Threading;
 
 namespace ApolloQA.TestCases.LoginTest
 {
@@ -52,6 +52,8 @@ namespace ApolloQA.TestCases.LoginTest
             policyLocation.ClickSubmit();
             policyLocation.removeLocation();
             */
+
+            /*
             policyPage.GoToContacts();
             PolicyContacts policyContacts = new PolicyContacts(driver);
             policyContacts.ClickAddContact();
@@ -61,7 +63,22 @@ namespace ApolloQA.TestCases.LoginTest
             policyContacts.EnterAllInputs();
             policyContacts.SubmitContact();
             policyPage.GoToContacts();
+            */
 
+            policyPage.GoToDocuments();
+
+            PolicyDocument policyDocument = new PolicyDocument(driver);
+            policyDocument.ClickAddNew();
+            string directory = System.AppContext.BaseDirectory;
+            Console.WriteLine(directory);
+            
+            policyDocument.uploadFile();
+            //policyPage.GoToDocuments();
+            //policyDocument.checkStatus();
+            Thread.Sleep(15000);
+            policyDocument.OpenFile("TestFile.txt");
+            Thread.Sleep(5000);
+            policyDocument.DeleteDocument();
         }
         
         [Then(@"user is shown the Summary screen")]
