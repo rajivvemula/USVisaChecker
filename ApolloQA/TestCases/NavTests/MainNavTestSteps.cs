@@ -13,19 +13,25 @@ namespace ApolloQA.TestCases.NavTests
     {
         public IWebDriver driver;
 
+        public MainNavTestSteps(IWebDriver Driver)
+        {
+            driver = Driver;
+        }
+
         [Given(@"I am logged in")]
         public void GivenIAmLoggedIn()
         {
-            driver = new ChromeDriver();
+            //driver = new ChromeDriver();
             driver.Navigate().GoToUrl(Defaults.qaUrl);
 
-            //login
+            /*login
             LoginClass loginPage = new LoginClass(driver);
             loginPage.EnterUsername(Defaults.adminUsername);
             loginPage.ClickNextButton();
             loginPage.EnterPassword(Defaults.defaultPassword);
             loginPage.ClickNextButton();
             loginPage.ClickNoButton();
+            */
         }
 
         [When(@"I navigate to the homepage")]

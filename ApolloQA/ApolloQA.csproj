@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Driver\" />
     <Folder Include="Pages\Dashboard\" />
     <Folder Include="Pages\Nav\BillingNav\" />
     <Folder Include="Pages\Nav\AdminNav\" />
@@ -32,7 +31,6 @@
     <Folder Include="Pages\Claims\" />
     <Folder Include="Pages\Grid\" />
     <Folder Include="Pages\Org\" />
-    <Folder Include="Pages\Policy\" />
   </ItemGroup>
 
 </Project>

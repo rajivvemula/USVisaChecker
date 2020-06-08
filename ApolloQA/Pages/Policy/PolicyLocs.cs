@@ -10,7 +10,7 @@ namespace ApolloQA.Pages.Policy
         //PolicyMain
 
         public static string
-            locPolicySummary = "//div[@class='mat-list-item-content' and normalize-space(text())='Policy Summary']",
+            locPolicySummary = "//div[@class='mat-list-item-content' and normalize-space(text())='General Information']",
             locPolicyLocation = "//div[@class='mat-list-item-content' and normalize-space(text())='Locations']",
             locPolicyContacts = "//div[@class='mat-list-item-content' and normalize-space(text())='Contacts']",
             locPolicyVehicles = "//div[@class='mat-list-item-content' and normalize-space(text())='Vehicles']",
