@@ -19,16 +19,11 @@ namespace ApolloQA.TestCases.LoginTest
 
         public IWebDriver driver;
 
-        public LoginTestSteps(IWebDriver Driver)
-        {
-            driver = Driver;
-        }
-
         [Given(@"User is on homepage and on log on screen")]
         public void GivenUserNavigatesToQaWebsite()
         {
-            //driver = new ChromeDriver();
-            driver.Navigate().GoToUrl(Defaults.qaUrl);
+            driver = new ChromeDriver();
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
         }
 
         [When(@"User enters username and password")]
@@ -40,7 +35,7 @@ namespace ApolloQA.TestCases.LoginTest
             LoginClass loginPage = new LoginClass(driver);
             bool verifyPage = loginPage.VerifyLoginScreen();
             //Assert.AreEqual(verifyPage, true);
-            loginPage.EnterUsername(Defaults.adminUsername);
+            loginPage.EnterUsername(Defaults.ADMIN_USERNAME);
             string usernameVerify = loginPage.GetUsername();
             //Assert.AreEqual(Defaults.adminUsername, usernameVerify);
 
@@ -48,7 +43,7 @@ namespace ApolloQA.TestCases.LoginTest
 
             loginPage.ClickNextButton();
 
-            loginPage.EnterPassword(Defaults.defaultPassword);
+            loginPage.EnterPassword(Defaults.DEFAULT_PASSWORD);
             string passwordVerify = loginPage.GetPassword();
             //Assert.AreEqual(Defaults.defaultPassword, passwordVerify);
             loginPage.ClickNextButton();
@@ -68,16 +63,14 @@ namespace ApolloQA.TestCases.LoginTest
         [Then(@"User navigates to policy")]
         public void ThenUserToPolicy()
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(40);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             PolicyMain policyPage = new PolicyMain(driver);
             
-            
-            driver.FindElement(By.ClassName("top-menu-item")).Click();
-            //driver.FindElement(By.XPath("//button[@aria-label='Add Policy']")).Click();
-            //PolicyCreation policyCreationPage = new PolicyCreation(driver);
-            policyPage.NavigateToPolicy(12839);
 
-            /*
+            driver.FindElement(By.ClassName("top-menu-item")).Click();
+            driver.FindElement(By.XPath("//button[@aria-label='Add Policy']")).Click();
+            PolicyCreation policyCreationPage = new PolicyCreation(driver);
+            
             policyCreationPage.EnterInsuredOrg();
             policyCreationPage.EnterAgency();
             policyCreationPage.EnterLOB();
@@ -86,9 +79,7 @@ namespace ApolloQA.TestCases.LoginTest
             policyCreationPage.EnterTaxIDType();
             policyCreationPage.EnterTaxID();
             policyCreationPage.ClickSubmitButton();
-            */
             
-            //object.createpolicy(org, agency, 
             /*
             policyPage.NavigateToPolicy(11500);
             policyPage.GoToSummary();

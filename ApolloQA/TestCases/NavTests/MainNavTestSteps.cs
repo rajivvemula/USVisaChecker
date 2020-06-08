@@ -13,38 +13,38 @@ namespace ApolloQA.TestCases.NavTests
     {
         public IWebDriver driver;
 
-        public MainNavTestSteps(IWebDriver Driver)
-        {
-            driver = Driver;
-        }
-
         [Given(@"I am logged in")]
         public void GivenIAmLoggedIn()
         {
-            //driver = new ChromeDriver();
-            driver.Navigate().GoToUrl(Defaults.qaUrl);
+            driver = new ChromeDriver();
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
 
-            /*login
+            //login
             LoginClass loginPage = new LoginClass(driver);
-            loginPage.EnterUsername(Defaults.adminUsername);
+            loginPage.EnterUsername(Defaults.ADMIN_USERNAME);
             loginPage.ClickNextButton();
-            loginPage.EnterPassword(Defaults.defaultPassword);
+            loginPage.EnterPassword(Defaults.DEFAULT_PASSWORD);
             loginPage.ClickNextButton();
             loginPage.ClickNoButton();
-            */
         }
 
-        [When(@"I navigate to the homepage")]
-        public void WhenINavigateToTheHomepage()
+        [When(@"I click on the (.*) tab")]
+        public void WhenIClickOnTab(string tabName)
         {
-            driver.Navigate().GoToUrl(Defaults.qaUrl);
+            driver.Navigate().GoToUrl(Defaults.QA_URLS[tabName]);
         }
         
-        [Then(@"The Main Navbar should display properly")]
-        public void ThenTheMainNavbarShouldDisplayProperly()
+        [Then(@"The (.*) tab should load properly")]
+        public void ThenTheTabShouldDisplayProperly(string tabName)
         {
             MainNavClass mainNav1 = new MainNavClass(driver);
-            mainNav1.VerifyTabsArePresentAndClickable();
+            mainNav1.ClickOnTab(tabName);
+        }
+
+        [AfterScenario]
+        public void DisposeWebDriver()
+        {
+            driver.Dispose();
         }
     }
 }
