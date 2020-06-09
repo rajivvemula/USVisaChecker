@@ -61,7 +61,7 @@ namespace ApolloQA.TestCases.LoginTest
             policyContacts.EnterAllInputs();
             policyContacts.SubmitContact();
             policyPage.GoToContacts();
-
+            
         }
         
         [Then(@"user is shown the Summary screen")]
