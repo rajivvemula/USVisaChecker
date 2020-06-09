@@ -5,6 +5,7 @@ using TechTalk.SpecFlow;
 
 using ApolloQA.Pages.Policy;
 using System.Threading;
+using ApolloQA.Pages.Fnol;
 
 namespace ApolloQA.TestCases.LoginTest
 {
@@ -37,6 +38,7 @@ namespace ApolloQA.TestCases.LoginTest
         [When(@"User clicks Policy Summary")]
         public void WhenUserClicksPolicySummary()
         {
+            /*
             PolicySummary policySummary = new PolicySummary(driver);
             string writeStatus = policySummary.CheckPolicyStatus();
             Console.WriteLine(writeStatus);
@@ -65,6 +67,7 @@ namespace ApolloQA.TestCases.LoginTest
             policyPage.GoToContacts();
             */
 
+            /*
             policyPage.GoToDocuments();
 
             PolicyDocument policyDocument = new PolicyDocument(driver);
@@ -79,8 +82,16 @@ namespace ApolloQA.TestCases.LoginTest
             policyDocument.OpenFile("TestFile.txt");
             Thread.Sleep(5000);
             policyDocument.DeleteDocument();
+            */
+
+            FNOLDash fnolDash = new FNOLDash(driver);
+            fnolDash.GoToFNOL();
+            fnolDash.AddNewFNOL();
+
+            FNOLInsert fnolInsert = new FNOLInsert(driver);
+            fnolInsert.EnterAllInputs();
         }
-        
+
         [Then(@"user is shown the Summary screen")]
         public void ThenUserIsShownTheSummaryScreen()
         {
