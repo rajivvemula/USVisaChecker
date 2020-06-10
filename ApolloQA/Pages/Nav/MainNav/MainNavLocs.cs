@@ -10,7 +10,9 @@ namespace ApolloQA.Pages.Nav.MainNav
         {
             {"Home", "//fa-icon[contains(@class, 'apollo-icon')]" },
             {"Policy", "//button[contains(@class, 'top-menu-item') and contains(.//span, 'Policy')]" },
-            {"Organization", "//button[contains(@class, 'top-menu-item') and contains(.//span, 'Organization')]" }
+            {"Organization", "//button[contains(@class, 'top-menu-item') and contains(.//span, 'Organization')]" },
+            {"Search Field", "//input[@placeholder='Search here']" },
+            {"Search Results", "//div[contains(@class, 'line-description ng-star-inserted')]" }
         };
     }
 }
