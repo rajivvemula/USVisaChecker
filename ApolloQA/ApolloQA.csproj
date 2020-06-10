@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Driver\" />
-    <Folder Include="Pages\Dashboard\" />
     <Folder Include="Pages\Nav\BillingNav\" />
     <Folder Include="Pages\Nav\AdminNav\" />
     <Folder Include="Pages\Nav\UWNav\" />
@@ -30,7 +29,6 @@
     <Folder Include="Pages\Organization\OrganizationInsert\" />
     <Folder Include="Pages\Organization\OrganizationGrid\" />
     <Folder Include="Selenium\" />
-    <Folder Include="Workflows\" />
     <Folder Include="Pages\Claims\" />
     <Folder Include="Pages\Grid\" />
   </ItemGroup>
