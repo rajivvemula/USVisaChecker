@@ -6,6 +6,8 @@ using TechTalk.SpecFlow;
 using ApolloQA.Pages.Policy;
 using System.Threading;
 using ApolloQA.Pages.Fnol;
+using ApolloQA.Workflows;
+using ApolloQA.Pages.Dashboard;
 
 namespace ApolloQA.TestCases.LoginTest
 {
@@ -23,9 +25,9 @@ namespace ApolloQA.TestCases.LoginTest
         [Given(@"User is on Policy Page")]
         public void GivenUserIsOnPolicyPage()
         {
-            PolicyMain policyPage = new PolicyMain(driver);
+            //PolicyMain policyPage = new PolicyMain(driver);
             
-            policyPage.GoToSummary();
+            //policyPage.GoToSummary();
             //policyPage.GoToLocations();
             //policyPage.GoToContacts();
             //policyPage.GoToVehicles();
@@ -84,12 +86,24 @@ namespace ApolloQA.TestCases.LoginTest
             policyDocument.DeleteDocument();
             */
 
+            /*
             FNOLDash fnolDash = new FNOLDash(driver);
             fnolDash.GoToFNOL();
             fnolDash.AddNewFNOL();
 
             FNOLInsert fnolInsert = new FNOLInsert(driver);
             fnolInsert.EnterAllInputs();
+            */
+
+            
+            ImpersonateUser impUser = new ImpersonateUser(driver);
+            impUser.UserToImp("ApolloTestUserG201@biberk.com");
+            
+            
+            
+            
+            HomePage homePage = new HomePage(driver);
+            //homePage.SendInput();
         }
 
         [Then(@"user is shown the Summary screen")]

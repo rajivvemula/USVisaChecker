@@ -73,7 +73,7 @@ namespace ApolloQA.TestCases.LoginTest
 
             driver.FindElement(By.ClassName("top-menu-item")).Click();
 
-            policyPage.NavigateToPolicy(12890);
+            //policyPage.NavigateToPolicy(12890);
             /*
             driver.FindElement(By.XPath("//button[@aria-label='Add Policy']")).Click();
             PolicyCreation policyCreationPage = new PolicyCreation(driver);

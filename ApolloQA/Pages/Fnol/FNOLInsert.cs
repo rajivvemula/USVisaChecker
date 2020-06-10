@@ -26,7 +26,7 @@ namespace ApolloQA.Pages.Fnol
         public IWebElement inputSuffixName => fnolDriver.FindElement(By.Name("suffix"));
         public IWebElement inputEmail => fnolDriver.FindElement(By.Name("email"));
         public IWebElement inputPhoneNumber => fnolDriver.FindElement(By.Name("phone"));
-        public IWebElement sameAsCheckbox => fnolDriver.FindElement(By.Id("mat-checkbox-1-input"));
+        public IWebElement sameAsCheckbox => fnolDriver.FindElement(By.Id("mat-checkbox-1"));
         public IWebElement receivedSelect => fnolDriver.FindElement(By.XPath("//mat-select[@formcontrolname='receivedTypeId']"));
         public IWebElement relatedClaim => fnolDriver.FindElement(By.XPath("//mat-select[@formcontrolname='hasRelatedClaim']"));
         public IWebElement claimCategory => fnolDriver.FindElement(By.XPath("//mat-select[@formcontrolname='claimCategory']"));
