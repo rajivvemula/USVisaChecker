@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApolloQA.Pages.Nav.MainNav
+namespace ApolloQA.Pages.Nav
 {
     class MainNavLocs
     {

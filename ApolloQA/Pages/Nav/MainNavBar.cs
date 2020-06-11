@@ -6,20 +6,20 @@ using ApolloQA.Helpers;
 using System.Collections.Generic;
 using NUnit.Framework.Constraints;
 
-namespace ApolloQA.Pages.Nav.MainNav
+namespace ApolloQA.Pages.Nav
 {
     class MainNavBar
     {
-        private IWebDriver mainNavDriver;
+        private IWebDriver driver;
 
         private string[] tabs = {"Home", "Policy", "Organization", "Home"};
 
-        //public IWebElement searchField => mainNavDriver.FindElement(By.XPath(MainNavLocs.MainNavXPaths["Search Field"]));
+        //public IWebElement searchField => driver.FindElement(By.XPath(MainNavLocs.MainNavXPaths["Search Field"]));
         public IList<IWebElement> searchResults;
 
         public MainNavBar(IWebDriver driver)
         {
-            mainNavDriver = driver;
+            this.driver = driver;
         }
 
         //This is for smoke test - make sure we can click on all tabs (tabs listed in above array)
@@ -40,7 +40,7 @@ namespace ApolloQA.Pages.Nav.MainNav
             string xpath = MainNavLocs.MainNavXPaths[tabName];
 
             //wait for the button to be clickable
-            WebDriverWait wait = new WebDriverWait(mainNavDriver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(xpath)));
 
             //click it
@@ -48,14 +48,14 @@ namespace ApolloQA.Pages.Nav.MainNav
 
             //asserts
             // check current URL vs default URL for that tab
-            Assert.AreEqual(mainNavDriver.Url, Defaults.QA_URLS[tabName]);
+            Assert.AreEqual(driver.Url, Defaults.QA_URLS[tabName]);
         }
 
         public void searchQuery(string query)
         {
 
             //wait for the button to be clickable
-            WebDriverWait wait = new WebDriverWait(mainNavDriver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement searchField = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(MainNavLocs.MainNavXPaths["Search Field"])));
 
             searchField.Clear();
@@ -66,7 +66,7 @@ namespace ApolloQA.Pages.Nav.MainNav
         public void clickFirstSearchResult()
         {
             //wait for the button to be clickable
-            WebDriverWait wait = new WebDriverWait(mainNavDriver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(MainNavLocs.MainNavXPaths["Search Results"])));
 
             target.Click();

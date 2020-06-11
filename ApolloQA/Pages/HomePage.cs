@@ -1,4 +1,4 @@
-﻿using ApolloQA.Pages.Nav.MainNav;
+﻿using ApolloQA.Pages.Nav;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using System;

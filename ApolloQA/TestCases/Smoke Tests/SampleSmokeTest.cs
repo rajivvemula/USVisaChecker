@@ -1,6 +1,7 @@
 ﻿using ApolloQA.Helpers;
 using ApolloQA.Pages;
 using ApolloQA.Pages.Login;
+using ApolloQA.Pages.Organization;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -11,7 +12,7 @@ using System.Text;
 namespace ApolloQA.TestCases.Smoke_Tests
 {
     [TestFixture]
-    class LoginSmokeTest
+    class SampleSmokeTest
     {
         [TestCase]
         public void LoginAsValidUser()
@@ -24,6 +25,10 @@ namespace ApolloQA.TestCases.Smoke_Tests
             homePage.MainNavBar.ClickOnTab("Policy");
             homePage.MainNavBar.searchQuery("12890");
             homePage.MainNavBar.clickFirstSearchResult();
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Organization"]);
+            OrganizationGrid orgGrid = new OrganizationGrid(driver);
+            OrganizationInsert orgInsert = orgGrid.ClickNewButton();
+            orgInsert.EnterAllValues();
         }
     }
 }

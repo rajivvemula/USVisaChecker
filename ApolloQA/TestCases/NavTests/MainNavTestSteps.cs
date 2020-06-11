@@ -3,7 +3,7 @@ using TechTalk.SpecFlow;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using ApolloQA.Pages.Login;
-using ApolloQA.Pages.Nav.MainNav;
+using ApolloQA.Pages.Nav;
 using ApolloQA.Helpers;
 using NUnit.Framework;
 
