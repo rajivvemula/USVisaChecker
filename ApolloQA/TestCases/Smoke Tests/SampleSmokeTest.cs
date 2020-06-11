@@ -14,10 +14,23 @@ namespace ApolloQA.TestCases.Smoke_Tests
     [TestFixture]
     class SampleSmokeTest
     {
+        IWebDriver driver;
+
+        //public SampleSmokeTest(IWebDriver driver)
+        //{
+        //    this.driver = driver;
+        //}
+
+        [OneTimeSetUp]
+        public void SetupDriver()
+        {
+            driver = new ChromeDriver();
+        }
+
         [TestCase]
         public void LoginAsValidUser()
         {
-            IWebDriver driver = new ChromeDriver();
+            
             driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
             LoginPage loginPage = new LoginPage(driver);
             HomePage homePage = loginPage.loginValidUser(Defaults.ADMIN_USERNAME, Defaults.DEFAULT_PASSWORD);

@@ -8,37 +8,37 @@ using TechTalk.SpecFlow;
 
 namespace ApolloQA.Driver
 {
-    //[Binding]
-    //public  class Setup
-    //{
-    //    private static IObjectContainer _objectContainer;
-    //    public static IWebDriver driver;
+    [Binding]
+    public class Setup
+    {
+        private static IObjectContainer _objectContainer;
+        public static IWebDriver driver;
 
-    //    public Setup(IObjectContainer objectContainer)
-    //    {
-    //        _objectContainer = objectContainer;
-    //    }
+        public Setup(IObjectContainer objectContainer)
+        {
+            _objectContainer = objectContainer;
+        }
 
-    //    [BeforeTestRun]
-    //    public static void BeforeTestRun()
-    //    {
-    //        driver = new ChromeDriver();
-    //        driver.Manage().Window.Maximize();
+        [BeforeTestRun]
+        public static void BeforeTestRun()
+        {
+            driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
 
-    //    }
-
-
-    //    [BeforeScenario]
-    //    public  void BeforeScenario()
-    //    {
-    //        _objectContainer.RegisterInstanceAs(Driver);
-    //    }
+        }
 
 
-    //    [AfterTestRun]
-    //    public static void AfterScenario()
-    //    {
-    //        driver.Quit();
-    //    }
-    //}
+        [BeforeScenario]
+        public void BeforeScenario()
+        {
+            _objectContainer.RegisterInstanceAs(driver);
+        }
+
+
+        [AfterTestRun]
+        public static void AfterScenario()
+        {
+            driver.Quit();
+        }
+    }
 }
