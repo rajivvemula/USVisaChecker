@@ -8,7 +8,7 @@ using NUnit.Framework.Constraints;
 
 namespace ApolloQA.Pages.Nav.MainNav
 {
-    class MainNavClass
+    class MainNavBar
     {
         private IWebDriver mainNavDriver;
 
@@ -17,7 +17,7 @@ namespace ApolloQA.Pages.Nav.MainNav
         //public IWebElement searchField => mainNavDriver.FindElement(By.XPath(MainNavLocs.MainNavXPaths["Search Field"]));
         public IList<IWebElement> searchResults;
 
-        public MainNavClass(IWebDriver driver)
+        public MainNavBar(IWebDriver driver)
         {
             mainNavDriver = driver;
         }

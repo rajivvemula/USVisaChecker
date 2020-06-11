@@ -23,7 +23,7 @@ namespace ApolloQA.TestCases.NavTests
             driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
 
             //login
-            LoginClass loginPage = new LoginClass(driver);
+            LoginPage loginPage = new LoginPage(driver);
             loginPage.EnterUsername(Defaults.ADMIN_USERNAME);
             loginPage.ClickNextButton();
             loginPage.EnterPassword(Defaults.DEFAULT_PASSWORD);
@@ -40,21 +40,21 @@ namespace ApolloQA.TestCases.NavTests
         [Then(@"The (.*) tab should load properly")]
         public void ThenTheTabShouldDisplayProperly(string tabName)
         {
-            MainNavClass mainNav1 = new MainNavClass(driver);
+            MainNavBar mainNav1 = new MainNavBar(driver);
             mainNav1.ClickOnTab(tabName);
         }
 
         [When(@"I enter policy number (.*) in the search field")]
         public void WhenIEnterPolicyNumberInTheSearchField(int policyNumber)
         {
-            MainNavClass mainNav1 = new MainNavClass(driver);
+            MainNavBar mainNav1 = new MainNavBar(driver);
             mainNav1.searchQuery(policyNumber.ToString());
         }
 
         [Then(@"I should be able to click the policy number")]
         public void ThenIShouldBeAbleToClickThePolicyNumber()
         {
-            MainNavClass mainNav1 = new MainNavClass(driver);
+            MainNavBar mainNav1 = new MainNavBar(driver);
             mainNav1.clickFirstSearchResult();
         }
 
@@ -67,14 +67,14 @@ namespace ApolloQA.TestCases.NavTests
         [When(@"I enter organization name (.*) in the search field")]
         public void WhenIEnterOrganizationNameInTheSearchField(string orgName)
         {
-            MainNavClass mainNav1 = new MainNavClass(driver);
+            MainNavBar mainNav1 = new MainNavBar(driver);
             mainNav1.searchQuery(orgName);
         }
 
         [Then(@"I should be able to click the organization")]
         public void ThenIShouldBeAbleToClickTheOrganization()
         {
-            MainNavClass mainNav1 = new MainNavClass(driver);
+            MainNavBar mainNav1 = new MainNavBar(driver);
             mainNav1.clickFirstSearchResult();
         }
 

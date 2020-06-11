@@ -36,7 +36,7 @@ namespace ApolloQA.TestCases.LoginTest
         {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
 
-            LoginClass loginPage = new LoginClass(driver);
+            LoginPage loginPage = new LoginPage(driver);
             bool verifyPage = loginPage.VerifyLoginScreen();
             //Assert.AreEqual(verifyPage, true);
             loginPage.EnterUsername(Defaults.ADMIN_USERNAME);

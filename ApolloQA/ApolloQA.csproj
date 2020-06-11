@@ -24,6 +24,7 @@
     <Folder Include="Driver\" />
     <Folder Include="Pages\Nav\BillingNav\" />
     <Folder Include="Pages\Nav\AdminNav\" />
+    <Folder Include="Pages\Nav\MainNav\" />
     <Folder Include="Pages\Nav\UWNav\" />
     <Folder Include="Pages\Organization\OrganizationView\" />
     <Folder Include="Pages\Organization\OrganizationInsert\" />
