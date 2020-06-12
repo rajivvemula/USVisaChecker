@@ -1,20 +1,41 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Test Automation for the Apollo Project using Behavior Driven Development. 
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## NuGet Packages
+Please install the following packages
+```
+Selenium.WebDriver
+Selenium.Support
+Selenium.WebDriver.ChromeDriver
+Microsoft.NET.Test.Sdk
+NUnit
+NUnit3TestAdapter
+Specflow
+SpecFlow.NUnit
+SpecFlow.Tools.MsBuild.Generation
+```
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+# Basic BDD Guidelines
+All tests are written using the BDD Gherkin Language. Here are some basic guidelines:
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+### Title
+* An explicit title.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+### Narrative
+ A short introductory section with the following structure:
+* **As a:** the person or role who will benefit from the feature;
+* **I want:** the feature;
+* **so that:** the benefit or value of the feature.
+
+### Acceptance criteria
+ A description of each specific scenario of the narrative with the following structure:
+
+* **Given:** the initial context at the beginning of the scenario, in one or more clauses;
+* **When:** the event that triggers the scenario;
+* **Then:** the expected outcome, in one or more clauses.
+
+# Test List
+
+Test # | Category | Title | Status
+-------|----------|------|-------
+001 | Login | User Login As Admin | -
