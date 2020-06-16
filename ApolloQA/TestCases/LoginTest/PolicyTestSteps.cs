@@ -8,6 +8,8 @@ using System.Threading;
 using ApolloQA.Pages.Fnol;
 using ApolloQA.Workflows;
 using ApolloQA.Pages.Dashboard;
+using System.ComponentModel;
+using ApolloQA.Pages.Shared;
 
 namespace ApolloQA.TestCases.LoginTest
 {
@@ -25,21 +27,34 @@ namespace ApolloQA.TestCases.LoginTest
         [Given(@"User is on Policy Page")]
         public void GivenUserIsOnPolicyPage()
         {
-            //PolicyMain policyPage = new PolicyMain(driver);
-            
+            PolicyMain policyPage = new PolicyMain(driver);
+
             //policyPage.GoToSummary();
             //policyPage.GoToLocations();
             //policyPage.GoToContacts();
-            //policyPage.GoToVehicles();
+            policyPage.GoToVehicles();
             //policyPage.GoToDrivers();
             //policyPage.GoToCoverages();
             //policyPage.GoToRates();
+
+            //PolicyGrid policyGrid = new PolicyGrid(driver);
+            //policyGrid.Pagination("");
+            //Thread.Sleep(5000);
             
         }
 
         [When(@"User clicks Policy Summary")]
         public void WhenUserClicksPolicySummary()
         {
+
+            PolicyVehicle policyVehicle = new PolicyVehicle(driver);
+
+            policyVehicle.ClickNewVehicle();
+
+            AddVehicle addVehicle = new AddVehicle(driver);
+            addVehicle.inputVin.SendKeys("123456");
+            addVehicle.EnterAllInputs();
+            Thread.Sleep(5000);
             /*
             PolicySummary policySummary = new PolicySummary(driver);
             string writeStatus = policySummary.CheckPolicyStatus();
@@ -96,13 +111,13 @@ namespace ApolloQA.TestCases.LoginTest
             */
 
             
-            ImpersonateUser impUser = new ImpersonateUser(driver);
-            impUser.UserToImp("ApolloTestUserG201@biberk.com");
+            //ImpersonateUser impUser = new ImpersonateUser(driver);
+            //impUser.UserToImp("ApolloTestUserG201@biberk.com");
             
             
             
             
-            HomePage homePage = new HomePage(driver);
+            //HomePage homePage = new HomePage(driver);
             //homePage.SendInput();
         }
 

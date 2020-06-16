@@ -15,55 +15,80 @@ namespace ApolloQA.Pages.Policy
             policyDriver = driver;
         }
 
-        public void EnterLOB()
-        {
-            string lob = "Business Owners";
-            // select the drop down list
-            policyDriver.FindElement(By.Id(PolicyLocs.locInputLOB)).Click();
-            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='"+ lob + "']")).Click();
-            //create select element object 
-            //var selectElement = new SelectElement(education);
+        public IWebElement inputInsured => policyDriver.FindElement(By.XPath("//bh-input-autocomplete[@formcontrolname ='insuredPartyId']/input"));
+        public IWebElement inputAgency => policyDriver.FindElement(By.XPath("//bh-input-autocomplete[@formcontrolname ='agencyPartyId']/input"));
+        public IWebElement inputEffective => policyDriver.FindElement(By.XPath("//input[@formcontrolname='timeFrom']"));
+        public IWebElement inputExpiration => policyDriver.FindElement(By.XPath("//input[@formcontrolname='timeTo']"));
+        public IWebElement inputIssue => policyDriver.FindElement(By.XPath("//input[@formcontrolname='issueDate']"));
+        public IWebElement inputYears => policyDriver.FindElement(By.XPath("//input[@formcontrolname='yearsInBusiness']"));
+        public IWebElement inputID => policyDriver.FindElement(By.XPath("//input[@formcontrolname='taxId']"));
+        public IWebElement selectLOB => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='lineId']"));
+        public IWebElement selectBus => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
+        public IWebElement selecID => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='taxIdType']"));
+        public IWebElement submitButton => policyDriver.FindElement(By.XPath("//button[@aria-label='Submit']"));
 
-            //select by value
-            //selectElement.SelectByValue("Commercial Auto");
-        }
-        public void EnterInsuredOrg()
+        //For Dev Purposes
+        public void EnterDefaultInputs()
         {
-            policyDriver.FindElement(By.Id(PolicyLocs.locInputOrg)).SendKeys("A MASTER ORGANIZATION");
-            policyDriver.FindElement(By.XPath("//div[@class='ng-star-inserted' and normalize-space(text())='A MASTER ORGANIZATION']")).Click();
-        }
-
-        public void EnterAgency()
-        {
-            policyDriver.FindElement(By.Id(PolicyLocs.locInputAgency)).SendKeys("10003");
-            policyDriver.FindElement(By.XPath("//div[@class='ng-star-inserted' and normalize-space(text())='10003']")).Click();
-        }
-
-        public void EnterBusType()
-        {
-            policyDriver.FindElement(By.Id(PolicyLocs.locInputBusType)).Click();
+            inputInsured.SendKeys("A MASTER Organization");
+            inputInsured.SendKeys(Keys.Enter);
+            inputAgency.SendKeys("10003");
+            inputAgency.SendKeys(Keys.Enter);
+            selectLOB.Click();
+            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Business Owners']")).Click();
+            selectBus.Click();
             policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Corporation']")).Click();
-        }
-
-        public void EnterYears()
-        {
-            policyDriver.FindElement(By.Id(PolicyLocs.locInputYears)).SendKeys("6");
-        }
-
-        public void EnterTaxIDType()
-        {
-            policyDriver.FindElement(By.Id(PolicyLocs.locInputTaxIDType)).Click();
+            selecID.Click();
             policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='FEIN']")).Click();
+            inputYears.SendKeys("6");
+            inputID.SendKeys("12-2222222");
+
+        }
+        public void EnterLOB(string lob)
+        {
+            
+            selectLOB.Click();
+            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='"+ lob + "']")).Click();
+           
+        }
+        public void EnterInsuredOrg(string org)
+        {
+            inputInsured.SendKeys(org);
+            inputInsured.SendKeys(Keys.Enter);
         }
 
-        public void EnterTaxID()
+        public void EnterAgency(string agency)
         {
-            policyDriver.FindElement(By.Id(PolicyLocs.locInputTaxID)).SendKeys("12-2222222");
+            inputAgency.SendKeys(agency);
+            inputAgency.SendKeys(Keys.Enter);
+            
+        }
+
+        public void EnterBusType(string corp)
+        {
+            selectBus.Click();
+            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + corp + "']")).Click();
+        }
+
+        public void EnterYears(string year)
+        {
+            inputYears.SendKeys(year);
+        }
+
+        public void EnterTaxIDType(string idType)
+        {
+            selecID.Click();
+            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + idType + "']")).Click();
+        }
+
+        public void EnterTaxID(string taxID)
+        {
+            inputID.SendKeys(taxID);
         }
 
         public void ClickSubmitButton()
         {
-            policyDriver.FindElement(By.XPath(PolicyLocs.locSubmitButton)).Click();
+            submitButton.Click();
         }
     }
 }

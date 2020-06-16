@@ -10,6 +10,7 @@ using System.Diagnostics;
 using ApolloQA.Pages.Login;
 using ApolloQA.Helpers;
 using ApolloQA.Pages.Policy;
+using System.Threading;
 
 namespace ApolloQA.TestCases.LoginTest
 {
@@ -69,11 +70,16 @@ namespace ApolloQA.TestCases.LoginTest
         {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
             PolicyMain policyPage = new PolicyMain(driver);
-            
 
-            driver.FindElement(By.ClassName("top-menu-item")).Click();
+            Thread.Sleep(5000);
+            policyPage.NavigateToPolicyGrid();
+            driver.FindElement(By.XPath("//button[@aria-label='Add Policy']")).Click();
+            PolicyCreation policyCreationPage = new PolicyCreation(driver);
 
-            //policyPage.NavigateToPolicy(12890);
+            policyCreationPage.EnterDefaultInputs();
+            Thread.Sleep(10000);
+
+            //policyPage.NavigateToPolicy(12843);
             /*
             driver.FindElement(By.XPath("//button[@aria-label='Add Policy']")).Click();
             PolicyCreation policyCreationPage = new PolicyCreation(driver);

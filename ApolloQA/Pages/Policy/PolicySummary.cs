@@ -17,13 +17,13 @@ namespace ApolloQA.Pages.Policy
             
         }
 
-        public IWebElement status => policyDriver.FindElement(By.XPath("//input[@id='mat-input-2']"));
+        public IList<IWebElement> status => policyDriver.FindElements(By.XPath("//input[contains(@id,'mat-input')]"));
 
 
 
         public string CheckPolicyStatus()
         {
-            string policyStatus = status.GetAttribute("value");
+            string policyStatus = status[4].GetAttribute("value");
             return policyStatus;
         }
     }

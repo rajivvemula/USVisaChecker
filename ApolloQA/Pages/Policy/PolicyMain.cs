@@ -14,6 +14,14 @@ namespace ApolloQA.Pages.Policy
             policyDriver = driver;
         }
 
+
+        public IWebElement summaryLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='General Information']"));
+        public IWebElement locationLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Locations']"));
+        public IWebElement contactsLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Contacts']"));
+        public IWebElement vehicleLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Vehicles']"));
+        public IWebElement driverLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Drivers']"));
+        public IWebElement coverageLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Coverages']"));
+        public IWebElement rateLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Rate Calculation']"));
         public IWebElement documentLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Documents']"));
 
         public void NavigateToPolicy(int policyNumber)
@@ -26,33 +34,38 @@ namespace ApolloQA.Pages.Policy
             policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"] + "/insert");
         }
 
+        public void NavigateToPolicyGrid()
+        {
+            policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"]);
+        }
+
         public void GoToSummary()
         {
-            policyDriver.FindElement(By.XPath(PolicyLocs.locPolicySummary)).Click();
+            summaryLink.Click();
         }
         public void GoToLocations()
         {
-            policyDriver.FindElement(By.XPath(PolicyLocs.locPolicyLocation)).Click();
+            locationLink.Click();
         }
         public void GoToContacts()
         {
-            policyDriver.FindElement(By.XPath(PolicyLocs.locPolicyContacts)).Click();
+            contactsLink.Click();
         }
         public void GoToVehicles()
         {
-            policyDriver.FindElement(By.XPath(PolicyLocs.locPolicyVehicles)).Click();
+            vehicleLink.Click();
         }
         public void GoToDrivers()
         {
-            policyDriver.FindElement(By.XPath(PolicyLocs.locPolicyDrivers)).Click();
+            driverLink.Click();
         }
         public void GoToCoverages()
         {
-            policyDriver.FindElement(By.XPath(PolicyLocs.locPolicyCoverages)).Click();
+            coverageLink.Click();
         }
         public void GoToRates()
         {
-            policyDriver.FindElement(By.XPath(PolicyLocs.locPolicyRates)).Click();
+            rateLink.Click();
         }
 
         public void GoToDocuments()
