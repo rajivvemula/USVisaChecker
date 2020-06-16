@@ -14,9 +14,6 @@ namespace ApolloQA.Pages.Nav
 
         private string[] tabs = {"Home", "Policy", "Organization", "Home"};
 
-        //public IWebElement searchField => driver.FindElement(By.XPath(MainNavLocs.MainNavXPaths["Search Field"]));
-        public IList<IWebElement> searchResults;
-
         public MainNavBar(IWebDriver driver)
         {
             this.driver = driver;
@@ -40,7 +37,7 @@ namespace ApolloQA.Pages.Nav
             string xpath = MainNavLocs.MainNavXPaths[tabName];
 
             //wait for the button to be clickable
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(xpath)));
 
             //click it

@@ -23,12 +23,12 @@ namespace ApolloQA.TestCases.NavTests
             driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
 
             //login
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.EnterUsername(Defaults.ADMIN_USERNAME);
-            loginPage.ClickNextButton();
-            loginPage.EnterPassword(Defaults.DEFAULT_PASSWORD);
-            loginPage.ClickNextButton();
-            loginPage.ClickNoButton();
+            //LoginPage loginPage = new LoginPage(driver);
+            //loginPage.EnterUsername(Defaults.ADMIN_USERNAME);
+            //loginPage.ClickNextButton();
+            //loginPage.EnterPassword(Defaults.DEFAULT_PASSWORD);
+            //loginPage.ClickNextButton();
+            //loginPage.ClickNoButton();
         }
 
         [When(@"I click on the (.*) tab")]

@@ -29,6 +29,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
             OrganizationGrid orgGrid = new OrganizationGrid(driver);
             OrganizationInsert orgInsert = orgGrid.ClickNewButton();
             orgInsert.EnterAllValues();
+            OrganizationDetails orgDetails = orgInsert.ClickSubmitButton();
+            orgDetails.ClickAddAddress();
         }
     }
 }
