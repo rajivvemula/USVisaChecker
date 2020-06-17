@@ -67,9 +67,9 @@ namespace ApolloQA.Pages.Organization
             IWebElement typeDropdown = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-select[@id='mat-select-1']")));
             typeDropdown.Click();
 
-            //click Insured
-            IWebElement insured = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//span[normalize-space(text())='" + type + "']")));
-            insured.Click();
+            //click selection
+            IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//span[normalize-space(text())='" + type + "']")));
+            target.Click();
         }
 
         public void EnterCode(string code)

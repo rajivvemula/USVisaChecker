@@ -18,6 +18,9 @@ namespace ApolloQA.Pages
             mainNavBar = new MainNavBar(driver);
         }
 
+        //this allows us to reference MainNavBar object and functions from Page object like so:
+        // homePage.MainNavBar.ClickOnTab("Policy");
+        //Per Cabe, there is likely a better way of doing this with context injection
         public MainNavBar MainNavBar { get => mainNavBar; }
     }
 }

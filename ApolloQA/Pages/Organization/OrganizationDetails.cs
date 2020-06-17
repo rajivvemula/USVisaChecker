@@ -1,4 +1,5 @@
 ﻿using ApolloQA.Pages.Nav;
+using ApolloQA.Pages.Shared;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -19,7 +20,7 @@ namespace ApolloQA.Pages.Organization
 
         }
 
-        public OrganizationAddAddress ClickAddAddress()
+        public AddAddress ClickAddAddress()
         {
             string addAddressXPath = "//button/span[normalize-space(text())='Add address']";
 
@@ -28,7 +29,7 @@ namespace ApolloQA.Pages.Organization
 
             addAddressButton.Click();
 
-            return new OrganizationAddAddress(driver);
+            return new AddAddress(driver);
         }
 
         

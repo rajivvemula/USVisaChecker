@@ -2,6 +2,7 @@
 using ApolloQA.Pages;
 using ApolloQA.Pages.Login;
 using ApolloQA.Pages.Organization;
+using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -30,7 +31,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
             OrganizationInsert orgInsert = orgGrid.ClickNewButton();
             orgInsert.EnterAllValues();
             OrganizationDetails orgDetails = orgInsert.ClickSubmitButton();
-            orgDetails.ClickAddAddress();
+            AddAddress orgAddress = orgDetails.ClickAddAddress();
+            orgAddress.selectAddressType("Billing");
         }
     }
 }
