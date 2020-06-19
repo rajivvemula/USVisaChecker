@@ -48,7 +48,7 @@ namespace ApolloQA.Pages.Nav
             Assert.AreEqual(driver.Url, Defaults.QA_URLS[tabName]);
         }
 
-        public void searchQuery(string query)
+        public void SearchQuery(string query)
         {
 
             //wait for the button to be clickable
@@ -60,7 +60,7 @@ namespace ApolloQA.Pages.Nav
 
         }
 
-        public void clickFirstSearchResult()
+        public void ClickFirstSearchResult()
         {
             //wait for the button to be clickable
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));

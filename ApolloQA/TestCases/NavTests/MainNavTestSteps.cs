@@ -48,14 +48,14 @@ namespace ApolloQA.TestCases.NavTests
         public void WhenIEnterPolicyNumberInTheSearchField(int policyNumber)
         {
             MainNavBar mainNav1 = new MainNavBar(driver);
-            mainNav1.searchQuery(policyNumber.ToString());
+            mainNav1.SearchQuery(policyNumber.ToString());
         }
 
         [Then(@"I should be able to click the policy number")]
         public void ThenIShouldBeAbleToClickThePolicyNumber()
         {
             MainNavBar mainNav1 = new MainNavBar(driver);
-            mainNav1.clickFirstSearchResult();
+            mainNav1.ClickFirstSearchResult();
         }
 
         [Then(@"I should be directed to policy (.*)")]
@@ -68,14 +68,14 @@ namespace ApolloQA.TestCases.NavTests
         public void WhenIEnterOrganizationNameInTheSearchField(string orgName)
         {
             MainNavBar mainNav1 = new MainNavBar(driver);
-            mainNav1.searchQuery(orgName);
+            mainNav1.SearchQuery(orgName);
         }
 
         [Then(@"I should be able to click the organization")]
         public void ThenIShouldBeAbleToClickTheOrganization()
         {
             MainNavBar mainNav1 = new MainNavBar(driver);
-            mainNav1.clickFirstSearchResult();
+            mainNav1.ClickFirstSearchResult();
         }
 
         [Then(@"I should be directed to organization (.*)")]

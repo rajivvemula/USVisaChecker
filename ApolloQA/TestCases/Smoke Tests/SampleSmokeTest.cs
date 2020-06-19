@@ -24,15 +24,21 @@ namespace ApolloQA.TestCases.Smoke_Tests
             HomePage homePage = loginPage.loginValidUser(Defaults.ADMIN_USERNAME, Defaults.DEFAULT_PASSWORD);
             //Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Home"]));
             homePage.MainNavBar.ClickOnTab("Policy");
-            homePage.MainNavBar.searchQuery("12890");
-            homePage.MainNavBar.clickFirstSearchResult();
+            homePage.MainNavBar.SearchQuery("10005");
+            homePage.MainNavBar.ClickFirstSearchResult();
             driver.Navigate().GoToUrl(Defaults.QA_URLS["Organization"]);
             OrganizationGrid orgGrid = new OrganizationGrid(driver);
             OrganizationInsert orgInsert = orgGrid.ClickNewButton();
             orgInsert.EnterAllValues();
             OrganizationDetails orgDetails = orgInsert.ClickSubmitButton();
             AddAddress orgAddress = orgDetails.ClickAddAddress();
-            orgAddress.selectAddressType("Billing");
+            orgAddress.SelectAddressType("Billing");
+            orgAddress.AddressLine1.SendKeys("57 Yeager Ave");
+            orgAddress.AddressCity.SendKeys("Forty Fort");
+            orgAddress.SelectState("Pennsylvania");
+            orgAddress.AddressZipCode.SendKeys("18704");
+            orgAddress.SelectCountry("United States");
+            orgAddress.ClickSubmit();
         }
     }
 }
