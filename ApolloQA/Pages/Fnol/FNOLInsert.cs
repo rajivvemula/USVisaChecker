@@ -37,9 +37,60 @@ namespace ApolloQA.Pages.Fnol
         public IWebElement fireName => fnolDriver.FindElement(By.XPath("//input[@formcontrolname='fireDepartmentName']"));
         public IWebElement fireNumber => fnolDriver.FindElement(By.XPath("//input[@formcontrolname='fireReportNumber']"));
         public IWebElement submitButton => fnolDriver.FindElement(By.XPath("//button[@aria-label='Submit']"));
-        public void SelectDropDownValue()
-        {
+        
 
+        public void EnterDateOfLoss(string date)
+        {
+            dateOfLossInput.SendKeys(date);
+        }
+        public void EnterTimeOfLos(string lossTime)
+        {
+            timeOfLossInput.SendKeys(lossTime);
+        }
+        public void EnterLosDesc(string desc)
+        {
+            lossDescInput.SendKeys(desc);
+        }
+        public void EnterDateReported(string date)
+        {
+            dateReportedInput.SendKeys(date);
+        }
+        public void EnterPolicyNumber(string number)
+        {
+            policyNumberInput.SendKeys(number);
+            policyNumberInput.SendKeys(Keys.Enter);
+
+        }
+
+        public void EnterFirstName(string name)
+        {
+            inputFirstName.SendKeys(name);
+        }
+        public void EnterMiddleName(string name)
+        {
+            inputMiddleName.SendKeys(name);
+        }
+        public void EnterLastName(string name)
+        {
+            inputLastName.SendKeys(name);
+        }
+        public void EnterSuffix(string name)
+        {
+            inputSuffixName.SendKeys(name);
+        }
+        public void EnterEmail(string email)
+        {
+            inputEmail.SendKeys(email);
+        }
+
+        public void EnterPhoneNumber(string phone)
+        {
+            inputPhoneNumber.SendKeys(phone);
+        }
+
+        public void EnterLossDesc(string desc)
+        {
+            lossDescInput.SendKeys(desc);
         }
 
         public void EnterAllInputs()

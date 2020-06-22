@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace ApolloQA.Pages.Shared
 
         public IWebElement inputVin => Driver.FindElement(By.XPath("//input[@formcontrolname='vinNumber']"));
         public IWebElement inputYearMan => Driver.FindElement(By.XPath("//input[@formcontrolname='yearOfManufacture']"));
-        public IWebElement inputMAke => Driver.FindElement(By.XPath("//input[@formcontrolname='make']"));
+        public IWebElement inputMake => Driver.FindElement(By.XPath("//input[@formcontrolname='make']"));
         public IWebElement inputModel => Driver.FindElement(By.XPath("//input[@formcontrolname='model']"));
         public IWebElement inputTrim => Driver.FindElement(By.XPath("//input[@formcontrolname='trim']"));
         public IWebElement inputPlatNum => Driver.FindElement(By.XPath("//input[@formcontrolname='plateNumber']"));
@@ -30,7 +31,49 @@ namespace ApolloQA.Pages.Shared
         public IWebElement selectBusUse => Driver.FindElement(By.XPath("//mat-select[@formcontrolname='businessUseId']"));
         public IWebElement cancelButton => Driver.FindElement(By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
         public IWebElement submitButton => Driver.FindElement(By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
+        public IWebElement searchButton => Driver.FindElement(By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Search Vin']"));
 
+
+        public void EnterVin(string vin)
+        {
+            inputVin.SendKeys(vin);
+        }
+        public void EnterYearMan(string yearMan)
+        {
+            inputYearMan.SendKeys(yearMan);
+        }
+        public void EnterMake(string make)
+        {
+            inputMake.SendKeys(make);
+        }
+        public void EnterModel(string model)
+        {
+            inputModel.SendKeys(model);
+        }
+        public void EnterTrim(string trim)
+        {
+            inputTrim.SendKeys(trim);
+        }
+        public void EnterPlate(string plate)
+        {
+            inputPlatNum.SendKeys(plate);
+        }
+        public void EnterCost(string cost)
+        {
+            inputCost.SendKeys(cost);
+        }
+        public void EnterValue(string value)
+        {
+            inputValue.SendKeys(value);
+        }
+        public void EnterRadius(string radius)
+        {
+            inputYRadius.SendKeys(radius);
+        }
+        public void EnterNotes(string note)
+        {
+            inputNotes.SendKeys(note);
+        }
         public void EnterState(string state)
         {
             selectState.Click();
@@ -53,6 +96,12 @@ namespace ApolloQA.Pages.Shared
         {
             EnterState("California");
 
+        }
+        public void SelectCoverage(int checkboxNum)
+        {
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
+            IList<IWebElement> checkBoxes = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.PresenceOfAllElementsLocatedBy(By.XPath("//input[@type = 'checkbox]")));
+            checkBoxes[checkboxNum].Click();
         }
     }
 }

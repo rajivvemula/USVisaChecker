@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,13 +20,19 @@ namespace ApolloQA.Pages.Dashboard
         {
             homeDriver.Navigate().GoToUrl("https://biberk-apollo-qa.azurewebsites.net/home");
         }
-        public string VerifyLoggedInUser()
+        public bool VerifyLoggedInUser(string user)
         {
-            string verifyUser = homeDriver.FindElement(By.XPath("//p[contains(text(),'First Name: ApolloTestUserG201')]")).Text;
+            //bool verifyUser = homeDriver.FindElement(By.XPath("//p[contains(text(),'Email: " + user + "')]")).Text;
+            //return verifyUser;
+
+            WebDriverWait wait = new WebDriverWait(homeDriver, TimeSpan.FromSeconds(30));
+            IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//p[contains(text(),'Email: " + user + "')]")));
+            bool verifyUser = target.Displayed;
+
             return verifyUser;
         }
 
-       
+
 
     }
 }

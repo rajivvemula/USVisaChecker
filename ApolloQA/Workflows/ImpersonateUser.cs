@@ -31,8 +31,8 @@ namespace ApolloQA.Workflows
             Assert.AreEqual(user, verifyUser);
             imp.ClickSubmit();
             homePage.GotToHome();
-            string verifyName = homePage.VerifyLoggedInUser();
-            Assert.AreEqual("First Name: ApolloTestUserG201", verifyName);
+            //string verifyName = homePage.VerifyLoggedInUser();
+            //Assert.AreEqual("First Name: ApolloTestUserG201", verifyName);
         }
     }
 }
