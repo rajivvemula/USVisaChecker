@@ -4,21 +4,22 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace ApolloQA.Pages.Nav
+namespace ApolloQA.Pages.Shared
 {
     class Impersonate
     {
 
-        private IWebDriver navDriver;
+        private IWebDriver driver;
         public Impersonate(IWebDriver driver)
         {
-            navDriver = driver;
+            this.driver = driver;
 
         }
 
-        public IWebElement impButton => navDriver.FindElement(By.XPath("//mat-icon[contains(text(),'assignment_ind')]"));
-        public IWebElement impInput => navDriver.FindElement(By.XPath("//input[@formcontrolname='email']"));
-        public IWebElement submitButton => navDriver.FindElement(By.XPath("//button[@aria-label='Submit']"));
+        public IWebElement impButton => driver.FindElement(By.XPath("//mat-icon[contains(text(),'assignment_ind')]"));
+
+        public IWebElement userEmail => driver.FindElement(By.XPath("//input[@formcontrolname='email']"));
+        public IWebElement submitButton => driver.FindElement(By.XPath("//button[@aria-label='Submit']"));
 
         public void OpenImpersonate()
         {
@@ -28,7 +29,7 @@ namespace ApolloQA.Pages.Nav
 
         public void UserToImpersonate(string user)
         {
-            impInput.SendKeys(user);
+            userEmail.SendKeys(user);
             
 
         }
@@ -39,7 +40,7 @@ namespace ApolloQA.Pages.Nav
         }
         public string VerifyInput()
         {
-            string inputString = impInput.GetAttribute("value");
+            string inputString = userEmail.GetAttribute("value");
             return inputString;
         }
 

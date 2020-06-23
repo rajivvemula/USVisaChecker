@@ -1,5 +1,5 @@
 ﻿using ApolloQA.Pages.Dashboard;
-using ApolloQA.Pages.Nav;
+using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;

@@ -11,13 +11,13 @@ namespace ApolloQA.Pages.Shared
 
         IWebDriver driver;
 
-        //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        WebDriverWait wait;
 
-        //IWebElement typeDropdown => wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-select[@name='addressTypeId']")));
 
         public AddAddress(IWebDriver driver)
         {
             this.driver = driver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
         }
 
@@ -25,10 +25,9 @@ namespace ApolloQA.Pages.Shared
         {
             //types: Billing, Location, Mailing, Shipping
 
-            //wait for dropdown to be clickable
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement typeDropdown = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-select[@name='addressTypeId']")));
             typeDropdown.Click();
+            // NEED TO DO SOMETHING HERE ABOUT CLICK NOT REGISTERING SOMETIMES
 
             //click selection
             IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-option//span[normalize-space(text())='" + type + "']")));
@@ -38,7 +37,6 @@ namespace ApolloQA.Pages.Shared
         public void SelectState(string state)
         {
         
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement typeDropdown = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("(//*[contains(@id,'mat-select')])[3]")));
             typeDropdown.Click();
 
@@ -49,7 +47,6 @@ namespace ApolloQA.Pages.Shared
 
         public void SelectCountry(string country)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement typeDropdown = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-select[@name='countryId']")));
             typeDropdown.Click();
 

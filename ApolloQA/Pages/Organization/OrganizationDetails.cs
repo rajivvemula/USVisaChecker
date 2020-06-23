@@ -11,12 +11,12 @@ namespace ApolloQA.Pages.Organization
     class OrganizationDetails
     {
         IWebDriver driver;
-        MainNavBar mainNavBar;
+        //MainNavBar mainNavBar;
 
         public OrganizationDetails(IWebDriver driver)
         {
             this.driver = driver;
-            mainNavBar = new MainNavBar(driver);
+            //mainNavBar = new MainNavBar(driver);
 
         }
 
