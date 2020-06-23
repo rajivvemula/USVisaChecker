@@ -18,7 +18,7 @@ namespace ApolloQA.Pages.Dashboard
         //public IWebElement firstName => homeDriver.FindElement(By.XPath("//p[contains(text(),'First Name:')]"));
         public void GotToHome()
         {
-            homeDriver.Navigate().GoToUrl("https://biberk-apollo-qa.azurewebsites.net/home");
+            homeDriver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/home");
         }
         public bool VerifyLoggedInUser(string user)
         {
@@ -30,6 +30,20 @@ namespace ApolloQA.Pages.Dashboard
             bool verifyUser = target.Displayed;
 
             return verifyUser;
+        }
+
+        public bool CheckRole(string role)
+        {
+            WebDriverWait wait = new WebDriverWait(homeDriver, TimeSpan.FromSeconds(30));
+            IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//p[@class='ng-star-inserted' and normalize-space(text())='" + role +"']")));
+            bool verifyRole = target.Displayed;
+            return verifyRole;
+        }
+
+        public string GetTitle()
+        {
+            string title = homeDriver.Title;
+            return title;
         }
 
 

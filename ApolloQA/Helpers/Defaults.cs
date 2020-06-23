@@ -9,7 +9,7 @@ namespace ApolloQA.Helpers
         public const string
             ADMIN_USERNAME = "ApolloTestUserG301@biberk.com",
             DEFAULT_PASSWORD = "HashTagApollo#24";
-
+        
         //QA URLs
         public static IDictionary<string, string> QA_URLS = new Dictionary<string, string>()
         {
@@ -21,5 +21,15 @@ namespace ApolloQA.Helpers
             {"Administration", "https://biberk-apollo-qa2.azurewebsites.net/administration" }
         };
 
+        public static readonly string[] adminRoles = {
+            "Apollo Accounts Receivable",
+            "Apollo Actuarial",
+            "Apollo Admin",
+            "Apollo Document Management",
+            "Apollo Impersonator",
+            "Apollo Policy Services",
+            "Apollo Underwriter",
+            "Apollo Users"
+        };
     }
 }

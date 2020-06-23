@@ -25,6 +25,11 @@ namespace ApolloQA.Pages.Policy
             newButton.Click();
         }
 
+        public string GetTitle()
+        {
+            string title = policyDriver.Title;
+            return title;
+        }
         //Add pagination
         public void Pagination(string page)
         {

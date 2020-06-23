@@ -23,7 +23,7 @@ namespace ApolloQA.Pages.Policy
         public IWebElement coverageLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Coverages']"));
         public IWebElement rateLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Rate Calculation']"));
         public IWebElement documentLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Documents']"));
-
+        public IWebElement historyLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Policy History']"));
         public void NavigateToPolicy(int policyNumber)
         {
             policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"] + "/" + policyNumber);
@@ -73,5 +73,9 @@ namespace ApolloQA.Pages.Policy
             documentLink.Click();
         }
 
+        public void GotoHistory()
+        {
+            historyLink.Click();
+        }
     }
 }
