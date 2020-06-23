@@ -25,5 +25,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement PolicyTab => driver.FindElement(By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Policy')]"));
         public IWebElement OrganizationTab => driver.FindElement(By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Organization')]"));
 
+
+        //public GoToHomeTab()
     }
 }
