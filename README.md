@@ -36,6 +36,10 @@ All tests are written using the BDD Gherkin Language. Here are some basic guidel
 
 # Test List
 
-Test # | Category | Title | Status
--------|----------|------|-------
-001 | Login | User Login As Admin | -
+Test # | Category | Title | Status | Scenarios
+-------|----------|------|-------|------------|
+R001 | Login | User Login As Admin | Done | 1
+R002 | Admin | Admin Privileges | Done | 1
+R003 | Admin | Admin Has Access To Waffle Links | - | -
+R004 | Policy | Access Policy List | Done | 1
+R005 | Policy | Policy Navigation | Done | 9

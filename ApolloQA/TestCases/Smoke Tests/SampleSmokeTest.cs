@@ -59,6 +59,9 @@ namespace ApolloQA.TestCases.Smoke_Tests
             mainNavBar.ClickFirstSearchResult();
             mainNavBar.OrganizationTab.Click();
             mainNavBar.ImpersonateIcon.Click();
+
+
+
         }
     }
 }
