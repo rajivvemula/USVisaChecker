@@ -10,14 +10,11 @@ namespace ApolloQA.Pages.Shared
     {
 
         private IWebDriver driver;
-        private WebDriverWait wait;
 
 
         public MainNavBar(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
-            this.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
 
@@ -25,7 +22,20 @@ namespace ApolloQA.Pages.Shared
         public IWebElement PolicyTab => driver.FindElement(By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Policy')]"));
         public IWebElement OrganizationTab => driver.FindElement(By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Organization')]"));
 
+        public void ClickHomeIcon()
+        {
+            HomeIcon.Click();
+        }
 
-        //public GoToHomeTab()
+        public void ClickPolicyTab()
+        {
+            PolicyTab.Click();
+        }
+
+        public void ClickOrganizationTab()
+        {
+            OrganizationTab.Click();
+        }
+
     }
 }

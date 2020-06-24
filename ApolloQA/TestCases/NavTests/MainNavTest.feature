@@ -1,8 +1,7 @@
 ﻿Feature: MainNavTest
-
 In order to test the main navigation bar
-As a currently logged in user
-I want to verify the tabs are present and clickable
+As a currently logged in user on a page containing the Main Navigation Bar
+I want to validate the shortcuts, search, and other functionality
 
 Scenario: Home tab is clickable
 	Given I am logged in
