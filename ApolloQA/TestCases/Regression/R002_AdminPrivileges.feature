@@ -3,7 +3,7 @@
 	As a Admin
 	I want to have appropriate privileges
 
-@regression
+@reg
 Scenario: Verify Admin Privileges
 	Given User is on Dashboard
 	When User is logged in as Admin

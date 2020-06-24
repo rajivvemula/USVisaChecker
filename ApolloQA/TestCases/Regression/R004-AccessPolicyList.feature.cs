@@ -75,13 +75,13 @@ namespace ApolloQA.TestCases.Regression
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Acess PolicyPage From Dashboard")]
-        [NUnit.Framework.CategoryAttribute("regression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void AcessPolicyPageFromDashboard()
         {
             string[] tagsOfScenario = new string[] {
-                    "regression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Acess PolicyPage From Dashboard", null, new string[] {
-                        "regression"});
+                        "reg"});
 #line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden

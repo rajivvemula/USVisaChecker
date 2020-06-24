@@ -26,6 +26,7 @@ namespace ApolloQA.Pages.Policy
         public IWebElement selectBus => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
         public IWebElement selecID => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='taxIdType']"));
         public IWebElement submitButton => policyDriver.FindElement(By.XPath("//button[@aria-label='Submit']"));
+        public IWebElement cancelButton => policyDriver.FindElement(By.XPath("//button[@aria-label='Cancel']"));
 
         //For Dev Purposes
         public void EnterDefaultInputs()
@@ -46,10 +47,10 @@ namespace ApolloQA.Pages.Policy
         }
         public void EnterLOB(string lob)
         {
-            
+
             selectLOB.Click();
-            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='"+ lob + "']")).Click();
-           
+            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + lob + "']")).Click();
+
         }
         public void EnterInsuredOrg(string org)
         {
@@ -61,7 +62,7 @@ namespace ApolloQA.Pages.Policy
         {
             inputAgency.SendKeys(agency);
             inputAgency.SendKeys(Keys.Enter);
-            
+
         }
 
         public void EnterBusType(string corp)
@@ -89,6 +90,20 @@ namespace ApolloQA.Pages.Policy
         public void ClickSubmitButton()
         {
             submitButton.Click();
+        }
+
+        public void ClickCancelButton()
+        {
+            cancelButton.Click();
+        }
+
+        public bool CheckHeading()
+        {
+
+            WebDriverWait wait = new WebDriverWait(policyDriver, TimeSpan.FromSeconds(10));
+            IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//h3[normalize-space(text())='Insert Policy']")));
+            bool verifyHeading = target.Displayed;
+            return verifyHeading;
         }
     }
 }

@@ -3,7 +3,7 @@
 	As Any User 
 	I Want To Access The Policy Page/Grid
 
-@regression
+@reg
 Scenario: Acess PolicyPage From Dashboard
 	Given User is on Dashboard
 	When User clicks on Policy Link in Navigation Bar

@@ -75,13 +75,13 @@ namespace ApolloQA.TestCases.Regression
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("1 User Can Navigate To General Information")]
-        [NUnit.Framework.CategoryAttribute("regeression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void _1UserCanNavigateToGeneralInformation()
         {
             string[] tagsOfScenario = new string[] {
-                    "regeression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 User Can Navigate To General Information", null, new string[] {
-                        "regeression"});
+                        "reg"});
 #line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -117,13 +117,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("2 User Can Navigate To Locations")]
-        [NUnit.Framework.CategoryAttribute("regeression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void _2UserCanNavigateToLocations()
         {
             string[] tagsOfScenario = new string[] {
-                    "regeression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 User Can Navigate To Locations", null, new string[] {
-                        "regeression"});
+                        "reg"});
 #line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -156,13 +156,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("3 User Can Navigate To Contacts")]
-        [NUnit.Framework.CategoryAttribute("regeression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void _3UserCanNavigateToContacts()
         {
             string[] tagsOfScenario = new string[] {
-                    "regeression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("3 User Can Navigate To Contacts", null, new string[] {
-                        "regeression"});
+                        "reg"});
 #line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -195,13 +195,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("4 User Can Navigate To Vehicles")]
-        [NUnit.Framework.CategoryAttribute("regeression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void _4UserCanNavigateToVehicles()
         {
             string[] tagsOfScenario = new string[] {
-                    "regeression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("4 User Can Navigate To Vehicles", null, new string[] {
-                        "regeression"});
+                        "reg"});
 #line 23
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -234,13 +234,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("5 User Can Navigate To Drivers")]
-        [NUnit.Framework.CategoryAttribute("regeression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void _5UserCanNavigateToDrivers()
         {
             string[] tagsOfScenario = new string[] {
-                    "regeression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("5 User Can Navigate To Drivers", null, new string[] {
-                        "regeression"});
+                        "reg"});
 #line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -273,13 +273,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("6 User Can Navigate To Coverages")]
-        [NUnit.Framework.CategoryAttribute("regeression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void _6UserCanNavigateToCoverages()
         {
             string[] tagsOfScenario = new string[] {
-                    "regeression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("6 User Can Navigate To Coverages", null, new string[] {
-                        "regeression"});
+                        "reg"});
 #line 33
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -312,13 +312,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("7 User Can Navigate To Rate Calculation")]
-        [NUnit.Framework.CategoryAttribute("regeression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void _7UserCanNavigateToRateCalculation()
         {
             string[] tagsOfScenario = new string[] {
-                    "regeression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("7 User Can Navigate To Rate Calculation", null, new string[] {
-                        "regeression"});
+                        "reg"});
 #line 38
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -351,13 +351,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("8 User Can Navigate To Documents")]
-        [NUnit.Framework.CategoryAttribute("regeression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void _8UserCanNavigateToDocuments()
         {
             string[] tagsOfScenario = new string[] {
-                    "regeression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("8 User Can Navigate To Documents", null, new string[] {
-                        "regeression"});
+                        "reg"});
 #line 43
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -390,13 +390,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("9 User Can Navigate To Policy History")]
-        [NUnit.Framework.CategoryAttribute("regeression")]
+        [NUnit.Framework.CategoryAttribute("reg")]
         public virtual void _9UserCanNavigateToPolicyHistory()
         {
             string[] tagsOfScenario = new string[] {
-                    "regeression"};
+                    "reg"};
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("9 User Can Navigate To Policy History", null, new string[] {
-                        "regeression"});
+                        "reg"});
 #line 48
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
