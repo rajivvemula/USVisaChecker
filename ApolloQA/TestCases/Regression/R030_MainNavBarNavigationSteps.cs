@@ -35,7 +35,8 @@ namespace ApolloQA.TestCases.Regression
         [When(@"I click on the Policy tab")]
         public void WhenIClickOnThePolicyTab()
         {
-            mainNavBar.ClickPolicyTab();        }
+            mainNavBar.ClickPolicyTab();        
+        }
         
         [When(@"I click on the Organization tab")]
         public void WhenIClickOnTheOrganizationTab()
@@ -97,5 +98,21 @@ namespace ApolloQA.TestCases.Regression
             Thread.Sleep(5000);
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization"]));
         }
+
+        [When(@"I impersonate impersonateable user (.*)")]
+        public void WhenIImpersonateImpersonateableUser(string userName)
+        {
+            mainNavBar.ImpersonateValidUser(userName);
+
+        }
+
+        [Then(@"I am currently impersonating user (.*)")]
+        public void ThenIAmCurrentlyImpersonatingUser(string userName)
+        {
+            string currentImpersonation = mainNavBar.CurrentlyImpersonatedUser();
+            Assert.IsTrue(currentImpersonation.Equals(userName));
+        }
+
+
     }
 }

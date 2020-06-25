@@ -4,6 +4,7 @@ using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.IO;
 using System.Threading;
 using TechTalk.SpecFlow;
 
@@ -59,13 +60,28 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I am taken to the OrganizationInsert page")]
         public void ThenIAmTakenToTheOrganizationInsertPage()
         {
+            Thread.Sleep(5000);
+
+
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization Insert"]));
         }
         
         [Then(@"A new organization is created with the appropriate values")]
         public void ThenANewOrganizationIsCreatedWithTheAppropriateValues()
         {
+            Thread.Sleep(5000);
+
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization"]));
+
+            //write organization number to file
+            string orgNo = driver.Url.Substring(Defaults.QA_URLS["Organization"].Length + 1);
+            Console.WriteLine(orgNo);
+            using (StreamWriter writer = File.AppendText("C:\\Users\\casey.klaips\\source\\repos\\ApolloQA\\ApolloQA\\DataFiles\\Org_Numbers.txt"))
+            {
+                writer.WriteLine(orgNo);
+            }
         }
+
+
     }
 }

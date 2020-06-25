@@ -24,6 +24,32 @@ namespace ApolloQA.Pages.Shared
         public IWebElement ImpersonateIcon => driver.FindElement(By.XPath("//button[@title='Choose user to impersonate']"));
 
         public IWebElement HistoryIcon => driver.FindElement(By.XPath("//button/span/mat-icon[text()='history']/../.."));
+
+        public void ImpersonateValidUser(string userName)
+        {
+            ImpersonateIcon.Click();
+            IWebElement usernameField = driver.FindElement(By.XPath("//input[@formcontrolname='email']"));
+            usernameField.SendKeys(userName);
+            IWebElement submitButton = driver.FindElement(By.XPath("//button[@aria-label='Submit']"));
+            submitButton.Click();
+        }
+
+        public string CurrentlyImpersonatedUser()
+        {
+            IWebElement ImpersonatedUserIcon = driver.FindElement(By.XPath("//button[contains(@title, 'On Behalf Of')]"));
+            string currentImpText = ImpersonatedUserIcon.GetAttribute("title");
+            char[] delimiters = { ' ', '\n', '\r'};
+            string[] words = currentImpText.Split(delimiters);
+
+            ////for debugging
+            //foreach(string word in words)
+            //{
+            //    Console.WriteLine(word);
+            //}
+
+            string currentImpUser = words[3];
+            return currentImpUser;
+        }
         
 
 
