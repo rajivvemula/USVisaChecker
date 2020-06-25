@@ -294,10 +294,10 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 32
- testRunner.When("I impersonate impersonateable user ApolloTestUserG201@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I impersonate impersonateable user Sonia.Amaravel@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 33
- testRunner.Then("I am currently impersonating user ApolloTestUserG201@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I am currently impersonating user Sonia.Amaravel@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

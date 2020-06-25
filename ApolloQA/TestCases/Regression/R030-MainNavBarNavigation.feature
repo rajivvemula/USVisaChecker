@@ -29,5 +29,5 @@ Scenario: 5 Can search by valid organization
 	Then I should be directed to organization ACME
 
 Scenario: 6 Can impersonate impersonateable user
-	When I impersonate impersonateable user ApolloTestUserG201@biberk.com
-	Then I am currently impersonating user ApolloTestUserG201@biberk.com
+	When I impersonate impersonateable user Sonia.Amaravel@biberk.com
+	Then I am currently impersonating user Sonia.Amaravel@biberk.com
