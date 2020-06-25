@@ -36,6 +36,12 @@ namespace ApolloQA.Pages.Organization
 
         public MainNavBar MainNavBar { get => mainNavBar; }
 
+        public IWebElement NameField => driver.FindElement(By.XPath("(//*[contains(@id,'mat-input')])[2]"));
+        public IWebElement AlternateNameField => driver.FindElement(By.XPath("(//*[contains(@id,'mat-input')])[3]"));
+        public IWebElement LegalNameField => driver.FindElement(By.XPath("(//*[contains(@id,'mat-input')])[4]"));
+        public IWebElement CodeField => driver.FindElement(By.XPath("(//*[contains(@id,'mat-input')])[5]"));
+
+
         public void EnterAllValues()
         {
             this.EnterName("Test Organization");
@@ -47,17 +53,17 @@ namespace ApolloQA.Pages.Organization
 
         public void EnterName(string name)
         {
-            fields[1].SendKeys(name);
+            NameField.SendKeys(name);
         }
 
         public void EnterAlternateName(string alternateName)
         {
-            fields[2].SendKeys(alternateName);
+            AlternateNameField.SendKeys(alternateName);
         }
 
         public void EnterLegalName(string legalName)
         {
-            fields[3].SendKeys(legalName);
+            LegalNameField.SendKeys(legalName);
         }
 
         public void SelectType(string type)
@@ -74,7 +80,7 @@ namespace ApolloQA.Pages.Organization
 
         public void EnterCode(string code)
         {
-            fields[4].SendKeys(code);
+            CodeField.SendKeys(code);
         }
 
         public OrganizationDetails ClickSubmitButton()

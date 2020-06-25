@@ -52,13 +52,14 @@ namespace ApolloQA.TestCases.Smoke_Tests
             //rightNavBar.ImpersonateIcon.Click();
 
             MainNavBar mainNavBar = new MainNavBar(driver);
-            mainNavBar.PolicyTab.Click();
-            mainNavBar.HomeIcon.Click();
             mainNavBar.OrganizationTab.Click();
-            mainNavBar.SearchQuery("test");
-            mainNavBar.ClickFirstSearchResult();
-            mainNavBar.OrganizationTab.Click();
-            mainNavBar.ImpersonateIcon.Click();
+
+            OrganizationGrid orgGrid = new OrganizationGrid(driver);
+            orgGrid.ClickNewButton();
+
+            OrganizationInsert orgInsert = new OrganizationInsert(driver);
+            orgInsert.EnterAllValues();
+
 
 
 

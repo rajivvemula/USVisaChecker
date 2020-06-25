@@ -16,6 +16,7 @@ namespace ApolloQA.Helpers
             {"Home", "https://biberk-apollo-qa2.azurewebsites.net/home" },
             {"Policy", "https://biberk-apollo-qa2.azurewebsites.net/policy" },
             {"Organization", "https://biberk-apollo-qa2.azurewebsites.net/organization" },
+            {"Organization Insert", "https://biberk-apollo-qa2.azurewebsites.net/organization/insert" },
             {"Underwriting", "https://biberk-apollo-qa2.azurewebsites.net/underwriting" },
             {"Billing", "https://biberk-apollo-qa2.azurewebsites.net/billing" },
             {"Administration", "https://biberk-apollo-qa2.azurewebsites.net/administration" }
