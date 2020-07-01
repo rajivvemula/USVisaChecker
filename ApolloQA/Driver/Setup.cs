@@ -1,4 +1,5 @@
-﻿using BoDi;
+﻿using ApolloQA.DataFiles;
+using BoDi;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
@@ -13,6 +14,7 @@ namespace ApolloQA.Driver
     {
         private static IObjectContainer _objectContainer;
         public static IWebDriver driver;
+        public static State state;
 
         public Setup(IObjectContainer objectContainer)
         {
@@ -25,6 +27,7 @@ namespace ApolloQA.Driver
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+            state = new State();
 
         }
 
@@ -33,6 +36,7 @@ namespace ApolloQA.Driver
         public void BeforeScenario()
         {
             _objectContainer.RegisterInstanceAs(driver);
+            _objectContainer.RegisterInstanceAs(state);
         }
 
 

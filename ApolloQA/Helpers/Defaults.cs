@@ -32,5 +32,19 @@ namespace ApolloQA.Helpers
             "Apollo Underwriter",
             "Apollo Users"
         };
+
+        public static readonly string[] insertPolicyLabels =
+        {
+            "Insured organization",
+            "Agency",
+            "Line of Business",
+            "Effective date",
+            "Expiration date",
+            "Issue date",
+            "Business Type",
+            "Years in business",
+            "Tax ID Type",
+            "Tax ID"
+        };
     }
 }
