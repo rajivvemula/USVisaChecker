@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using ApolloQA.Helpers;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApolloQA.Pages.Policy
 {
     class PolicyMain
     {
         private IWebDriver policyDriver;
+        WebDriverWait wait;
         public PolicyMain(IWebDriver driver)
         {
             policyDriver = driver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
         }
 
 
@@ -76,6 +79,18 @@ namespace ApolloQA.Pages.Policy
         public void GotoHistory()
         {
             historyLink.Click();
+        }
+
+        public string GetLastBreadCrumb()
+        {
+            string lastCrumb = policyDriver.FindElement(By.ClassName("last-item")).Text;
+            return lastCrumb;
+        }
+        public string CheckLastBreadCrumb(string crumb)
+        {
+            IWebElement crumbCheck = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//span[@class='last-item' and normalize-space(text())='" + crumb + "']")));
+            string lastCrumb = crumbCheck.Text;
+            return lastCrumb;
         }
     }
 }
