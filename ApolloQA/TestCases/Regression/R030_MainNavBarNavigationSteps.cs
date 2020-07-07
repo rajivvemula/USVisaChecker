@@ -109,8 +109,26 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I am currently impersonating user (.*)")]
         public void ThenIAmCurrentlyImpersonatingUser(string userName)
         {
+            Thread.Sleep(5000);
             string currentImpersonation = mainNavBar.CurrentlyImpersonatedUser();
+            Console.WriteLine(currentImpersonation);
             Assert.IsTrue(currentImpersonation.Equals(userName));
+        }
+
+        [When(@"I click stop impersonation")]
+        public void WhenIClickStopImpersonation()
+        {
+            Thread.Sleep(5000);
+            mainNavBar.StopImpersonation();
+        }
+
+        [Then(@"I am not impersonating")]
+        public void ThenIAmNotImpersonating()
+        {
+            Thread.Sleep(5000);
+            string user = mainNavBar.CurrentlyImpersonatedUser();
+            Console.WriteLine(user);
+            Assert.IsTrue(user.Equals("NULL"));
         }
 
 

@@ -22,9 +22,15 @@ namespace ApolloQA.Driver
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
+            //ChromeOptions options = new ChromeOptions();
+            //options.AddArgument("no-sandbox");
+
+            //driver = new ChromeDriver(ChromeDriverService.CreateDefaultService(), options, TimeSpan.FromSeconds(20));
             driver = new ChromeDriver();
+
             driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
+            //driver.Manage().Timeouts().PageLoad.Add(System.TimeSpan.FromSeconds(30));
 
         }
 
@@ -39,7 +45,7 @@ namespace ApolloQA.Driver
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            driver.Quit();
+            //driver.Quit();
         }
     }
 }

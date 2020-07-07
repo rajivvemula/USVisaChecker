@@ -31,3 +31,7 @@ Scenario: 5 Can search by valid organization
 Scenario: 6 Can impersonate impersonateable user
 	When I impersonate impersonateable user Sonia.Amaravel@biberk.com
 	Then I am currently impersonating user Sonia.Amaravel@biberk.com
+
+Scenario: 7 Can stop impersonation
+	When I click stop impersonation
+	Then I am not impersonating

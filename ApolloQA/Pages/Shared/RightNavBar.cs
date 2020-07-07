@@ -21,7 +21,9 @@ namespace ApolloQA.Pages.Shared
 
         public IWebElement SearchField => driver.FindElement(By.XPath("//input[@placeholder='Search here']"));
 
-        public IWebElement ImpersonateIcon => driver.FindElement(By.XPath("//button[@title='Choose user to impersonate']"));
+        public IWebElement ImpersonateIcon => driver.FindElement(By.XPath("//button/span/mat-icon[text()='assignment_ind']/../.."));
+
+        public string GetImpersonateTitle => ImpersonateIcon.GetAttribute("title");
 
         public IWebElement HistoryIcon => driver.FindElement(By.XPath("//button/span/mat-icon[text()='history']/../.."));
 
@@ -36,8 +38,18 @@ namespace ApolloQA.Pages.Shared
 
         public string CurrentlyImpersonatedUser()
         {
-            IWebElement ImpersonatedUserIcon = driver.FindElement(By.XPath("//button[contains(@title, 'On Behalf Of')]"));
-            string currentImpText = ImpersonatedUserIcon.GetAttribute("title");
+            Console.WriteLine(GetImpersonateTitle);
+
+            //if impersonating, the impersonate icon will have title="On Behalf Of Sonia.Amaravel@biberk.com  Click to stop impersonation"
+            //if not impersonating, title="Choose user to impersonate"
+            string currentImpText = ImpersonateIcon.GetAttribute("title");
+
+            Console.WriteLine("current title is: " + currentImpText);
+
+            if (currentImpText.Contains("Choose"))
+                return "NULL";
+
+            //split the title based on white-space
             char[] delimiters = { ' ', '\n', '\r'};
             string[] words = currentImpText.Split(delimiters);
 
@@ -47,10 +59,21 @@ namespace ApolloQA.Pages.Shared
             //    Console.WriteLine(word);
             //}
 
+            //grab the email address and return it
             string currentImpUser = words[3];
             return currentImpUser;
         }
-        
+
+        public void StopImpersonation()
+        {
+            IWebElement impersonatedUserIcon = driver.FindElement(By.XPath("//button[contains(@title, 'On Behalf Of')]"));
+            impersonatedUserIcon.Click();
+
+            IWebElement yesButton = driver.FindElement(By.XPath("//button/span[text()='Yes']/.."));
+            yesButton.Click();
+              
+        }
+
 
 
         public void SearchQuery(string query)
