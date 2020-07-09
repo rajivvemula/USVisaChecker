@@ -24,9 +24,9 @@ Scenario: 4 Can search by valid policy number
 	Then I should be directed to policy 10013
 
 Scenario: 5 Can search by valid organization
-	When I enter organization name ACME in the search field
+	When I enter organization name Test in the search field
 	And I click the first search result
-	Then I should be directed to organization ACME
+	Then I should be directed to organization Test
 
 Scenario: 6 Can impersonate impersonateable user
 	When I impersonate impersonateable user Sonia.Amaravel@biberk.com
