@@ -23,33 +23,17 @@ namespace ApolloQA.Pages.Shared
 
         public IWebElement ImpersonateIcon => driver.FindElement(By.XPath("//button/span/mat-icon[text()='assignment_ind']/../.."));
 
-        public IWebElement RedImpersonateIcon => driver.FindElement(By.XPath("//button/span/mat-icon[contains(@class, 'is-impersonated')]/../.."));
-
         public string GetImpersonateTitle => ImpersonateIcon.GetAttribute("title");
 
         public IWebElement HistoryIcon => driver.FindElement(By.XPath("//button/span/mat-icon[text()='history']/../.."));
 
         public void ImpersonateValidUser(string userName)
         {
-            string currentImpersonatedUser = CurrentlyImpersonatedUser();
-
-            //if already impersonating this user
-            if (currentImpersonatedUser.Equals(userName))
-                return;
-
-            //if impersonating other user, need to stop impersonation
-            if (!currentImpersonatedUser.Equals("NULL"))
-                StopImpersonation();
-
-
             ImpersonateIcon.Click();
             IWebElement usernameField = driver.FindElement(By.XPath("//input[@formcontrolname='email']"));
             usernameField.SendKeys(userName);
             IWebElement submitButton = driver.FindElement(By.XPath("//button[@aria-label='Submit']"));
             submitButton.Click();
-
-            //wait for presence of RED impersonate icon
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(RedImpersonateIcon));
         }
 
         public string CurrentlyImpersonatedUser()

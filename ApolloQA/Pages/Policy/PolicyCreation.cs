@@ -11,17 +11,13 @@ namespace ApolloQA.Pages.Policy
     {
 
         private IWebDriver policyDriver;
-        private WebDriverWait wait;
-
         public PolicyCreation(IWebDriver driver)
         {
             policyDriver = driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
         public IWebElement inputInsured => policyDriver.FindElement(By.XPath("//bh-input-autocomplete[@formcontrolname ='insuredPartyId']/input"));
         public IWebElement inputAgency => policyDriver.FindElement(By.XPath("//bh-input-autocomplete[@formcontrolname ='agencyPartyId']/input"));
-        public IWebElement inputCarrier => policyDriver.FindElement(By.XPath("//bh-input-autocomplete[@formcontrolname ='carrierPartyId']/input"));
         public IWebElement inputEffective => policyDriver.FindElement(By.XPath("//input[@formcontrolname='timeFrom']"));
         public IWebElement inputExpiration => policyDriver.FindElement(By.XPath("//input[@formcontrolname='timeTo']"));
         public IWebElement inputIssue => policyDriver.FindElement(By.XPath("//input[@formcontrolname='issueDate']"));
@@ -36,28 +32,18 @@ namespace ApolloQA.Pages.Policy
         //For Dev Purposes
         public void EnterDefaultInputs()
         {
-            //inputInsured.SendKeys("A MASTER Organization");
-            //inputInsured.SendKeys(Keys.Enter);
-            //inputAgency.SendKeys("10003");
-            //inputAgency.SendKeys(Keys.Enter);
-            //selectLOB.Click();
-            //policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Business Owners']")).Click();
-            //selectBus.Click();
-            //policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Corporation']")).Click();
-            //selecID.Click();
-            //policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='FEIN']")).Click();
-            //inputYears.SendKeys("6");
-            //inputID.SendKeys("12-2222222");
-
-            EnterInsuredOrg("ACME");
-            EnterAgency("A Master Organization");
-            EnterCarrier("Berkshire Hathaway Direct Insurance Company");
-            EnterLOB("Commercial Auto");
-            EnterBusType("Corporation");
-            EnterYears("3");
-            EnterTaxIDType("FEIN");
-            EnterTaxID("12-2222222");
-            
+            inputInsured.SendKeys("A MASTER Organization");
+            inputInsured.SendKeys(Keys.Enter);
+            inputAgency.SendKeys("10003");
+            inputAgency.SendKeys(Keys.Enter);
+            selectLOB.Click();
+            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Business Owners']")).Click();
+            selectBus.Click();
+            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Corporation']")).Click();
+            selecID.Click();
+            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='FEIN']")).Click();
+            inputYears.SendKeys("6");
+            inputID.SendKeys("12-2222222");
 
         }
         public void EnterLOB(string lob)
@@ -70,32 +56,13 @@ namespace ApolloQA.Pages.Policy
         public void EnterInsuredOrg(string org)
         {
             inputInsured.SendKeys(org);
-
-            //have to wait for autocomplete dropdown to appear
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-option[contains(@class,'provided')]")));
-
             inputInsured.SendKeys(Keys.Enter);
         }
 
         public void EnterAgency(string agency)
         {
             inputAgency.SendKeys(agency);
-
-            //have to wait for autocomplete dropdown to appear
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-option[contains(@class,'provided')]")));
-
             inputAgency.SendKeys(Keys.Enter);
-
-        }
-
-        public void EnterCarrier(string carrier)
-        {
-            inputCarrier.SendKeys(carrier);
-
-            //have to wait for autocomplete dropdown to appear
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-option[contains(@class,'provided')]")));
-
-            inputCarrier.SendKeys(Keys.Enter);
 
         }
 
