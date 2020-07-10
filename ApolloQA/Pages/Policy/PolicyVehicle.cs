@@ -38,6 +38,11 @@ namespace ApolloQA.Pages.Policy
         {
             cancelButton.Click();
         }
+        public bool CheckModalTitle()
+        {
+            bool title = policyDriver.FindElement(By.XPath("//h1[contains(text(),'Add vehicle for')]")).Displayed;
+            return title;
+        }
 
         public void EnterVin(string vin)
         {

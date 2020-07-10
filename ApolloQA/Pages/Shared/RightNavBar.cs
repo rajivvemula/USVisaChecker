@@ -98,6 +98,7 @@ namespace ApolloQA.Pages.Shared
         {
             SearchField.Clear();
             SearchField.SendKeys(query);
+            SearchField.SendKeys(Keys.Enter);
 
         }
 
