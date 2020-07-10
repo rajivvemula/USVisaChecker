@@ -31,7 +31,7 @@ namespace ApolloQA.Pages.Policy
         
         public readonly string[] generalInformationLabels =
         {
-            "Policy Code",
+            "Policy Number",
             "Insured Party",
             "Agency",
             "Carrier",
