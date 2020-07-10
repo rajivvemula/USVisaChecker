@@ -35,7 +35,6 @@ namespace ApolloQA.TestCases.LoginTest
 
         public void WhenUserInputAUsername()
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
 
             LoginPage loginPage = new LoginPage(driver);
             bool verifyPage = loginPage.VerifyLoginScreen();
@@ -59,7 +58,6 @@ namespace ApolloQA.TestCases.LoginTest
         [Then(@"User is shown the Dashboard")]
         public void ThenPasswordscreenIsShown()
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             string pageTitle = driver.Title;
             Assert.AreEqual(pageTitle, "Home");
             
@@ -68,7 +66,6 @@ namespace ApolloQA.TestCases.LoginTest
         [Then(@"User navigates to policy")]
         public void ThenUserToPolicy()
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
             PolicyMain policyPage = new PolicyMain(driver);
 
             Thread.Sleep(5000);

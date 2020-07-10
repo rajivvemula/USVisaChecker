@@ -5,33 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\Nav\AdminNav\**" />
-    <Compile Remove="Pages\Nav\BillingNav\**" />
-    <Compile Remove="Pages\Nav\UWNav\**" />
     <Compile Remove="Pages\Organization\OrganizationGrid\**" />
     <Compile Remove="Pages\Organization\OrganizationInsert\**" />
     <Compile Remove="Pages\Organization\OrganizationView\**" />
-    <EmbeddedResource Remove="Pages\Nav\AdminNav\**" />
-    <EmbeddedResource Remove="Pages\Nav\BillingNav\**" />
-    <EmbeddedResource Remove="Pages\Nav\UWNav\**" />
     <EmbeddedResource Remove="Pages\Organization\OrganizationGrid\**" />
     <EmbeddedResource Remove="Pages\Organization\OrganizationInsert\**" />
     <EmbeddedResource Remove="Pages\Organization\OrganizationView\**" />
-    <None Remove="Pages\Nav\AdminNav\**" />
-    <None Remove="Pages\Nav\BillingNav\**" />
-    <None Remove="Pages\Nav\UWNav\**" />
     <None Remove="Pages\Organization\OrganizationGrid\**" />
     <None Remove="Pages\Organization\OrganizationInsert\**" />
     <None Remove="Pages\Organization\OrganizationView\**" />
-    <SpecFlowFeatureFiles Remove="Pages\Nav\AdminNav\**" />
-    <SpecFlowFeatureFiles Remove="Pages\Nav\BillingNav\**" />
-    <SpecFlowFeatureFiles Remove="Pages\Nav\UWNav\**" />
     <SpecFlowFeatureFiles Remove="Pages\Organization\OrganizationGrid\**" />
     <SpecFlowFeatureFiles Remove="Pages\Organization\OrganizationInsert\**" />
     <SpecFlowFeatureFiles Remove="Pages\Organization\OrganizationView\**" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Nav\AdminNav\**" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Nav\BillingNav\**" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Nav\UWNav\**" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Organization\OrganizationGrid\**" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Organization\OrganizationInsert\**" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Organization\OrganizationView\**" />

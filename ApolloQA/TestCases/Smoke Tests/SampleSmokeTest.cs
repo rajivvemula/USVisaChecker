@@ -3,6 +3,7 @@ using ApolloQA.Pages;
 using ApolloQA.Pages.Login;
 using ApolloQA.Pages.Organization;
 using ApolloQA.Pages.Shared;
+using ApolloQA.Workflows;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -52,13 +53,13 @@ namespace ApolloQA.TestCases.Smoke_Tests
             //rightNavBar.ImpersonateIcon.Click();
 
             MainNavBar mainNavBar = new MainNavBar(driver);
-            mainNavBar.OrganizationTab.Click();
+            mainNavBar.ImpersonateValidUser("ApolloTestUserG105@biberk.com");
 
-            OrganizationGrid orgGrid = new OrganizationGrid(driver);
-            orgGrid.ClickNewButton();
+            PolicyCRUD create = new PolicyCRUD(driver);
+            string result = create.CreateDefaultPolicy();
+            Console.WriteLine(result);
 
-            OrganizationInsert orgInsert = new OrganizationInsert(driver);
-            orgInsert.EnterAllValues();
+
 
 
 

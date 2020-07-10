@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -10,17 +11,18 @@ namespace ApolloQA.Pages.Shared
     {
 
         private IWebDriver driver;
+        private Functions functions;
 
 
         public MainNavBar(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
+            functions = new Functions(driver);
         }
 
-
-        public IWebElement HomeIcon => driver.FindElement(By.XPath("//fa-icon[contains(@class, 'apollo-icon')]"));
-        public IWebElement PolicyTab => driver.FindElement(By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Policy')]"));
-        public IWebElement OrganizationTab => driver.FindElement(By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Organization')]"));
+        public IWebElement HomeIcon => functions.FindElementWait(20, By.XPath("//fa-icon[contains(@class, 'apollo-icon')]"));
+        public IWebElement PolicyTab => functions.FindElementWait(20, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Policy')]"));
+        public IWebElement OrganizationTab => functions.FindElementWait(20, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Organization')]"));
 
         public void ClickHomeIcon()
         {

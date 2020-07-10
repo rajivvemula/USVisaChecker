@@ -10,23 +10,24 @@ namespace ApolloQA.Pages.Policy
     class PolicyMain
     {
         private IWebDriver policyDriver;
-        WebDriverWait wait;
+        private Functions functions;
+
         public PolicyMain(IWebDriver driver)
         {
             policyDriver = driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            functions = new Functions(driver);
         }
 
 
-        public IWebElement summaryLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='General Information']"));
-        public IWebElement locationLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Locations']"));
-        public IWebElement contactsLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Contacts']"));
-        public IWebElement vehicleLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Vehicles']"));
-        public IWebElement driverLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Drivers']"));
-        public IWebElement coverageLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Coverages']"));
-        public IWebElement rateLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Rate Calculation']"));
-        public IWebElement documentLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Documents']"));
-        public IWebElement historyLink => policyDriver.FindElement(By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Policy History']"));
+        public IWebElement summaryLink => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='General Information']"));
+        public IWebElement locationLink => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Locations']"));
+        public IWebElement contactsLink => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Contacts']"));
+        public IWebElement vehicleLink => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Vehicles']"));
+        public IWebElement driverLink => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Drivers']"));
+        public IWebElement coverageLink => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Coverages']"));
+        public IWebElement rateLink => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Rate Calculation']"));
+        public IWebElement documentLink => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Documents']"));
+        public IWebElement historyLink => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Policy History']"));
         public void NavigateToPolicy(int policyNumber)
         {
             policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"] + "/" + policyNumber);
@@ -83,12 +84,12 @@ namespace ApolloQA.Pages.Policy
 
         public string GetLastBreadCrumb()
         {
-            string lastCrumb = policyDriver.FindElement(By.ClassName("last-item")).Text;
+            string lastCrumb = functions.FindElementWait(10, By.ClassName("last-item")).Text;
             return lastCrumb;
         }
         public string CheckLastBreadCrumb(string crumb)
         {
-            IWebElement crumbCheck = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//span[@class='last-item' and normalize-space(text())='" + crumb + "']")));
+            IWebElement crumbCheck = functions.FindElementWait(10, By.XPath("//span[@class='last-item' and normalize-space(text())='" + crumb + "']"));
             string lastCrumb = crumbCheck.Text;
             return lastCrumb;
         }

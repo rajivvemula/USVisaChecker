@@ -1,5 +1,5 @@
 ﻿
-using ApolloQA.Pages.Nav;
+using ApolloQA.Pages.Shared;
 using ApolloQA.Pages.Policy;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -32,7 +32,7 @@ namespace ApolloQA.TestCases.Regression
         [Given(@"User clicks Policy Tab on navigation")]
         public void GivenUserClicksPolicyTabOnNavigation()
         {
-            mainNavBar.ClickOnTab("Policy");
+            mainNavBar.ClickHomeIcon();
         }
 
         [Given(@"User is on Insert Policy Page")]

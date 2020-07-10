@@ -2,6 +2,7 @@
 using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Threading;
 using TechTalk.SpecFlow;
@@ -13,11 +14,13 @@ namespace ApolloQA.TestCases.Regression
     {
         private IWebDriver driver;
         MainNavBar mainNavBar;
+        WebDriverWait wait;
 
         public R030_MainNavBarNavigationSteps(IWebDriver driver)
         {
             this.driver = driver;
             mainNavBar = new MainNavBar(driver);
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
         [Given(@"I am on a page containing the Main Navigation Bar")]

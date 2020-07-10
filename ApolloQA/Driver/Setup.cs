@@ -26,7 +26,7 @@ namespace ApolloQA.Driver
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
             state = new State();
 
         }
@@ -43,7 +43,7 @@ namespace ApolloQA.Driver
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            driver.Quit();
+            //driver.Quit();
         }
     }
 }

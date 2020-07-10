@@ -1,5 +1,5 @@
 ﻿using ApolloQA.Pages.Dashboard;
-using ApolloQA.Pages.Nav;
+using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
@@ -26,7 +26,7 @@ namespace ApolloQA.TestCases.Regression
         [When(@"User clicks on Policy Link in Navigation Bar")]
         public void WhenUserClicksOnPolicyLinkInNavigationBar()
         {
-            mainNavBar.ClickOnTab("Policy");
+            mainNavBar.ClickHomeIcon();
             //Thread.Sleep(5000);
         }
         

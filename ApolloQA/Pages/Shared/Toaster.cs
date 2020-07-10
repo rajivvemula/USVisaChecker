@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -10,17 +11,17 @@ namespace ApolloQA.Pages.Shared
     {
 
         private IWebDriver Driver;
-        private WebDriverWait wait;
+        private Functions functions;
 
         public Toaster(IWebDriver driver)
         {
             Driver = driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            functions = new Functions(driver);
         }
 
         public string GetToastTitle()
         {
-            IWebElement toast = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.ClassName("toast-title")));
+            IWebElement toast = functions.FindElementWait(10, By.ClassName("toast-title"));
             string toastTitle = toast.Text;
             return toastTitle;
         }

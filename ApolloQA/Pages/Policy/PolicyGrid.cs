@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,21 +10,34 @@ namespace ApolloQA.Pages.Policy
     {
 
         private IWebDriver policyDriver;
+        private Functions functions;
+
         public PolicyGrid(IWebDriver driver)
         {
             policyDriver = driver;
-
+            functions = new Functions(driver);
         }
 
-        public IWebElement newButton => policyDriver.FindElement(By.XPath("//button[@aria-label = 'Add Policy']"));
-        public IWebElement nextPage => policyDriver.FindElement(By.XPath("//a[@aria-label = 'go to next page']"));
-        public IWebElement firstPage => policyDriver.FindElement(By.XPath("//a[@aria-label = 'go to first page']"));
-        public IWebElement prevPage => policyDriver.FindElement(By.XPath("//a[@aria-label = 'go to previous page']"));
-        public IWebElement lastPage => policyDriver.FindElement(By.XPath("//a[@aria-label = 'go to last page']"));
-        public void ClickNew()
+        public IWebElement newButton => functions.FindElementWait(5, By.XPath("//button[@aria-label = 'Add Policy']"));
+        public IWebElement nextPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to next page']"));
+        public IWebElement firstPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to first page']"));
+        public IWebElement prevPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to previous page']"));
+        public IWebElement lastPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to last page']"));
+
+        //returns true if user is able to click New, returns false if user does not have New button
+        public bool ClickNew()
         {
-            newButton.Click();
+            try
+            {
+                newButton.Click();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
         }
+
 
         public string GetTitle()
         {

@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using ApolloQA.DataFiles;
+using ApolloQA.Helpers;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -11,27 +13,27 @@ namespace ApolloQA.Pages.Policy
     {
 
         private IWebDriver policyDriver;
-        private WebDriverWait wait;
+        private Functions functions;
 
         public PolicyCreation(IWebDriver driver)
         {
             policyDriver = driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            functions = new Functions(driver);
         }
 
-        public IWebElement inputInsured => policyDriver.FindElement(By.XPath("//bh-input-autocomplete[@formcontrolname ='insuredPartyId']/input"));
-        public IWebElement inputAgency => policyDriver.FindElement(By.XPath("//bh-input-autocomplete[@formcontrolname ='agencyPartyId']/input"));
-        public IWebElement inputCarrier => policyDriver.FindElement(By.XPath("//bh-input-autocomplete[@formcontrolname ='carrierPartyId']/input"));
-        public IWebElement inputEffective => policyDriver.FindElement(By.XPath("//input[@formcontrolname='timeFrom']"));
-        public IWebElement inputExpiration => policyDriver.FindElement(By.XPath("//input[@formcontrolname='timeTo']"));
-        public IWebElement inputIssue => policyDriver.FindElement(By.XPath("//input[@formcontrolname='issueDate']"));
-        public IWebElement inputYears => policyDriver.FindElement(By.XPath("//input[@formcontrolname='yearsInBusiness']"));
-        public IWebElement inputID => policyDriver.FindElement(By.XPath("//input[@formcontrolname='taxId']"));
-        public IWebElement selectLOB => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='lineId']"));
-        public IWebElement selectBus => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
-        public IWebElement selecID => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='taxIdType']"));
-        public IWebElement submitButton => policyDriver.FindElement(By.XPath("//button[@aria-label='Submit']"));
-        public IWebElement cancelButton => policyDriver.FindElement(By.XPath("//button[@aria-label='Cancel']"));
+        public IWebElement inputInsured => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname ='insuredPartyId']/input"));
+        public IWebElement inputAgency => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname ='agencyPartyId']/input"));
+        public IWebElement inputCarrier => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname ='carrierPartyId']/input"));
+        public IWebElement inputEffective => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='timeFrom']"));
+        public IWebElement inputExpiration => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='timeTo']"));
+        public IWebElement inputIssue => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='issueDate']"));
+        public IWebElement inputYears => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='yearsInBusiness']"));
+        public IWebElement inputID => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='taxId']"));
+        public IWebElement selectLOB => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='lineId']"));
+        public IWebElement selectBus => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
+        public IWebElement selecID => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='taxIdType']"));
+        public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//button[@aria-label='Submit']"));
+        public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//button[@aria-label='Cancel']"));
 
         //For Dev Purposes
         public void EnterDefaultInputs()
@@ -64,7 +66,7 @@ namespace ApolloQA.Pages.Policy
         {
 
             selectLOB.Click();
-            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + lob + "']")).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + lob + "']")).Click();
 
         }
         public void EnterInsuredOrg(string org)
@@ -72,7 +74,7 @@ namespace ApolloQA.Pages.Policy
             inputInsured.SendKeys(org);
 
             //have to wait for autocomplete dropdown to appear
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-option[contains(@class,'provided')]")));
+            functions.FindElementWait(10, By.XPath("//mat-option[contains(@class,'provided')]"));
 
             inputInsured.SendKeys(Keys.Enter);
         }
@@ -82,7 +84,7 @@ namespace ApolloQA.Pages.Policy
             inputAgency.SendKeys(agency);
 
             //have to wait for autocomplete dropdown to appear
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-option[contains(@class,'provided')]")));
+            functions.FindElementWait(10, By.XPath("//mat-option[contains(@class,'provided')]"));
 
             inputAgency.SendKeys(Keys.Enter);
 
@@ -93,7 +95,7 @@ namespace ApolloQA.Pages.Policy
             inputCarrier.SendKeys(carrier);
 
             //have to wait for autocomplete dropdown to appear
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-option[contains(@class,'provided')]")));
+            functions.FindElementWait(10, By.XPath("//mat-option[contains(@class,'provided')]"));
 
             inputCarrier.SendKeys(Keys.Enter);
 
@@ -102,7 +104,7 @@ namespace ApolloQA.Pages.Policy
         public void EnterBusType(string corp)
         {
             selectBus.Click();
-            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + corp + "']")).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + corp + "']")).Click();
         }
 
         public void EnterYears(string year)
@@ -113,7 +115,7 @@ namespace ApolloQA.Pages.Policy
         public void EnterTaxIDType(string idType)
         {
             selecID.Click();
-            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + idType + "']")).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + idType + "']")).Click();
         }
 
         public void EnterTaxID(string taxID)
@@ -133,9 +135,7 @@ namespace ApolloQA.Pages.Policy
 
         public bool CheckHeading()
         {
-
-            WebDriverWait wait = new WebDriverWait(policyDriver, TimeSpan.FromSeconds(10));
-            IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//h3[normalize-space(text())='Insert Policy']")));
+            IWebElement target = functions.FindElementWait(10, By.XPath("//h3[normalize-space(text())='Insert Policy']"));
             bool verifyHeading = target.Displayed;
             return verifyHeading;
         }

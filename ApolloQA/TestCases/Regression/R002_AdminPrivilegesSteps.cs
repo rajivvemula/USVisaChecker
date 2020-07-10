@@ -1,6 +1,6 @@
 ﻿using ApolloQA.Helpers;
 using ApolloQA.Pages.Dashboard;
-using ApolloQA.Pages.Nav;
+using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
@@ -26,7 +26,7 @@ namespace ApolloQA.TestCases.Regression
         [Given(@"User is on Dashboard")]
         public void GivenUserIsLoggedInAsAdmin()
         {
-            mainNavBar.ClickOnTab("Home");
+            mainNavBar.ClickHomeIcon();
             string title = driver.Title;
             Assert.AreEqual(title, "Home");
         }

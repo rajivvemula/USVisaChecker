@@ -1,8 +1,10 @@
 ﻿using ApolloQA.Pages.Policy;
 using ApolloQA.Pages.Shared;
+using ApolloQA.Workflows;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.TestCases.Regression
@@ -11,49 +13,28 @@ namespace ApolloQA.TestCases.Regression
     public class R051_PolicyPermissionsSteps
     {
         private IWebDriver driver;
-        MainNavBar mainNavBar;
-        PolicyGrid policyGrid;
-        PolicyCreation policyCreation;
-        PolicyMain policyMain;
-        Toaster toaster;
-
+        PolicyCRUD policyCrud;
 
         public R051_PolicyPermissionsSteps(IWebDriver driver)
         {
             this.driver = driver;
-            mainNavBar = new MainNavBar(driver);
-            policyGrid = new PolicyGrid(driver);
-            policyCreation = new PolicyCreation(driver);
-            policyMain = new PolicyMain(driver);
-            toaster = new Toaster(driver);
+            policyCrud = new PolicyCRUD(driver);
         }
 
-        [Then(@"I can create a policy")]
-        public void ThenICanCreateAPolicy()
+        [Then(@"I (.*) create a policy")]
+        public void ThenICanCreateAPolicy(string canCannot)
         {
-            mainNavBar.ClickPolicyTab();
-            policyGrid.ClickNew();
-            policyCreation.EnterDefaultInputs();
-            policyCreation.ClickSubmitButton();
-            //should now be on newly created policy
+            string resultText = policyCrud.CreateDefaultPolicy();
 
-            //verify toast pop-up saying new policy was created
-            string toastTitle = toaster.GetToastTitle();
-            Assert.IsTrue(toastTitle.Contains("was created"));
-
+            if(canCannot.Equals("can"))
+                Assert.IsTrue(resultText.Contains("was created"));
+            else
+                Assert.IsTrue(resultText.Equals("NULL"));
         }
         
         [Then(@"I can read a policy")]
         public void ThenICanReadAPolicy()
         {
-            //search existing policy
-            mainNavBar.SearchQuery("10020");
-            mainNavBar.ClickFirstSearchResult();
-            policyMain.GoToSummary();
-            //should be on policy general info page
-
-            //verify title of page
-            Assert.AreEqual("General Information", driver.Title);
 
         }
         
@@ -69,21 +50,11 @@ namespace ApolloQA.TestCases.Regression
             ScenarioContext.Current.Pending();
         }
         
-        [Then(@"I cannot create a policy")]
-        public void ThenICannotCreateAPolicy()
-        {
-            mainNavBar.ClickPolicyTab();
-            try 
-            {
-                policyGrid.ClickNew();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("tostring: " + e.ToString());
-                Console.WriteLine("message: " + e.Message);
-                Console.WriteLine("base exception: " + e.GetBaseException());
-            }
-        }
+        //[Then(@"I cannot create a policy")]
+        //public void ThenICannotCreateAPolicy()
+        //{
+
+        //}
         
         [Then(@"I cannot update a policy")]
         public void ThenICannotUpdateAPolicy()

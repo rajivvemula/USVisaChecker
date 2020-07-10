@@ -1,4 +1,4 @@
-﻿using ApolloQA.Pages.Nav;
+﻿using ApolloQA.Pages.Shared;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using System;
