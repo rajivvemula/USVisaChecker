@@ -27,12 +27,12 @@ namespace ApolloQA.TestCases.Regression
         public void WhenUserClicksOnPolicyLinkInNavigationBar()
         {
             mainNavBar.ClickHomeIcon();
-            //Thread.Sleep(5000);
         }
         
         [Then(@"User is shown the Policy List")]
         public void ThenUserIsShownThePolicyList()
         {
+            Thread.Sleep(2000);
             string verifyTitle = driver.Title;
             Assert.AreEqual(verifyTitle, "Policy List");
         }

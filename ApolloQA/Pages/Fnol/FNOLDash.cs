@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,12 +10,15 @@ namespace ApolloQA.Pages.Fnol
     {
 
         private IWebDriver fnolDriver;
+        private Functions functions;
+
         public FNOLDash(IWebDriver driver)
         {
             fnolDriver = driver;
+            functions = new Functions(driver);
         }
 
-        public IWebElement addFNOLButton => fnolDriver.FindElement(By.XPath("//button[@aria-label = 'Add FNOL']"));
+        public IWebElement addFNOLButton => functions.FindElementWait(10, By.XPath("//button[@aria-label = 'Add FNOL']"));
 
         public void GoToFNOL()
         {

@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,12 @@ namespace ApolloQA.Pages.Shared
     {
 
         private IWebDriver Driver;
+        private Functions functions;
+
         public AddVehicle(IWebDriver driver)
         {
             Driver = driver;
-
+            functions = new Functions(driver);
         }
 
         
@@ -159,43 +162,43 @@ namespace ApolloQA.Pages.Shared
         
         public void ClickSelect(string locator)
         {
-            Driver.FindElement(By.XPath("//mat-select[@formcontrolname='" + vehicleLoc[locator] + "']")).Click();
+            functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='" + vehicleLoc[locator] + "']")).Click();
 
         }
 
         public bool CheckDropDownValue(string value)
         {
-            bool verify = Driver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Displayed;
+            bool verify = functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Displayed;
 
             return verify;
         }
         public string GetSelectRequired(string locator)
         {
-            Driver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + dropValues[locator][1] + "']")).Click();
-            string aria = Driver.FindElement(By.XPath("//mat-select[@formcontrolname='" + vehicleLoc[locator] + "']")).GetAttribute("aria-required");
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + dropValues[locator][1] + "']")).Click();
+            string aria = functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='" + vehicleLoc[locator] + "']")).GetAttribute("aria-required");
             return aria;
         }
 
-        public IWebElement inputVin => Driver.FindElement(By.XPath("//input[@formcontrolname='vinNumber']"));
-        public IWebElement inputYearMan => Driver.FindElement(By.XPath("//input[@formcontrolname='yearOfManufacture']"));
-        public IWebElement inputMake => Driver.FindElement(By.XPath("//input[@formcontrolname='make']"));
-        public IWebElement inputModel => Driver.FindElement(By.XPath("//input[@formcontrolname='model']"));
-        public IWebElement inputTrim => Driver.FindElement(By.XPath("//input[@formcontrolname='trim']"));
-        public IWebElement inputPlatNum => Driver.FindElement(By.XPath("//input[@formcontrolname='plateNumber']"));
-        public IWebElement inputCost => Driver.FindElement(By.XPath("//input[@formcontrolname='costNew']"));
-        public IWebElement inputValue => Driver.FindElement(By.XPath("//input[@formcontrolname='estimatedCurrentValue']"));
-        public IWebElement inputRadius => Driver.FindElement(By.XPath("//input[@formcontrolname='radiusOfOperation']"));
-        public IWebElement inputNotes => Driver.FindElement(By.XPath("//textarea[@formcontrolname='notes']"));
-        public IWebElement inputCode => Driver.FindElement(By.XPath("//input[@formcontrolname='notes']"));
-        public IWebElement inputRatingGroup => Driver.FindElement(By.XPath("//input[@formcontrolname='ratingGroup']"));
-        public IWebElement inputRatingPlan => Driver.FindElement(By.XPath("//input[@formcontrolname='driverRatingPlan']"));
-        public IWebElement inputLimit => Driver.FindElement(By.XPath("//input[@formcontrolname='increasedLimitGroup']"));
-        public IWebElement selectState => Driver.FindElement(By.XPath("//mat-select[@formcontrolname='plateStateProvinceId']"));
-        public IWebElement selectType => Driver.FindElement(By.XPath("//mat-select[@formcontrolname='typeId']"));
-        public IWebElement selectBusUse => Driver.FindElement(By.XPath("//mat-select[@formcontrolname='businessUseId']"));
-        public IWebElement cancelButton => Driver.FindElement(By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
-        public IWebElement submitButton => Driver.FindElement(By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
-        public IWebElement searchButton => Driver.FindElement(By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Search Vin']"));
+        public IWebElement inputVin => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='vinNumber']"));
+        public IWebElement inputYearMan => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='yearOfManufacture']"));
+        public IWebElement inputMake => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='make']"));
+        public IWebElement inputModel => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='model']"));
+        public IWebElement inputTrim => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='trim']"));
+        public IWebElement inputPlatNum => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='plateNumber']"));
+        public IWebElement inputCost => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='costNew']"));
+        public IWebElement inputValue => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='estimatedCurrentValue']"));
+        public IWebElement inputRadius => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='radiusOfOperation']"));
+        public IWebElement inputNotes => functions.FindElementWait(10, By.XPath("//textarea[@formcontrolname='notes']"));
+        public IWebElement inputCode => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='notes']"));
+        public IWebElement inputRatingGroup => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='ratingGroup']"));
+        public IWebElement inputRatingPlan => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='driverRatingPlan']"));
+        public IWebElement inputLimit => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='increasedLimitGroup']"));
+        public IWebElement selectState => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='plateStateProvinceId']"));
+        public IWebElement selectType => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='typeId']"));
+        public IWebElement selectBusUse => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='businessUseId']"));
+        public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
+        public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
+        public IWebElement searchButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Search Vin']"));
 
         
 
@@ -242,19 +245,19 @@ namespace ApolloQA.Pages.Shared
         public void EnterState(string state)
         {
             selectState.Click();
-            Driver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + state + "']")).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + state + "']")).Click();
         }
 
         public void EnterType(string vehicleType )
         {
             selectType.Click();
-            Driver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + vehicleType + "']")).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + vehicleType + "']")).Click();
         }
 
         public void EnterBusiness(string bus)
         {
             selectBusUse.Click();
-            Driver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + bus + "']")).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + bus + "']")).Click();
         }
 
         public void EnterAllInputs()

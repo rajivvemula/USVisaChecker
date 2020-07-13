@@ -21,8 +21,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
         {
             IWebDriver driver = new ChromeDriver();
             driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
-            LoginPage loginPage = new LoginPage(driver);
-            HomePage homePage = loginPage.loginValidUser(Defaults.ADMIN_USERNAME, Defaults.DEFAULT_PASSWORD);
+            //LoginPage loginPage = new LoginPage(driver);
+            //HomePage homePage = loginPage.loginValidUser(Defaults.ADMIN_USERNAME, Defaults.DEFAULT_PASSWORD);
             ////Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Home"]));
             //homePage.MainNavBar.ClickOnTab("Policy");
             //homePage.MainNavBar.SearchQuery("10005");

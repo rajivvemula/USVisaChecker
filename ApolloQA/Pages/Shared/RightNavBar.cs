@@ -22,17 +22,9 @@ namespace ApolloQA.Pages.Shared
         }
 
 
-        //public IWebElement SearchField => driver.FindElement(By.XPath("//input[@placeholder='Search here']"));
         public IWebElement SearchField => functions.FindElementWait(10, By.XPath("//input[@placeholder='Search here']"));
-
-        //public IWebElement ImpersonateIcon => driver.FindElement(By.XPath("//button/span/mat-icon[text()='assignment_ind']/../.."));
         public IWebElement ImpersonateIcon => functions.FindElementWait(20, By.XPath("//button/span/mat-icon[text()='assignment_ind']/../.."));
-
-        //public IWebElement RedImpersonateIcon => driver.FindElement(By.XPath("//button/span/mat-icon[contains(@class, 'is-impersonated')]/../.."));
         public IWebElement RedImpersonateIcon => functions.FindElementWait(20, By.XPath("//button/span/mat-icon[contains(@class, 'is-impersonated')]/../.."));
-
-
-        //public IWebElement HistoryIcon => driver.FindElement(By.XPath("//button/span/mat-icon[text()='history']/../.."));
         public IWebElement HistoryIcon => functions.FindElementWait(10, By.XPath("//button/span/mat-icon[text()='history']/../.."));
 
         public void ImpersonateValidUser(string userName)

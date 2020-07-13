@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,18 +10,19 @@ namespace ApolloQA.Pages.Policy
     {
 
         private IWebDriver policyDriver;
+        private Functions functions;
         public PolicyLocation(IWebDriver driver)
         {
             policyDriver = driver;
-
+            functions = new Functions(driver);
         }
 
-        public IWebElement newButton => policyDriver.FindElement(By.XPath("//mat-icon[@aria-label='add']"));
-        public IWebElement locationInput => policyDriver.FindElement(By.Name("name"));
-        public IWebElement submitButton => policyDriver.FindElement(By.XPath("//span[contains(text(),'Submit')]"));
-        public IWebElement moreOptions => policyDriver.FindElement(By.XPath("//mat-icon[@aria-label='more']"));
-        public IWebElement removeButton => policyDriver.FindElement(By.XPath("//button[contains(text(),'Remove')]"));
-        public IWebElement deleteButton => policyDriver.FindElement(By.XPath("//button[@color='warn']"));
+        public IWebElement newButton => functions.FindElementWait(10, By.XPath("//mat-icon[@aria-label='add']"));
+        public IWebElement locationInput => functions.FindElementWait(10, By.Name("name"));
+        public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//span[contains(text(),'Submit')]"));
+        public IWebElement moreOptions => functions.FindElementWait(10, By.XPath("//mat-icon[@aria-label='more']"));
+        public IWebElement removeButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'Remove')]"));
+        public IWebElement deleteButton => functions.FindElementWait(10, By.XPath("//button[@color='warn']"));
 
 
         public void ClickAddNew()

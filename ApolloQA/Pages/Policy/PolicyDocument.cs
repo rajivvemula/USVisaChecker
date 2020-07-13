@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -11,17 +12,20 @@ namespace ApolloQA.Pages.Policy
     {
 
         private IWebDriver policyDriver;
+        private Functions functions;
+
         public PolicyDocument(IWebDriver driver)
         {
             policyDriver = driver;
-
+            functions = new Functions(driver);
         }
 
-        public IWebElement newFileButton => policyDriver.FindElement(By.XPath("//mat-icon[@aria-label = 'add']"));
-        public IWebElement uploadFileInput=> policyDriver.FindElement(By.Id("file"));
-        public IWebElement fileStatus => policyDriver.FindElement(By.XPath("//div[@class='uploadProgress' normalize-space(text())='Upload Complete']"));
-        public IWebElement moreOptionsButton => policyDriver.FindElement(By.XPath("//mat-icon[contains(text(),'more_vert')]"));
-        public IWebElement deleteFileButton => policyDriver.FindElement(By.XPath("//button[contains(text(),'Delete')]"));
+
+        public IWebElement newFileButton => functions.FindElementWait(10, By.XPath("//mat-icon[@aria-label = 'add']"));
+        public IWebElement uploadFileInput=> functions.FindElementWait(10, By.Id("file"));
+        public IWebElement fileStatus => functions.FindElementWait(10, By.XPath("//div[@class='uploadProgress' normalize-space(text())='Upload Complete']"));
+        public IWebElement moreOptionsButton => functions.FindElementWait(10, By.XPath("//mat-icon[contains(text(),'more_vert')]"));
+        public IWebElement deleteFileButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'Delete')]"));
         public void ClickAddNew()
         {
             newFileButton.Click();
@@ -34,17 +38,13 @@ namespace ApolloQA.Pages.Policy
 
         public void checkStatus()
         {
-            //wait for the button to be clickable
-            WebDriverWait wait = new WebDriverWait(policyDriver, TimeSpan.FromSeconds(20));
-            IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//div[@class='uploadProgress' normalize-space(text())='Upload Complete']")));
-
-            //click it
+            IWebElement target = functions.FindElementWait(10, By.XPath("//div[@class='uploadProgress' normalize-space(text())='Upload Complete']"));
             target.Click();
         }
 
         public void OpenFile(string fileName)
         {
-            policyDriver.FindElement(By.LinkText(fileName)).Click();
+            functions.FindElementWait(10, By.LinkText(fileName)).Click();
         }
 
         public void DeleteDocument()

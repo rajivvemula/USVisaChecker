@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -9,16 +10,18 @@ namespace ApolloQA.Pages.Policy
     class PolicyVehicle
     {
         private IWebDriver policyDriver;
+        private Functions functions;
+
         public PolicyVehicle(IWebDriver driver)
         {
             policyDriver = driver;
-
+            functions = new Functions(driver);
         }
-        public IWebElement newVehicleButton => policyDriver.FindElement(By.XPath("//span[@class = 'mat-button-wrapper' and normalize-space(text())='New Vehicle']"));
-        public IWebElement addExistingeButton => policyDriver.FindElement(By.XPath("//span[@class = 'mat-button-wrapper' and normalize-space(text())='Add Existing Vehicle']"));
-        public IWebElement inputVin => policyDriver.FindElement(By.XPath("//input[@aria-label='VinNumber']"));
-        public IWebElement cancelButton => policyDriver.FindElement(By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
-        public IWebElement submitButton => policyDriver.FindElement(By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
+        public IWebElement newVehicleButton => functions.FindElementWait(10, By.XPath("//span[@class = 'mat-button-wrapper' and normalize-space(text())='New Vehicle']"));
+        public IWebElement addExistingeButton => functions.FindElementWait(10, By.XPath("//span[@class = 'mat-button-wrapper' and normalize-space(text())='Add Existing Vehicle']"));
+        public IWebElement inputVin => functions.FindElementWait(10, By.XPath("//input[@aria-label='VinNumber']"));
+        public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
+        public IWebElement submitButton =>functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
 
         public void ClickNewVehicle()
         {
@@ -40,7 +43,7 @@ namespace ApolloQA.Pages.Policy
         }
         public bool CheckModalTitle()
         {
-            bool title = policyDriver.FindElement(By.XPath("//h1[contains(text(),'Add vehicle for')]")).Displayed;
+            bool title = functions.FindElementWait(10, By.XPath("//h1[contains(text(),'Add vehicle for')]")).Displayed;
             return title;
         }
 

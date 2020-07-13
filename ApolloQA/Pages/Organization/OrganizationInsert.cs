@@ -1,4 +1,5 @@
-﻿using ApolloQA.Pages.Shared;
+﻿using ApolloQA.Helpers;
+using ApolloQA.Pages.Shared;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -14,18 +15,12 @@ namespace ApolloQA.Pages.Organization
         public IList<IWebElement> fields;
 
         protected IWebDriver driver;
-        MainNavBar mainNavBar;
+        Functions functions;
 
-        string submitButtonXPath = "//button[contains(.//span, 'Submit')]";
 
         public OrganizationInsert(IWebDriver driver)
         {
             this.driver = driver;
-            mainNavBar = new MainNavBar(driver);
-
-            //wait for all 
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            fields = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.PresenceOfAllElementsLocatedBy(By.XPath("//input[contains(@id,'mat-input')]")));
 
             //for debugging
             //foreach(IWebElement item in fields)
@@ -34,12 +29,12 @@ namespace ApolloQA.Pages.Organization
             //}
         }
 
-        public MainNavBar MainNavBar { get => mainNavBar; }
-
-        public IWebElement NameField => driver.FindElement(By.XPath("(//*[contains(@id,'mat-input')])[2]"));
-        public IWebElement AlternateNameField => driver.FindElement(By.XPath("(//*[contains(@id,'mat-input')])[3]"));
-        public IWebElement LegalNameField => driver.FindElement(By.XPath("(//*[contains(@id,'mat-input')])[4]"));
-        public IWebElement CodeField => driver.FindElement(By.XPath("(//*[contains(@id,'mat-input')])[5]"));
+        public IWebElement NameField => functions.FindElementWait(10, By.XPath("(//*[contains(@id,'mat-input')])[2]"));
+        public IWebElement AlternateNameField => functions.FindElementWait(10, By.XPath("(//*[contains(@id,'mat-input')])[3]"));
+        public IWebElement LegalNameField => functions.FindElementWait(10, By.XPath("(//*[contains(@id,'mat-input')])[4]"));
+        public IWebElement CodeField => functions.FindElementWait(10, By.XPath("(//*[contains(@id,'mat-input')])[5]"));
+        public IWebElement SubmitButton => functions.FindElementWait(10, By.XPath("//button[contains(.//span, 'Submit')]"));
+        
 
 
         public void EnterAllValues()
@@ -83,15 +78,9 @@ namespace ApolloQA.Pages.Organization
             CodeField.SendKeys(code);
         }
 
-        public OrganizationDetails ClickSubmitButton()
+        public void ClickSubmitButton()
         {
-            //wait for new button to be clickable
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement submitButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(submitButtonXPath)));
-
-            submitButton.Click();
-
-            return new OrganizationDetails(driver);
+            SubmitButton.Click();
         }
     }
 }

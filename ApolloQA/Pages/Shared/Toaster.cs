@@ -21,7 +21,7 @@ namespace ApolloQA.Pages.Shared
 
         public string GetToastTitle()
         {
-            IWebElement toast = functions.FindElementWait(10, By.ClassName("toast-title"));
+            IWebElement toast = functions.FindElementWait(30, By.ClassName("toast-title"));
             string toastTitle = toast.Text;
             return toastTitle;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ApolloQA.Helpers;
 using ApolloQA.Pages.Dashboard;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -11,87 +12,75 @@ namespace ApolloQA.Pages.Login
     class LoginPage
     {
         protected IWebDriver driver;
+        protected Functions functions;
 
         public LoginPage(IWebDriver driver)
         {
             this.driver = driver;
+            functions = new Functions(driver);
         }
 
-        public HomePage loginValidUser(String username, String password)
+        public IWebElement usernameField => functions.FindElementWait(10, By.XPath("//input[@class='form-control ltr_override' and @name='loginfmt']"));
+        public IWebElement passwordField => functions.FindElementWait(10, By.XPath("//input[@class='form-control' and @name='passwd']"));
+        public IWebElement nextButton => functions.FindElementWait(10, By.Id("idSIButton9"));
+        public IWebElement noButton => functions.FindElementWait(10, By.Id("idBtn_Back"));
+        public IWebElement bottomText => functions.FindElementWait(10, By.XPath("idBoilerPlateText"));
+
+        public void loginValidUser(String username, String password)
         {
-            this.EnterUsername(username);
-            this.ClickNextButton();
-            this.EnterPassword(password);
-            this.ClickNextButton();
-            this.ClickNoButton();
-            return new HomePage(driver);
+            EnterUsername(username);
+            ClickNextButton();
+            EnterPassword(password);
+            ClickNextButton();
+            ClickNoButton();
         }
 
         public void EnterUsername(string username)
         {
-            //wait until field is ready
-            IWait<IWebDriver> wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-            IWebElement element = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(LoginLocs.locUsername)));
-            //enter username
-            element.SendKeys(username);
+            usernameField.SendKeys(username);
         }
 
         public void EnterPassword(string password)
         {
-            //wait until field is ready
-            IWait<IWebDriver> wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-            IWebElement element = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(LoginLocs.locPassword)));
-            //enter password
-            element.SendKeys(password);
+            passwordField.SendKeys(password);
         }
 
         public string GetUsername()
         {
-            string usernameText = driver.FindElement(By.XPath(LoginLocs.locUsername)).GetAttribute("value");
-            return usernameText;
+            return usernameField.GetAttribute("value");
+        }
 
-        }
-        //Verify in class is usefull sometimes but we want to stick with external asserts and use GetUsername
-        /*
-        public bool VerifyUsername(string userToVerify)
-        {
-            string usernameText = loginDriver.FindElement(By.XPath(LoginLocs.locUsername)).GetAttribute("value");
-            bool usernameBool = usernameText.Equals(userToVerify);
-            return usernameBool;
-        }
-        */
         public string GetPassword()
         {
-            string passwordText = driver.FindElement(By.XPath(LoginLocs.locPassword)).GetAttribute("value");
-            return passwordText;
+            return passwordField.GetAttribute("value");
 
         }
 
         public void ClickNextButton()
         {
-            driver.FindElement(By.Id(LoginLocs.locNextButton)).Click();
+            nextButton.Click();
         }
 
         public void ClickNoButton()
         {
-            driver.FindElement(By.Id(LoginLocs.locNoButton)).Click();
+            noButton.Click();
         }
 
         //avoid if conditions for scenarios(if username or password) such as below and use direct methods
         public void ClearUsername()
         {
-            driver.FindElement(By.XPath(LoginLocs.locUsername)).Clear();
+            usernameField.Clear();
         }
 
         public void ClearPassword()
         {
-            driver.FindElement(By.XPath(LoginLocs.locPassword)).Clear();
+            passwordField.Clear();
         }
 
         public bool VerifyLoginScreen()
         {
-            string bottomText = driver.FindElement(By.Id(LoginLocs.locBottomText)).Text;
-            bool verifyText = bottomText.Contains("biBERK");
+            string bottomTextString = bottomText.Text;
+            bool verifyText = bottomTextString.Contains("biBERK");
             return verifyText;
         }
     }

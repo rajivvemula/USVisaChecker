@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,16 +11,18 @@ namespace ApolloQA.Pages.Shared
     {
 
         private IWebDriver driver;
+        private Functions functions;
+
         public Impersonate(IWebDriver driver)
         {
             this.driver = driver;
-
+            functions = new Functions(driver);
         }
 
-        public IWebElement impButton => driver.FindElement(By.XPath("//mat-icon[contains(text(),'assignment_ind')]"));
+        public IWebElement impButton => functions.FindElementWait(10, By.XPath("//mat-icon[contains(text(),'assignment_ind')]"));
 
-        public IWebElement userEmail => driver.FindElement(By.XPath("//input[@formcontrolname='email']"));
-        public IWebElement submitButton => driver.FindElement(By.XPath("//button[@aria-label='Submit']"));
+        public IWebElement userEmail => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='email']"));
+        public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//button[@aria-label='Submit']"));
 
         public void OpenImpersonate()
         {

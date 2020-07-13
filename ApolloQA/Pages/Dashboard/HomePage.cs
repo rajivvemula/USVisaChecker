@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,12 @@ namespace ApolloQA.Pages.Dashboard
     class HomePage
     {
         private IWebDriver homeDriver;
+        private Functions functions;
+
         public HomePage(IWebDriver driver)
         {
             homeDriver = driver;
-
+            functions = new Functions(driver);
         }
 
         //public IWebElement firstName => homeDriver.FindElement(By.XPath("//p[contains(text(),'First Name:')]"));
@@ -25,8 +28,7 @@ namespace ApolloQA.Pages.Dashboard
             //bool verifyUser = homeDriver.FindElement(By.XPath("//p[contains(text(),'Email: " + user + "')]")).Text;
             //return verifyUser;
 
-            WebDriverWait wait = new WebDriverWait(homeDriver, TimeSpan.FromSeconds(30));
-            IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//p[contains(text(),'Email: " + user + "')]")));
+            IWebElement target = functions.FindElementWait(10, By.XPath("//p[contains(text(),'Email: " + user + "')]"));
             bool verifyUser = target.Displayed;
 
             return verifyUser;
@@ -34,8 +36,7 @@ namespace ApolloQA.Pages.Dashboard
 
         public bool CheckRole(string role)
         {
-            WebDriverWait wait = new WebDriverWait(homeDriver, TimeSpan.FromSeconds(30));
-            IWebElement target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//p[@class='ng-star-inserted' and normalize-space(text())='" + role +"']")));
+            IWebElement target = functions.FindElementWait(10, By.XPath("//p[@class='ng-star-inserted' and normalize-space(text())='" + role +"']"));
             bool verifyRole = target.Displayed;
             return verifyRole;
         }
