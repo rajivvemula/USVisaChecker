@@ -43,7 +43,7 @@ namespace ApolloQA.Driver
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            //driver.Quit();
+            driver.Quit();
         }
     }
 }

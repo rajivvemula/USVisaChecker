@@ -25,6 +25,7 @@ namespace ApolloQA.Pages.Policy
         public IWebElement lastPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to last page']"));
 
         //returns true if user is able to click New, returns false if user does not have New button
+        // this is not a good implementation
         public bool ClickNew()
         {
             try
@@ -37,6 +38,8 @@ namespace ApolloQA.Pages.Policy
                 return false;
             }
         }
+
+
 
 
         public string GetTitle()

@@ -110,6 +110,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 10
  testRunner.Then("I can create a policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+#line 12
+ testRunner.And("I can update a policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -146,6 +149,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 17
  testRunner.Then("I cannot create a policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 19
+ testRunner.And("I can update a policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

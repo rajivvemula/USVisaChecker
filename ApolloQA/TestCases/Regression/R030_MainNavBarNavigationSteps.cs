@@ -68,21 +68,18 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"The Home tab should load properly")]
         public void ThenTheHomeTabShouldLoadProperly()
         {
-            Thread.Sleep(5000);
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Home"]));
         }
         
         [Then(@"The Policy tab should load properly")]
         public void ThenThePolicyTabShouldLoadProperly()
         {
-            Thread.Sleep(5000);
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Policy"]));
         }
         
         [Then(@"The Organization tab should load properly")]
         public void ThenTheOrganizationTabShouldLoadProperly()
         {
-            Thread.Sleep(5000);
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization"]));
         }
 
@@ -90,7 +87,6 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I should be directed to policy (.*)")]
         public void ThenIShouldBeDirectedToPolicy(int policyNo)
         {
-            Thread.Sleep(5000);
             Assert.AreEqual(Defaults.QA_URLS["Policy"] + "/" + policyNo + "/summary", driver.Url);
         }
         
@@ -98,7 +94,6 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I should be directed to organization (.*)")]
         public void ThenIShouldBeDirectedToOrganization(string orgName)
         {
-            Thread.Sleep(5000);
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization"]));
         }
 
@@ -112,7 +107,6 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I am currently impersonating user (.*)")]
         public void ThenIAmCurrentlyImpersonatingUser(string userName)
         {
-            Thread.Sleep(5000);
             string currentImpersonation = mainNavBar.CurrentlyImpersonatedUser();
             Console.WriteLine(currentImpersonation);
             Assert.IsTrue(currentImpersonation.Equals(userName));
@@ -121,14 +115,12 @@ namespace ApolloQA.TestCases.Regression
         [When(@"I click stop impersonation")]
         public void WhenIClickStopImpersonation()
         {
-            Thread.Sleep(5000);
             mainNavBar.StopImpersonation();
         }
 
         [Then(@"I am not impersonating")]
         public void ThenIAmNotImpersonating()
         {
-            Thread.Sleep(5000);
             string user = mainNavBar.CurrentlyImpersonatedUser();
             Console.WriteLine(user);
             Assert.IsTrue(user.Equals("NULL"));
