@@ -189,7 +189,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement inputValue => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='estimatedCurrentValue']"));
         public IWebElement inputRadius => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='radiusOfOperation']"));
         public IWebElement inputNotes => functions.FindElementWait(10, By.XPath("//textarea[@formcontrolname='notes']"));
-        public IWebElement inputCode => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='notes']"));
+        public IWebElement inputCode => functions.FindElementWait(60, By.XPath("//bh-input-autocomplete[@formcontrolname='classCode']/input"));
         public IWebElement inputRatingGroup => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='ratingGroup']"));
         public IWebElement inputRatingPlan => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='driverRatingPlan']"));
         public IWebElement inputLimit => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='increasedLimitGroup']"));

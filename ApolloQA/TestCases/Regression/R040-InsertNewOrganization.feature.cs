@@ -147,20 +147,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
  testRunner.Given("I am on the OrganizationInsert page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "Alternate Name",
                             "Legal Name",
                             "Type",
                             "Code"});
-                table1.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Test Organization",
                             "Test Alt Name",
                             "Test Legal Name",
                             "Insured",
                             "12345"});
 #line 15
- testRunner.When("I enter organization information", ((string)(null)), table1, "When ");
+ testRunner.When("I enter organization information", ((string)(null)), table4, "When ");
 #line hidden
 #line 18
  testRunner.Then("A new organization is created with the appropriate values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

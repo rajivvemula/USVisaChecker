@@ -4,6 +4,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.TestCases.Regression
 {
@@ -41,7 +42,28 @@ namespace ApolloQA.TestCases.Regression
         {
             addVehicle.ClickSelect(select);
         }
-        
+
+        [When(@"User inputs a class, appropriate values are seen")]
+        public void WhenUserInputsAClassAppropriateValuesAreSeen(Table table)
+        {
+            var detail = table.CreateDynamicSet();
+            foreach (var details in detail)
+            {
+                addVehicle.EnterInput("Code", details.Code.ToString());
+                addVehicle.inputCode.SendKeys(Keys.Enter);
+                string valueCode = addVehicle.GetValue("Code");
+                Assert.AreEqual(valueCode, details.Value.ToString());
+                string valueGroup = addVehicle.GetValue("Rating Group");
+                Assert.AreEqual(valueGroup, details.Group);
+                string valuePlan = addVehicle.GetValue("Rating Plan");
+                Assert.AreEqual(valuePlan, details.Plan);
+                string valueLimit = addVehicle.GetValue("Limit");
+                Assert.AreEqual(valueLimit, details.Limit);
+
+            }
+        }
+
+
         [Then(@"User is shown the Add New Vehicle Modal")]
         public void ThenUserIsShownTheAddNewVehicleModal()
         {

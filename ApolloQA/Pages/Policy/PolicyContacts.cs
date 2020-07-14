@@ -64,11 +64,49 @@ namespace ApolloQA.Pages.Policy
         public IWebElement inputCompany => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='company']"));
         public IWebElement inputInternet => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='internetAddress']"));
         public IWebElement inputRemarks => functions.FindElementWait(10, By.Name("remarks"));
-        public IWebElement phoneType => functions.FindElementWait(10, By.XPath("//mat-select[@id='mat-select-1']"));
+        public IWebElement phoneType => functions.FindElementWait(10, By.XPath("//mat-select[@class= 'mat-select'][2]"));
         public IWebElement inputPhoneNumber=> functions.FindElementWait(10, By.Name("phone"));
         public IWebElement inputExtension => functions.FindElementWait(10, By.Name("extension"));
 
         public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//button[@aria-label='Submit']"));
+        public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
+
+
+        public IWebElement getElementFromFieldname(string fieldName)
+        {
+            switch (fieldName)
+            {
+                case "party": return partyRole;
+                case "first": return inputFirstName;
+                case "middle": return inputMiddleName;
+                case "last": return inputLastName;
+                case "suffix": return inputSuffixName;
+                case "email": return inputEmail;
+                case "job": return inputJobTitle;
+                case "company": return inputCompany;
+                case "internet": return inputInternet;
+                case "remarks": return inputRemarks;
+                case "phonetype": return phoneType;
+                case "phonenumber": return inputPhoneNumber;
+                default: return null;
+
+            }
+        }
+
+        public void EnterInput(string locator, string value)
+        {
+            getElementFromFieldname(locator).SendKeys(value);
+        }
+
+
+        public void EnterPhoneTypeWorkaround(string option)
+        {
+            IList<IWebElement> selects = policyDriver.FindElements(By.XPath("//mat-select"));
+            //Console.WriteLine(anchors);
+            selects[2].Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + option + "']")).Click();
+            
+        }
 
         public void ClickAddContact()
         {
@@ -78,7 +116,7 @@ namespace ApolloQA.Pages.Policy
         public void EnterPartyRole()
         {
             partyRole.Click();
-            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Underwriter']")).Click();
+            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Underwriter']")).Click();
         }
         public void EnterPhoneType()
         {

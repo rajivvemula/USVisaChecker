@@ -45,14 +45,29 @@ namespace ApolloQA.Pages.Policy
             "Underwriter Agency"
         };
 
-        public IWebElement businessTab => policyDriver.FindElement(By.Id("mat-tab-label-0-0"));
-        public IWebElement renewalTab => policyDriver.FindElement(By.Id("mat-tab-label-0-1"));
-        public IWebElement agencyTab => policyDriver.FindElement(By.Id("mat-tab-label-0-2"));
-        public IWebElement accountingTab => policyDriver.FindElement(By.Id("mat-tab-label-0-3"));
-        public IWebElement operationsTab => policyDriver.FindElement(By.Id("mat-tab-label-0-4"));
-        public IWebElement websiteTab => policyDriver.FindElement(By.Id("mat-tab-label-0-5"));
+        public IWebElement businessTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Business Profile']"));
+        public IWebElement renewalTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Renewal Information']"));
+        public IWebElement agencyTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Agency Information']"));
+        public IWebElement accountingTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Accounting Profile']"));
+        public IWebElement operationsTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Description of Operations']"));
+        public IWebElement websiteTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Web Site']"));
         public IWebElement selectBus => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
         public IWebElement saveButton => policyDriver.FindElement(By.ClassName("save-button"));
+
+        public IWebElement getElementFromFieldname(string fieldName)
+        {
+            switch (fieldName)
+            {
+                case "business": return businessTab;
+                case "renewal": return renewalTab;
+                case "agency": return agencyTab;
+                case "accounting": return accountingTab;
+                case "operations": return operationsTab;
+                case "website": return websiteTab;
+                default: return null;
+
+            }
+        }
 
         public string CheckPolicyStatus()
         {
@@ -62,7 +77,7 @@ namespace ApolloQA.Pages.Policy
 
         public void GoToTab(string id)
         {
-            policyDriver.FindElement(By.Id(tabId[id])).Click();
+            getElementFromFieldname(id).Click();
         }
 
         public string VerifyTab(string id)
