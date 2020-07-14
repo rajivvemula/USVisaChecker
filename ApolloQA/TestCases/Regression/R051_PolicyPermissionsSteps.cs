@@ -1,4 +1,5 @@
-﻿using ApolloQA.Pages.Policy;
+﻿using ApolloQA.Helpers;
+using ApolloQA.Pages.Policy;
 using ApolloQA.Pages.Shared;
 using ApolloQA.Workflows;
 using NUnit.Framework;
@@ -14,11 +15,19 @@ namespace ApolloQA.TestCases.Regression
     {
         private IWebDriver driver;
         PolicyCRUD policyCrud;
+        RightNavBar rightNavBar;
+        PolicyMain policyMain;
+        Components components;
+        PolicySummary policySummary;
 
         public R051_PolicyPermissionsSteps(IWebDriver driver)
         {
             this.driver = driver;
             policyCrud = new PolicyCRUD(driver);
+            rightNavBar = new RightNavBar(driver);
+            policyMain = new PolicyMain(driver);
+            components = new Components(driver);
+            policySummary = new PolicySummary(driver);
         }
 
         [Then(@"I (.*) create a policy")]
@@ -41,7 +50,15 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I can update a policy")]
         public void ThenICanUpdateAPolicy()
         {
-            ScenarioContext.Current.Pending();
+            rightNavBar.SearchQuery("10082");
+            rightNavBar.ClickFirstSearchResult();
+            policyMain.GoToSummary();
+            components.UpdateDropdown("businessTypeEntityId", "Non-Profit");
+            policySummary.ClickSaveButton();
+            components.UpdateDropdown("businessTypeEntityId", "Corporation");
+            policySummary.ClickSaveButton();
+            components.UpdateDropdown("businessTypeEntityId", "Non-Profit");
+            policySummary.ClickSaveButton();
         }
         
         [Then(@"I can delete a policy")]

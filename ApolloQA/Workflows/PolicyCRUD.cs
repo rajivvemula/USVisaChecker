@@ -30,12 +30,15 @@ namespace ApolloQA.Workflows
             toaster = new Toaster(driver);
         }
 
-        //returns NULL if user is not allowed to create a policy, returns Toast text if successful
+        /* CreateDefaultPolicy
+         * returns NULL if user is not allowed to create a policy, returns Toast text if successful
+         */
         public string CreateDefaultPolicy()
         {
-            mainNavBar.ClickPolicyTab();
-
             
+            mainNavBar.ClickPolicyTab();
+            
+            //if we don't have the new button, we can't create a policy
             if(!policyGrid.ClickNew())
                 return "NULL";
 
@@ -43,13 +46,14 @@ namespace ApolloQA.Workflows
             policyCreation.ClickSubmitButton();
             //should now be on newly created policy
 
-            //print policy number
+            //return toast
             toastTitle = toaster.GetToastTitle();
             Console.WriteLine(toastTitle);
 
             return toastTitle;
 
         }
+
 
         public string GetToastText()
         {
