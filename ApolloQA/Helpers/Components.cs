@@ -41,6 +41,18 @@ namespace ApolloQA.Helpers
             return rTitle;
 
         }
+        public void UpdateDropdown(string formcontrolname, string selection)
+        {
+            //click the dropdown
+            IWebElement dropdownField = functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='" + formcontrolname + "']"));
+            dropdownField.Click();
+
+            //click the selection
+            IWebElement theSelection = functions.FindElementWait(10, By.XPath("//mat-option/span[normalize-space(text())='" + selection + "']"));
+            theSelection.Click();
+
+        }
 
     }
 }
+
