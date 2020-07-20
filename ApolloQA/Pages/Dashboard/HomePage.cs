@@ -36,7 +36,7 @@ namespace ApolloQA.Pages.Dashboard
 
         public bool CheckRole(string role)
         {
-            IWebElement target = functions.FindElementWait(10, By.XPath("//p[@class='ng-star-inserted' and normalize-space(text())='" + role +"']"));
+            IWebElement target = functions.FindElementWait(30, By.XPath("//p[@class='ng-star-inserted' and normalize-space(text())='" + role +"']"));
             bool verifyRole = target.Displayed;
             return verifyRole;
         }

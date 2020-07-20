@@ -21,11 +21,30 @@ namespace ApolloQA.Pages.Shared
 
         }
 
-        public IWebElement AddressLine1 => functions.FindElementWait(10, By.XPath("//input[@name='line1']"));
-        public IWebElement AddressLine2 => functions.FindElementWait(10, By.XPath("//input[@name='line2']"));
-        public IWebElement AddressCity => functions.FindElementWait(10, By.XPath("//input[@name='city']"));
-        public IWebElement AddressZipCode => functions.FindElementWait(10, By.XPath("//input[@name='postalCode']"));
+        public IWebElement inputAddressLine1 => functions.FindElementWait(10, By.XPath("//input[@name='line1']"));
+        public IWebElement inputAddressLine2 => functions.FindElementWait(10, By.XPath("//input[@name='line2']"));
+        public IWebElement inputCity => functions.FindElementWait(10, By.XPath("//input[@name='city']"));
+        public IWebElement inputZipCode => functions.FindElementWait(10, By.XPath("//input[@name='postalCode']"));
         public IWebElement SubmitButton => functions.FindElementWait(10, By.XPath("//button//span[normalize-space(text())='Submit']"));
+        public IWebElement useSelectedButton => functions.FindElementWait(30, By.XPath("//span[contains(text(),'Use selected')]"));
+        public IWebElement defaultAddressInfo => functions.FindElementWait(30, By.XPath("//div[@class = 'address-info']"));
+        public IWebElement getElementFromFieldname(string fieldName)
+        {
+            switch (fieldName)
+            {
+                case "add1": return inputAddressLine1;
+                case "add2": return inputAddressLine2;
+                case "city": return inputCity;
+                case "zip": return inputZipCode;
+                default: return null;
+
+            }
+        }
+        public void EnterInput(string locator, string value)
+        {
+            getElementFromFieldname(locator).SendKeys(value);
+
+        }
 
         public void SelectAddressType(string type)
         {
