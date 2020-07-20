@@ -5,6 +5,10 @@ Feature: R016-PolicyVehicles
 	As a math idiot
 	I want to be told the sum of two numbers
 
+Scenario: 1 User Can Navigate To General Information
+	Given User navigates to Policy Page For Policy 10146
+	When User Click on General Information
+	Then User is shown the General Information screen for that policy
 
 Scenario: 2 User Can Navigate To Vehicles
 	When User Click on Vehicles

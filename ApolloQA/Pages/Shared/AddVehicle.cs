@@ -200,6 +200,11 @@ namespace ApolloQA.Pages.Shared
         public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
         public IWebElement searchButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Search Vin']"));
 
+        public void ClickClassCodeOption(string value)
+        {
+            IWebElement selectValue = functions.FindElementWait(20, By.XPath("//div[@class='line-label' and normalize-space(text())='" + value + "']"));
+            selectValue.Click();
+        }
         
 
         public void EnterVin(string vin)

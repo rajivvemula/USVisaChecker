@@ -50,17 +50,16 @@ namespace ApolloQA.TestCases.Regression
             foreach (var details in detail)
             {
                 addVehicle.EnterInput("Code", details.Code.ToString());
-                addVehicle.inputCode.SendKeys(Keys.Enter);
-                string valueCode = addVehicle.GetValue("Code");
-                Assert.AreEqual(valueCode, details.Value.ToString());
-                string valueGroup = addVehicle.GetValue("Rating Group");
-                Assert.AreEqual(valueGroup, details.Group);
-                string valuePlan = addVehicle.GetValue("Rating Plan");
-                Assert.AreEqual(valuePlan, details.Plan);
-                string valueLimit = addVehicle.GetValue("Limit");
-                Assert.AreEqual(valueLimit, details.Limit);
+                addVehicle.ClickClassCodeOption(details.Value.ToString());
+                
 
             }
+        }
+
+        [When(@"User clicks cancel to exit modal for add vehicle")]
+        public void WhenUserClicksCancelToExitModalForAddVehicle()
+        {
+            addVehicle.cancelButton.Click();
         }
 
 
@@ -70,7 +69,14 @@ namespace ApolloQA.TestCases.Regression
             bool title = policyVehicle.CheckModalTitle();
             Assert.IsTrue(title);
         }
-        
+        [Then(@"User is no longer able to see the modal for add vehicle")]
+        public void ThenUserIsNoLongerAbleToSeeTheModalForAddVehicle()
+        {
+            bool title = policyVehicle.CheckModalTitle();
+            Assert.IsFalse(title);
+        }
+
+
         [Then(@"User should see (.*) For that (.*)")]
         public void ThenUserShouldSeeForThatVIN(string value, string input)
         {

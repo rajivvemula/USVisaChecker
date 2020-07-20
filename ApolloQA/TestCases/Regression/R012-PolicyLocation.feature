@@ -3,11 +3,11 @@ Feature: R012-PolicyLocation
 	In order to Policy Locations is working as intended
 	As any User(defaults to admin)
 	I want to be able to add, delete locations
-
-Scenario: 1 User Can Navigate To General Information
-	Given User navigates to Policy Page For Policy 10146
-	When User Click on General Information
-	Then User is shown the General Information screen for that policy
+#
+#Scenario: 1 User Can Navigate To General Information
+#	Given User navigates to Policy Page For Policy 10146
+#	When User Click on General Information
+#	Then User is shown the General Information screen for that policy
 
 
 Scenario: 2 User Can Navigate To Locations
