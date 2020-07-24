@@ -2,6 +2,7 @@
 using ApolloQA.Pages;
 using ApolloQA.Pages.Login;
 using ApolloQA.Pages.Organization;
+using ApolloQA.Pages.Policy;
 using ApolloQA.Pages.Shared;
 using ApolloQA.Workflows;
 using NUnit.Framework;
@@ -21,8 +22,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
         {
             IWebDriver driver = new ChromeDriver();
             driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
-            //LoginPage loginPage = new LoginPage(driver);
-            //HomePage homePage = loginPage.loginValidUser(Defaults.ADMIN_USERNAME, Defaults.DEFAULT_PASSWORD);
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.loginValidUser(Defaults.ADMIN_USERNAME, Defaults.DEFAULT_PASSWORD);
             ////Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Home"]));
             //homePage.MainNavBar.ClickOnTab("Policy");
             //homePage.MainNavBar.SearchQuery("10005");
@@ -55,10 +56,19 @@ namespace ApolloQA.TestCases.Smoke_Tests
             MainNavBar mainNavBar = new MainNavBar(driver);
             mainNavBar.ImpersonateValidUser("ApolloTestUserG105@biberk.com");
 
-            PolicyCRUD create = new PolicyCRUD(driver);
-            string result = create.CreateDefaultPolicy();
-            Console.WriteLine(result);
+            //PolicyCRUD policyCrud = new PolicyCRUD(driver);
+            //string result = policyCrud.CreateDefaultPolicy();
+            //Console.WriteLine(result);
 
+            mainNavBar.SearchQuery("10170");
+            mainNavBar.ClickFirstSearchResult();
+
+            PolicyMain policyMain = new PolicyMain(driver);
+            policyMain.GoToSummary();
+
+            PolicySummary policySummary = new PolicySummary(driver);
+            string busType = policySummary.CheckBusinessType();
+            Console.WriteLine(busType);
 
 
 

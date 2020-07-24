@@ -41,7 +41,6 @@ namespace ApolloQA.Pages.Policy
 
 
 
-
         public string GetTitle()
         {
             string title = policyDriver.Title;

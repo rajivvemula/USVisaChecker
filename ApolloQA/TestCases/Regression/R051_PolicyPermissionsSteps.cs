@@ -5,6 +5,7 @@ using ApolloQA.Workflows;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using TechTalk.SpecFlow;
 
@@ -14,15 +15,15 @@ namespace ApolloQA.TestCases.Regression
     public class R051_PolicyPermissionsSteps
     {
         private IWebDriver driver;
-        PolicyCRUD policyCrud;
-        RightNavBar rightNavBar;
-        PolicyMain policyMain;
-        Components components;
-        PolicySummary policySummary;
+        private PolicyCRUD policyCrud;
+        private RightNavBar rightNavBar;
+        private PolicyMain policyMain;
+        private Components components;
+        private PolicySummary policySummary;
 
-        public R051_PolicyPermissionsSteps(IWebDriver driver)
+        public R051_PolicyPermissionsSteps(IWebDriver Driver)
         {
-            this.driver = driver;
+            this.driver = Driver;
             policyCrud = new PolicyCRUD(driver);
             rightNavBar = new RightNavBar(driver);
             policyMain = new PolicyMain(driver);
@@ -35,30 +36,24 @@ namespace ApolloQA.TestCases.Regression
         {
             string resultText = policyCrud.CreateDefaultPolicy();
 
-            if(canCannot.Equals("can"))
+            if (canCannot.Equals("can"))
                 Assert.IsTrue(resultText.Contains("was created"));
             else
                 Assert.IsTrue(resultText.Equals("NULL"));
         }
-        
+
         [Then(@"I can read a policy")]
         public void ThenICanReadAPolicy()
         {
 
         }
-        
+
         [Then(@"I can update a policy")]
         public void ThenICanUpdateAPolicy()
         {
-            rightNavBar.SearchQuery("10082");
-            rightNavBar.ClickFirstSearchResult();
-            policyMain.GoToSummary();
-            components.UpdateDropdown("businessTypeEntityId", "Non-Profit");
-            policySummary.ClickSaveButton();
-            components.UpdateDropdown("businessTypeEntityId", "Corporation");
-            policySummary.ClickSaveButton();
-            components.UpdateDropdown("businessTypeEntityId", "Non-Profit");
-            policySummary.ClickSaveButton();
+            string resultText = policyCrud.TestUpdatingAPolicy("10170");
+
+            Assert.IsTrue(resultText.Contains("was saved"));
         }
         
         [Then(@"I can delete a policy")]

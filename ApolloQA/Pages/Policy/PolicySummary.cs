@@ -2,6 +2,7 @@
 using ApolloQA.Pages.Shared;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,19 +15,11 @@ namespace ApolloQA.Pages.Policy
 
         private IWebDriver policyDriver;
         private Functions functions;
-        private RightNavBar rightNavBar;
-        private PolicyMain policyMain;
-        private PolicySummary policySummary;
-        private Components components;
 
         public PolicySummary(IWebDriver driver)
         {
             policyDriver = driver;
             functions = new Functions(driver);
-            rightNavBar = new RightNavBar(driver);
-            policyMain = new PolicyMain(driver);
-            policySummary = new PolicySummary(driver);
-            components = new Components(driver);
         }
 
         public IList<IWebElement> status => policyDriver.FindElements(By.XPath("//input[contains(@id,'mat-input')]"));
@@ -67,25 +60,19 @@ namespace ApolloQA.Pages.Policy
         public IWebElement operationsTab => functions.FindElementWait(10, By.Id("mat-tab-label-0-4"));
         public IWebElement websiteTab => functions.FindElementWait(10, By.Id("mat-tab-label-0-5"));
         public IWebElement selectBus => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
-        public IWebElement saveButton => functions.FindElementWait(10, By.ClassName("save-button"));
+        public IWebElement saveButton => functions.FindElementWait(10, By.XPath("//button[contains(@class, 'save-button') and not (@disabled ='true')]"));
 
-        /* PERMISSIONS */
-        //public bool CanUpdateGeneralInformationTab(string policyNo)
-        //{
-        //    //search a policy and go to it's general information tab
-        //    rightNavBar.SearchQuery(policyNo);
-        //    rightNavBar.ClickFirstSearchResult();
-        //    policyMain.GoToSummary();
-        //    components.UpdateDropdown("businessTypeEntityId", "Non-Profit");
-        //    components.UpdateDropdown("businessTypeEntityId", "Corporation");
-        //    components.UpdateDropdown("businessTypeEntityId", "Non-Profit");
-        //}
 
         /* COMPONENTS */
         public string CheckPolicyStatus()
         {
             string policyStatus = status[4].GetAttribute("value");
             return policyStatus;
+        }
+
+        public string CheckBusinessType()
+        {
+            return selectBus.Text;
         }
 
         public void GoToTab(string id)
