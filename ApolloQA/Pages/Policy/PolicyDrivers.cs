@@ -18,12 +18,12 @@ namespace ApolloQA.Pages.Policy
         }
 
 
-        public IWebElement inputFirstName => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='firstName']"));
-        public IWebElement inputMiddleName => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='lastName']"));
-        public IWebElement inputLastName => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='middleName']"));
-        public IWebElement inputSuffixName => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='nameSuffix']"));
-        public IWebElement inputDOB => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='dateOfBirth']"));
-        public IWebElement inputLicenseNum => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='licenseNo']"));
-        public IWebElement inputLicenseExp => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='licenseExpirationDate']"));
+        public IWebElement newDriverButton => functions.FindElementWait(10, By.XPath("//span[@class = 'mat-button-wrapper' and normalize-space(text())='Add Driver']"));
+
+        public bool CheckModalTitle()
+        {
+            bool title = functions.FindElementWait(10, By.XPath("//h1[contains(text(),'Add Driver')]")).Displayed;
+            return title;
+        }
     }
 }

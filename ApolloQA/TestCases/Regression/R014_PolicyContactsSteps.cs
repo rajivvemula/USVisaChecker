@@ -1,4 +1,5 @@
-﻿using ApolloQA.Pages.Policy;
+﻿using ApolloQA.Helpers;
+using ApolloQA.Pages.Policy;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
@@ -13,12 +14,14 @@ namespace ApolloQA.TestCases.Regression
         public IWebDriver driver;
         PolicyContacts policyContacts;
         PolicyMain policyMain;
+        Components components;
 
         public R014_PolicyContactsSteps(IWebDriver Driver)
         {
             driver = Driver;
             policyContacts = new PolicyContacts(Driver);
             policyMain = new PolicyMain(Driver);
+            components = new Components(Driver);
         }
 
         [Given(@"User is shown the Contact Insert screen")]
@@ -120,7 +123,20 @@ namespace ApolloQA.TestCases.Regression
             policyContacts.inputPhoneNumber.Clear();
             policyContacts.EnterPhoneNumber("ABC");
         }
-        
+
+        [When(@"User clicks on cancel Button in Insert Contact")]
+        public void WhenUserClicksOnCancelButtonInInsertContact()
+        {
+            policyContacts.cancelButton.Click();
+        }
+
+        [When(@"User clicks continue anyway")]
+        public void WhenUserClicksContinueAnyway()
+        {
+            components.continueAnywayButton.Click();
+        }
+
+
         [Then(@"User is shown the Contact Insert Screen")]
         public void ThenUserIsShownTheContactInsertScreen()
         {
@@ -146,6 +162,7 @@ namespace ApolloQA.TestCases.Regression
                 bool verifyRole = policyContacts.CheckDropDownValue(i);
                 Assert.AreEqual(verifyRole, true);
             }
+            policyContacts.partyRole.SendKeys(Keys.Enter);
         }
         
         [Then(@"Contact party role select is a required value")]
@@ -208,7 +225,7 @@ namespace ApolloQA.TestCases.Regression
         public void ThenEmailNameInputIsARequiredValue()
         {
             string aria = policyContacts.inputEmail.GetAttribute("aria-required");
-            Assert.AreEqual(aria, "true");
+            Assert.AreEqual(aria, "false");
         }
         
         [Then(@"Email is invalid error is shown")]
@@ -271,5 +288,13 @@ namespace ApolloQA.TestCases.Regression
             string value = policyContacts.GetPhoneNumber();
             Assert.AreEqual(value, "(___) ___-____");
         }
+
+        [Then(@"User is shown the Navigating Away Alert")]
+        public void ThenUserIsShownTheNavigatingAwayAlert()
+        {
+            string verifyHeading = components.GetDialogTitle();
+            Assert.That(verifyHeading, Does.Contain("Navigating away"));
+        }
+
     }
 }

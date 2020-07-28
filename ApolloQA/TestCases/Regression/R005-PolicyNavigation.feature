@@ -5,7 +5,7 @@
 
 @reg
 Scenario: 1 User Can Navigate To General Information
-	Given User navigates to Policy Page For Policy 10005
+	#Given User navigates to Policy Page For Policy 10005
 	When User Click on General Information
 	Then User is shown the General Information screen for that policy
 

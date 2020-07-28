@@ -32,7 +32,7 @@ namespace ApolloQA.TestCases.Regression
         [Given(@"User clicks Policy Tab on navigation")]
         public void GivenUserClicksPolicyTabOnNavigation()
         {
-            mainNavBar.ClickHomeIcon();
+            mainNavBar.ClickPolicyTab();
         }
 
         [Given(@"User is on Insert Policy Page")]

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.TestCases.Regression
 {
@@ -41,14 +42,41 @@ namespace ApolloQA.TestCases.Regression
         {
             addVehicle.ClickSelect(select);
         }
-        
+
+        [When(@"User inputs a class, appropriate values are seen")]
+        public void WhenUserInputsAClassAppropriateValuesAreSeen(Table table)
+        {
+            var detail = table.CreateDynamicSet();
+            foreach (var details in detail)
+            {
+                addVehicle.EnterInput("Code", details.Code.ToString());
+                addVehicle.ClickClassCodeOption(details.Value.ToString());
+                
+
+            }
+        }
+
+        [When(@"User clicks cancel to exit modal for add vehicle")]
+        public void WhenUserClicksCancelToExitModalForAddVehicle()
+        {
+            addVehicle.cancelButton.Click();
+        }
+
+
         [Then(@"User is shown the Add New Vehicle Modal")]
         public void ThenUserIsShownTheAddNewVehicleModal()
         {
             bool title = policyVehicle.CheckModalTitle();
             Assert.IsTrue(title);
         }
-        
+        [Then(@"User is no longer able to see the modal for add vehicle")]
+        public void ThenUserIsNoLongerAbleToSeeTheModalForAddVehicle()
+        {
+            bool title = policyVehicle.CheckModalTitle();
+            Assert.IsFalse(title);
+        }
+
+
         [Then(@"User should see (.*) For that (.*)")]
         public void ThenUserShouldSeeForThatVIN(string value, string input)
         {

@@ -79,3 +79,9 @@ Scenario:1P Verify Phone Number Input
 Scenario:1Q Phone Number Input Requires Numbers only
 	When User inputs value in a letter in Phone Number Input
 	Then Phone Number Input is blank
+
+Scenario:1R User is able to cancel inserting a contact
+	When User clicks on cancel Button in Insert Contact
+	Then User is shown the Navigating Away Alert
+	When User clicks continue anyway
+	Then User is shown the Contacts screen for that policy

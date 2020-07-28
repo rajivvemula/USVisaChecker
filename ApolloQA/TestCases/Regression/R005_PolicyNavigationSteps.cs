@@ -1,4 +1,5 @@
-﻿using ApolloQA.Pages.Policy;
+﻿using ApolloQA.Helpers;
+using ApolloQA.Pages.Policy;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
@@ -13,12 +14,14 @@ namespace ApolloQA.TestCases.Regression
 
         public IWebDriver driver;
         PolicyMain policyMain;
+        Components components;
 
 
         public R005_PolicyNavigationSteps(IWebDriver Driver)
         {
             driver = Driver;
             policyMain = new PolicyMain(Driver);
+            components = new Components(Driver);
 
         }
 
@@ -108,8 +111,10 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"User is shown the Vehicles screen for that policy")]
         public void ThenUserIsShownTheVehiclesScreenForThatPolicy()
         {
-            string verifyTitle = driver.Title;
-            Assert.AreEqual(verifyTitle, "Vehicles");
+            //string verifyTitle = driver.Title;
+            //Assert.AreEqual(verifyTitle, "Vehicles");
+            bool verifyTitle = components.GetTitle("Vehicles");
+            Assert.IsTrue(verifyTitle);
         }
         
         [Then(@"User is shown the Drivers screen for that policy")]
