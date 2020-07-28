@@ -41,9 +41,9 @@ namespace ApolloQA.Pages.Shared
 
 
             ImpersonateIcon.Click();
-            IWebElement usernameField = driver.FindElement(By.XPath("//input[@formcontrolname='email']"));
+            IWebElement usernameField = functions.FindElementWait(10, By.XPath("//input[@formcontrolname='email']"));
             usernameField.SendKeys(userName);
-            IWebElement submitButton = driver.FindElement(By.XPath("//button[@aria-label='Submit']"));
+            IWebElement submitButton = functions.FindElementWait(10, By.XPath("//button[@aria-label='Submit']"));
             submitButton.Click();
 
             //wait for presence of RED impersonate icon
@@ -90,13 +90,13 @@ namespace ApolloQA.Pages.Shared
         {
             SearchField.Clear();
             SearchField.SendKeys(query);
-            SearchField.SendKeys(Keys.Enter);
 
         }
 
         public void ClickFirstSearchResult()
         {
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//mat-option[contains(@class,'provided')]")));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.XPath("//mat-option[contains(@class,'provided')]")));
+            Thread.Sleep(1000);
             IList<IWebElement> SearchResults = driver.FindElements(By.XPath("//mat-option[contains(@class,'provided')]"));
             
             

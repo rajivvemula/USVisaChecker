@@ -1,9 +1,11 @@
-﻿using ApolloQA.Pages.Policy;
+﻿using ApolloQA.Helpers;
+using ApolloQA.Pages.Policy;
 using ApolloQA.Pages.Shared;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace ApolloQA.Workflows
 {
@@ -14,24 +16,28 @@ namespace ApolloQA.Workflows
         MainNavBar mainNavBar;
         PolicyGrid policyGrid;
         PolicyCreation policyCreation;
-        PolicyMain policyMain;
         Toaster toaster;
+        PolicyMain policyMain;
+        Components components;
+        PolicySummary policySummary;
 
         string toastTitle;
 
 
-        public PolicyCRUD(IWebDriver driver)
+        public PolicyCRUD(IWebDriver Driver)
         {
-            this.driver = driver;
+            this.driver = Driver;
             mainNavBar = new MainNavBar(driver);
             policyGrid = new PolicyGrid(driver);
             policyCreation = new PolicyCreation(driver);
-            policyMain = new PolicyMain(driver);
             toaster = new Toaster(driver);
+            policyMain = new PolicyMain(driver);
+            components = new Components(driver);
+            policySummary = new PolicySummary(driver);
         }
 
         /* CreateDefaultPolicy
-         * returns NULL if user is not allowed to create a policy, returns Toast text if successful
+         * returns "NULL" if user is not allowed to create a policy, returns Toast text if successful
          */
         public string CreateDefaultPolicy()
         {
@@ -55,19 +61,33 @@ namespace ApolloQA.Workflows
         }
 
 
+        public string TestUpdatingAPolicy(string policyNumber)
+        {
+            driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + policyNumber);
+            policyMain.GoToSummary();
+
+            if (!policySummary.CheckBusinessType().Equals("Non-Profit"))
+            {
+                components.UpdateDropdown("businessTypeEntityId", "Non-Profit");
+                policySummary.ClickSaveButton();
+                toastTitle = toaster.GetToastTitle();
+            }    
+
+            components.UpdateDropdown("businessTypeEntityId", "Individual");
+            policySummary.ClickSaveButton();
+
+            toastTitle = toaster.GetToastTitle();
+            Console.WriteLine(toastTitle);
+
+            return toastTitle;
+        }
+
+
         public string GetToastText()
         {
             return toastTitle;
         }
 
-        ////search existing policy
-        //mainNavBar.SearchQuery("10020");
-        //mainNavBar.ClickFirstSearchResult();
-        //policyMain.GoToSummary();
-        ////should be on policy general info page
-
-        ////verify title of page
-        //Assert.AreEqual("General Information", driver.Title);
         
     }
 }
