@@ -1,4 +1,4 @@
-﻿@reg
+﻿@reg @pol
 Feature: R008-PolicyGeneralInformationTabs
 	
 	As Any User

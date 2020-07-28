@@ -1,14 +1,14 @@
 ﻿
-@reg
+@reg @pol
 Feature: R016-PolicyVehicles
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
 
-Scenario: 1 User Can Navigate To General Information
-	Given User navigates to Policy Page For Policy 10146
-	When User Click on General Information
-	Then User is shown the General Information screen for that policy
+ #Scenario: 1 User Can Navigate To General Information
+	#Given User navigates to Policy Page For Policy 10272
+	#When User Click on General Information
+	#Then User is shown the General Information screen for that policy
 
 Scenario: 2 User Can Navigate To Vehicles
 	When User Click on Vehicles
@@ -50,15 +50,14 @@ Scenario Outline:5 Verify All Selects on Add New Vehicle Modal
 	| Type     | true           |
 	| Business | true           |
 
-
-Scenario:6 User is able to input all class codes
-	When User inputs a class, appropriate values are seen
-	| Code | Value                                        | Group    | Plan    | Limit               |
-	| 401  | 401: Truckers - Long Haul                    | Truckers | Trucker | Truckers - Standard |
-	| 410  | 410: Truckers - Intermodal Container Haulers | Truckers | Trucker | Truckers - Standard |
-	| 412  | 412: Truckers - Frac Sand Haulers            | Truckers | Trucker | Truckers - Standard |
-
+	
+#Scenario:6 User is able to input all class codes
+#	When User inputs a class, appropriate values are seen
+#	| Code | Value                                        | Group    | Plan    | Limit               |
+#	| 401  | 401: Truckers - Long Haul                    | Truckers | Trucker | Truckers - Standard |
+#	| 410  | 410: Truckers - Intermodal Container Haulers | Truckers | Trucker | Truckers - Standard |
+#	| 412  | 412: Truckers - Frac Sand Haulers            | Truckers | Trucker | Truckers - Standard |
+	
 Scenario:7 User is able to click cancel and exit the modal
 	When User clicks cancel to exit modal for add vehicle
-	Then User is no longer able to see the modal for add vehicle
 

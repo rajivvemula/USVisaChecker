@@ -22,13 +22,15 @@ namespace ApolloQA.TestCases.Regression
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("R015-PolicyContactsCreateContact")]
     [NUnit.Framework.CategoryAttribute("reg")]
+    [NUnit.Framework.CategoryAttribute("pol")]
     public partial class R015_PolicyContactsCreateContactFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "reg"};
+                "reg",
+                "pol"};
         
 #line 1 "R015-PolicyContactsCreateContact.feature"
 #line hidden
@@ -39,7 +41,8 @@ namespace ApolloQA.TestCases.Regression
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "R015-PolicyContactsCreateContact", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
                     "f two numbers", ProgrammingLanguage.CSharp, new string[] {
-                        "reg"});
+                        "reg",
+                        "pol"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

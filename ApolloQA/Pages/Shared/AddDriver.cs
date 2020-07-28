@@ -35,7 +35,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement selectViolation => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='lastThreeYearsViolations']"));
         public IWebElement selectConviction => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='lastThreeYearsConvictions']"));
         public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
-
+        public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
 
         public IWebElement getElementFromFieldname(string fieldName)
         {
@@ -112,6 +112,11 @@ namespace ApolloQA.Pages.Shared
             functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + dropValues[locator][1] + "']")).Click();
             string aria = getElementFromFieldname(locator).GetAttribute("aria-required");
             return aria;
+        }
+        public void EnterSelect(string locator, string value)
+        {
+            getElementFromFieldname(locator).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
         }
 
 

@@ -76,10 +76,12 @@ namespace ApolloQA.TestCases.Regression
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Create a policy with basic attributes")]
         [NUnit.Framework.CategoryAttribute("reg")]
+        [NUnit.Framework.CategoryAttribute("pol")]
         public virtual void CreateAPolicyWithBasicAttributes()
         {
             string[] tagsOfScenario = new string[] {
-                    "reg"};
+                    "reg",
+                    "pol"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a policy with basic attributes", null, tagsOfScenario, argumentsOfScenario);
 #line 5

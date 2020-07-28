@@ -3,6 +3,7 @@ using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.TestCases.Regression
@@ -29,6 +30,7 @@ namespace ApolloQA.TestCases.Regression
         public void WhenUserClicksNewInCoverages()
         {
             policyCoverage.newButton.Click();
+            Thread.Sleep(4000);
         }
         
         [When(@"User inputs default values for Premium and Coverage")]
@@ -45,6 +47,7 @@ namespace ApolloQA.TestCases.Regression
         {
             string currentToast = toaster.GetToastTitle();
             Assert.AreEqual(currentToast, "Coverage output created successfully.");
+            driver.Navigate().Refresh();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿Feature: R004A-CreateAPolicy
 	This is a temporary file to create a policy(feature to be deprecated)
 
-@reg
+@reg @pol
 Scenario: Create a policy with basic attributes
 	Given User is on Policy List Page
 	When User clicks New Policy Button

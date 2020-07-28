@@ -76,10 +76,14 @@ namespace ApolloQA.TestCases.Regression
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("User is able to login as Admin")]
         [NUnit.Framework.CategoryAttribute("reg")]
+        [NUnit.Framework.CategoryAttribute("org")]
+        [NUnit.Framework.CategoryAttribute("pol")]
         public virtual void UserIsAbleToLoginAsAdmin()
         {
             string[] tagsOfScenario = new string[] {
-                    "reg"};
+                    "reg",
+                    "org",
+                    "pol"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User is able to login as Admin", null, tagsOfScenario, argumentsOfScenario);
 #line 7

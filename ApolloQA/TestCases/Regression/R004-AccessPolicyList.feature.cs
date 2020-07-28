@@ -76,10 +76,12 @@ namespace ApolloQA.TestCases.Regression
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Acess PolicyPage From Dashboard")]
         [NUnit.Framework.CategoryAttribute("reg")]
+        [NUnit.Framework.CategoryAttribute("pol")]
         public virtual void AcessPolicyPageFromDashboard()
         {
             string[] tagsOfScenario = new string[] {
-                    "reg"};
+                    "reg",
+                    "pol"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Acess PolicyPage From Dashboard", null, tagsOfScenario, argumentsOfScenario);
 #line 7

@@ -37,7 +37,7 @@ namespace ApolloQA.Pages.Policy
         public void ClickCoverage()
         {
             getElementFromFieldname("coverage").Click();
-            IWebElement selectValue = functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Additional Insured - Blanket (VA00034)']"));
+            IWebElement selectValue = functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Additional Insured - Blanket (OR00008)']"));
             selectValue.Click();
         }
         public void EnterInput(string locator, string value)

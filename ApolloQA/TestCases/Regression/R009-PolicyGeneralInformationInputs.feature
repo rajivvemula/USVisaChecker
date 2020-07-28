@@ -1,4 +1,4 @@
-﻿@reg
+﻿@reg @pol
 Feature: R009-PolicyGeneralInformationInputs
 	
 	As any User(defaults to admin)

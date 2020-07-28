@@ -1,4 +1,4 @@
-﻿@reg
+﻿@reg @pol
 Feature: R012-PolicyLocation
 	In order to Policy Locations is working as intended
 	As any User(defaults to admin)

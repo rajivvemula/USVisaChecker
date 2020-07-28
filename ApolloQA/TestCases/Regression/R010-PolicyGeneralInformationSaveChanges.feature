@@ -1,4 +1,4 @@
-﻿@reg
+﻿@reg @pol
 Feature: R009-GeneralInformationSaveChanges
 	In order to Policy General Information is working as intended
 	As any User(defaults to admin)

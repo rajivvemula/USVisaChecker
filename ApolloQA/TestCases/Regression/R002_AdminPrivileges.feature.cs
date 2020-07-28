@@ -77,10 +77,14 @@ namespace ApolloQA.TestCases.Regression
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Admin Privileges")]
         [NUnit.Framework.CategoryAttribute("reg")]
+        [NUnit.Framework.CategoryAttribute("org")]
+        [NUnit.Framework.CategoryAttribute("pol")]
         public virtual void VerifyAdminPrivileges()
         {
             string[] tagsOfScenario = new string[] {
-                    "reg"};
+                    "reg",
+                    "org",
+                    "pol"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Admin Privileges", null, tagsOfScenario, argumentsOfScenario);
 #line 7

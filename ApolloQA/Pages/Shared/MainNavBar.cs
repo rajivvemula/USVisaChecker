@@ -20,9 +20,9 @@ namespace ApolloQA.Pages.Shared
             functions = new Functions(driver);
         }
 
-        public IWebElement HomeIcon => functions.FindElementWait(20, By.XPath("//fa-icon[contains(@class, 'apollo-icon')]"));
-        public IWebElement PolicyTab => functions.FindElementWait(20, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Policy')]"));
-        public IWebElement OrganizationTab => functions.FindElementWait(20, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Organization')]"));
+        public IWebElement HomeIcon => functions.FindElementWait(60, By.XPath("//fa-icon[contains(@class, 'apollo-icon')]"));
+        public IWebElement PolicyTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Policy')]"));
+        public IWebElement OrganizationTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Organization')]"));
 
         public void ClickHomeIcon()
         {

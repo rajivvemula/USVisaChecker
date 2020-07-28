@@ -22,13 +22,15 @@ namespace ApolloQA.TestCases.Regression
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("R009-GeneralInformationSaveChanges")]
     [NUnit.Framework.CategoryAttribute("reg")]
+    [NUnit.Framework.CategoryAttribute("pol")]
     public partial class R009_GeneralInformationSaveChangesFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "reg"};
+                "reg",
+                "pol"};
         
 #line 1 "R010-PolicyGeneralInformationSaveChanges.feature"
 #line hidden
@@ -40,7 +42,8 @@ namespace ApolloQA.TestCases.Regression
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "R009-GeneralInformationSaveChanges", "\tIn order to Policy General Information is working as intended\r\n\tAs any User(defa" +
                     "ults to admin)\r\n\tI want to confirm that changes made in General Information are " +
                     "saved", ProgrammingLanguage.CSharp, new string[] {
-                        "reg"});
+                        "reg",
+                        "pol"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

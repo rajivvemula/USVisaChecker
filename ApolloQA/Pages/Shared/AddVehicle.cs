@@ -44,7 +44,7 @@ namespace ApolloQA.Pages.Shared
         
         public readonly IDictionary<string, string[]> dropValues = new Dictionary<string, string[]>()
         {
-            {"State", new []{"Arizona", "California", "Illinois", "Nevada", "New Jersey", "New York", "Ontario", "Pennsylvania", "Quebec City", "South Carolina" } },
+            {"State", new []{"AZ", "CA", "IL", "NV", "NJ", "NY", "ON", "PA", "QC", "SC" } },
             {"Type", new []{"Car", "Van", "Work Truck" }},
             {"Business", new []{"Commercial Use", "Retail Vehicle", "Service Vehicle" }},
         };
@@ -124,6 +124,15 @@ namespace ApolloQA.Pages.Shared
         {
             getElementFromFieldname(locator).SendKeys(value);
         }
+
+        public void EnterSelect(string locator, string value)
+        {
+            getElementFromFieldname(locator).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
+        }
+
+
+
         public string GetRequired(string locator)
         {
             return getElementFromFieldname(locator).GetAttribute("aria-required");
@@ -202,8 +211,8 @@ namespace ApolloQA.Pages.Shared
 
         public void ClickClassCodeOption(string value)
         {
-            IWebElement selectValue = functions.FindElementWait(20, By.XPath("//div[@class='line-label' and normalize-space(text())='" + value + "']"));
-            selectValue.Click();
+            //IWebElement selectValue = functions.FindElementWait(20, By.XPath("//div[@class='mat-option-text']/div/div/div/div[normalize-space(text())='" + value + "']"));
+            functions.FindElementWait(20, By.XPath("//span[@class='mat-option-text']/div/div/div/div[contains(text(),'401: Truckers - Long Haul')]")).Click();
         }
         
 
@@ -277,6 +286,11 @@ namespace ApolloQA.Pages.Shared
             checkBoxes[checkboxNum].Click();
         }
 
+        public void CheckBox()
+        {
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-checkbox-label']")).Click();
+        }
 
+         
     }
 }

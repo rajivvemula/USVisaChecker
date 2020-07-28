@@ -98,7 +98,11 @@ namespace ApolloQA.Pages.Policy
             getElementFromFieldname(locator).SendKeys(value);
         }
 
-
+        public void EnterSelect(string locator, string value)
+        {
+            getElementFromFieldname(locator).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
+        }
         public void EnterPhoneTypeWorkaround(string option)
         {
             IList<IWebElement> selects = policyDriver.FindElements(By.XPath("//mat-select"));
