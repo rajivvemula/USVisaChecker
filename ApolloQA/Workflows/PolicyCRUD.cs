@@ -40,8 +40,7 @@ namespace ApolloQA.Workflows
          * returns "NULL" if user is not allowed to create a policy, returns Toast text if successful
          */
         public string CreateDefaultPolicy()
-        {
-            
+        {       
             mainNavBar.ClickPolicyTab();
             
             //if we don't have the new button, we can't create a policy
@@ -55,31 +54,32 @@ namespace ApolloQA.Workflows
             //return toast
             toastTitle = toaster.GetToastTitle();
             Console.WriteLine(toastTitle);
-
             return toastTitle;
-
         }
 
 
-        public string TestUpdatingAPolicy(string policyNumber)
+        public bool CanUpdatePolicyGeneralInformation(string policyNumber)
         {
             driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + policyNumber);
             policyMain.GoToSummary();
+            string toastTitle;
 
-            if (!policySummary.CheckBusinessType().Equals("Non-Profit"))
-            {
-                components.UpdateDropdown("businessTypeEntityId", "Non-Profit");
+            //if we can successfully update to Non-Profit, then save
+            if (components.UpdateDropdown("businessTypeEntityId", "Non-Profit"))
                 policySummary.ClickSaveButton();
-                toastTitle = toaster.GetToastTitle();
-            }    
+            //otherwise, update to individual, then save
+            else if (components.UpdateDropdown("businessTypeEntityId", "Individual"))
+                policySummary.ClickSaveButton();
+            else 
+                return false;
 
-            components.UpdateDropdown("businessTypeEntityId", "Individual");
-            policySummary.ClickSaveButton();
-
+            //if we get here, we successfully updated to Non-Profit or Individual and saved
             toastTitle = toaster.GetToastTitle();
             Console.WriteLine(toastTitle);
+            if (toastTitle.Contains("was saved"))
+                return true;
+            else return false;
 
-            return toastTitle;
         }
 
 

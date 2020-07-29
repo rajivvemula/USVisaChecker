@@ -28,9 +28,7 @@ namespace ApolloQA.Driver
             driver.Manage().Window.Maximize();
             //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
             state = new State();
-
         }
-
 
         [BeforeScenario]
         public void BeforeScenario()
@@ -38,7 +36,6 @@ namespace ApolloQA.Driver
             _objectContainer.RegisterInstanceAs(driver);
             _objectContainer.RegisterInstanceAs(state);
         }
-
 
         [AfterTestRun]
         public static void AfterTestRun()

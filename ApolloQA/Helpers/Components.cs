@@ -41,16 +41,19 @@ namespace ApolloQA.Helpers
             return rTitle;
 
         }
-        public void UpdateDropdown(string formcontrolname, string selection)
-        {
-            //click the dropdown
-            IWebElement dropdownField = functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='" + formcontrolname + "']"));
-            dropdownField.Click();
 
-            //click the selection
+        public bool UpdateDropdown(string formcontrolname, string selection)
+        {
+            //locate the dropdown
+            IWebElement dropdownField = functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='" + formcontrolname + "']"));
+            //if dropdown is disabled OR if the selection is already selected, return false
+            if (dropdownField.GetAttribute("aria-disabled").Equals("true") || dropdownField.Text.Equals(selection))
+                return false;
+            //otherwise, click the dropdown and make the selection
+            dropdownField.Click();
             IWebElement theSelection = functions.FindElementWait(10, By.XPath("//mat-option/span[normalize-space(text())='" + selection + "']"));
             theSelection.Click();
-
+            return true;
         }
 
     }
