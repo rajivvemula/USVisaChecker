@@ -1,4 +1,4 @@
-﻿@reg
+﻿@reg @pol
 Feature: R011-PolicyCoverage
 	Temporary Select Coverage
 

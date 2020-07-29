@@ -22,13 +22,15 @@ namespace ApolloQA.TestCases.Regression
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("R009-PolicyGeneralInformationInputs")]
     [NUnit.Framework.CategoryAttribute("reg")]
+    [NUnit.Framework.CategoryAttribute("pol")]
     public partial class R009_PolicyGeneralInformationInputsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "reg"};
+                "reg",
+                "pol"};
         
 #line 1 "R009-PolicyGeneralInformationInputs.feature"
 #line hidden
@@ -39,7 +41,8 @@ namespace ApolloQA.TestCases.Regression
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "R009-PolicyGeneralInformationInputs", "\tAs any User(defaults to admin)\r\n\tI want to confirm all inputs and their function" +
                     "ality is present", ProgrammingLanguage.CSharp, new string[] {
-                        "reg"});
+                        "reg",
+                        "pol"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

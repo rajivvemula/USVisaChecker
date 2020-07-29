@@ -62,6 +62,13 @@ namespace ApolloQA.TestCases.Regression
             addVehicle.cancelButton.Click();
         }
 
+        [When(@"User select coverage")]
+        public void WhenUserSelectCoverage()
+        {
+            addVehicle.CheckBox();
+        }
+
+
 
         [Then(@"User is shown the Add New Vehicle Modal")]
         public void ThenUserIsShownTheAddNewVehicleModal()

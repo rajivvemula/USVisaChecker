@@ -22,13 +22,15 @@ namespace ApolloQA.TestCases.Regression
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("R011-PolicyCoverage")]
     [NUnit.Framework.CategoryAttribute("reg")]
+    [NUnit.Framework.CategoryAttribute("pol")]
     public partial class R011_PolicyCoverageFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "reg"};
+                "reg",
+                "pol"};
         
 #line 1 "R011-PolicyCoverage.feature"
 #line hidden
@@ -38,7 +40,8 @@ namespace ApolloQA.TestCases.Regression
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "R011-PolicyCoverage", "\tTemporary Select Coverage", ProgrammingLanguage.CSharp, new string[] {
-                        "reg"});
+                        "reg",
+                        "pol"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

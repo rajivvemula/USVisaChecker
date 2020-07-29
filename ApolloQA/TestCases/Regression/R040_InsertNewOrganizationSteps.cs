@@ -45,18 +45,15 @@ namespace ApolloQA.TestCases.Regression
         {
             organizationGrid.ClickNewButton();
         }
-        
-        [When(@"I enter organization information")]
-        public void WhenIEnterOrganizationInformation(Table table)
+
+
+        [When(@"User clicks on cancel Button in IOrganization Insert")]
+        public void WhenUserClicksOnCancelButtonInIOrganizationInsert()
         {
-            organizationInsert.EnterName(table.Rows[0]["Name"]);
-            organizationInsert.EnterAlternateName(table.Rows[0]["Alternate Name"]);
-            organizationInsert.EnterLegalName(table.Rows[0]["Legal Name"]);
-            organizationInsert.SelectType(table.Rows[0]["Type"]);
-            organizationInsert.EnterCode(table.Rows[0]["Code"]);
-            organizationInsert.ClickSubmitButton();
+            organizationInsert.cancelButton.Click();
         }
-        
+
+
         [Then(@"I am taken to the OrganizationInsert page")]
         public void ThenIAmTakenToTheOrganizationInsertPage()
         {
@@ -65,21 +62,47 @@ namespace ApolloQA.TestCases.Regression
 
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization Insert"]));
         }
-        
-        [Then(@"A new organization is created with the appropriate values")]
-        public void ThenANewOrganizationIsCreatedWithTheAppropriateValues()
+
+        [When(@"Organization Insert User enter (.*) for (.*)")]
+        public void WhenAddDriverModalUserEnterJohnForFirst(string value, string input)
         {
-            Thread.Sleep(5000);
+            organizationInsert.EnterInput(input, value);
+        }
 
-            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization"]));
+        [When(@"Organization Insert User clicks on (.*)")]
+        public void WhenAddDriverModalUserClicksOnLicensestate(string select)
+        {
+            organizationInsert.ClickSelect(select);
+        }
+        [Then(@"Organization Insert User should see (.*) For that (.*)")]
+        public void ThenAddDriverModalUserShouldSeeJohnForThatFirst(string value, string input)
+        {
+            string verifyValue = organizationInsert.GetValue(input);
+            Assert.AreEqual(verifyValue, value);
+        }
 
-            //write organization number to file
-            string orgNo = driver.Url.Substring(Defaults.QA_URLS["Organization"].Length + 1);
-            Console.WriteLine(orgNo);
-            using (StreamWriter writer = File.AppendText("C:\\Users\\casey.klaips\\source\\repos\\ApolloQA\\ApolloQA\\DataFiles\\Org_Numbers.txt"))
+        [Then(@"Organization Insert User is required to have values for the (.*) as (.*)")]
+        public void ThenAddDriverModalUserIsRequiredToHaveValuesForTheFirstAsTrue(string input, string required)
+        {
+            string verifyReq = organizationInsert.GetRequired(input);
+            Assert.AreEqual(verifyReq, required);
+        }
+
+        [Then(@"Organization Insert User should see all values to be present in (.*)")]
+        public void ThenAddDriverModalUserShouldSeeAllValuesToBePresentInLicensestate(string select)
+        {
+            foreach (string i in organizationInsert.dropValues[select])
             {
-                writer.WriteLine(orgNo);
+                bool verifyRole = organizationInsert.CheckDropDownValue(i);
+                Assert.AreEqual(verifyRole, true);
             }
+        }
+
+        [Then(@"Organization Insert User is required to have Select values for the (.*) as (.*)")]
+        public void ThenAddDriverModalUserIsRequiredToHaveSelectValuesForTheLicensestateAsTrue(string select, string required)
+        {
+            string verifyReq = organizationInsert.GetSelectRequired(select);
+            Assert.AreEqual(verifyReq, required);
         }
 
 

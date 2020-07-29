@@ -1,4 +1,4 @@
-﻿@reg
+﻿@reg @pol
 Feature: R014-PolicyContacts
 	In order to Policy Contacts is working as intended
 	As any User(defaults to admin)

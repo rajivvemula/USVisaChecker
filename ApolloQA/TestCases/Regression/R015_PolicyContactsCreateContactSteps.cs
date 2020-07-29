@@ -4,6 +4,7 @@ using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.Threading;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 
@@ -29,13 +30,16 @@ namespace ApolloQA.TestCases.Regression
         [When(@"User enters all inputs in insert contact screen")]
         public void WhenUserEntersAllInputsInInsertContactScreen(Table table)
         {
-            policyContacts.partyRole.Click();
-            policyContacts.partyRole.SendKeys(Keys.Enter);
+            //policyContacts.partyRole.Click();
+            //policyContacts.partyRole.SendKeys(Keys.Enter);
+            Thread.Sleep(5000);
             var detail = table.CreateDynamicSet();
             foreach (var details in detail)
             {
                 
+                
                 policyContacts.EnterInput("first", details.First);
+                policyContacts.EnterSelect("party", details.Role);
                 policyContacts.EnterInput("middle", details.Middle);
                 policyContacts.EnterInput("last", details.Last);
                 policyContacts.EnterInput("suffix", details.Suffix);

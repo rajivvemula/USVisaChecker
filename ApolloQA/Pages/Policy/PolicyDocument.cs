@@ -22,7 +22,7 @@ namespace ApolloQA.Pages.Policy
 
 
         public IWebElement newFileButton => functions.FindElementWait(10, By.XPath("//mat-icon[@aria-label = 'add']"));
-        public IWebElement uploadFileInput=> functions.FindElementWait(10, By.Id("file"));
+        public IWebElement uploadFileInput=> functions.FindElementWait(30, By.XPath("//input[@id='file']"));
         public IWebElement fileStatus => functions.FindElementWait(10, By.XPath("//div[@class='uploadProgress' normalize-space(text())='Upload Complete']"));
         public IWebElement moreOptionsButton => functions.FindElementWait(10, By.XPath("//mat-icon[contains(text(),'more_vert')]"));
         public IWebElement deleteFileButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'Delete')]"));
@@ -36,10 +36,9 @@ namespace ApolloQA.Pages.Policy
             uploadFileInput.SendKeys("C:/Users/Saeed.Malik/Desktop/TestFile.txt");
         }
 
-        public void checkStatus()
+        public bool checkStatus()
         {
-            IWebElement target = functions.FindElementWait(10, By.XPath("//div[@class='uploadProgress' normalize-space(text())='Upload Complete']"));
-            target.Click();
+            return functions.FindElementWait(30, By.XPath("//div[@class='uploadProgress' normalize-space(text())='Upload Complete']")).Displayed;
         }
 
         public void OpenFile(string fileName)

@@ -3,6 +3,7 @@ using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.TestCases.Regression
@@ -28,6 +29,7 @@ namespace ApolloQA.TestCases.Regression
         public void WhenUserClickOnAddDriver()
         {
             policyDrivers.newDriverButton.Click();
+            Thread.Sleep(3000);
         }
         
         [When(@"Add Driver Modal User enter (.*) for (.*)")]
@@ -45,6 +47,12 @@ namespace ApolloQA.TestCases.Regression
         public void WhenUserClicksCancelToExitModalForAddDriver()
         {
             addDriver.cancelButton.Click();
+        }
+
+        [When(@"Special Step after coverage for driver")]
+        public void WhenSpecialStepAfterCoverageForDriver()
+        {
+            addDriver.EnterInput("suffix", "q");
         }
 
 

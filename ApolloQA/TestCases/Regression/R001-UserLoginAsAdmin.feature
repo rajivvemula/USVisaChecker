@@ -3,7 +3,7 @@
 	I want to login 
 	So I can access the Apollo
 
-@reg
+@reg @org @pol
 Scenario: User is able to login as Admin
 	Given User is on Apollo Homepage
 	When I enter AdminUsername and AdminPassword 

@@ -22,13 +22,15 @@ namespace ApolloQA.TestCases.Regression
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("R014-PolicyContacts")]
     [NUnit.Framework.CategoryAttribute("reg")]
+    [NUnit.Framework.CategoryAttribute("pol")]
     public partial class R014_PolicyContactsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "reg"};
+                "reg",
+                "pol"};
         
 #line 1 "R014-PolicyContacts.feature"
 #line hidden
@@ -39,7 +41,8 @@ namespace ApolloQA.TestCases.Regression
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "R014-PolicyContacts", "\tIn order to Policy Contacts is working as intended\r\n\tAs any User(defaults to adm" +
                     "in)\r\n\tI want to be able to add, delete Contacts", ProgrammingLanguage.CSharp, new string[] {
-                        "reg"});
+                        "reg",
+                        "pol"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

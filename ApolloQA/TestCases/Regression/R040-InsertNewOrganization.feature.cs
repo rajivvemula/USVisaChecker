@@ -22,13 +22,15 @@ namespace ApolloQA.TestCases.Regression
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("R040-InsertNewOrganization")]
     [NUnit.Framework.CategoryAttribute("reg")]
+    [NUnit.Framework.CategoryAttribute("org")]
     public partial class R040_InsertNewOrganizationFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "reg"};
+                "reg",
+                "org"};
         
 #line 1 "R040-InsertNewOrganization.feature"
 #line hidden
@@ -37,9 +39,9 @@ namespace ApolloQA.TestCases.Regression
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "R040-InsertNewOrganization", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
-                    "f two numbers", ProgrammingLanguage.CSharp, new string[] {
-                        "reg"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "R040-InsertNewOrganization", "\tAs Any User\r\n\tI want to verify all inputs and selects are working as intended", ProgrammingLanguage.CSharp, new string[] {
+                        "reg",
+                        "org"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -84,7 +86,7 @@ namespace ApolloQA.TestCases.Regression
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Insert New Organization", null, tagsOfScenario, argumentsOfScenario);
-#line 8
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -104,13 +106,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
+#line 8
  testRunner.Given("I am on the OrganizationGrid page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 10
+#line 9
  testRunner.When("I click the New Organization button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 11
+#line 10
  testRunner.Then("I am taken to the OrganizationInsert page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -118,13 +120,24 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("2 Insert New Organization")]
-        public virtual void _2InsertNewOrganization()
+        [NUnit.Framework.DescriptionAttribute("4 Verify All Inputs on Organization Insert")]
+        [NUnit.Framework.TestCaseAttribute("name", "TestAutomation", "true", null)]
+        [NUnit.Framework.TestCaseAttribute("dba", "Test", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("businessphone", "123-456-7890", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("businessemail", "test@gmail.com", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("businesswebsite", "biberk.com", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("description", "sample", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("yearstarted", "2005", "true", null)]
+        [NUnit.Framework.TestCaseAttribute("yearownership", "2005", "true", null)]
+        public virtual void _4VerifyAllInputsOnOrganizationInsert(string input, string value, string required, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Insert New Organization", null, tagsOfScenario, argumentsOfScenario);
-#line 13
+            argumentsOfScenario.Add("Input", input);
+            argumentsOfScenario.Add("Value", value);
+            argumentsOfScenario.Add("Required", required);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("4 Verify All Inputs on Organization Insert", null, tagsOfScenario, argumentsOfScenario);
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -144,26 +157,98 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 13
+ testRunner.When(string.Format("Organization Insert User enter {0} for {1}", value, input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 14
- testRunner.Given("I am on the OrganizationInsert page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then(string.Format("Organization Insert User should see {0} For that {1}", value, input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Name",
-                            "Alternate Name",
-                            "Legal Name",
-                            "Type",
-                            "Code"});
-                table4.AddRow(new string[] {
-                            "Test Organization",
-                            "Test Alt Name",
-                            "Test Legal Name",
-                            "Insured",
-                            "12345"});
 #line 15
- testRunner.When("I enter organization information", ((string)(null)), table4, "When ");
+ testRunner.And(string.Format("Organization Insert User is required to have values for the {0} as {1}", input, required), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 18
- testRunner.Then("A new organization is created with the appropriate values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("5 Verify All Selects on Organization Insert")]
+        [NUnit.Framework.TestCaseAttribute("orgtype", "true", null)]
+        [NUnit.Framework.TestCaseAttribute("industrytype", "true", null)]
+        [NUnit.Framework.TestCaseAttribute("subtype", "true", null)]
+        [NUnit.Framework.TestCaseAttribute("class", "true", null)]
+        [NUnit.Framework.TestCaseAttribute("taxtype", "true", null)]
+        public virtual void _5VerifyAllSelectsOnOrganizationInsert(string select, string selectRequired, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Select", select);
+            argumentsOfScenario.Add("SelectRequired", selectRequired);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("5 Verify All Selects on Organization Insert", null, tagsOfScenario, argumentsOfScenario);
+#line 29
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 30
+ testRunner.When(string.Format("Organization Insert User clicks on {0}", select), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 31
+ testRunner.Then(string.Format("Organization Insert User should see all values to be present in {0}", select), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 32
+ testRunner.And(string.Format("Organization Insert User is required to have Select values for the {0} as {1}", select, selectRequired), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("6 Click cancel to exit organization insert")]
+        public virtual void _6ClickCancelToExitOrganizationInsert()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("6 Click cancel to exit organization insert", null, tagsOfScenario, argumentsOfScenario);
+#line 42
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 43
+ testRunner.When("User clicks on cancel Button in IOrganization Insert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 44
+ testRunner.When("User clicks continue anyway", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();

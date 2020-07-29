@@ -1,4 +1,4 @@
-﻿@reg
+﻿@reg @pol
 Feature: R015-PolicyContactsCreateContact
 	In order to avoid silly mistakes
 	As a math idiot
