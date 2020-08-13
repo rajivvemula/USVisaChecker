@@ -21,14 +21,12 @@ namespace ApolloQA.TestCases.Regression
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("R020-PolicyDocumentSimple")]
-    [NUnit.Framework.CategoryAttribute("pol")]
     public partial class R020_PolicyDocumentSimpleFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "pol"};
+        private string[] _featureTags = ((string[])(null));
         
 #line 1 "R020-PolicyDocumentSimple.feature"
 #line hidden
@@ -38,8 +36,7 @@ namespace ApolloQA.TestCases.Regression
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "R020-PolicyDocumentSimple", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
-                    "f two numbers", ProgrammingLanguage.CSharp, new string[] {
-                        "pol"});
+                    "f two numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

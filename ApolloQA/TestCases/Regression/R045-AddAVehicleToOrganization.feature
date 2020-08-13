@@ -40,7 +40,7 @@ Scenario Outline:5 Verify All Selects on Add New Vehicle Modal
 
 Scenario:7 User is able to click cancel and exit the modal
 	When User clicks cancel to exit modal for add vehicle
-	And User clicks Add Vehicle in Organization
+	#And User clicks Add Vehicle in Organization
 
 #Scenario: User is able to add new Vehicle 
 	#When I user enter all info into add new vehicle

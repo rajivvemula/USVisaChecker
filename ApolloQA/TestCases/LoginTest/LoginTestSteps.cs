@@ -76,6 +76,8 @@ namespace ApolloQA.TestCases.LoginTest
             policyCreationPage.EnterDefaultInputs();
             Thread.Sleep(10000);
 
+
+
             //policyPage.NavigateToPolicy(12843);
             /*
             driver.FindElement(By.XPath("//button[@aria-label='Add Policy']")).Click();

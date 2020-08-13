@@ -67,8 +67,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
             policyMain.GoToSummary();
 
             PolicySummary policySummary = new PolicySummary(driver);
-            string busType = policySummary.CheckBusinessType();
-            Console.WriteLine(busType);
+            //string busType = policySummary.CheckBusinessType();
+            //Console.WriteLine(busType);
 
 
 

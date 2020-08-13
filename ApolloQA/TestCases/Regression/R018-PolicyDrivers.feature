@@ -52,7 +52,7 @@ Scenario:7 User is able to click cancel and exit the add driver modal
 	When User clicks Add Driver in Organization
 	And user enters inputs for add driver in organization
 	| First | Last | Middle | DOB        | State | Number  | Exp        | CDL |
-	| Jacob | Seed | J      | 01/02/1975 | AZ    | AZ27875 | 01/01/2022 | Yes  |
+	| Jacob | Seed | J      | 01/02/1975 | AZ    | AZ27545 | 01/01/2022 | Yes  |
 	And User select coverage
 	And Special Step after coverage for driver
 	And user clicks submit to add driver
