@@ -23,8 +23,8 @@ namespace ApolloQA.Pages.Shared
 
 
         public IWebElement SearchField => functions.FindElementWait(10, By.XPath("//input[@placeholder='Search here']"));
-        public IWebElement ImpersonateIcon => functions.FindElementWait(20, By.XPath("//button/span/mat-icon[text()='assignment_ind']/../.."));
-        public IWebElement RedImpersonateIcon => functions.FindElementWait(20, By.XPath("//button/span/mat-icon[contains(@class, 'is-impersonated')]/../.."));
+        public IWebElement ImpersonateIcon => functions.FindElementWait(30, By.XPath("//button/span/mat-icon[text()='assignment_ind']/../.."));
+        public IWebElement RedImpersonateIcon => functions.FindElementWait(30, By.XPath("//button/span/mat-icon[contains(@class, 'is-impersonated')]/../.."));
         public IWebElement HistoryIcon => functions.FindElementWait(10, By.XPath("//button/span/mat-icon[text()='history']/../.."));
 
         public void ImpersonateValidUser(string userName)
@@ -38,7 +38,6 @@ namespace ApolloQA.Pages.Shared
             //if impersonating other user, need to stop impersonation
             if (!currentImpersonatedUser.Equals("NULL"))
                 StopImpersonation();
-
 
             ImpersonateIcon.Click();
             IWebElement usernameField = functions.FindElementWait(10, By.XPath("//input[@formcontrolname='email']"));

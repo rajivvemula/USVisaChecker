@@ -78,12 +78,12 @@ namespace ApolloQA.TestCases.Regression
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("1.0 User with full CRUD policy permissions")]
-        public virtual void _1_0UserWithFullCRUDPolicyPermissions()
+        [NUnit.Framework.DescriptionAttribute("1.0 Full CRUD - Can Create Policy")]
+        public virtual void _1_0FullCRUD_CanCreatePolicy()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1.0 User with full CRUD policy permissions", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1.0 Full CRUD - Can Create Policy", null, tagsOfScenario, argumentsOfScenario);
 #line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -105,7 +105,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 9
- testRunner.When("I impersonate impersonateable user ApolloTestUserG105@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I impersonate impersonateable user ApolloTestUserG108@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 10
  testRunner.Then("I can create a policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -115,12 +115,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("1.1 User with full CRUD policy permissions")]
-        public virtual void _1_1UserWithFullCRUDPolicyPermissions()
+        [NUnit.Framework.DescriptionAttribute("1.1 Full CRUD - Can Update General Info")]
+        public virtual void _1_1FullCRUD_CanUpdateGeneralInfo()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1.1 User with full CRUD policy permissions", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1.1 Full CRUD - Can Update General Info", null, tagsOfScenario, argumentsOfScenario);
 #line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -142,19 +142,19 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 13
- testRunner.Then("I can update a policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I can update the policy general information tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("2.0 User with RU policy permissions")]
-        public virtual void _2_0UserWithRUPolicyPermissions()
+        [NUnit.Framework.DescriptionAttribute("2.0 Read Only - Cannot Create Policy")]
+        public virtual void _2_0ReadOnly_CannotCreatePolicy()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2.0 User with RU policy permissions", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2.0 Read Only - Cannot Create Policy", null, tagsOfScenario, argumentsOfScenario);
 #line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -176,7 +176,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 16
- testRunner.When("I impersonate impersonateable user ApolloTestUserG310@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I impersonate impersonateable user ApolloTestUserG207@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
  testRunner.Then("I cannot create a policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -186,12 +186,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("2.1 User with RU policy permissions")]
-        public virtual void _2_1UserWithRUPolicyPermissions()
+        [NUnit.Framework.DescriptionAttribute("2.1 Read Only - Cannot Update General Info")]
+        public virtual void _2_1ReadOnly_CannotUpdateGeneralInfo()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2.1 User with RU policy permissions", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2.1 Read Only - Cannot Update General Info", null, tagsOfScenario, argumentsOfScenario);
 #line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -213,7 +213,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 20
- testRunner.Then("I can update a policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I cannot update the policy general information tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -4,6 +4,9 @@ Feature: R030-MainNavBarNavigation
 	As an authenticated user on a page containing the Main Navigation Bar
 	I want to be able to use the Nav Bar shortcuts, search, and other functionality
 
+Scenario: 0 This scenario is not implemented
+	When I type a step that does not have an implementation
+	Then The text shows purple
 
 Scenario: 1 Home tab is clickable
 	Given I am on a page containing the Main Navigation Bar
@@ -19,14 +22,14 @@ Scenario: 3 Organization tab is clickable
 	Then The Organization tab should load properly
 
 Scenario: 4 Can search by valid policy number
-	When I enter policy number 10013 in the search field
+	When I enter policy number 10339 in the search field
 	And I click the first search result
-	Then I should be directed to policy 10013
+	Then I should be directed to policy 10339
 
 Scenario: 5 Can search by valid organization
-	When I enter organization name Test in the search field
+	When I enter organization name City Market and Cafe in the search field
 	And I click the first search result
-	Then I should be directed to organization Test
+	Then I should be directed to organization City Market and Cafe
 
 Scenario: 6 Can impersonate impersonateable user
 	When I impersonate impersonateable user Sonia.Amaravel@biberk.com

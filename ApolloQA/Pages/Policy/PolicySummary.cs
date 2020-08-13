@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,12 @@ namespace ApolloQA.Pages.Policy
     {
 
         private IWebDriver policyDriver;
+        private Functions functions;
+
         public PolicySummary(IWebDriver driver)
         {
             policyDriver = driver;
-            
+            functions = new Functions(driver);
         }
 
         public IList<IWebElement> status => policyDriver.FindElements(By.XPath("//input[contains(@id,'mat-input')]"));
@@ -45,14 +48,14 @@ namespace ApolloQA.Pages.Policy
             "Underwriter Agency"
         };
 
-        public IWebElement businessTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Business Profile']/.."));
-        public IWebElement renewalTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Renewal Information']/.."));
-        public IWebElement agencyTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Agency Information']/.."));
-        public IWebElement accountingTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Accounting Profile']/.."));
-        public IWebElement operationsTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Description of Operations']/.."));
-        public IWebElement websiteTab => policyDriver.FindElement(By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Web Site']/.."));
-        public IWebElement selectBus => policyDriver.FindElement(By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
-        public IWebElement saveButton => policyDriver.FindElement(By.ClassName("save-button"));
+        public IWebElement businessTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Business Profile']"));
+        public IWebElement renewalTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Renewal Information']"));
+        public IWebElement agencyTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Agency Information']"));
+        public IWebElement accountingTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Accounting Profile']"));
+        public IWebElement operationsTab =>functions.FindElementWait(10, By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Description of Operations']"));
+        public IWebElement websiteTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Web Site']"));
+        public IWebElement selectBus => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
+        public IWebElement saveButton => functions.FindElementWait(10, By.ClassName("save-button"));
 
         public IWebElement getElementFromFieldname(string fieldName)
         {
@@ -82,19 +85,24 @@ namespace ApolloQA.Pages.Policy
 
         public string VerifyTab(string id)
         {
-            string selected = getElementFromFieldname(id).GetAttribute("aria-selected");
+            string selected = functions.FindElementWait(10, By.Id(tabId[id])).GetAttribute("aria-selected");
             return selected;
         }
 
         public bool CheckLabel(string label)
         {
-            bool verify = policyDriver.FindElement(By.XPath("//mat-label[contains(text(),'" + label + "')]")).Displayed;
+            bool verify = functions.FindElementWait(10, By.XPath("//mat-label[contains(text(),'" + label + "')]")).Displayed;
             return verify;
         }
         public void EnterBusType(string corp)
         {
             selectBus.Click();
-            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + corp + "']")).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + corp + "']")).Click();
+        }
+
+        public string CheckBusinessType()
+        {
+            return selectBus.Text;
         }
 
         public void ClickSaveButton()

@@ -48,13 +48,17 @@ namespace ApolloQA.TestCases.Regression
 
         }
 
-        [Then(@"I can update a policy")]
-        public void ThenICanUpdateAPolicy()
+        [Then(@"I (.*) update the policy general information tab")]
+        public void ThenICanUpdateThePolicyGeneralInformationTab(string canCannot)
         {
-            string resultText = policyCrud.TestUpdatingAPolicy("10170");
+            bool canUpdate = policyCrud.CanUpdatePolicyGeneralInformation("10170");
 
-            Assert.IsTrue(resultText.Contains("was saved"));
+            if (canCannot.Equals("can"))
+                Assert.IsTrue(canUpdate);
+            else
+                Assert.IsTrue(!canUpdate);
         }
+
         
         [Then(@"I can delete a policy")]
         public void ThenICanDeleteAPolicy()

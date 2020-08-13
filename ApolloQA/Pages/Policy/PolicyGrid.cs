@@ -43,8 +43,7 @@ namespace ApolloQA.Pages.Policy
 
         public string GetTitle()
         {
-            string title = policyDriver.Title;
-            return title;
+            return policyDriver.Title;
         }
         //Add pagination
         public void Pagination(string page)
