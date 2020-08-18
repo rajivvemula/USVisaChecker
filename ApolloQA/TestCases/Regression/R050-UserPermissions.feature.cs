@@ -79,22 +79,19 @@ namespace ApolloQA.TestCases.Regression
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("1 Policy Permissions")]
-        [NUnit.Framework.TestCaseAttribute("Apollo Underwriter", "ApolloTestUserG105@biberk.com", "yes", "yes", "yes", "yes", null)]
-        [NUnit.Framework.TestCaseAttribute("Apollo Underwriting Manager", "ApolloTestUserG309@biberk.com", "yes", "yes", "yes", "yes", null)]
-        [NUnit.Framework.TestCaseAttribute("Apollo Policy Services", "ApolloTestUserG310@biberk.com", "no", "yes", "yes", "no", null)]
-        [NUnit.Framework.TestCaseAttribute("Apollo Policy Services Manager", "ApolloTestUserG106@biberk.com", "no", "yes", "yes", "no", null)]
-        [NUnit.Framework.TestCaseAttribute("Apollo Administrator", "ApolloTestUserG311@biberk.com", "yes", "yes", "yes", "yes", null)]
-        [NUnit.Framework.TestCaseAttribute("Apollo Business Analyst", "ApolloTestUserG312@biberk.com", "no", "yes", "no", "no", null)]
-        public virtual void _1PolicyPermissions(string role, string email, string c, string r, string u, string d, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("Apollo Underwriter", "ApolloTestUserG108@biberk.com", "can", "can", "can", "can", null)]
+        [NUnit.Framework.TestCaseAttribute("Apollo Policy Services", "ApolloTestUserG110@biberk.com", "cannot", "can", "cannot", "cannot", null)]
+        [NUnit.Framework.TestCaseAttribute("Apollo Business Analyst", "ApolloTestUserG312@biberk.com", "cannot", "can", "can", "can", null)]
+        public virtual void _1PolicyPermissions(string role, string email, string createPolicy, string updatePolicy, string addContact, string addVehicle, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Role", role);
             argumentsOfScenario.Add("Email", email);
-            argumentsOfScenario.Add("C", c);
-            argumentsOfScenario.Add("R", r);
-            argumentsOfScenario.Add("U", u);
-            argumentsOfScenario.Add("D", d);
+            argumentsOfScenario.Add("Create Policy", createPolicy);
+            argumentsOfScenario.Add("Update Policy", updatePolicy);
+            argumentsOfScenario.Add("Add Contact", addContact);
+            argumentsOfScenario.Add("Add Vehicle", addVehicle);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Policy Permissions", null, tagsOfScenario, argumentsOfScenario);
 #line 7
 this.ScenarioInitialize(scenarioInfo);
@@ -117,10 +114,19 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 8
- testRunner.When("I impersonate impersonateable user \'<email>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I impersonate impersonateable user {0}", email), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 9
- testRunner.Then(string.Format("validate policy permissions \'{0}\', \'{1}\', \'{2}\', \'{3}\'", c, r, u, d), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I {0} create a policy", createPolicy), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 10
+ testRunner.And(string.Format("I {0} update the policy general information tab", updatePolicy), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 11
+ testRunner.And(string.Format("I {0} add a contact", addContact), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 12
+ testRunner.And(string.Format("I {0} add a new vehicle", addVehicle), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

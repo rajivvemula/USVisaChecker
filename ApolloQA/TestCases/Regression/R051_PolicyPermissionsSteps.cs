@@ -21,6 +21,7 @@ namespace ApolloQA.TestCases.Regression
         private Components components;
         private PolicySummary policySummary;
         private PolicyContacts policyContacts;
+        private PolicyVehicle policyVehicle;
 
         public R051_PolicyPermissionsSteps(IWebDriver Driver)
         {
@@ -31,6 +32,7 @@ namespace ApolloQA.TestCases.Regression
             components = new Components(driver);
             policySummary = new PolicySummary(driver);
             policyContacts = new PolicyContacts(driver);
+            policyVehicle = new PolicyVehicle(driver);
         }
 
         [Then(@"I (.*) create a policy")]
@@ -64,7 +66,7 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I (.*) add a contact")]
         public void ThenICanAddAContact(string canCannot)
         {
-            driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + "10170");
+            driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + "10070");
             policyMain.GoToContacts();
 
             bool addContact = policyContacts.CanAddContact();
@@ -74,6 +76,21 @@ namespace ApolloQA.TestCases.Regression
             else
                 Assert.IsTrue(!addContact);
         }
+
+        [Then(@"I (.*) add a new vehicle")]
+        public void ThenICanAddANewVehicle(string canCannot)
+        {
+            driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + "10180");
+            policyMain.GoToVehicles();
+
+            bool addVehicle = policyVehicle.CanAddNewVehicle();
+
+            if (canCannot.Equals("can"))
+                Assert.IsTrue(addVehicle);
+            else
+                Assert.IsTrue(!addVehicle);
+        }
+
 
 
 

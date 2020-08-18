@@ -29,6 +29,8 @@ namespace ApolloQA.Pages.Shared
 
         public void ImpersonateValidUser(string userName)
         {
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
+
             string currentImpersonatedUser = CurrentlyImpersonatedUser();
 
             //if already impersonating this user

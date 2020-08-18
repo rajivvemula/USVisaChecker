@@ -5,14 +5,13 @@ Feature: R050-UserPermissions
 	I want to verify the user's ability to perform policy actions is based on their role
 
 Scenario Outline: 1 Policy Permissions
-	When I impersonate impersonateable user '<email>'
-	Then validate policy permissions '<C>', '<R>', '<U>', '<D>'
+	When I impersonate impersonateable user <Email>
+	Then I <Create Policy> create a policy
+	And I <Update Policy> update the policy general information tab
+	And I <Add Contact> add a contact
+	And I <Add Vehicle> add a new vehicle
 
 Examples: 
-	| Role                           | Email                         | C   | R   | U   | D   |
-	| Apollo Underwriter             | ApolloTestUserG105@biberk.com | yes | yes | yes | yes |
-	| Apollo Underwriting Manager    | ApolloTestUserG309@biberk.com | yes | yes | yes | yes |
-	| Apollo Policy Services         | ApolloTestUserG310@biberk.com | no  | yes | yes | no  |
-	| Apollo Policy Services Manager | ApolloTestUserG106@biberk.com | no  | yes | yes | no  |
-	| Apollo Administrator           | ApolloTestUserG311@biberk.com | yes | yes | yes | yes |
-	| Apollo Business Analyst        | ApolloTestUserG312@biberk.com | no  | yes | no  | no  |
+	| Role                           | Email                         | Create Policy | Update Policy | Add Contact | Add Vehicle |
+	| Apollo Underwriter             | ApolloTestUserG108@biberk.com | can           | can           | can         | can         |
+	| Apollo Policy Services         | ApolloTestUserG110@biberk.com | cannot        | can           | cannot      | cannot      |
