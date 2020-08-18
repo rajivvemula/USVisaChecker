@@ -242,9 +242,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line 42
  testRunner.When("User clicks cancel to exit modal for add vehicle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 43
- testRunner.And("User clicks Add Vehicle in Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
             }
             this.ScenarioCleanup();
         }

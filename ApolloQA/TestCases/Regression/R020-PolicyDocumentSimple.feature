@@ -1,4 +1,4 @@
-﻿@pol
+﻿
 Feature: R020-PolicyDocumentSimple
 	In order to avoid silly mistakes
 	As a math idiot
