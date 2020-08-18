@@ -1,7 +1,8 @@
-﻿Feature: R070-FNOLGrid
+﻿@FNOL
+Feature: R070-FNOLGrid
 	
 
-@fnol
+
 Scenario: User is able to navigate to FNOL Grid
 	Given User is on Dashboard
 	When User Clicks on Waffle Mene 
