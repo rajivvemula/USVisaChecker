@@ -20,6 +20,7 @@ namespace ApolloQA.TestCases.Regression
         private PolicyMain policyMain;
         private Components components;
         private PolicySummary policySummary;
+        private PolicyContacts policyContacts;
 
         public R051_PolicyPermissionsSteps(IWebDriver Driver)
         {
@@ -29,6 +30,7 @@ namespace ApolloQA.TestCases.Regression
             policyMain = new PolicyMain(driver);
             components = new Components(driver);
             policySummary = new PolicySummary(driver);
+            policyContacts = new PolicyContacts(driver);
         }
 
         [Then(@"I (.*) create a policy")]
@@ -59,18 +61,27 @@ namespace ApolloQA.TestCases.Regression
                 Assert.IsTrue(!canUpdate);
         }
 
-        
+        [Then(@"I (.*) add a contact")]
+        public void ThenICanAddAContact(string canCannot)
+        {
+            driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + "10170");
+            policyMain.GoToContacts();
+
+            bool addContact = policyContacts.CanAddContact();
+
+            if (canCannot.Equals("can"))
+                Assert.IsTrue(addContact);
+            else
+                Assert.IsTrue(!addContact);
+        }
+
+
+
         [Then(@"I can delete a policy")]
         public void ThenICanDeleteAPolicy()
         {
             ScenarioContext.Current.Pending();
         }
-        
-        //[Then(@"I cannot create a policy")]
-        //public void ThenICannotCreateAPolicy()
-        //{
-
-        //}
         
         [Then(@"I cannot update a policy")]
         public void ThenICannotUpdateAPolicy()

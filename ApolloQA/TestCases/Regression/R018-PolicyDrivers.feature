@@ -26,9 +26,9 @@ Scenario Outline:4 Verify All Inputs on Add Driver Modal
 	Examples: 
 	| Input         | Value    | Required |
 	| first         | John     | true     |
-	| middle        | J        | false     |
+	| middle        | J        | false    |
 	| last          | Smith    | true     |
-	| suffix        | Mr       | false     |
+	| suffix        | Mr       | false    |
 	| dob           | 7/8/1980 | true     |
 	| licensenumber | 12312312 | true     |
 	| licenseexp    | 7/8/2022 | true     |

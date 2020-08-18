@@ -24,21 +24,21 @@ namespace ApolloQA.Helpers
 
             try
             {
-                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
+                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
             catch(StaleElementReferenceException stale)
             {
                 Thread.Sleep(2000);
 
                 //retry finding the element
-                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
+                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
             catch(ElementClickInterceptedException clickintercepted)
             {
                 Thread.Sleep(2000);
 
                 //retry finding the element
-                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
+                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
 
             return target;
