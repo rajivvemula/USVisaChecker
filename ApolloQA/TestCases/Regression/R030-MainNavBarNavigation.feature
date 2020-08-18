@@ -27,9 +27,9 @@ Scenario: 4 Can search by valid policy number
 	Then I should be directed to policy 10339
 
 Scenario: 5 Can search by valid organization
-	When I enter organization name City Market and Cafe in the search field
+	When I enter organization name Casey Test Org in the search field
 	And I click the first search result
-	Then I should be directed to organization City Market and Cafe
+	Then I should be directed to organization Casey Test Org
 
 Scenario: 6 Can impersonate impersonateable user
 	When I impersonate impersonateable user Sonia.Amaravel@biberk.com

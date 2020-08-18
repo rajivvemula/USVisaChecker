@@ -3,6 +3,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace ApolloQA.Helpers
 {
@@ -42,6 +43,13 @@ namespace ApolloQA.Helpers
 
         }
 
+        public string Geth3()
+        {
+            IWebElement currenth3 = functions.FindElementWait(10, By.XPath("//h3"));
+            string h3tobesent = currenth3.Text;
+            return h3tobesent;
+        }
+
         public bool UpdateDropdown(string formcontrolname, string selection)
         {
             //locate the dropdown
@@ -51,10 +59,14 @@ namespace ApolloQA.Helpers
                 return false;
             //otherwise, click the dropdown and make the selection
             dropdownField.Click();
+            Thread.Sleep(500);
             IWebElement theSelection = functions.FindElementWait(10, By.XPath("//mat-option/span[normalize-space(text())='" + selection + "']"));
+            Thread.Sleep(500);
             theSelection.Click();
             return true;
         }
+
+        //public bool UpdateTextField
 
     }
 }
