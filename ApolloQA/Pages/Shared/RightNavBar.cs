@@ -26,6 +26,8 @@ namespace ApolloQA.Pages.Shared
         public IWebElement ImpersonateIcon => functions.FindElementWait(30, By.XPath("//button/span/mat-icon[text()='assignment_ind']/../.."));
         public IWebElement RedImpersonateIcon => functions.FindElementWait(30, By.XPath("//button/span/mat-icon[contains(@class, 'is-impersonated')]/../.."));
         public IWebElement HistoryIcon => functions.FindElementWait(10, By.XPath("//button/span/mat-icon[text()='history']/../.."));
+        public IWebElement AddIcon => functions.FindElementWait(10, By.XPath("//mat-icon[normalize-space(text())='add']"));
+        public IWebElement addFnolButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'Add FNOL')]"));
 
         public void ImpersonateValidUser(string userName)
         {

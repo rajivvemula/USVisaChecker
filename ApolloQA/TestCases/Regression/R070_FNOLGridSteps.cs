@@ -1,4 +1,8 @@
-﻿using System;
+﻿using ApolloQA.Pages.Fnol;
+using ApolloQA.Pages.Shared;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using System;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.TestCases.Regression
@@ -6,46 +10,60 @@ namespace ApolloQA.TestCases.Regression
     [Binding]
     public class R070_FNOLGridSteps
     {
+
+        public IWebDriver driver;
+        FNOLDash fnolDash;
+        MainNavBar mainNav;
+        RightNavBar rightNav;
+        public R070_FNOLGridSteps(IWebDriver Driver)
+        {
+            driver = Driver;
+            fnolDash = new FNOLDash(Driver);
+            mainNav = new MainNavBar(Driver);
+            rightNav = new RightNavBar(Driver);
+        }
+        
         [Given(@"User is shown the Manager Dashboard")]
         public void GivenUserIsShownTheManagerDashboard()
         {
-            ScenarioContext.Current.Pending();
+            fnolDash.GoToFNOL();
         }
         
         [When(@"User Clicks on Waffle Mene")]
         public void WhenUserClicksOnWaffleMene()
         {
-            ScenarioContext.Current.Pending();
+            mainNav.waffleMenu.Click();
         }
         
         [When(@"User clicks on Claims")]
         public void WhenUserClicksOnClaims()
         {
-            ScenarioContext.Current.Pending();
+            mainNav.ClaimTab.Click();
         }
         
         [When(@"User clicks on Add New FNOL Button")]
         public void WhenUserClicksOnAddNewFNOLButton()
         {
-            ScenarioContext.Current.Pending();
+            fnolDash.AddNewFNOL();
         }
         
         [When(@"USer clicks Add FNOL")]
         public void WhenUSerClicksAddFNOL()
         {
-            ScenarioContext.Current.Pending();
+            rightNav.AddIcon.Click();
+            rightNav.addFnolButton.Click();
         }
         
         [Then(@"User is shown the Manager Dashboard")]
         public void ThenUserIsShownTheManagerDashboard()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(driver.Title.Contains("First Notice of Loss"));
         }
         
         [Then(@"User is taken to the FNOL Occurence Page")]
         public void ThenUserIsTakenToTheFNOLOccurencePage()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(driver.Title.Contains("Insert First Notice of Loss"));
         }
     }
 }

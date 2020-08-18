@@ -42,6 +42,13 @@ namespace ApolloQA.Helpers
 
         }
 
+        public string Geth3()
+        {
+            IWebElement currenth3 = functions.FindElementWait(10, By.XPath("//h3"));
+            string h3tobesent = currenth3.Text;
+            return h3tobesent;
+        }
+
         public bool UpdateDropdown(string formcontrolname, string selection)
         {
             //locate the dropdown

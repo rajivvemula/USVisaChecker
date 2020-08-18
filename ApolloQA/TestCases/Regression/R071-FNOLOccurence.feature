@@ -1,7 +1,8 @@
-﻿Feature: R071-FNOLOccurence
+﻿@FNOL
+Feature: R071-FNOLOccurence
 	Smoke Test FNOL Creation
 
-@FNOL
+
 Scenario Outline:4 Verify All Inputs on FNOL Occurence
 	When FNOL Occurence User enter <Value> for <Input> 
 	Then FNOL Occurence User should see <Value> For that <Input> 
