@@ -13,14 +13,14 @@ namespace ApolloQA.Helpers
         //QA URLs
         public static IDictionary<string, string> QA_URLS = new Dictionary<string, string>()
         {
-            {"Home", "https://biberk-apollo-qa2.azurewebsites.net/home" },
-            {"Policy", "https://biberk-apollo-qa2.azurewebsites.net/policy" },
-            {"Organization", "https://biberk-apollo-qa2.azurewebsites.net/organization" },
-            {"Organization Insert", "https://biberk-apollo-qa2.azurewebsites.net/organization/insert" },
-            {"Underwriting", "https://biberk-apollo-qa2.azurewebsites.net/underwriting" },
-            {"Billing", "https://biberk-apollo-qa2.azurewebsites.net/billing" },
-            {"Administration", "https://biberk-apollo-qa2.azurewebsites.net/administration" },
-            {"Application", "https://biberk-apollo-qa2.azurewebsites.net/application" }
+            {"Home", "https://biberk-apollo-qa.azurewebsites.net/home" },
+            {"Policy", "https://biberk-apollo-qa.azurewebsites.net/policy" },
+            {"Organization", "https://biberk-apollo-qa.azurewebsites.net/organization" },
+            {"Organization Insert", "https://biberk-apollo-qa.azurewebsites.net/organization/insert" },
+            {"Underwriting", "https://biberk-apollo-qa.azurewebsites.net/underwriting" },
+            {"Billing", "https://biberk-apollo-qa.azurewebsites.net/billing" },
+            {"Administration", "https://biberk-apollo-qa.azurewebsites.net/administration" },
+            {"Application", "https://biberk-apollo-qa.azurewebsites.net/application" }
         };
 
         public static readonly string[] adminRoles = {
