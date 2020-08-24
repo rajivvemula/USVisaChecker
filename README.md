@@ -14,6 +14,12 @@ Specflow
 SpecFlow.NUnit
 SpecFlow.Tools.MsBuild.Generation
 ```
+# Overview
+
+This test suite is designed to cover Apollo project using two implementations
+* SmokeTest Using Only NUNIT3 
+* Individual Regression Tests Using Specflow 
+
 
 # Basic BDD Guidelines
 All tests are written using the BDD Gherkin Language. Here are some basic guidelines:
@@ -34,12 +40,5 @@ All tests are written using the BDD Gherkin Language. Here are some basic guidel
 * **When:** the event that triggers the scenario;
 * **Then:** the expected outcome, in one or more clauses.
 
-# Test List
 
-Test # | Category | Title | Status | Scenarios
--------|----------|------|-------|------------|
-R001 | Login | User Login As Admin | Done | 1
-R002 | Admin | Admin Privileges | Done | 1
-R003 | Admin | Admin Has Access To Waffle Links | - | -
-R004 | Policy | Access Policy List | Done | 1
-R005 | Policy | Policy Navigation | Done | 9
+
