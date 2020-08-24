@@ -19,7 +19,8 @@ namespace ApolloQA.Helpers
             {"Organization Insert", "https://biberk-apollo-qa2.azurewebsites.net/organization/insert" },
             {"Underwriting", "https://biberk-apollo-qa2.azurewebsites.net/underwriting" },
             {"Billing", "https://biberk-apollo-qa2.azurewebsites.net/billing" },
-            {"Administration", "https://biberk-apollo-qa2.azurewebsites.net/administration" }
+            {"Administration", "https://biberk-apollo-qa2.azurewebsites.net/administration" },
+            {"Application", "https://biberk-apollo-qa2.azurewebsites.net/application" }
         };
 
         public static readonly string[] adminRoles = {
