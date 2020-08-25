@@ -16,7 +16,7 @@ namespace ApolloQA.Helpers
         public Components(IWebDriver driver)
         {
             cDriver = driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             functions = new Functions(driver);
         }
 

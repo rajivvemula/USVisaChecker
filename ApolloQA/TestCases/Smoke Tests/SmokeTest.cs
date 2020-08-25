@@ -23,8 +23,16 @@ namespace ApolloQA.TestCases.Smoke_Tests
         HomePage homePage;
         OrganizationGrid organizationGrid;
         OrganizationInsert organizationInsert;
+        Toaster toaster;
+        Components components;
+        OrganizationInformation organizationInformation;
         SmokeTestHelpers helper;
 
+
+        //Variables
+        //Org Number is a string 
+        string smokeOrganization = "10085";
+        bool smokeOrgCreated = false;
         public SmokeTest()
         {
             //driver = new ChromeDriver();
@@ -40,6 +48,9 @@ namespace ApolloQA.TestCases.Smoke_Tests
             helper = new SmokeTestHelpers(driver);
             organizationGrid = new OrganizationGrid(driver);
             organizationInsert = new OrganizationInsert(driver);
+            toaster = new Toaster(driver);
+            components = new Components(driver);
+            organizationInformation = new OrganizationInformation(driver);
         }
 
         [OneTimeTearDown]
@@ -117,16 +128,39 @@ namespace ApolloQA.TestCases.Smoke_Tests
             organizationInsert.EnterInput("yearownership", "2011");
             organizationInsert.EnterSelect("orgtype", "Corporation");
             organizationInsert.EnterSelect("taxtype", "FEIN");
-            organizationInsert.EnterInput("keyword", "12-3489779");
+            organizationInsert.EnterInput("keyword", "Accountant");
             organizationInsert.keywordCode.SendKeys(Keys.Enter);
             organizationInsert.EnterInput("taxid", "12-3489779");
-            //Submit Ogrnaization
+
+            //Submit Ogrnaization and if it's created then test proceeds with the created organization
+            //If it's not then test proceed with a preselected organization
             organizationInsert.ClickSubmitButton();
+            bool verifyTitle = components.GetTitle("Organization Details");
+            Assert.IsTrue(verifyTitle, "Organization was not created");
+            if (verifyTitle) {
+                smokeOrgCreated = true;
+                //if need be that we need to put orgnumber to a variable
+                //string currentURL = driver.Url;
+                //string orgNumber = currentURL.Remove(0, currentURL.Length - 5);
+            }
+            Thread.Sleep(5000);
+        }
 
-            Thread.Sleep(10000);
+        /// <summary>
+		/// Test Save Changes For Newly Created organization
+		/// </summary>
+        [TestCase, Order(5)]
+        public void SaveOrganization()
+        {
+            if(smokeOrgCreated == false) {
+                driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/organization/10085");
+            }
+            organizationInformation.EnterSelect("orgtype", "LLC");
+            organizationInformation.saveButton.Click();
 
-
-
+            //verify change saved  via toast
+            string verifyToast = toaster.GetToastTitle();
+            Assert.That(verifyToast, Does.Contain("was saved."));
         }
 
     }
