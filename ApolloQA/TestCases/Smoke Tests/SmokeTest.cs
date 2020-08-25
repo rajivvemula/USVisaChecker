@@ -28,6 +28,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
         OrganizationInformation organizationInformation;
         AddAddress addAddress;
         OrganizationAddress organizationAddress;
+        OrganizationDriver organizationDriver;
+        AddDriver addDriver;
         SmokeTestHelpers helper;
 
 
@@ -55,6 +57,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
             organizationInformation = new OrganizationInformation(driver);
             organizationAddress = new OrganizationAddress(driver);
             addAddress = new AddAddress(driver);
+            organizationDriver = new OrganizationDriver(driver);
+            addDriver = new AddDriver(driver);
         }
 
         [OneTimeTearDown]
@@ -134,7 +138,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             organizationInsert.EnterSelect("taxtype", "FEIN");
             organizationInsert.EnterInput("keyword", "Accountant");
             organizationInsert.keywordCode.SendKeys(Keys.Enter);
-            organizationInsert.EnterInput("taxid", "12-3489779");
+            organizationInsert.EnterInput("taxid", "12-3489769");
 
             //Submit Ogrnaization and if it's created then test proceeds with the created organization
             //If it's not then test proceed with a preselected organization
@@ -199,6 +203,46 @@ namespace ApolloQA.TestCases.Smoke_Tests
             bool verifyAdd = organizationAddress.CheckAddress("39 Public Sq");
             Assert.IsTrue(verifyAdd, "Address was not added to the organization");
 
+        }
+
+        /// <summary>
+		/// Test Adding a Driver to an organization
+		/// </summary>
+        [TestCase, Order(7)]
+        public void AddDriverToOrganization()
+        {
+            //Navigate to Driver Tab
+            organizationDriver.addressTab.Click();
+            if (components.CheckIfDialogPresent())
+            {
+                components.continueAnywayButton.Click();
+            }
+            Assert.That(() => driver.Url, Does.Contain("driver").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Address Tab");
+
+            // Add Driver Button
+            organizationDriver.addDriverButton.Click();
+            Assert.That(() => components.GetDialogTitle(), Is.EqualTo("Add Driver").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add Driver Button/Open Add Driver Dialog");
+
+            //generate random number for license plate
+            Random rnd = new Random();
+            string licenseRND = rnd.Next(100, 700).ToString();
+            string licenseNumber = "AZ15" + licenseRND;
+
+            //inputs 
+            // | Jacob | Seed | J      | 01/02/1975 | AZ    | AZ15435 | 01/01/2022 | No  |
+            addDriver.EnterInput("first", "Jacob");
+            addDriver.EnterInput("last", "Seed");
+            addDriver.EnterInput("middle", "J");
+            addDriver.EnterInput("dob", "01/02/1975");
+            addDriver.EnterSelect("licensestate", "AZ");
+            addDriver.EnterInput("licensenumber", licenseNumber);
+            addDriver.EnterInput("licenseexp", "01/01/2022");
+            addDriver.EnterSelect("cdl", "No");
+
+            //Driver Save And Toast
+            addDriver.submitButton.Click();
+            string verifyToast = toaster.GetToastTitle();
+            Assert.That(verifyToast, Does.Contain("Driver saved"), "Driver was not saved");
         }
     }
 }
