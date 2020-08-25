@@ -66,7 +66,22 @@ namespace ApolloQA.Helpers
             return true;
         }
 
-        //public bool UpdateTextField
+        public bool CheckIfDialogPresent()
+        {
+            try
+            {
+                IWebElement dialogCheck = functions.FindElementWait(10, By.XPath("//bh-unsaved-changes-confirmation-dialog[@color = 'component']"));
+                return dialogCheck.Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+            catch (WebDriverTimeoutException)
+            {
+                return false;
+            }
+        }
 
     }
 }

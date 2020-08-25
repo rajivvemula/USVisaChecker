@@ -26,6 +26,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
         Toaster toaster;
         Components components;
         OrganizationInformation organizationInformation;
+        AddAddress addAddress;
+        OrganizationAddress organizationAddress;
         SmokeTestHelpers helper;
 
 
@@ -51,6 +53,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
             toaster = new Toaster(driver);
             components = new Components(driver);
             organizationInformation = new OrganizationInformation(driver);
+            organizationAddress = new OrganizationAddress(driver);
+            addAddress = new AddAddress(driver);
         }
 
         [OneTimeTearDown]
@@ -163,5 +167,38 @@ namespace ApolloQA.TestCases.Smoke_Tests
             Assert.That(verifyToast, Does.Contain("was saved."));
         }
 
+        /// <summary>
+		/// Test Adding an address to an organization
+		/// </summary>
+        [TestCase, Order(6)]
+        public void AddAnAddressToOrganization()
+        {
+            organizationAddress.addressTab.Click();
+            //check if dialog opens up prompting the user to navigate away
+            if (components.CheckIfDialogPresent())
+            {
+                components.continueAnywayButton.Click();
+            }
+            Assert.That(() => driver.Url, Does.Contain("address").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Address Tab");
+
+            //Click Add Address Button
+            organizationAddress.addAddressButton.Click();
+            Assert.That(() => components.GetDialogTitle(), Is.EqualTo("Add New Address").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add Address Button/Open Add Adress Dialog");
+
+            //Inputs
+            //| 39 Public Square | Wilkes Barre | Pennsylvania | 18703 | 
+            addAddress.EnterInput("add1", "39 Public Square");
+            addAddress.EnterInput("city", "Wilkes Barre");
+            addAddress.EnterInput("zip", "18703");
+            addAddress.EnterSelect("state", "PA");
+            addAddress.saveButton.Click();
+            //Select Default Address
+            addAddress.defaultAddressInfo.Click();
+            addAddress.useSelectedButton.Click();
+
+            bool verifyAdd = organizationAddress.CheckAddress("39 Public Sq");
+            Assert.IsTrue(verifyAdd, "Address was not added to the organization");
+
+        }
     }
 }
