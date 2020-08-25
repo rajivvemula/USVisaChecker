@@ -50,7 +50,7 @@ namespace ApolloQA.TestCases.Regression
             foreach (var details in detail)
             {
                 addVehicle.EnterInput("Code", details.Code.ToString());
-                addVehicle.ClickClassCodeOption(details.Value.ToString());
+                //addVehicle.ClickClassCodeOption(details.Value.ToString());
                 
 
             }
