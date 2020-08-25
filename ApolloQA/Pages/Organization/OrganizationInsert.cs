@@ -37,6 +37,7 @@ namespace ApolloQA.Pages.Organization
         public IWebElement selectIndustryType => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='industryTypeId']"));
         public IWebElement selectSubType => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='subIndustryTypeId']"));
         public IWebElement selectClass => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='classTypeId']"));
+        public IWebElement keywordCode => functions.FindElementWait(60, By.XPath("//bh-input-autocomplete[@formcontrolname='keywordId']/input"));
 
         public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
         public IWebElement saveButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Save']"));
@@ -60,6 +61,7 @@ namespace ApolloQA.Pages.Organization
                 case "industrytype": return selectIndustryType;
                 case "subtype": return selectSubType;
                 case "class": return selectClass;
+                case "keyword": return keywordCode;
                 default: return null;
 
             }

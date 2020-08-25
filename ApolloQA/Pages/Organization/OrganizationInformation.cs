@@ -20,6 +20,7 @@ namespace ApolloQA.Pages.Organization
         }
 
         public IWebElement selectSubType => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='subIndustryTypeId']"));
+        public IWebElement selectOrgType => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
         public IWebElement saveButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Save']"));
 
 
@@ -29,6 +30,7 @@ namespace ApolloQA.Pages.Organization
             switch (fieldName)
             {
                 case "subtype": return selectSubType;
+                case "orgtype": return selectOrgType;
                 default: return null;
 
             }

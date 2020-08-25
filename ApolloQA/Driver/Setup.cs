@@ -21,7 +21,7 @@ namespace ApolloQA.Driver
             _objectContainer = objectContainer;
         }
 
-        [BeforeTestRun]
+        //[BeforeTestRun]
         public static void BeforeTestRun()
         {
             driver = new ChromeDriver();

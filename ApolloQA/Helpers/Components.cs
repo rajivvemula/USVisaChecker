@@ -16,7 +16,7 @@ namespace ApolloQA.Helpers
         public Components(IWebDriver driver)
         {
             cDriver = driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             functions = new Functions(driver);
         }
 
@@ -82,6 +82,22 @@ namespace ApolloQA.Helpers
 
 
 
+        public bool CheckIfDialogPresent()
+        {
+            try
+            {
+                IWebElement dialogCheck = functions.FindElementWait(10, By.XPath("//bh-unsaved-changes-confirmation-dialog[@color = 'component']"));
+                return dialogCheck.Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+            catch (WebDriverTimeoutException)
+            {
+                return false;
+            }
+        }
 
     }
 }
