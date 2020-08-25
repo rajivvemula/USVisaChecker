@@ -1,5 +1,6 @@
 ﻿using ApolloQA.Helpers;
 using ApolloQA.Pages;
+using ApolloQA.Pages.Application;
 using ApolloQA.Pages.Login;
 using ApolloQA.Pages.Organization;
 using ApolloQA.Pages.Policy;
@@ -21,10 +22,10 @@ namespace ApolloQA.TestCases.Smoke_Tests
         [TestCase]
         public void LoginAsValidUser()
         {
-            //IWebDriver driver = new ChromeDriver();
-            //driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
-            //LoginPage loginPage = new LoginPage(driver);
-            //loginPage.loginValidUser(Defaults.ADMIN_USERNAME, Defaults.DEFAULT_PASSWORD);
+            IWebDriver driver = new ChromeDriver();
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.loginValidUser(Defaults.ADMIN_USERNAME, Defaults.DEFAULT_PASSWORD);
             //////Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Home"]));
             ////homePage.MainNavBar.ClickOnTab("Policy");
             ////homePage.MainNavBar.SearchQuery("10005");
@@ -72,15 +73,28 @@ namespace ApolloQA.TestCases.Smoke_Tests
             ////Console.WriteLine(busType);
             ///
 
-            //grabs random vin
-            ChromeDriver vinDriver = new ChromeDriver();
-            vinDriver.Navigate().GoToUrl("https://randomvin.com/");
-            Thread.Sleep(2000);
-            string randomVin = vinDriver.FindElement(By.XPath("//span[@id='Result']/h2")).Text;
-            Console.WriteLine("the random vin is: " + randomVin);
+            ////grabs random vin
+            //ChromeDriver vinDriver = new ChromeDriver();
+            //vinDriver.Navigate().GoToUrl("https://randomvin.com/");
+            //Thread.Sleep(2000);
+            //string randomVin = vinDriver.FindElement(By.XPath("//span[@id='Result']/h2")).Text;
+            //Console.WriteLine("the random vin is: " + randomVin);
 
 
+            MainNavBar mainNavBar = new MainNavBar(driver);
+            mainNavBar.ClickApplicationTab();
 
+            ApplicationGrid appGrid = new ApplicationGrid(driver);
+            appGrid.ClickNew();
+
+            ApplicationQuote appQuote = new ApplicationQuote(driver);
+            appQuote.EnterBusinessName("Casey Test Org");
+            appQuote.SelectLOB("Commercial Auto");
+            //appQuote.EnterAgency("biBerk");
+            //appQuote.EnterCarrier("BHDIC");
+            appQuote.EnterEffectiveDate("08/25/2020");
+            appQuote.EnterExpirationDate("08/25/2020");
+            appQuote.ClickNext();
 
 
         }

@@ -81,7 +81,6 @@ namespace ApolloQA.TestCases.Regression
         [NUnit.Framework.DescriptionAttribute("1 Policy Permissions")]
         [NUnit.Framework.TestCaseAttribute("Apollo Underwriter", "ApolloTestUserG108@biberk.com", "can", "can", "can", "can", null)]
         [NUnit.Framework.TestCaseAttribute("Apollo Policy Services", "ApolloTestUserG110@biberk.com", "cannot", "can", "cannot", "cannot", null)]
-        [NUnit.Framework.TestCaseAttribute("Apollo Business Analyst", "ApolloTestUserG312@biberk.com", "cannot", "can", "can", "can", null)]
         public virtual void _1PolicyPermissions(string role, string email, string createPolicy, string updatePolicy, string addContact, string addVehicle, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;

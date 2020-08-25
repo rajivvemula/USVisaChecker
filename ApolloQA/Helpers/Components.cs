@@ -50,6 +50,8 @@ namespace ApolloQA.Helpers
             return h3tobesent;
         }
 
+
+        /* UpdateDropdown - used for updating mat-select dropdown lists */
         public bool UpdateDropdown(string formcontrolname, string selection)
         {
             //locate the dropdown
@@ -66,7 +68,20 @@ namespace ApolloQA.Helpers
             return true;
         }
 
-        //public bool UpdateTextField
+        /* UpdateAutoCompleteInput - used for updating bh-input-autocomplete fields (magnifying glass) */
+        public void UpdateAutoCompleteInput(string formcontrolname, string selection)
+        {
+            IWebElement inputField = functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='" + formcontrolname + "']/input"));
+
+            inputField.Click();
+            //inputField.Clear();
+            inputField.SendKeys(selection);
+            inputField.SendKeys(Keys.Return);  
+        }
+
+
+
+
 
     }
 }

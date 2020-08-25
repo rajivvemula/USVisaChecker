@@ -23,6 +23,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement HomeIcon => functions.FindElementWait(60, By.XPath("//fa-icon[contains(@class, 'apollo-icon')]"));
         public IWebElement PolicyTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Policy')]"));
         public IWebElement OrganizationTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Organization')]"));
+        public IWebElement ApplicationTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Application')]"));
         public IWebElement waffleMenu => functions.FindElementWait(60, By.XPath("//mat-icon[contains(@class, 'waffle-icon')]"));
 
         public IWebElement ClaimTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Claims']"));
@@ -40,6 +41,11 @@ namespace ApolloQA.Pages.Shared
         public void ClickOrganizationTab()
         {
             OrganizationTab.Click();
+        }
+
+        public void ClickApplicationTab()
+        {
+            ApplicationTab.Click();
         }
 
     }
