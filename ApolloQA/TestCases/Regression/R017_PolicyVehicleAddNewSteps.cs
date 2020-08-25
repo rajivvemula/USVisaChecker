@@ -36,7 +36,7 @@ namespace ApolloQA.TestCases.Regression
             var detail = table.CreateDynamicSet();
             foreach(var details in detail)
             {
-                addVehicle.inputCode.Click();
+                //addVehicle.inputCode.Click();
                 Thread.Sleep(20000);
                 //addVehicle.inputCode.SendKeys(Keys.Enter);
                 //addVehicle.ClickClassCodeOption("401: Truckers - Long Haul");

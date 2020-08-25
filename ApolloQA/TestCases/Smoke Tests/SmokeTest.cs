@@ -30,6 +30,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
         OrganizationAddress organizationAddress;
         OrganizationDriver organizationDriver;
         AddDriver addDriver;
+        OrganizationVehicle organizationVehicle;
+        AddVehicle addVehicle;
         SmokeTestHelpers helper;
 
 
@@ -37,6 +39,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         //Org Number is a string 
         string smokeOrganization = "10085";
         bool smokeOrgCreated = false;
+        string orgName = "Smoke Test";
         public SmokeTest()
         {
             //driver = new ChromeDriver();
@@ -58,7 +61,9 @@ namespace ApolloQA.TestCases.Smoke_Tests
             organizationAddress = new OrganizationAddress(driver);
             addAddress = new AddAddress(driver);
             organizationDriver = new OrganizationDriver(driver);
+            organizationVehicle = new OrganizationVehicle(driver);
             addDriver = new AddDriver(driver);
+            addVehicle = new AddVehicle(driver);
         }
 
         [OneTimeTearDown]
@@ -128,6 +133,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
 
             //Input
             organizationInsert.EnterInput("name", "Smoke Test");
+            orgName = "Smoke Test";
             organizationInsert.EnterInput("dba", "Smoke");
             organizationInsert.EnterInput("businessphone", "123-456-7890");
             organizationInsert.EnterInput("businessemail", "smoketest@gmail.com");
@@ -217,7 +223,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             {
                 components.continueAnywayButton.Click();
             }
-            Assert.That(() => driver.Url, Does.Contain("driver").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Address Tab");
+            Assert.That(() => driver.Url, Does.Contain("driver").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Driver Tab");
 
             // Add Driver Button
             organizationDriver.addDriverButton.Click();
@@ -244,5 +250,59 @@ namespace ApolloQA.TestCases.Smoke_Tests
             string verifyToast = toaster.GetToastTitle();
             Assert.That(verifyToast, Does.Contain("Driver saved"), "Driver was not saved");
         }
+
+        /// <summary>
+		/// Test Adding a Vehicle to an organization
+		/// </summary>
+        [TestCase, Order(8)]
+        public void AddVehicleToOrganization()
+        {
+            //Navigate to Vehicle Tab
+            organizationVehicle.VehicleTab.Click();
+            if (components.CheckIfDialogPresent())
+            {
+                components.continueAnywayButton.Click();
+            }
+            Assert.That(() => driver.Url, Does.Contain("vehicle").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Vehicle Tab");
+
+            // Add Vehicle Button
+            organizationVehicle.addDriverButton.Click();
+            Assert.That(() => components.GetDialogTitle(), Is.EqualTo("Add vehicle for " + orgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add Vehicle Button/Open Add Vehicle Dialog");
+
+            // Generate a random Vin
+            Random rnd = new Random();
+            string vinRND = rnd.Next(100, 900).ToString();
+            string vinNumber = "1FAFP34N97W156" + vinRND;
+            string licenseRND = rnd.Next(100, 700).ToString();
+            string licenseNumber = "AZ15" + licenseRND;
+
+
+
+            //Vehicle Input
+            addVehicle.EnterInput("VIN", vinNumber);
+            addVehicle.EnterInput("Year", "2015");
+            addVehicle.EnterInput("Make", "Toyota");
+            addVehicle.EnterInput("Model", "Camry");
+            addVehicle.EnterInput("Trim", "SE");
+            addVehicle.EnterSelect("State", "AZ");
+            addVehicle.EnterInput("Plate", licenseNumber);
+            addVehicle.EnterSelect("Type", "Car");
+            addVehicle.EnterSelect("Category", "Cars, Pickup, or SUV");
+            addVehicle.EnterSelect("SubCategory", "Car - Coupe");
+            addVehicle.EnterSelect("Code", "Airport Limousines -826");
+            addVehicle.EnterSelect("Business", "Retail Vehicle");
+            addVehicle.EnterSelect("Seating", "5 or less");
+            addVehicle.EnterSelect("Gross", "0 - 5000");
+            addVehicle.EnterInput("Cost", "10000");
+            addVehicle.EnterInput("Value", "11000");
+            addVehicle.EnterInput("Stated", "12000");
+
+            // Vehicle Submit and Toast
+            addVehicle.submitButton.Click();
+            string verifyToast = toaster.GetToastTitle();
+            Assert.That(verifyToast, Does.Contain("Vehicle added successfully"), "Vehicle not added to organization");
+        }
+
+
     }
 }
