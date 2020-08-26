@@ -18,15 +18,21 @@ namespace ApolloQA.Pages.Policy
             functions = new Functions(driver);
         }
 
-
-        public IWebElement summaryLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='General Information']"));
-        public IWebElement locationLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Locations']"));
+        public IWebElement infoLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Business Information']"));
         public IWebElement contactsLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Contacts']"));
+        public IWebElement uwQuestionsLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='UW Questions']"));
         public IWebElement vehicleLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Vehicles']"));
         public IWebElement driverLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Drivers']"));
-        public IWebElement coverageLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Coverages']"));
+        public IWebElement trailersLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Trailers']"));
+        public IWebElement addQuestionsLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Additional Questions']"));
+        public IWebElement modifierLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Modifiers']"));
+        public IWebElement interestsLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Additional Interests']"));
+        public IWebElement summaryLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Summary]"));
+        public IWebElement coverageLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Policy Coverages']"));
         public IWebElement rateLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Rate Calculation']"));
         public IWebElement documentLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Documents']"));
+        public IWebElement activitiesLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Activities']"));
+        public IWebElement lossLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Loss History']"));
         public IWebElement historyLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Policy History']"));
         public void NavigateToPolicy(int policyNumber)
         {
@@ -42,14 +48,9 @@ namespace ApolloQA.Pages.Policy
         {
             policyDriver.Navigate().GoToUrl(Defaults.QA_URLS["Policy"]);
         }
-
         public void GoToSummary()
         {
             summaryLink.Click();
-        }
-        public void GoToLocations()
-        {
-            locationLink.Click();
         }
         public void GoToContacts()
         {
