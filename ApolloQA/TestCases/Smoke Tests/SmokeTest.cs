@@ -354,10 +354,30 @@ namespace ApolloQA.TestCases.Smoke_Tests
             //Submit Policy
             policyCreation.ClickSubmitButton();
             string verifyToast = toaster.GetToastTitle();
-            Assert.That(verifyToast, Does.Contain("was created"), "Policy was not created");
+            Assert.That(verifyToast, Does.Contain("was created").After(3).Seconds.PollEvery(250).MilliSeconds, "Policy was not created");
 
         }
 
+        /// <summary>
+		/// Verify all tabs for policy are present
+		/// </summary>
+        [TestCase, Order(10)]
+        public void VerifyTabs()
+        {
+            //List of tabs and for each loop to see if they are present
+            string[] tabs = {   "Business Information", "Contacts", "UW Questions", 
+                                "Policy Coverages", "Drivers", "Vehicles", "Trailers", 
+                                "Additional Questions", "Modifiers", "Additional Interests",
+                                "Summary", "Rate Calculation", "Documents", "Activities",
+                                "Loss History","Policy History"
+                                
+                            };
+            foreach (string i in tabs)
+            {
+                bool verifyTab = components.CheckIfTabPresent(i);
+                Assert.IsTrue(verifyTab, "Tab " + i + " not found");
+            }
+        }
 
     }
 }

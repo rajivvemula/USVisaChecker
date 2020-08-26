@@ -28,6 +28,5 @@ namespace ApolloQA.TestCases.Smoke_Tests
                 driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
             }
         }
-
     }
 }

@@ -108,6 +108,13 @@ namespace ApolloQA.Helpers
             }
         }
 
-    }
+        public bool CheckIfTabPresent(string tabName)
+        {
+            IWebElement tabLink = functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='" + tabName + "']"));
+            bool verifyTab = tabLink.Displayed;
+            return verifyTab;
+        }
+
+}
 }
 
