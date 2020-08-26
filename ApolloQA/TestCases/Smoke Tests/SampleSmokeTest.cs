@@ -87,14 +87,14 @@ namespace ApolloQA.TestCases.Smoke_Tests
             ApplicationGrid appGrid = new ApplicationGrid(driver);
             appGrid.ClickNew();
 
-            ApplicationQuote appQuote = new ApplicationQuote(driver);
-            appQuote.EnterBusinessName("Casey Test Org");
-            appQuote.SelectLOB("Commercial Auto");
+            ApplicationInformation appInfo = new ApplicationInformation(driver);
+            appInfo.EnterBusinessName("Casey Test Org");
+            appInfo.SelectLOB("General Liability");
             //appQuote.EnterAgency("biBerk");
             //appQuote.EnterCarrier("BHDIC");
-            appQuote.EnterEffectiveDate("08/25/2020");
-            appQuote.EnterExpirationDate("08/25/2020");
-            appQuote.ClickNext();
+            appInfo.EnterEffectiveDate("09/01/2020");
+            //appQuote.EnterExpirationDate("08/25/2020");
+            //appInfo.ClickNext();
 
 
         }

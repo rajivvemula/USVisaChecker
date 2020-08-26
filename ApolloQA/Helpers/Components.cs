@@ -55,20 +55,22 @@ namespace ApolloQA.Helpers
         public bool UpdateDropdown(string formcontrolname, string selection)
         {
             //locate the dropdown
-            IWebElement dropdownField = functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='" + formcontrolname + "']"));
+            IWebElement dropdownField = functions.FindElementWaitUntilClickable(10, By.XPath("//mat-select[@formcontrolname='" + formcontrolname + "']"));
             //if dropdown is disabled OR if the selection is already selected, return false
             if (dropdownField.GetAttribute("aria-disabled").Equals("true") || dropdownField.Text.Equals(selection))
                 return false;
             //otherwise, click the dropdown and make the selection
             dropdownField.Click();
             //Thread.Sleep(500);
-            IWebElement theSelection = functions.FindElementWait(10, By.XPath("//mat-option/span[normalize-space(text())='" + selection + "']"));
+            IWebElement theSelection = functions.FindElementWaitUntilClickable(10, By.XPath("//mat-option/span[normalize-space(text())='" + selection + "']"));
             //Thread.Sleep(500);
             theSelection.Click();
             return true;
         }
 
-        /* UpdateAutoCompleteInput - used for updating bh-input-autocomplete fields (magnifying glass) */
+        /* UpdateAutoCompleteInput - used for updating bh-input-autocomplete fields (magnifying glass) 
+                - Requires that search string matches exactly to selection (NOT case sensitive however)
+         */
         public void UpdateAutoCompleteInput(string formcontrolname, string selection)
         {
             IWebElement inputField = functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='" + formcontrolname + "']/input"));
@@ -76,10 +78,12 @@ namespace ApolloQA.Helpers
             inputField.Click();
             //inputField.Clear();
             inputField.SendKeys(selection);
-            inputField.SendKeys(Keys.Return);  
+
+            IWebElement theSelection = functions.FindElementWait(5, 
+                By.XPath("//mat-option[contains(@class,'provided') and *//div[@class='line-label' and translate(normalize-space(text()), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + selection.ToLower() + "']]"));
+
+            theSelection.Click();
         }
-
-
 
 
         public bool CheckIfDialogPresent()
