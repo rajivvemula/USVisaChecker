@@ -76,7 +76,16 @@ namespace ApolloQA.Helpers
             inputField.Click();
             //inputField.Clear();
             inputField.SendKeys(selection);
-            inputField.SendKeys(Keys.Return);  
+            string selectionValue = inputField.Text;
+            if (selectionValue == selection) { 
+                inputField.SendKeys(Keys.Return); 
+            } else
+            {
+                inputField.Clear();
+                inputField.SendKeys(selection);
+                Thread.Sleep(2000);
+                inputField.SendKeys(Keys.Return);
+            }
         }
 
 

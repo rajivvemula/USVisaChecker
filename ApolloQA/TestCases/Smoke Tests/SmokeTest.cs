@@ -2,6 +2,7 @@
 using ApolloQA.Pages.Dashboard;
 using ApolloQA.Pages.Login;
 using ApolloQA.Pages.Organization;
+using ApolloQA.Pages.Policy;
 using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -33,13 +34,18 @@ namespace ApolloQA.TestCases.Smoke_Tests
         OrganizationVehicle organizationVehicle;
         AddVehicle addVehicle;
         SmokeTestHelpers helper;
+        PolicyMain policyMain;
+        PolicyGrid policyGrid;
+        PolicyCreation policyCreation;
+        Random rnd;
 
 
         //Variables
         //Org Number is a string 
         string smokeOrganization = "10085";
         bool smokeOrgCreated = false;
-        string orgName = "Smoke Test";
+        string createdOrgName = "Smoke Test";
+        string taxName = "12-3489123";
         public SmokeTest()
         {
             //driver = new ChromeDriver();
@@ -50,6 +56,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
+            rnd = new Random();
+            Generator();
             mainNavBar = new MainNavBar(driver);
             homePage = new HomePage(driver);
             helper = new SmokeTestHelpers(driver);
@@ -64,12 +72,21 @@ namespace ApolloQA.TestCases.Smoke_Tests
             organizationVehicle = new OrganizationVehicle(driver);
             addDriver = new AddDriver(driver);
             addVehicle = new AddVehicle(driver);
+            policyMain = new PolicyMain(driver);
+            policyGrid = new PolicyGrid(driver);
+            policyCreation = new PolicyCreation(driver);
         }
 
         [OneTimeTearDown]
         public void teardown()
         {
             driver.Quit();
+        }
+
+        public void Generator()
+        {
+            string taxRND = rnd.Next(100, 900).ToString();
+            taxName = "12-3489" + taxRND;
         }
 
         /// <summary>
@@ -131,9 +148,13 @@ namespace ApolloQA.TestCases.Smoke_Tests
             organizationGrid.ClickNewButton();
             Assert.That(() => driver.Title, Is.EqualTo("Insert Organization").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click New Button");
 
+            //Generate Org Name
+            string orgRND = rnd.Next(100, 900).ToString();
+            string orgName = "Smoke Test" + orgRND;
+
             //Input
-            organizationInsert.EnterInput("name", "Smoke Test");
-            orgName = "Smoke Test";
+            organizationInsert.EnterInput("name", orgName);
+            createdOrgName = orgName;
             organizationInsert.EnterInput("dba", "Smoke");
             organizationInsert.EnterInput("businessphone", "123-456-7890");
             organizationInsert.EnterInput("businessemail", "smoketest@gmail.com");
@@ -144,7 +165,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             organizationInsert.EnterSelect("taxtype", "FEIN");
             organizationInsert.EnterInput("keyword", "Accountant");
             organizationInsert.keywordCode.SendKeys(Keys.Enter);
-            organizationInsert.EnterInput("taxid", "12-3489769");
+            organizationInsert.EnterInput("taxid", taxName);
 
             //Submit Ogrnaization and if it's created then test proceeds with the created organization
             //If it's not then test proceed with a preselected organization
@@ -230,7 +251,6 @@ namespace ApolloQA.TestCases.Smoke_Tests
             Assert.That(() => components.GetDialogTitle(), Is.EqualTo("Add Driver").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add Driver Button/Open Add Driver Dialog");
 
             //generate random number for license plate
-            Random rnd = new Random();
             string licenseRND = rnd.Next(100, 700).ToString();
             string licenseNumber = "AZ15" + licenseRND;
 
@@ -267,10 +287,9 @@ namespace ApolloQA.TestCases.Smoke_Tests
 
             // Add Vehicle Button
             organizationVehicle.addDriverButton.Click();
-            Assert.That(() => components.GetDialogTitle(), Is.EqualTo("Add vehicle for " + orgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add Vehicle Button/Open Add Vehicle Dialog");
+            Assert.That(() => components.GetDialogTitle(), Is.EqualTo("Add vehicle for " + createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add Vehicle Button/Open Add Vehicle Dialog");
 
             // Generate a random Vin
-            Random rnd = new Random();
             string vinRND = rnd.Next(100, 900).ToString();
             string vinNumber = "1FAFP34N97W156" + vinRND;
             string licenseRND = rnd.Next(100, 700).ToString();
@@ -300,7 +319,43 @@ namespace ApolloQA.TestCases.Smoke_Tests
             // Vehicle Submit and Toast
             addVehicle.submitButton.Click();
             string verifyToast = toaster.GetToastTitle();
-            Assert.That(verifyToast, Does.Contain("Vehicle added successfully"), "Vehicle not added to organization");
+            Assert.That(verifyToast, Does.Contain("Vehicle saved"), "Vehicle not added to organization");
+        }
+
+        /// <summary>
+		/// Navigate to policy tab and insert a policy
+		/// </summary>
+        [TestCase, Order(9)]
+        public void InsertPolicy()
+        {
+            //Navigate to policy tab and insert page
+            mainNavBar.ClickPolicyTab();
+            Assert.That(() => driver.Title, Does.Contain("Policy List").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Policy List");
+            policyGrid.ClickNew();
+            Assert.That(() => driver.Title, Does.Contain("Insert Policy").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Policy Insert");
+
+            //Generate Variables
+            //string taxRND = rnd.Next(100, 900).ToString();
+            //string taxName = "12-3489" + taxRND;
+
+            //Input 
+            components.UpdateAutoCompleteInput("insuredPartyId", createdOrgName);
+            components.UpdateAutoCompleteInput("agencyPartyId", "biBerk");
+            components.UpdateAutoCompleteInput("carrierPartyId", "BHDIC");
+            //policyCreation.EnterInput("insured", "Smoke Test");
+            //policyCreation.EnterInput("agency", "biBerk");
+            //policyCreation.EnterInput("carrier", "BHDIC");
+            policyCreation.EnterSelect("lob", "Commercial Auto");
+            policyCreation.EnterSelect("type", "Corporation");
+            policyCreation.EnterInput("years", "5");
+            policyCreation.EnterSelect("taxtype", "FEIN");
+            policyCreation.EnterInput("taxid", taxName);
+
+            //Submit Policy
+            policyCreation.ClickSubmitButton();
+            string verifyToast = toaster.GetToastTitle();
+            Assert.That(verifyToast, Does.Contain("was created"), "Policy was not created");
+
         }
 
 

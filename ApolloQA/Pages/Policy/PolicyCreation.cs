@@ -35,6 +35,37 @@ namespace ApolloQA.Pages.Policy
         public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//button[@aria-label='Submit']"));
         public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//button[@aria-label='Cancel']"));
 
+        public IWebElement getElementFromFieldname(string fieldName)
+        {
+            switch (fieldName)
+            {
+                case "insured": return inputInsured;
+                case "agency": return inputAgency;
+                case "carrier": return inputCarrier;
+                case "effective": return inputEffective;
+                case "expiration": return inputExpiration;
+                case "issue": return inputIssue;
+                case "years": return inputYears;
+                case "taxid": return inputID;
+                case "lob": return selectLOB;
+                case "type": return selectBus;
+                case "taxtype": return selecID;
+                default: return null;
+
+            }
+        }
+
+        public void EnterInput(string locator, string value)
+        {
+            getElementFromFieldname(locator).SendKeys(value);
+        }
+
+        public void EnterSelect(string locator, string value)
+        {
+            getElementFromFieldname(locator).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
+        }
+
         //For Dev Purposes
         public void EnterDefaultInputs()
         {
