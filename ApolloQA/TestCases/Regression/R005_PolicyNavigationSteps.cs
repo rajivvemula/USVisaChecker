@@ -39,10 +39,6 @@ namespace ApolloQA.TestCases.Regression
         }
         
         [When(@"User Click on Locations")]
-        public void WhenUserClickOnLocations()
-        {
-            policyMain.GoToLocations();
-        }
         
         [When(@"User Click on Contacts")]
         public void WhenUserClickOnContacts()

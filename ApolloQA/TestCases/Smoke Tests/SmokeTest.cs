@@ -37,6 +37,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         PolicyMain policyMain;
         PolicyGrid policyGrid;
         PolicyCreation policyCreation;
+        PolicyContacts policyContacts;
         Random rnd;
 
 
@@ -75,6 +76,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             policyMain = new PolicyMain(driver);
             policyGrid = new PolicyGrid(driver);
             policyCreation = new PolicyCreation(driver);
+            policyContacts = new PolicyContacts(driver);
         }
 
         [OneTimeTearDown]
@@ -378,6 +380,43 @@ namespace ApolloQA.TestCases.Smoke_Tests
                 Assert.IsTrue(verifyTab, "Tab " + i + " not found");
             }
         }
+
+        /// <summary>
+		/// Verify all tabs for policy are present
+		/// </summary>
+        [TestCase, Order(10)]
+        public void CreatePolicyContact()
+        {
+            //Navigate to contacts tab in policy details
+            policyMain.contactsLink.Click();
+            Assert.That(() => driver.Url, Does.Contain("contacts").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Contacts Tab");
+
+            //Click New Contact
+            policyContacts.ClickAddContact();
+            Assert.That(() => driver.Url, Does.Contain("contacts/insert").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add New Button/Navigate to contact insert screen");
+
+            //inputs
+            policyContacts.EnterInput("first", "John");
+            policyContacts.EnterSelect("party", "Customer Service Representative");
+            policyContacts.EnterInput("middle", "J");
+            policyContacts.EnterInput("last", "Smith");
+            policyContacts.EnterInput("suffix", "Mr");
+            policyContacts.EnterInput("email", "Jsmith@gmail.com");
+            policyContacts.EnterInput("job", "Developer");
+            policyContacts.EnterInput("company", "BiBerk");
+            policyContacts.EnterInput("internet", "Biberk.com");
+            policyContacts.EnterInput("remarks", "Mobile");
+            policyContacts.EnterInput("phonenumber", "3469994485");
+            policyContacts.EnterSelect("phonetype", "Mobile");
+            Assert.That(() => policyContacts.inputFirstName.Text, Is.EqualTo("John").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct input");
+
+            //Submit contact and verify via toast
+            policyContacts.SubmitContact();
+            string verifyToast = toaster.GetToastTitle();
+            Assert.That(verifyToast, Does.Contain("Contact was successfully saved."), "Contact was not submitted");
+        }
+
+
 
     }
 }
