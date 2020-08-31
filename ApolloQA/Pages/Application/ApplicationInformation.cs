@@ -54,13 +54,15 @@ namespace ApolloQA.Pages.Application
 
         public void EnterEffectiveDate(string effDate)
         {
-            effectiveDate.Clear();
+            effectiveDate.SendKeys(Keys.Control + "a");
+            effectiveDate.SendKeys(Keys.Backspace);
             effectiveDate.SendKeys(effDate);
         }
 
         public void EnterExpirationDate(string expDate)
         {
-            expirationDate.Clear();
+            expirationDate.SendKeys(Keys.Control + "a");
+            expirationDate.SendKeys(Keys.Backspace);
             expirationDate.SendKeys(expDate);
         }
 

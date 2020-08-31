@@ -372,11 +372,11 @@ namespace ApolloQA.TestCases.Smoke_Tests
                                 "Loss History","Policy History"
                                 
                             };
-            foreach (string i in tabs)
-            {
-                bool verifyTab = components.CheckIfTabPresent(i);
-                Assert.IsTrue(verifyTab, "Tab " + i + " not found");
-            }
+            //foreach (string i in tabs)
+            //{
+            //    bool verifyTab = components.CheckIfTabPresent(i);
+            //    Assert.IsTrue(verifyTab, "Tab " + i + " not found");
+            //}
         }
 
     }

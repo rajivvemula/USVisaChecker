@@ -88,14 +88,17 @@ namespace ApolloQA.TestCases.Smoke_Tests
             appGrid.ClickNew();
 
             ApplicationInformation appInfo = new ApplicationInformation(driver);
-            appInfo.EnterBusinessName("Casey Test Org");
-            appInfo.SelectLOB("General Liability");
+            appInfo.EnterBusinessName("Casey Test Org 827");
+            appInfo.SelectLOB("Commercial Auto");
             //appQuote.EnterAgency("biBerk");
             //appQuote.EnterCarrier("BHDIC");
             appInfo.EnterEffectiveDate("09/01/2020");
             //appQuote.EnterExpirationDate("08/25/2020");
-            //appInfo.ClickNext();
+            appInfo.ClickNext();
 
+            BusinessInformation busInfo = new BusinessInformation(driver);
+            busInfo.UpdateMailingAddress(" 123 test address, FORTY Fort, pa, 18704  ");
+            busInfo.UpdatePhysicalAddress(" 345 New AddRess, FORTY Fort, pa, 18704  ");
 
         }
     }

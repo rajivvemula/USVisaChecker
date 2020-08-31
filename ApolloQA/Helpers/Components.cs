@@ -103,6 +103,11 @@ namespace ApolloQA.Helpers
             }
         }
 
+        //public void UpdateResourceSelectDropdown()
+        //{
+
+        //}
+
     }
 }
 

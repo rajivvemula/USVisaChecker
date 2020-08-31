@@ -11,9 +11,9 @@ Scenario: 1 User Can Navigate To General Information
 	Then User is shown the General Information screen for that policy
 
 
-Scenario: 2 User Can Navigate To Locations
-	When User Click on Locations
-	Then User is shown the Locations screen for that policy
+#Scenario: 2 User Can Navigate To Locations
+#	When User Click on Locations
+#	Then User is shown the Locations screen for that policy
 
 
 Scenario: 3 User Can Navigate To Contacts

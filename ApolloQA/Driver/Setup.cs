@@ -21,12 +21,11 @@ namespace ApolloQA.Driver
             _objectContainer = objectContainer;
         }
 
-        //[BeforeTestRun]
+        [BeforeTestRun]
         public static void BeforeTestRun()
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
-            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
             state = new State();
         }
 
