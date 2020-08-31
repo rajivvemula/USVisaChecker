@@ -68,10 +68,9 @@ namespace ApolloQA.Pages.Policy
         public IWebElement inputCompany => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='company']"));
         public IWebElement inputInternet => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='internetAddress']"));
         public IWebElement inputRemarks => functions.FindElementWait(10, By.Name("remarks"));
-        public IWebElement phoneType => functions.FindElementWait(10, By.XPath("//mat-select[@class= 'mat-select'][2]"));
         public IWebElement inputPhoneNumber=> functions.FindElementWait(10, By.Name("phone"));
         public IWebElement inputExtension => functions.FindElementWait(10, By.Name("extension"));
-
+        public IWebElement selectPhoneType => functions.FindElementWait(10, By.Name("phoneTypeId"));
         public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//button[@aria-label='Submit']"));
         public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
 
@@ -90,7 +89,7 @@ namespace ApolloQA.Pages.Policy
                 case "company": return inputCompany;
                 case "internet": return inputInternet;
                 case "remarks": return inputRemarks;
-                case "phonetype": return phoneType;
+                case "phonetype": return selectPhoneType;
                 case "phonenumber": return inputPhoneNumber;
                 default: return null;
 
@@ -113,9 +112,8 @@ namespace ApolloQA.Pages.Policy
             //Console.WriteLine(anchors);
             selects[2].Click();
             functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + option + "']")).Click();
-            
-        }
 
+        }
         public bool ClickAddContact()
         {
             //check if new contact button is disabled

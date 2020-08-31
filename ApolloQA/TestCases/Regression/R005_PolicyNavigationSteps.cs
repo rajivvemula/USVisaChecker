@@ -38,11 +38,7 @@ namespace ApolloQA.TestCases.Regression
             Thread.Sleep(5000);
         }
         
-        //[When(@"User Click on Locations")]
-        //public void WhenUserClickOnLocations()
-        //{
-        //    policyMain.GoToLocations();
-        //}
+        [When(@"User Click on Locations")]
         
         [When(@"User Click on Contacts")]
         public void WhenUserClickOnContacts()
