@@ -29,7 +29,7 @@ namespace ApolloQA.TestCases.Regression
 
 
         [When(@"I attempt to create a policy with (.*), (.*), (.*)")]
-        public void WhenIAttemptToCreateAPolicyWithCaseyTestOrgCommercialAuto(string orgName, string lob, string effectiveDate)
+        public void WhenIAttemptToCreateAPolicyWith(string orgName, string lob, string effectiveDate)
         {
             mainNavBar.ClickApplicationTab();
             appGrid.ClickNew();
@@ -40,7 +40,7 @@ namespace ApolloQA.TestCases.Regression
         }
         
         [Then(@"a policy is successfully created with (.*), (.*), (.*)")]
-        public void ThenAPolicyIsSuccessfullyCreatedWithCaseyTestOrgCommercialAuto(string orgName, string lob, string effectiveDate)
+        public void ThenAPolicyIsSuccessfullyCreatedWith(string orgName, string lob, string effectiveDate)
         {
             string toastTitle = toaster.GetToastTitle();
 
