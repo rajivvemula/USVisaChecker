@@ -142,6 +142,16 @@ namespace ApolloQA.TestCases.Smoke_Tests
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization"]), "Unable to Click Organization Tab");
             mainNavBar.ClickApplicationTab();
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Application"]), "Unable to Click Application Tab");
+
+            //Test Waffle Menu has all tabs present
+            string[] waffleTabs = { "Underwriting", "Billing", "Administration", "Collections Center", "Claims" };
+
+            foreach(var i in waffleTabs)
+            {
+                bool verifyTab = helper.checkWaffleTab(i);
+                Assert.IsTrue(verifyTab, i + " Tab not present");
+            }
+
         }
 
         /// <summary>
