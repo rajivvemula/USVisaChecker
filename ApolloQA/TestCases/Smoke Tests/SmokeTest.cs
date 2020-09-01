@@ -1,4 +1,5 @@
 ﻿using ApolloQA.Helpers;
+using ApolloQA.Pages.Application;
 using ApolloQA.Pages.Dashboard;
 using ApolloQA.Pages.Login;
 using ApolloQA.Pages.Organization;
@@ -38,6 +39,9 @@ namespace ApolloQA.TestCases.Smoke_Tests
         PolicyGrid policyGrid;
         PolicyCreation policyCreation;
         PolicyContacts policyContacts;
+        ApplicationGrid appGrid;
+        ApplicationInformation appInfo;
+        BusinessInformation appBusInfo;
         Random rnd;
 
 
@@ -77,6 +81,9 @@ namespace ApolloQA.TestCases.Smoke_Tests
             policyGrid = new PolicyGrid(driver);
             policyCreation = new PolicyCreation(driver);
             policyContacts = new PolicyContacts(driver);
+            appGrid = new ApplicationGrid(driver);
+            appInfo = new ApplicationInformation(driver);
+            appBusInfo = new BusinessInformation(driver);
         }
 
         [OneTimeTearDown]
@@ -128,13 +135,13 @@ namespace ApolloQA.TestCases.Smoke_Tests
             //MainNavBar mainNavBar = new MainNavBar(driver);
             helper.CheckIfHome();
             mainNavBar.ClickHomeIcon();
-            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Home"]));
+            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Home"]), "Unable to Click Home");
             mainNavBar.ClickPolicyTab();
-            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Policy"]));
+            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Policy"]), "Unable to Click Policy Tab");
             mainNavBar.ClickOrganizationTab();
-            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization"]));
+            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization"]), "Unable to Click Organization Tab");
             mainNavBar.ClickApplicationTab();
-            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Application"]));
+            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Application"]), "Unable to Click Application Tab");
         }
 
         /// <summary>
@@ -325,9 +332,34 @@ namespace ApolloQA.TestCases.Smoke_Tests
         }
 
         /// <summary>
-		/// Navigate to policy tab and insert a policy
+		/// Create an Application
 		/// </summary>
         [TestCase, Order(9)]
+        public void CreateApplication()
+        {
+            //Navigate To Application Tab and Click New 
+            mainNavBar.ClickApplicationTab();
+            Assert.That(() => driver.Title, Does.Contain("Application").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Application From Navbar");
+            appGrid.ClickNew();
+            Assert.That(() => driver.Url, Does.Contain("quote/create").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Qoute Creation From App Grid");
+
+            //Inputs
+            appInfo.EnterBusinessName(createdOrgName);
+            Assert.That(() => appInfo.businessName.Text, Does.Contain(createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Enter Correct Organization Name");
+
+            //CLick Next and Confirm 
+            appInfo.ClickNext();
+            Assert.That(() => driver.Url, Does.Contain("section").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Create a Qoute");
+
+            //Verify Quote has correct Business Name and Tax Id
+            Assert.That(() => appBusInfo.businessName, Does.Contain(createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Quote has wrong Business Name");
+            Assert.That(() => appBusInfo.taxNo, Does.Contain(taxName).After(1).Seconds.PollEvery(250).MilliSeconds, "Quote has wrong Tax Id No");
+        }
+
+        /// <summary>
+        /// Navigate to policy tab and insert a policy
+        /// </summary>
+        [TestCase, Order(89)]
         public void InsertPolicy()
         {
             //Navigate to policy tab and insert page
@@ -363,7 +395,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         /// <summary>
 		/// Verify all tabs for policy are present
 		/// </summary>
-        [TestCase, Order(10)]
+        [TestCase, Order(90)]
         public void VerifyTabs()
         {
             //List of tabs and for each loop to see if they are present
@@ -384,7 +416,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         /// <summary>
 		/// Verify all tabs for policy are present
 		/// </summary>
-        [TestCase, Order(10)]
+        [TestCase, Order(91)]
         public void CreatePolicyContact()
         {
             //Navigate to contacts tab in policy details

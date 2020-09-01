@@ -19,6 +19,9 @@ namespace ApolloQA.Pages.Application
             components = new Components(driver);
         }
 
+        public IWebElement businessName => functions.FindElementWait(10, By.XPath("//input[@name='businessName']"));
+        public IWebElement taxNo => functions.FindElementWait(10, By.XPath("//input[@name='taxId']"));
+
 
         public void UpdateMailingAddress(string selection)
         {
