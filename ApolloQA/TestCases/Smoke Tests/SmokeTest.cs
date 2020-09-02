@@ -1,6 +1,7 @@
 ﻿using ApolloQA.Helpers;
 using ApolloQA.Pages.Application;
 using ApolloQA.Pages.Dashboard;
+using ApolloQA.Pages.Fnol;
 using ApolloQA.Pages.Login;
 using ApolloQA.Pages.Organization;
 using ApolloQA.Pages.Policy;
@@ -43,6 +44,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         ApplicationGrid appGrid;
         ApplicationInformation appInfo;
         BusinessInformation appBusInfo;
+        FNOLDashboard fnolDashboard;
         Random rnd;
 
 
@@ -86,6 +88,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             appGrid = new ApplicationGrid(driver);
             appInfo = new ApplicationInformation(driver);
             appBusInfo = new BusinessInformation(driver);
+            fnolDashboard = new FNOLDashboard(driver);
         }
 
         [OneTimeTearDown]
@@ -374,7 +377,10 @@ namespace ApolloQA.TestCases.Smoke_Tests
             Assert.That(() => appBusInfo.taxNo, Does.Contain(taxName).After(1).Seconds.PollEvery(250).MilliSeconds, "Quote has wrong Tax Id No");
         }
 
-        [TestCase, Order(90)]
+        /// <summary>
+		/// Verify Appropriate Tabs are present in Application
+		/// </summary>
+        [TestCase, Order(10)]
         public void VerifyApplicationTabs()
         {
             //List of tabs and for each loop to see if they are present
@@ -390,6 +396,29 @@ namespace ApolloQA.TestCases.Smoke_Tests
             }
         }
 
+
+        /// <summary>
+		/// Navigate to Fnol Via Waffle Menu(Confirms waffle link is working and new fnol butt is working in Manager Dashboard) and checks add new fnol button in navbar
+		/// </summary>
+        [TestCase, Order(11)]
+        public void NavigateToFnol()
+        {
+            //Click Claims Tab in Waffle Menu
+            mainNavBar.waffleMenu.Click();
+            mainNavBar.waffleClaimTab.Click();
+            Assert.That(() => driver.Title, Does.Contain("First Notice of Loss").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Claims Tab");
+
+            //Click New Fnol
+            fnolDashboard.newFNOL.Click();
+            Assert.That(() => driver.Title, Does.Contain("Insert First Notice of Loss").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add New FNOl Button/Navigate to FNOL Insert");
+
+            //Navigate Home and CLick Add New FNol Via Navbar
+            mainNavBar.HomeIcon.Click();
+            Assert.That(() => driver.Title, Does.Contain("Home").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Home");
+            mainNavBar.AddIcon.Click();
+            mainNavBar.addFnolButton.Click();
+            Assert.That(() => driver.Title, Does.Contain("Insert First Notice of Loss").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add New FNOl Button In Navbar/Navigate to FNOL Insert");
+        }
 
         /// <summary>
         /// Navigate to policy tab and insert a policy
