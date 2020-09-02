@@ -38,7 +38,7 @@ namespace ApolloQA.TestCases.Regression
         [When(@"User clicks on Claims")]
         public void WhenUserClicksOnClaims()
         {
-            mainNav.ClaimTab.Click();
+            //mainNav.ClaimTab.Click();
         }
         
         [When(@"User clicks on Add New FNOL Button")]

@@ -22,6 +22,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
 
         public IWebDriver driver;
         MainNavBar mainNavBar;
+        RightNavBar rightNavBar;
         HomePage homePage;
         OrganizationGrid organizationGrid;
         OrganizationInsert organizationInsert;
@@ -64,6 +65,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             rnd = new Random();
             Generator();
             mainNavBar = new MainNavBar(driver);
+            rightNavBar = new RightNavBar(driver);
             homePage = new HomePage(driver);
             helper = new SmokeTestHelpers(driver);
             organizationGrid = new OrganizationGrid(driver);
@@ -144,13 +146,17 @@ namespace ApolloQA.TestCases.Smoke_Tests
             Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Application"]), "Unable to Click Application Tab");
 
             //Test Waffle Menu has all tabs present
+
             string[] waffleTabs = { "Underwriting", "Billing", "Administration", "Collections Center", "Claims" };
 
+            rightNavBar.waffleMenu.Click();
             foreach(var i in waffleTabs)
             {
                 bool verifyTab = helper.checkWaffleTab(i);
                 Assert.IsTrue(verifyTab, i + " Tab not present");
             }
+            rightNavBar.sideWaffleMenu.Click();
+
 
         }
 
@@ -185,9 +191,11 @@ namespace ApolloQA.TestCases.Smoke_Tests
             organizationInsert.EnterInput("keyword", "Accountant");
             organizationInsert.keywordCode.SendKeys(Keys.Enter);
             organizationInsert.EnterInput("taxid", taxName);
+            Thread.Sleep(3000);
 
             //Submit Ogrnaization and if it's created then test proceeds with the created organization
             //If it's not then test proceed with a preselected organization
+            //Assert.That(() => organizationInsert.inputName.Text, Does.Contain(orgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Incorrect Org Name Entered");
             organizationInsert.ClickSubmitButton();
             bool verifyTitle = components.GetTitle("Organization Details");
             Assert.IsTrue(verifyTitle, "Organization was not created");
@@ -197,7 +205,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
                 //string currentURL = driver.Url;
                 //string orgNumber = currentURL.Remove(0, currentURL.Length - 5);
             }
-            Thread.Sleep(5000);
+            Thread.Sleep(3000);
         }
 
         /// <summary>
@@ -322,13 +330,13 @@ namespace ApolloQA.TestCases.Smoke_Tests
             addVehicle.EnterInput("Make", "Toyota");
             addVehicle.EnterInput("Model", "Camry");
             addVehicle.EnterInput("Trim", "SE");
-            addVehicle.EnterSelect("State", "AZ");
-            addVehicle.EnterInput("Plate", licenseNumber);
+            //addVehicle.EnterSelect("State", "AZ");
+            //addVehicle.EnterInput("Plate", licenseNumber);
             addVehicle.EnterSelect("Type", "Car");
             addVehicle.EnterSelect("Category", "Cars, Pickup, or SUV");
             addVehicle.EnterSelect("SubCategory", "Car - Coupe");
-            addVehicle.EnterSelect("Code", "Airport Limousines -826");
-            addVehicle.EnterSelect("Business", "Retail Vehicle");
+            //addVehicle.EnterSelect("Code", "Airport Limousines -826");
+            //addVehicle.EnterSelect("Business", "Retail Vehicle");
             addVehicle.EnterSelect("Seating", "5 or less");
             addVehicle.EnterSelect("Gross", "0 - 5000");
             addVehicle.EnterInput("Cost", "10000");
@@ -349,17 +357,17 @@ namespace ApolloQA.TestCases.Smoke_Tests
         {
             //Navigate To Application Tab and Click New 
             mainNavBar.ClickApplicationTab();
-            Assert.That(() => driver.Title, Does.Contain("Application").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Application From Navbar");
-            appGrid.ClickNew();
+            Assert.That(() => driver.Title, Does.Contain("Application").After(9).Seconds, "Unable To Navigate To Application From Navbar");
+            appGrid.newButton.Click();
             Assert.That(() => driver.Url, Does.Contain("quote/create").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Qoute Creation From App Grid");
 
             //Inputs
             appInfo.EnterBusinessName(createdOrgName);
-            Assert.That(() => appInfo.businessName.Text, Does.Contain(createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Enter Correct Organization Name");
+            //Assert.That(() => appInfo.businessName.Text, Does.Contain(createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Enter Correct Organization Name");
 
             //CLick Next and Confirm 
             appInfo.ClickNext();
-            Assert.That(() => driver.Url, Does.Contain("section").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Create a Qoute");
+            Assert.That(() => driver.Url, Does.Contain("section").After(9).Seconds.PollEvery(250).MilliSeconds, "Unable To Create a Qoute");
 
             //Verify Quote has correct Business Name and Tax Id
             Assert.That(() => appBusInfo.businessName, Does.Contain(createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Quote has wrong Business Name");

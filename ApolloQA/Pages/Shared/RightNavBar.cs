@@ -28,6 +28,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement HistoryIcon => functions.FindElementWait(10, By.XPath("//button/span/mat-icon[text()='history']/../.."));
         public IWebElement AddIcon => functions.FindElementWait(10, By.XPath("//mat-icon[normalize-space(text())='add']"));
         public IWebElement waffleMenu => functions.FindElementWait(60, By.XPath("//mat-icon[contains(@class, 'waffle-icon')]"));
+        public IWebElement sideWaffleMenu => functions.FindElementWait(60, By.XPath("//mat-icon[contains(@class, 'side-navbar-waffle')]"));
         public IWebElement addFnolButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'Add FNOL')]"));
 
         public IWebElement waffleUWTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Underwriting']"));
