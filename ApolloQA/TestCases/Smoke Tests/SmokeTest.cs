@@ -374,6 +374,23 @@ namespace ApolloQA.TestCases.Smoke_Tests
             Assert.That(() => appBusInfo.taxNo, Does.Contain(taxName).After(1).Seconds.PollEvery(250).MilliSeconds, "Quote has wrong Tax Id No");
         }
 
+        [TestCase, Order(90)]
+        public void VerifyApplicationTabs()
+        {
+            //List of tabs and for each loop to see if they are present
+            string[] tabs = {   "Application Information","Business Information", "Contacts", "UW Questions",
+                                "Policy Coverages", "Drivers", "Vehicles", "Additional Questions", 
+                                "Summary", 
+
+                            };
+            foreach (string i in tabs)
+            {
+                bool verifyTab = components.CheckIfTabPresent(i);
+                Assert.IsTrue(verifyTab, "Tab " + i + " not found");
+            }
+        }
+
+
         /// <summary>
         /// Navigate to policy tab and insert a policy
         /// </summary>
@@ -414,7 +431,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
 		/// Verify all tabs for policy are present
 		/// </summary>
         [TestCase, Order(90)]
-        public void VerifyTabs()
+        public void VerifyPolicyTabs()
         {
             //List of tabs and for each loop to see if they are present
             string[] tabs = {   "Business Information", "Contacts", "UW Questions", 
