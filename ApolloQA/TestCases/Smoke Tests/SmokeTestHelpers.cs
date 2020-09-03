@@ -36,5 +36,17 @@ namespace ApolloQA.TestCases.Smoke_Tests
             IWebElement waffleTab = functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='" + tab + "']"));
             return waffleTab.Displayed;
         }
+
+        public void SelectOptionAddress(string address)
+        {
+            IWebElement addressOption = functions.FindElementWait(10, By.XPath("//div[@class='address-info' and normalize-space(text())='" + address + "']"));
+            addressOption.Click();
+        }
+
+        public bool CheckIfAddressSelected(string address)
+        {
+            IWebElement addressOption = functions.FindElementWait(10, By.XPath("//div[@class='address-info' and normalize-space(text())='" + address + "']"));
+            return addressOption.Displayed;
+        }
     }
 }

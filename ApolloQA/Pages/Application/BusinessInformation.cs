@@ -23,7 +23,10 @@ namespace ApolloQA.Pages.Application
         public IWebElement taxNo => functions.FindElementWait(10, By.XPath("//input[@name='taxId']"));
 
         public IWebElement appIDNo => functions.FindElementWait(10, By.XPath("//div[text()=' Application Number ']/../div/strong"));
-        
+
+        public IWebElement selectMailing => functions.FindElementWait(10, By.XPath("//mat-label[@class='ng-star-inserted' and normalize-space(text())='Mailing Address']"));
+        public IWebElement nextButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Next']"));
+
 
 
         public void UpdateMailingAddress(string selection)

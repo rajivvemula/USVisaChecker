@@ -47,6 +47,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         ApplicationInformation appInfo;
         BusinessInformation appBusInfo;
         FNOLDashboard fnolDashboard;
+        FNOLInsert fnolInsert;
         Random rnd;
 
         //Cosmos Azure
@@ -60,6 +61,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         string smokeOrganization = "10085";
         bool smokeOrgCreated = false;
         string createdOrgName = "Smoke Test";
+        string createdOrgAddress = "";
         string taxName = "12-3489123";
         string createdAppID = "";
         bool queryFound = false;
@@ -98,6 +100,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             appInfo = new ApplicationInformation(driver);
             appBusInfo = new BusinessInformation(driver);
             fnolDashboard = new FNOLDashboard(driver);
+            fnolInsert = new FNOLInsert(driver);
 
             //Cosmos Client Setup
             client = new CosmosClient("https://zbibaoazcdb1qa2.documents.azure.com:443/", "p9fiijwywnNpP4gRROO0NNA2sDMPyyjZ0OfMzJGriSCZIEKUGNrIyzut20ICyyGnGtbVwRr5rmgT57TIBE0LvQ==");
@@ -129,6 +132,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
                     foreach (var item in response)
                     {
                         //simple check for right now
+                        Console.WriteLine(item);
                         queryFound = true;
                     }
                 }
@@ -284,6 +288,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             addAddress.EnterInput("city", "Wilkes Barre");
             addAddress.EnterInput("zip", "18703");
             addAddress.EnterSelect("state", "PA");
+            createdOrgAddress = "39 Public Sq, Wilkes Barre, PA, 18701";
             addAddress.saveButton.Click();
             //Select Default Address
             addAddress.defaultAddressInfo.Click();
@@ -440,8 +445,6 @@ namespace ApolloQA.TestCases.Smoke_Tests
         }
 
 
-
-
         /// <summary>
 		/// Verify Appropriate Tabs are present in Application
 		/// </summary>
@@ -461,11 +464,26 @@ namespace ApolloQA.TestCases.Smoke_Tests
             }
         }
 
+        /// <summary>
+		/// Apply a mailing address to application
+		/// </summary>
+        [TestCase, Order(12)]
+        public void ApplyMailingAddress()
+        {
+            //Select address and click next
+            appBusInfo.selectMailing.Click();
+            helper.SelectOptionAddress(createdOrgAddress);
+            Assert.That(() => helper.CheckIfAddressSelected(createdOrgAddress), Is.EqualTo(true).After(3).Seconds.PollEvery(250).MilliSeconds, "Correct Address Not Selected");
+            appBusInfo.nextButton.Click();
+
+        }
+
+
 
         /// <summary>
 		/// Navigate to Fnol Via Waffle Menu(Confirms waffle link is working and new fnol butt is working in Manager Dashboard) and checks add new fnol button in navbar
 		/// </summary>
-        [TestCase, Order(12)]
+        [TestCase, Order(32)]
         public void NavigateToFnol()
         {
             if (components.CheckIfDialogPresent())
@@ -489,6 +507,42 @@ namespace ApolloQA.TestCases.Smoke_Tests
             Assert.That(() => driver.Title, Does.Contain("Insert First Notice of Loss").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add New FNOl Button In Navbar/Navigate to FNOL Insert");
         }
 
+        /// <summary>
+		/// Create a new FNOL, test follows previous NavigateToFNOL()
+		/// </summary>
+        [TestCase, Order(33)]
+        public void CreateFNOL()
+        {
+            //Inputs
+            
+            fnolInsert.EnterSelect("received", "Phone");
+            fnolInsert.EnterSelect("related", "No");
+            fnolInsert.EnterInput("firstName", "Joseph");
+            fnolInsert.EnterInput("lastName", "Seed");
+            fnolInsert.EnterInput("suffixName", "Mr");
+            fnolInsert.EnterInput("email", "jospehseed@email.com");
+            fnolInsert.EnterSelect("phoneType", "Mobile");
+            fnolInsert.EnterInput("phoneNumber", "5452156532");
+            fnolInsert.EnterSelect("claimCategory", "Option 1");
+            fnolInsert.EnterInput("lossDesc", "Sample Desc");
+            fnolInsert.sameAsCheckbox.Click();
+            fnolInsert.EnterSelect("policeInvolved", "Yes");
+            fnolInsert.EnterSelect("fireInvolved", "Yes");
+            fnolInsert.EnterInput("policeName", "PAPD");
+            fnolInsert.EnterInput("policeNumber", "1234");
+            fnolInsert.EnterInput("fireName", "PAFD");
+            fnolInsert.EnterInput("fireNumber", "1234");
+
+            Assert.That(() => fnolInsert.inputFirstName.Text, Does.Contain("Joseph").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct First Name");
+            Assert.That(() => fnolInsert.inputLastName.Text, Does.Contain("Seed").After(1).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct Last Name");
+            Assert.That(() => fnolInsert.lossDescInput.Text, Does.Contain("Sample Desc").After(1).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct loss description");
+
+            //Submit FNOL FNOL "100030" was successfully saved.
+            fnolInsert.submitButton.Click();
+            string verifyToast = toaster.GetToastTitle();
+            Assert.That(verifyToast, Does.Contain("was successfully saved."), "FNOL was not created");
+
+        }
 
         /// <summary>
 		/// Verify all tabs for policy are present

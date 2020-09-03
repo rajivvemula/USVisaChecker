@@ -22,7 +22,7 @@ namespace ApolloQA.Pages.Application
 
         public IWebElement contactButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Contact']"));
 
-        //This button is inside the select
+        //This button is inside the select 
         public IWebElement addContactButton => functions.FindElementWait(5, By.XPath("//button[@aria-label='Add Contact']"));
         public IWebElement addAddressButton => functions.FindElementWait(5, By.XPath("//button[@aria-label='Add Policy']"));
 
@@ -40,6 +40,10 @@ namespace ApolloQA.Pages.Application
         public IWebElement checkboxAccClerk => functions.FindElementWait(10, By.XPath("//span[@class='mat-checkbox-label' and normalize-space(text())='Accounating Clerk']"));
         public IWebElement checkboxAuthUser => functions.FindElementWait(10, By.XPath("//span[@class='mat-checkbox-label' and normalize-space(text())='Authorized User']"));
         public IWebElement checkboxFMCSA => functions.FindElementWait(10, By.XPath("//span[@class='mat-checkbox-label' and normalize-space(text())='FMCSA']"));
+
+        //Selects
+        public IWebElement selectContact => functions.FindElementWait(10, By.XPath("//mat-label[@class='ng-star-inserted' and normalize-space(text())='Contact Name']"));
+        public IWebElement selectAddress => functions.FindElementWait(10, By.XPath("//mat-label[@class='ng-star-inserted' and normalize-space(text())='Address']"));
 
     }
 }
