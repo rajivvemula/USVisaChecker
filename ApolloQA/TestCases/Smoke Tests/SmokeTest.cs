@@ -48,6 +48,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         BusinessInformation appBusInfo;
         FNOLDashboard fnolDashboard;
         FNOLInsert fnolInsert;
+        FNOLDetails fnolDetails;
         Random rnd;
 
         //Cosmos Azure
@@ -64,7 +65,9 @@ namespace ApolloQA.TestCases.Smoke_Tests
         string createdOrgAddress = "";
         string taxName = "12-3489123";
         string createdAppID = "";
+        string createdClaimID = "";
         bool queryFound = false;
+        bool claimFound = false;
         public SmokeTest()
         {
             //driver = new ChromeDriver();
@@ -101,6 +104,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             appBusInfo = new BusinessInformation(driver);
             fnolDashboard = new FNOLDashboard(driver);
             fnolInsert = new FNOLInsert(driver);
+            fnolDetails = new FNOLDetails(driver);
 
             //Cosmos Client Setup
             client = new CosmosClient("https://zbibaoazcdb1qa2.documents.azure.com:443/", "p9fiijwywnNpP4gRROO0NNA2sDMPyyjZ0OfMzJGriSCZIEKUGNrIyzut20ICyyGnGtbVwRr5rmgT57TIBE0LvQ==");
@@ -133,7 +137,17 @@ namespace ApolloQA.TestCases.Smoke_Tests
                     {
                         //simple check for right now
                         Console.WriteLine(item);
-                        queryFound = true;
+                        switch(containerA)
+                        {
+                            case "Application":
+                                    queryFound = true; 
+                                    break;
+                            case "Claim": 
+                                    claimFound = true;
+                                    break;
+                            default: break;
+
+                        }
                     }
                 }
             }
@@ -541,9 +555,66 @@ namespace ApolloQA.TestCases.Smoke_Tests
             fnolInsert.submitButton.Click();
             string verifyToast = toaster.GetToastTitle();
             Assert.That(verifyToast, Does.Contain("was successfully saved."), "FNOL was not created");
+            string[] words = verifyToast.Split(' ');
+            string claimNumber = words[1].Substring(1, 6);
+            createdClaimID = claimNumber;
 
         }
 
+        /// <summary>
+		/// Create a new FNOL, test follows previous NavigateToFNOL()
+		/// </summary>
+        [TestCase, Order(33)]
+        public async Task CheckCosmosClaim()
+        {
+            //Check apollo > CLaims and match claim number
+            string verifyCosmosClaim = "SELECT * FROM c WHERE c.ClaimNumber = " + createdClaimID;
+            await GetQuery("Claim", verifyCosmosClaim);
+            Assert.IsTrue(queryFound, "A matching claim was not found in cosmos db");
+        }
+
+        /// <summary>
+		/// Create a new FNOL, test follows previous NavigateToFNOL()
+		/// </summary>
+        [TestCase, Order(34)]
+        public void FNOLLossDetails()
+        {
+            Assert.That(() => driver.Url, Does.Contain("loss-details").After(3).Seconds.PollEvery(250).MilliSeconds, "The driver is currently not at Loss Details page");
+
+            //Inputs (First Party and Bodily Injury)
+            fnolDetails.checkboxFirstParty.Click();
+            fnolDetails.checkboxBodilyInjury.Click();
+            fnolDetails.EnterSelect("Fault", "Insured Fault");
+            fnolDetails.EnterInput("OtherInsurer", "AlphaC");
+            fnolDetails.EnterInput("OtherInsurerPolicy", "1234");
+            fnolDetails.EnterInput("OtherInsurerClaim", "112321");
+            fnolDetails.EnterInput("OtherInsurerAdjuster", "Jacob");
+            fnolDetails.EnterSelect("SuitFiled", "Yes");
+            fnolDetails.EnterSelect("AttyRep", "Yes");
+            fnolDetails.EnterSelect("ReportOnly", "No");
+            fnolDetails.EnterInput("FirstName", "Joseph");
+            fnolDetails.EnterInput("LastName", "Seed");
+            fnolDetails.EnterInput("Email", "josephseed@email.com");
+            fnolDetails.EnterInput("Occupation", "Space Pirate");
+            fnolDetails.EnterSelect("PhoneType", "Mobile");
+            fnolDetails.EnterInput("Phone", "2458634456");
+            fnolDetails.EnterInput("DateOfBirth", "1/1/1980");
+            fnolDetails.EnterSelect("Sex", "Male");
+            fnolDetails.EnterSelect("MaritalStatus", "Married");
+            fnolDetails.EnterInput("DamageDescription", "Sample Desc");
+            fnolDetails.EnterInput("TreatmentFacility", "PAMD");
+            fnolDetails.EnterSelect("Fatality", "Yes");
+            fnolDetails.EnterSelect("Tort", "Yes");
+            fnolDetails.EnterInput("AdditionalNotes", "Sample Notes");
+
+            Assert.That(() => fnolDetails.inputOtherInsurer.Text, Does.Contain("AlphaC").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct input in FNOl Details");
+            Assert.That(() => fnolDetails.inputTreatmentFacility.Text, Does.Contain("PAMD").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct input in FNOl Details");
+
+            //Submit details 
+            fnolDetails.submitButton.Click();
+            string verifyToast = toaster.GetToastTitle();
+            Assert.That(verifyToast, Does.Contain("Loss Details were saved."), "FNOL Details Were Not Saved");
+        }
         /// <summary>
 		/// Verify all tabs for policy are present
 		/// </summary>
