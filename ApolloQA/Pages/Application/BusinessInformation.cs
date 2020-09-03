@@ -22,6 +22,9 @@ namespace ApolloQA.Pages.Application
         public IWebElement businessName => functions.FindElementWait(10, By.XPath("//input[@name='businessName']"));
         public IWebElement taxNo => functions.FindElementWait(10, By.XPath("//input[@name='taxId']"));
 
+        public IWebElement appIDNo => functions.FindElementWait(10, By.XPath("//div[text()=' Application Number ']/../div/strong"));
+        
+
 
         public void UpdateMailingAddress(string selection)
         {

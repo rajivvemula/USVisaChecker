@@ -90,7 +90,7 @@ namespace ApolloQA.Helpers
         {
             try
             {
-                IWebElement dialogCheck = functions.FindElementWait(10, By.XPath("//bh-unsaved-changes-confirmation-dialog[@color = 'component']"));
+                IWebElement dialogCheck = functions.FindElementWait(10, By.XPath("//bh-unsaved-changes-confirmation-dialog[@class = 'component']"));
                 return dialogCheck.Displayed;
             }
             catch (NoSuchElementException)

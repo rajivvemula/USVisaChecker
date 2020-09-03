@@ -6,6 +6,7 @@ using ApolloQA.Pages.Login;
 using ApolloQA.Pages.Organization;
 using ApolloQA.Pages.Policy;
 using ApolloQA.Pages.Shared;
+using Microsoft.Azure.Cosmos;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ApolloQA.TestCases.Smoke_Tests
 {
@@ -47,6 +49,11 @@ namespace ApolloQA.TestCases.Smoke_Tests
         FNOLDashboard fnolDashboard;
         Random rnd;
 
+        //Cosmos Azure
+        CosmosClient client;
+        Database database;
+        Container container;
+
 
         //Variables
         //Org Number is a string 
@@ -54,6 +61,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
         bool smokeOrgCreated = false;
         string createdOrgName = "Smoke Test";
         string taxName = "12-3489123";
+        string createdAppID = "";
+        bool queryFound = false;
         public SmokeTest()
         {
             //driver = new ChromeDriver();
@@ -89,6 +98,10 @@ namespace ApolloQA.TestCases.Smoke_Tests
             appInfo = new ApplicationInformation(driver);
             appBusInfo = new BusinessInformation(driver);
             fnolDashboard = new FNOLDashboard(driver);
+
+            //Cosmos Client Setup
+            client = new CosmosClient("https://zbibaoazcdb1qa2.documents.azure.com:443/", "p9fiijwywnNpP4gRROO0NNA2sDMPyyjZ0OfMzJGriSCZIEKUGNrIyzut20ICyyGnGtbVwRr5rmgT57TIBE0LvQ==");
+            database = client.GetDatabase("apollo");
         }
 
         [OneTimeTearDown]
@@ -103,6 +116,25 @@ namespace ApolloQA.TestCases.Smoke_Tests
             taxName = "12-3489" + taxRND;
         }
 
+        public async Task GetQuery(string containerA, string queryA)
+        {
+            
+            container = database.GetContainer(containerA);
+            using (FeedIterator<dynamic> feedIterator = container.GetItemQueryIterator<dynamic>(
+               queryA))
+            {
+                while (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<dynamic> response = await feedIterator.ReadNextAsync();
+                    foreach (var item in response)
+                    {
+                        //simple check for right now
+                        queryFound = true;
+                    }
+                }
+            }
+
+        }
         /// <summary>
 		/// Logs in As Admin
 		/// </summary>
@@ -378,9 +410,42 @@ namespace ApolloQA.TestCases.Smoke_Tests
         }
 
         /// <summary>
-		/// Verify Appropriate Tabs are present in Application
+		/// Check if the application was created in cosmos db 
 		/// </summary>
         [TestCase, Order(10)]
+        public async Task CheckCosmosApp()
+        {
+            createdAppID = appBusInfo.appIDNo.Text;
+            string verifyCosmosApp = "SELECT * FROM c WHERE c.Id = " + createdAppID;
+            await GetQuery("Application", verifyCosmosApp);
+            Assert.IsTrue(queryFound, "A matching application was not found in cosmos db");
+            /*
+            database = client.GetDatabase("apollo");
+            container = database.GetContainer("Application");
+
+            
+             using (FeedIterator<dynamic> feedIterator = container.GetItemQueryIterator<dynamic>(
+                "select * from T where T.status = 'done'"))
+            {
+                while (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<dynamic> response = feedIterator.ReadNextAsync();
+                    foreach (var item in response)
+                    {
+                        Console.WriteLine(item);
+                    }
+                }
+            }
+            */
+        }
+
+
+
+
+        /// <summary>
+		/// Verify Appropriate Tabs are present in Application
+		/// </summary>
+        [TestCase, Order(11)]
         public void VerifyApplicationTabs()
         {
             //List of tabs and for each loop to see if they are present
@@ -400,9 +465,13 @@ namespace ApolloQA.TestCases.Smoke_Tests
         /// <summary>
 		/// Navigate to Fnol Via Waffle Menu(Confirms waffle link is working and new fnol butt is working in Manager Dashboard) and checks add new fnol button in navbar
 		/// </summary>
-        [TestCase, Order(11)]
+        [TestCase, Order(12)]
         public void NavigateToFnol()
         {
+            if (components.CheckIfDialogPresent())
+            {
+                components.continueAnywayButton.Click();
+            }
             //Click Claims Tab in Waffle Menu
             mainNavBar.waffleMenu.Click();
             mainNavBar.waffleClaimTab.Click();
@@ -420,41 +489,6 @@ namespace ApolloQA.TestCases.Smoke_Tests
             Assert.That(() => driver.Title, Does.Contain("Insert First Notice of Loss").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add New FNOl Button In Navbar/Navigate to FNOL Insert");
         }
 
-        /// <summary>
-        /// Navigate to policy tab and insert a policy
-        /// </summary>
-        [TestCase, Order(89)]
-        public void InsertPolicy()
-        {
-            //Navigate to policy tab and insert page
-            mainNavBar.ClickPolicyTab();
-            Assert.That(() => driver.Title, Does.Contain("Policy List").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Policy List");
-            policyGrid.ClickNew();
-            Assert.That(() => driver.Title, Does.Contain("Insert Policy").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Policy Insert");
-
-            //Generate Variables
-            //string taxRND = rnd.Next(100, 900).ToString();
-            //string taxName = "12-3489" + taxRND;
-
-            //Input 
-            components.UpdateAutoCompleteInput("insuredPartyId", createdOrgName);
-            components.UpdateAutoCompleteInput("agencyPartyId", "biBerk");
-            components.UpdateAutoCompleteInput("carrierPartyId", "BHDIC");
-            //policyCreation.EnterInput("insured", "Smoke Test");
-            //policyCreation.EnterInput("agency", "biBerk");
-            //policyCreation.EnterInput("carrier", "BHDIC");
-            policyCreation.EnterSelect("lob", "Commercial Auto");
-            policyCreation.EnterSelect("type", "Corporation");
-            policyCreation.EnterInput("years", "5");
-            policyCreation.EnterSelect("taxtype", "FEIN");
-            policyCreation.EnterInput("taxid", taxName);
-
-            //Submit Policy
-            policyCreation.ClickSubmitButton();
-            string verifyToast = toaster.GetToastTitle();
-            Assert.That(verifyToast, Does.Contain("was created").After(3).Seconds.PollEvery(250).MilliSeconds, "Policy was not created");
-
-        }
 
         /// <summary>
 		/// Verify all tabs for policy are present
