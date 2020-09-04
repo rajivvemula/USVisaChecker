@@ -28,7 +28,7 @@ namespace ApolloQA.TestCases.Regression
         }
 
 
-        [When(@"I attempt to create a policy with (.*), (.*), (.*)")]
+        [When(@"I attempt to create an application with (.*), (.*), (.*)")]
         public void WhenIAttemptToCreateAPolicyWith(string orgName, string lob, string effectiveDate)
         {
             mainNavBar.ClickApplicationTab();
@@ -39,7 +39,7 @@ namespace ApolloQA.TestCases.Regression
             appInfo.ClickNext();
         }
         
-        [Then(@"a policy is successfully created with (.*), (.*), (.*)")]
+        [Then(@"an application is successfully created with (.*), (.*), (.*)")]
         public void ThenAPolicyIsSuccessfullyCreatedWith(string orgName, string lob, string effectiveDate)
         {
             string toastTitle = toaster.GetToastTitle();

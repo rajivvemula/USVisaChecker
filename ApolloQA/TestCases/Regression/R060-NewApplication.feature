@@ -6,8 +6,8 @@
 
 Scenario Outline: 1 Create new application
 	When I impersonate impersonateable user <Email>
-	And I attempt to create a policy with <Organization Name>, <Line of Business>, <Effective Date>
-	Then a policy is successfully created with <Organization Name>, <Line of Business>, <Effective Date>
+	And I attempt to create an application with <Organization Name>, <Line of Business>, <Effective Date>
+	Then an application is successfully created with <Organization Name>, <Line of Business>, <Effective Date>
 
 Examples: 
 	| Email                         | Organization Name              | Line of Business | Effective Date |

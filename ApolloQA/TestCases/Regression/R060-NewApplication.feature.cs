@@ -112,10 +112,10 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When(string.Format("I impersonate impersonateable user {0}", email), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 9
- testRunner.And(string.Format("I attempt to create a policy with {0}, {1}, {2}", organizationName, lineOfBusiness, effectiveDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I attempt to create an application with {0}, {1}, {2}", organizationName, lineOfBusiness, effectiveDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 10
- testRunner.Then(string.Format("a policy is successfully created with {0}, {1}, {2}", organizationName, lineOfBusiness, effectiveDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("an application is successfully created with {0}, {1}, {2}", organizationName, lineOfBusiness, effectiveDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
