@@ -28,13 +28,13 @@ namespace ApolloQA.Pages.Fnol
         public IWebElement inputEmail => functions.FindElementWait(10, By.Name("email"));
         public IWebElement inputPhone => functions.FindElementWait(10, By.XPath("//input[@name='phone']"));
         public IWebElement inputRemarks => functions.FindElementWait(10, By.XPath("//textarea[@name='remarks']"));
-
+        public IWebElement addDocumentButton => functions.FindElementWait(10, By.XPath("//button[@aria-label='Navigate to Documents']"));
         public IWebElement getElementFromFieldname(string fieldName)
         {
             switch (fieldName)
             {
                 case "partyRole": return partyRole;
-                case "partyType": return partyRole;
+                case "partyType": return partyType;
                 case "first": return inputFirstName;
                 case "middle": return inputMiddleName;
                 case "last": return inputLastName;

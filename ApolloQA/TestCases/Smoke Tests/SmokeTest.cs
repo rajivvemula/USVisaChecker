@@ -49,6 +49,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         FNOLDashboard fnolDashboard;
         FNOLInsert fnolInsert;
         FNOLDetails fnolDetails;
+        FNOLContact fnolContacts;
         Random rnd;
 
         //Cosmos Azure
@@ -105,6 +106,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             fnolDashboard = new FNOLDashboard(driver);
             fnolInsert = new FNOLInsert(driver);
             fnolDetails = new FNOLDetails(driver);
+            fnolContacts = new FNOLContact(driver);
 
             //Cosmos Client Setup
             client = new CosmosClient("https://zbibaoazcdb1qa2.documents.azure.com:443/", "p9fiijwywnNpP4gRROO0NNA2sDMPyyjZ0OfMzJGriSCZIEKUGNrIyzut20ICyyGnGtbVwRr5rmgT57TIBE0LvQ==");
@@ -268,7 +270,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         public void SaveOrganization()
         {
             if(smokeOrgCreated == false) {
-                driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/organization/10085");
+                driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/organization/" + smokeOrganization);
             }
             organizationInformation.EnterSelect("orgtype", "LLC");
             organizationInformation.saveButton.Click();
@@ -541,15 +543,15 @@ namespace ApolloQA.TestCases.Smoke_Tests
             fnolInsert.EnterInput("lossDesc", "Sample Desc");
             fnolInsert.sameAsCheckbox.Click();
             fnolInsert.EnterSelect("policeInvolved", "Yes");
-            fnolInsert.EnterSelect("fireInvolved", "Yes");
             fnolInsert.EnterInput("policeName", "PAPD");
             fnolInsert.EnterInput("policeNumber", "1234");
+            fnolInsert.EnterSelect("fireInvolved", "Yes");
             fnolInsert.EnterInput("fireName", "PAFD");
             fnolInsert.EnterInput("fireNumber", "1234");
 
-            Assert.That(() => fnolInsert.inputFirstName.Text, Does.Contain("Joseph").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct First Name");
-            Assert.That(() => fnolInsert.inputLastName.Text, Does.Contain("Seed").After(1).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct Last Name");
-            Assert.That(() => fnolInsert.lossDescInput.Text, Does.Contain("Sample Desc").After(1).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct loss description");
+            Assert.That(() => fnolInsert.inputFirstName.GetAttribute("value"), Does.Contain("Joseph").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct First Name");
+            Assert.That(() => fnolInsert.inputLastName.GetAttribute("value"), Does.Contain("Seed").After(1).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct Last Name");
+            Assert.That(() => fnolInsert.lossDescInput.GetAttribute("value"), Does.Contain("Sample Desc").After(1).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct loss description");
 
             //Submit FNOL FNOL "100030" was successfully saved.
             fnolInsert.submitButton.Click();
@@ -558,6 +560,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             string[] words = verifyToast.Split(' ');
             string claimNumber = words[1].Substring(1, 6);
             createdClaimID = claimNumber;
+            Console.WriteLine(createdClaimID);
 
         }
 
@@ -568,15 +571,32 @@ namespace ApolloQA.TestCases.Smoke_Tests
         public async Task CheckCosmosClaim()
         {
             //Check apollo > CLaims and match claim number
-            string verifyCosmosClaim = "SELECT * FROM c WHERE c.ClaimNumber = " + createdClaimID;
+            string verifyCosmosClaim = "SELECT * FROM c WHERE c.ClaimNumber = '" + createdClaimID + "'";
             await GetQuery("Claim", verifyCosmosClaim);
-            Assert.IsTrue(queryFound, "A matching claim was not found in cosmos db");
+            Assert.IsTrue(claimFound, "A matching claim was not found in cosmos db");
+        }
+        /// <summary>
+		/// After a new FNOL is created, check if all the tabs are present
+		/// </summary>
+        [TestCase, Order(35)]
+        public void CheckFNOLTabs()
+        {
+            //List of tabs and for each loop to see if they are present
+            string[] tabs = {   "Occurrence", "Loss Details", "Contacts", "Documents", "Supervisor Review"
+
+                            };
+            foreach (string i in tabs)
+            {
+                bool verifyTab = components.CheckIfTabPresent(i);
+                Assert.IsTrue(verifyTab, "Tab " + i + " not found");
+            }
         }
 
+
         /// <summary>
-		/// Create a new FNOL, test follows previous NavigateToFNOL()
+		/// Submits the details, test follows previous 
 		/// </summary>
-        [TestCase, Order(34)]
+        [TestCase, Order(36)]
         public void FNOLLossDetails()
         {
             Assert.That(() => driver.Url, Does.Contain("loss-details").After(3).Seconds.PollEvery(250).MilliSeconds, "The driver is currently not at Loss Details page");
@@ -607,14 +627,52 @@ namespace ApolloQA.TestCases.Smoke_Tests
             fnolDetails.EnterSelect("Tort", "Yes");
             fnolDetails.EnterInput("AdditionalNotes", "Sample Notes");
 
-            Assert.That(() => fnolDetails.inputOtherInsurer.Text, Does.Contain("AlphaC").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct input in FNOl Details");
-            Assert.That(() => fnolDetails.inputTreatmentFacility.Text, Does.Contain("PAMD").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct input in FNOl Details");
+            Assert.That(() => fnolDetails.inputOtherInsurer.GetAttribute("value"), Does.Contain("AlphaC").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct input in FNOl Details");
+            Assert.That(() => fnolDetails.inputTreatmentFacility.GetAttribute("value"), Does.Contain("PAMD").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct input in FNOl Details");
 
             //Submit details 
             fnolDetails.submitButton.Click();
             string verifyToast = toaster.GetToastTitle();
             Assert.That(verifyToast, Does.Contain("Loss Details were saved."), "FNOL Details Were Not Saved");
         }
+
+        /// <summary>
+		/// Create a new contact in FNOL
+		/// </summary>
+        [TestCase, Order(37)]
+        public void FNOlContacts()
+        {
+            Assert.That(() => driver.Url, Does.Contain("contacts").After(3).Seconds.PollEvery(250).MilliSeconds, "The driver is currently not at FNOL contacts page");
+
+            //Click on New Contact
+            fnolContacts.newContact.Click();
+            Assert.That(() => driver.Url, Does.Contain("contacts/insert").After(2).Seconds.PollEvery(250).MilliSeconds, "The driver is currently not at FNOL contacts Creation page");
+
+            //Inputs
+            fnolContacts.EnterSelect("partyType", "Person");
+            fnolContacts.EnterSelect("partyRole", "External Adjuster");
+            fnolContacts.EnterInput("first", "Nathan");
+            fnolContacts.EnterInput("middle", "J");
+            fnolContacts.EnterInput("last", "Drake");
+            fnolContacts.EnterInput("suffix", "Mr");
+            fnolContacts.EnterInput("email", "nathandrake@email.com");
+            fnolContacts.EnterInput("remarks", "Sample Remarks");
+            fnolContacts.EnterSelect("phonetype", "Mobile");
+            fnolContacts.EnterSelect("phonenumber", "8568482132");
+
+            Assert.That(() => fnolContacts.inputFirstName.GetAttribute("value"), Does.Contain("Nathan").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct input in FNOl Contacts");
+            Assert.That(() => fnolContacts.inputRemarks.GetAttribute("value"), Does.Contain("Sample Remarks").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable to enter correct input in FNOl Contacts");
+
+            //Submit Contact and Verify
+            fnolContacts.addDocumentButton.Click();
+            string verifyToast = toaster.GetToastTitle();
+            Assert.That(verifyToast, Does.Contain("Contact was successfully saved."), "FNOL Contact Was Not Saved");
+            
+
+        }
+
+
+
         /// <summary>
 		/// Verify all tabs for policy are present
 		/// </summary>

@@ -33,8 +33,8 @@ namespace ApolloQA.Pages.Fnol
         public IWebElement sameAsCheckbox => functions.FindElementWait(10, By.XPath("//span[@class='mat-checkbox-label' and normalize-space(text())='Same as Reported By']"));
         public IWebElement receivedSelect => functions.FindElementWait(10,By.XPath("//mat-select[@formcontrolname='receivedTypeId']"));
         public IWebElement relatedClaim => functions.FindElementWait(10,By.XPath("//mat-select[@formcontrolname='hasRelatedClaim']"));
-        public IWebElement phoneSelect => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='phoneTypeId']"));
-        public IWebElement claimCategory => functions.FindElementWait(10,By.XPath("//mat-select[@formcontrolname='claimCategory']"));
+        public IWebElement phoneSelect => functions.FindElementWait(10, By.XPath("//mat-select[@name='phoneTypeId']"));
+        public IWebElement claimCategory => functions.FindElementWait(10,By.XPath("//mat-select[@formcontrolname='catastropheTypeId']"));
         public IWebElement policeInvolved => functions.FindElementWait(10,By.XPath("//mat-select[@formcontrolname='wasPoliceInvolved']"));
         public IWebElement fireInvolved => functions.FindElementWait(10,By.XPath("//mat-select[@formcontrolname='wasFireDepartmentInvolved']"));
         public IWebElement policeName => functions.FindElementWait(10,By.XPath("//input[@formcontrolname='policeDepartmentName']"));
