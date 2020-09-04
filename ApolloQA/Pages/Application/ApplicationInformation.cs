@@ -20,17 +20,17 @@ namespace ApolloQA.Pages.Application
         }
 
         //auto-completes
-        private IWebElement businessName => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='insuredPartyId']"));
-        private IWebElement agencyName => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='insuredAgencyId']"));
+        public IWebElement businessName => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='insuredPartyId']"));
+        public IWebElement agencyName => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='insuredAgencyId']"));
         private IWebElement carrierName => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='insuredCarrierId']"));
 
         //drop-downs
-        private IWebElement lobType => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='lineId']"));
+        public IWebElement lobType => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='lineId']"));
 
         //inputs
-        private IWebElement effectiveDate => functions.FindElementWaitUntilClickable(10, By.XPath("//input[@formcontrolname='policyEffectiveDate']"));
-        private IWebElement expirationDate => functions.FindElementWaitUntilClickable(10, By.XPath("//input[@formcontrolname='policyExpirationDate']"));
-        private IWebElement nextButton => functions.FindElementWaitUntilClickable(10, By.XPath("//button[@aria-label='Submit']"));
+        public IWebElement effectiveDate => functions.FindElementWaitUntilClickable(10, By.XPath("//input[@formcontrolname='policyEffectiveDate']"));
+        public IWebElement expirationDate => functions.FindElementWaitUntilClickable(10, By.XPath("//input[@formcontrolname='policyExpirationDate']"));
+        public IWebElement nextButton => functions.FindElementWaitUntilClickable(10, By.XPath("//button[@aria-label='Submit']"));
 
         public void EnterBusinessName(string businessName)
         {

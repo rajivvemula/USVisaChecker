@@ -10,10 +10,12 @@ namespace ApolloQA.TestCases.Smoke_Tests
     {
 
         public IWebDriver driver;
+        public Functions functions;
 
         public SmokeTestHelpers(IWebDriver Driver)
         {
             driver = Driver;
+            functions = new Functions(Driver);
 
         }
 
@@ -27,6 +29,24 @@ namespace ApolloQA.TestCases.Smoke_Tests
             {
                 driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
             }
+        }
+
+        public bool checkWaffleTab(string tab)
+        {
+            IWebElement waffleTab = functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='" + tab + "']"));
+            return waffleTab.Displayed;
+        }
+
+        public void SelectOptionAddress(string address)
+        {
+            IWebElement addressOption = functions.FindElementWait(10, By.XPath("//div[@class='address-info' and normalize-space(text())='" + address + "']"));
+            addressOption.Click();
+        }
+
+        public bool CheckIfAddressSelected(string address)
+        {
+            IWebElement addressOption = functions.FindElementWait(10, By.XPath("//div[@class='address-info' and normalize-space(text())='" + address + "']"));
+            return addressOption.Displayed;
         }
     }
 }
