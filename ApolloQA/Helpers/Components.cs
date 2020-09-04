@@ -85,6 +85,13 @@ namespace ApolloQA.Helpers
             theSelection.Click();
         }
 
+        public string GetValueFromHeaderField(string fieldLabel)
+        {
+            IWebElement theField = functions.FindElementWait(10, By.XPath("//div[contains(@class, 'header-column')]/div[normalize-space(text())='" + fieldLabel + "']/preceding-sibling::div/strong[string-length(text()) > 0]"));
+
+            return theField.Text;
+        }
+
 
         public bool CheckIfDialogPresent()
         {

@@ -76,19 +76,12 @@ namespace ApolloQA.TestCases.Regression
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("1 Create new application")]
-        [NUnit.Framework.TestCaseAttribute("ApolloTestUserG108@biberk.com", "Casey Test Org 827", "Commercial Auto", "09/15/2020", null)]
-        [NUnit.Framework.TestCaseAttribute("ApolloTestUserG109@biberk.com", "City Market and Cafe", "Commercial Auto", "10/01/2020", null)]
-        [NUnit.Framework.TestCaseAttribute("ApolloTestUserG110@biberk.com", "Casey Test Org for Application", "Commercial Auto", "11/22/2020", null)]
-        public virtual void _1CreateNewApplication(string email, string organizationName, string lineOfBusiness, string effectiveDate, string[] exampleTags)
+        public virtual void _1CreateNewApplication()
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Email", email);
-            argumentsOfScenario.Add("Organization Name", organizationName);
-            argumentsOfScenario.Add("Line of Business", lineOfBusiness);
-            argumentsOfScenario.Add("Effective Date", effectiveDate);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Create new application", null, tagsOfScenario, argumentsOfScenario);
-#line 7
+#line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -108,14 +101,15 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
- testRunner.When(string.Format("I impersonate impersonateable user {0}", email), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
+ testRunner.When("I impersonate impersonateable user ApolloTestUserG108@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 9
- testRunner.And(string.Format("I attempt to create an application with {0}, {1}, {2}", organizationName, lineOfBusiness, effectiveDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+ testRunner.And("I attempt to create an application with Casey Test Org 827, Commercial Auto, 09/1" +
+                        "5/2020", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 10
- testRunner.Then(string.Format("an application is successfully created with {0}, {1}, {2}", organizationName, lineOfBusiness, effectiveDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 21
+ testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

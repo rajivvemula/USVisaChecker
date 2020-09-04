@@ -24,8 +24,8 @@ namespace ApolloQA.Driver
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            //driver = new ChromeDriver();
-            //driver.Manage().Window.Maximize();
+            driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
             state = new State();
         }
 

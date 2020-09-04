@@ -3,14 +3,8 @@
 	As an authorized user
 	I want to be able to create an application
 
+Scenario: 1 Create new application
+	When I impersonate impersonateable user ApolloTestUserG108@biberk.com
+	And I attempt to create an application with Casey Test Org 827, Commercial Auto, 09/15/2020
+	Then an application is successfully created with the proper values
 
-Scenario Outline: 1 Create new application
-	When I impersonate impersonateable user <Email>
-	And I attempt to create an application with <Organization Name>, <Line of Business>, <Effective Date>
-	Then an application is successfully created with <Organization Name>, <Line of Business>, <Effective Date>
-
-Examples: 
-	| Email                         | Organization Name              | Line of Business | Effective Date |
-	| ApolloTestUserG108@biberk.com | Casey Test Org 827             | Commercial Auto  | 09/15/2020     |
-	| ApolloTestUserG109@biberk.com | City Market and Cafe           | Commercial Auto  | 10/01/2020     |
-	| ApolloTestUserG110@biberk.com | Casey Test Org for Application | Commercial Auto  | 11/22/2020     |

@@ -28,7 +28,6 @@ namespace ApolloQA.Pages.Application
         public IWebElement nextButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Next']"));
 
 
-
         public void UpdateMailingAddress(string selection)
         {
             //click the mailing address drop-down
