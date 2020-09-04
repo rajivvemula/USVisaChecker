@@ -82,23 +82,30 @@ namespace ApolloQA.TestCases.Smoke_Tests
 
 
             MainNavBar mainNavBar = new MainNavBar(driver);
-            mainNavBar.ClickApplicationTab();
+            //mainNavBar.ClickApplicationTab();
 
             ApplicationGrid appGrid = new ApplicationGrid(driver);
-            appGrid.ClickNew();
+            //appGrid.ClickNew();
 
             ApplicationInformation appInfo = new ApplicationInformation(driver);
-            appInfo.EnterBusinessName("Casey Test Org 827");
-            appInfo.SelectLOB("Commercial Auto");
-            //appQuote.EnterAgency("biBerk");
-            //appQuote.EnterCarrier("BHDIC");
-            appInfo.EnterEffectiveDate("09/01/2020");
-            //appQuote.EnterExpirationDate("08/25/2020");
-            appInfo.ClickNext();
+            //appInfo.EnterBusinessName("Casey Test Org 827");
+            //appInfo.SelectLOB("Commercial Auto");
+            ////appQuote.EnterAgency("biBerk");
+            ////appQuote.EnterCarrier("BHDIC");
+            //appInfo.EnterEffectiveDate("09/01/2020");
+            ////appQuote.EnterExpirationDate("08/25/2020");
+            //appInfo.ClickNext();
 
-            BusinessInformation busInfo = new BusinessInformation(driver);
-            busInfo.UpdateMailingAddress(" 123 test address, FORTY Fort, pa, 18704  ");
-            busInfo.UpdatePhysicalAddress(" 345 New AddRess, FORTY Fort, pa, 18704  ");
+            //BusinessInformation busInfo = new BusinessInformation(driver);
+            //busInfo.UpdateMailingAddress(" 123 test address, FORTY Fort, pa, 18704  ");
+            //busInfo.UpdatePhysicalAddress(" 345 New AddRess, FORTY Fort, pa, 18704  ");
+
+            mainNavBar.ClickApplicationTab();
+            appGrid.ClickNew();
+            appInfo.EnterBusinessName("Casey Test Org 904");
+            appInfo.SelectLOB("Commercial Auto");
+            appInfo.EnterEffectiveDate("09/15/2020");
+            appInfo.ClickNext();
 
         }
     }
