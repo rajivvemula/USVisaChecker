@@ -35,24 +35,24 @@ namespace ApolloQA.TestCases.Regression
         [When(@"Add Driver Modal User enter (.*) for (.*)")]
         public void WhenAddDriverModalUserEnterJohnForFirst(string value, string input)
         {
-            addDriver.EnterInput(input, value);
+            //addDriver.EnterInput(input, value);
         }
         
         [When(@"Add Driver Modal User clicks on (.*)")]
         public void WhenAddDriverModalUserClicksOnLicensestate(string select)
         {
-            addDriver.ClickSelect(select);
+           // addDriver.ClickSelect(select);
         }
         [When(@"User clicks cancel to exit modal for Add Driver")]
         public void WhenUserClicksCancelToExitModalForAddDriver()
         {
-            addDriver.cancelButton.Click();
+            //addDriver.cancelButton.Click();
         }
 
         [When(@"Special Step after coverage for driver")]
         public void WhenSpecialStepAfterCoverageForDriver()
         {
-            addDriver.EnterInput("suffix", "q");
+            //addDriver.EnterInput("suffix", "q");
         }
 
 
@@ -66,15 +66,15 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"Add Driver Modal User should see (.*) For that (.*)")]
         public void ThenAddDriverModalUserShouldSeeJohnForThatFirst(string value, string input)
         {
-            string verifyValue = addDriver.GetValue(input);
-            Assert.AreEqual(verifyValue, value);
+            //string verifyValue = addDriver.GetValue(input);
+            //Assert.AreEqual(verifyValue, value);
         }
         
         [Then(@"Add Driver Modal User is required to have values for the (.*) as (.*)")]
         public void ThenAddDriverModalUserIsRequiredToHaveValuesForTheFirstAsTrue(string input, string required)
         {
-            string verifyReq = addDriver.GetRequired(input);
-            Assert.AreEqual(verifyReq, required);
+            //string verifyReq = addDriver.GetRequired(input);
+            //Assert.AreEqual(verifyReq, required);
         }
         
         [Then(@"Add Driver Modal User should see all values to be present in (.*)")]
@@ -90,8 +90,8 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"Add Driver Modal User is required to have Select values for the (.*) as (.*)")]
         public void ThenAddDriverModalUserIsRequiredToHaveSelectValuesForTheLicensestateAsTrue(string select, string required)
         {
-            string verifyReq = addDriver.GetSelectRequired(select);
-            Assert.AreEqual(verifyReq, required);
+            //string verifyReq = addDriver.GetSelectRequired(select);
+            //Assert.AreEqual(verifyReq, required);
         }
         [Then(@"User is no longer able to see the modal for Add Driver")]
         public void ThenUserIsNoLongerAbleToSeeTheModalForAddDriver()

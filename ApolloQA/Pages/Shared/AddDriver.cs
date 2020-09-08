@@ -37,26 +37,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
         public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
 
-        public IWebElement getElementFromFieldname(string fieldName)
-        {
-            switch (fieldName)
-            {
-                case "first": return inputFirst;
-                case "middle": return inputMiddle;
-                case "last": return inputLast;
-                case "suffix": return inputSuffix;
-                case "dob": return inputBirth;
-                case "licensenumber": return inputLicenseNumber;
-                case "licenseexp": return inputLicenseExp;
-                case "licensestate": return selectLicenseState;
-                case "cdl": return selectCDL;
-                case "accident": return selectAccident ;
-                case "violation": return selectViolation;
-                case "conviction": return selectConviction;
-                default: return null;
 
-            }
-        }
 
         public readonly string[] driverLabels =
         {
@@ -84,39 +65,12 @@ namespace ApolloQA.Pages.Shared
 
         };
 
-        public void EnterInput(string locator, string value)
-        {
-            getElementFromFieldname(locator).SendKeys(value);
-        }
-
-        public void ClickSelect(string locator)
-        {
-            getElementFromFieldname(locator).Click();
-        }
-        public string GetRequired(string locator)
-        {
-            return getElementFromFieldname(locator).GetAttribute("aria-required");
-        }
-        public string GetValue(string locator)
-        {
-            return getElementFromFieldname(locator).GetAttribute("value");
-        }
+        
         public bool CheckDropDownValue(string value)
         {
             bool verify = functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Displayed;
 
             return verify;
-        }
-        public string GetSelectRequired(string locator)
-        {
-            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + dropValues[locator][1] + "']")).Click();
-            string aria = getElementFromFieldname(locator).GetAttribute("aria-required");
-            return aria;
-        }
-        public void EnterSelect(string locator, string value)
-        {
-            getElementFromFieldname(locator).Click();
-            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
         }
 
 

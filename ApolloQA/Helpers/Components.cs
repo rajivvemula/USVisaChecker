@@ -122,6 +122,25 @@ namespace ApolloQA.Helpers
             return verifyTab;
         }
 
+        // Below EnterInput, EnterSelect, GetRequired, GetValue replace switch case in POMs
+        public void EnterInput(IWebElement locator, string value)
+        {
+            locator.SendKeys(value);
+        }
+        public void EnterSelect(IWebElement locator, string value)
+        {
+            locator.Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
+        }
+        public string GetRequired(IWebElement locator)
+        {
+            return locator.GetAttribute("aria-required");
+        }
+        public string GetValue(IWebElement locator)
+        {
+            return locator.GetAttribute("value");
+        }
+
         //public void UpdateResourceSelectDropdown()
         //{
 

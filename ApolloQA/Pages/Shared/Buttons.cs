@@ -62,7 +62,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement appInsertNext => functions.FindElementWait(10, By.XPath("//button[@aria-label='Submit']"));
 
         //App Business Info
-        public IWebElement appInfoDropDownAddAddress => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Address']"));
+        //public IWebElement appInfoDropDownAddAddress => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Address']"));
         public IWebElement appInfoNext => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Next']"));
 
         //App Contacts
@@ -77,9 +77,12 @@ namespace ApolloQA.Pages.Shared
         public IWebElement appDriverNew => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Driver']"));
         public IWebElement appDriverNext => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Next']"));
         public IWebElement appDriverDropDownCreateNew => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Create new']"));
+
+        /* might be better to keep below three in POM files
         public IWebElement appDriverAddAccident => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Accident']"));
         public IWebElement appDriverViolation => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Violation']"));
         public IWebElement appDriverConviction => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Conviction']"));
+        */
         public IWebElement appDriverSubmit => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
         public IWebElement appDriverCancel => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
 
@@ -120,8 +123,10 @@ namespace ApolloQA.Pages.Shared
         //FNOL Contacts
         public IWebElement fnolContactNew => functions.FindElementWait(10, By.XPath("//button[@aria-label='New Contact']"));
         public IWebElement fnolContactAddDocuments => functions.FindElementWait(10, By.XPath("//button[@aria-label='Navigate to Documents']"));
+        /* might be better to keep below 2 in POM files
         public IWebElement fnolContactAddPhone => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Phone']"));
         public IWebElement fnolContactAddAddress => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Address']"));
+        */
         public IWebElement fnolContactCancel => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
         public IWebElement fnolContactSave => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Save']"));
 
