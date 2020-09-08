@@ -50,6 +50,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         FNOLInsert fnolInsert;
         FNOLDetails fnolDetails;
         FNOLContact fnolContacts;
+        Buttons button;
         Random rnd;
 
         //Cosmos Azure
@@ -107,6 +108,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             fnolInsert = new FNOLInsert(driver);
             fnolDetails = new FNOLDetails(driver);
             fnolContacts = new FNOLContact(driver);
+            button = new Buttons(driver);
 
             //Cosmos Client Setup
             client = new CosmosClient("https://zbibaoazcdb1qa2.documents.azure.com:443/", "p9fiijwywnNpP4gRROO0NNA2sDMPyyjZ0OfMzJGriSCZIEKUGNrIyzut20ICyyGnGtbVwRr5rmgT57TIBE0LvQ==");
@@ -233,19 +235,20 @@ namespace ApolloQA.TestCases.Smoke_Tests
             string orgName = "Smoke Test" + orgRND;
 
             //Input
-            organizationInsert.EnterInput("name", orgName);
+            helper.EnterInput(organizationInsert.inputName, orgName);
             createdOrgName = orgName;
-            organizationInsert.EnterInput("dba", "Smoke");
-            organizationInsert.EnterInput("businessphone", "123-456-7890");
-            organizationInsert.EnterInput("businessemail", "smoketest@gmail.com");
-            organizationInsert.EnterInput("businesswebsite", "smoketest.com");
-            organizationInsert.EnterInput("yearstarted", "2010");
-            organizationInsert.EnterInput("yearownership", "2011");
-            organizationInsert.EnterSelect("orgtype", "Corporation");
-            organizationInsert.EnterSelect("taxtype", "FEIN");
-            organizationInsert.EnterInput("keyword", "Accountant");
+            helper.EnterInput(organizationInsert.inputDBA, "Smoke");
+            helper.EnterInput(organizationInsert.inputBusPhone, "123-456-7890");
+            helper.EnterInput(organizationInsert.inputBusEmail, "smoketest@gmail.com");
+            helper.EnterInput(organizationInsert.inputBusWeb, "smoketest.com");
+            helper.EnterInput(organizationInsert.inputYearStarted, "2011");
+            helper.EnterInput(organizationInsert.inputYearOwnsership, "2012");
+            helper.EnterSelect(organizationInsert.selectOrgType, "Corporation");
+            helper.EnterSelect(organizationInsert.selectTaxType, "FEIN");
+            helper.EnterInput(organizationInsert.keywordCode, "Accountant");
             organizationInsert.keywordCode.SendKeys(Keys.Enter);
-            organizationInsert.EnterInput("taxid", taxName);
+            helper.EnterInput(organizationInsert.inputTaxID, taxName);
+
             Thread.Sleep(3000);
 
             //Submit Ogrnaization and if it's created then test proceeds with the created organization
@@ -272,7 +275,8 @@ namespace ApolloQA.TestCases.Smoke_Tests
             if(smokeOrgCreated == false) {
                 driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/organization/" + smokeOrganization);
             }
-            organizationInformation.EnterSelect("orgtype", "LLC");
+            //organizationInformation.EnterSelect("orgtype", "LLC");
+            helper.EnterSelect(organizationInformation.selectOrgType, "LLC");
             organizationInformation.saveButton.Click();
 
             //verify change saved  via toast
@@ -300,10 +304,10 @@ namespace ApolloQA.TestCases.Smoke_Tests
 
             //Inputs
             //| 39 Public Square | Wilkes Barre | Pennsylvania | 18703 | 
-            addAddress.EnterInput("add1", "39 Public Square");
-            addAddress.EnterInput("city", "Wilkes Barre");
-            addAddress.EnterInput("zip", "18703");
-            addAddress.EnterSelect("state", "PA");
+            helper.EnterInput(addAddress.inputAddressLine1, "39 Public Square");
+            helper.EnterInput(addAddress.inputCity, "Wilkes Barre");
+            helper.EnterInput(addAddress.inputZipCode, "18703");
+            helper.EnterSelect(addAddress.selectState, "PA");
             createdOrgAddress = "39 Public Sq, Wilkes Barre, PA, 18701";
             addAddress.saveButton.Click();
             //Select Default Address
@@ -325,7 +329,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
             organizationDriver.addressTab.Click();
             if (components.CheckIfDialogPresent())
             {
-                components.continueAnywayButton.Click();
+                button.alertContinueAnyway.Click();
             }
             Assert.That(() => driver.Url, Does.Contain("driver").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Driver Tab");
 
@@ -339,14 +343,14 @@ namespace ApolloQA.TestCases.Smoke_Tests
 
             //inputs 
             // | Jacob | Seed | J      | 01/02/1975 | AZ    | AZ15435 | 01/01/2022 | No  |
-            addDriver.EnterInput("first", "Jacob");
-            addDriver.EnterInput("last", "Seed");
-            addDriver.EnterInput("middle", "J");
-            addDriver.EnterInput("dob", "01/02/1975");
-            addDriver.EnterSelect("licensestate", "AZ");
-            addDriver.EnterInput("licensenumber", licenseNumber);
-            addDriver.EnterInput("licenseexp", "01/01/2022");
-            addDriver.EnterSelect("cdl", "No");
+            helper.EnterInput(addDriver.inputFirst, "Jacob");
+            helper.EnterInput(addDriver.inputLast, "Seed");
+            helper.EnterInput(addDriver.inputMiddle, "J");
+            helper.EnterInput(addDriver.inputBirth, "01/02/1975");
+            helper.EnterSelect(addDriver.selectLicenseState, "AZ");
+            helper.EnterInput(addDriver.inputLicenseNumber, licenseNumber);
+            helper.EnterInput(addDriver.inputLicenseExp, "01/01/2022");
+            helper.EnterSelect(addDriver.selectCDL, "No");
 
             //Driver Save And Toast
             addDriver.submitButton.Click();

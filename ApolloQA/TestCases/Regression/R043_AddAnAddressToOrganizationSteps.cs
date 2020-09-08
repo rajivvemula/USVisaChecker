@@ -45,10 +45,10 @@ namespace ApolloQA.TestCases.Regression
             var detail = table.CreateDynamicSet();
             foreach (var details in detail)
             {
-                addAddress.EnterInput("add1", details.Address.ToString());
-                addAddress.EnterInput("city", details.City);
-                addAddress.EnterInput("zip", details.Zip.ToString());
-                addAddress.EnterSelect("state", details.State);
+                //addAddress.EnterInput("add1", details.Address.ToString());
+                //addAddress.EnterInput("city", details.City);
+                //addAddress.EnterInput("zip", details.Zip.ToString());
+                //addAddress.EnterSelect("state", details.State);
             }
         }
 
@@ -75,7 +75,7 @@ namespace ApolloQA.TestCases.Regression
         public void WhenUserEditsAddressLine()
         {
             addAddress.inputAddressLine1.Clear();
-            addAddress.EnterInput("add1", "38 Public Sq");
+            //addAddress.EnterInput("add1", "38 Public Sq");
         }
         
         [When(@"User saves changes")]

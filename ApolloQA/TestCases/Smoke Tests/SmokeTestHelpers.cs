@@ -48,5 +48,22 @@ namespace ApolloQA.TestCases.Smoke_Tests
             IWebElement addressOption = functions.FindElementWait(10, By.XPath("//div[@class='address-info' and normalize-space(text())='" + address + "']"));
             return addressOption.Displayed;
         }
+        public void EnterInput(IWebElement locator, string value)
+        {
+            locator.SendKeys(value);
+        }
+        public void EnterSelect(IWebElement locator, string value)
+        {
+            locator.Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
+        }
+        public string GetRequired(IWebElement locator)
+        {
+            return locator.GetAttribute("aria-required");
+        }
+        public string GetValue(IWebElement locator)
+        {
+            return locator.GetAttribute("value");
+        }
     }
 }
