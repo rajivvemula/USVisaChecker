@@ -4,7 +4,7 @@
 	I want to be able to create an application
 
 Scenario: 1 Create new application
-	When I attempt to create an application with Casey Test Org 904, Commercial Auto, 09/15/2020
+	When I attempt to create an application with Casey Test Org 908, Commercial Auto, 09/15/2020
 	#parameters in above When step are stored in FeatureContext, then used to validate correct data is displayed in below Then step
 	Then an application is successfully created with the proper values
 	#Then step also saves the application number to FeatureContext for later use

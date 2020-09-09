@@ -88,7 +88,6 @@ namespace ApolloQA.Helpers
 
             theSelection.Click();
 
-            
         }
 
         public string GetValueFromHeaderField(string fieldLabel)
