@@ -1,0 +1,22 @@
+﻿This files lists all resuables specflow statements currently implemented in regression test
+
+
+
+//Given
+
+Given User is on Homepage
+
+
+//When 
+When User navigates to <Tab> Tab
+
+
+
+//And
+
+
+
+
+//Then
+
+

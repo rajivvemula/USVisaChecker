@@ -27,6 +27,19 @@ namespace ApolloQA.Pages.Shared
         public IWebElement ManagerDashboardTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Manager Dashboard')]"));
         public IWebElement AdjusterDashboardTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Adjuster Dashboard')]"));
 
+        public IWebElement getElementFromFieldname(string fieldName)
+        {
+            switch (fieldName)
+            {
+                case "Home": return HomeIcon;
+                case "Organization": return OrganizationTab;
+                case "Application": return ApplicationTab;
+                case "Policy": return PolicyTab;
+                default: return null;
+
+            }
+        }
+
         public void ClickHomeIcon()
         {
             HomeIcon.Click();

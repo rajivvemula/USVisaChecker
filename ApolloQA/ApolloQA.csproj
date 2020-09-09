@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="TestCases\Regression\FNOL\N000-LogInAsAdmin.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
@@ -45,6 +49,24 @@
     <Folder Include="Selenium\" />
     <Folder Include="Pages\Claims\" />
     <Folder Include="Pages\Grid\" />
+    <Folder Include="TestCases\Regression\Application\" />
+    <Folder Include="TestCases\Regression\FNOL\" />
+    <Folder Include="TestCases\Regression\Permissions\" />
+    <Folder Include="TestCases\Regression\Organization\" />
+    <Folder Include="TestCases\Regression\Policy\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="TestCases\Regression\Navigation\N000-LogInAsAdmin.feature.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Update="TestCases\Regression\Navigation\N000-LogInAsAdmin.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 
 </Project>

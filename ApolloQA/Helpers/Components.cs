@@ -141,6 +141,19 @@ namespace ApolloQA.Helpers
             return locator.GetAttribute("value");
         }
 
+        public void CheckIfHome()
+        {
+            // !cDriver.Url.Contains(Defaults.QA_URLS["Home"]) but for now we might need some action in if
+            if (cDriver.Url.Contains(Defaults.QA_URLS["Home"]))
+            {
+                //home 
+            }
+            else
+            {
+                cDriver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
+            }
+        }
+
         //public void UpdateResourceSelectDropdown()
         //{
 
