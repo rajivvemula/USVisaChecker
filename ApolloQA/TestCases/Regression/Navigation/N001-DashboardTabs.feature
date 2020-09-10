@@ -2,16 +2,34 @@
 Feature: B001-DashboardTabs
 	Test Out the initial tabs that are present upon logging in
 
-Scenario: User Navigates to Homepage
+Scenario:1 User Navigates to Homepage
 Given User is on Homepage
 
-Scenario Outline: User Interactions With Dashboard Tabs
+Scenario Outline:2 User Interactions With Dashboard Tabs
 	When User navigates to <Tab> Tab
-	Then Tab navigates to <Assert> URL
+	Then Tab navigates to <Tab> URL
 
 Examples:
-	| Tab          | Assert       | 
-	| Policy       | Policy       |
-	| Application  | Application  |
-	| Organization | Organization |
-	| Home         | Home         |
+	| Tab          |  
+	| Policy       | 
+	| Application  | 
+	| Organization | 
+	| Home         |
+
+Scenario: 3 Verify Correct Tabs Displayed In Waffle Menu
+	Given User opens Waffle Menu
+	Then Correct waffleTabs is displayed
+	Then User closes Waffle Menu
+
+Scenario Outline: 4 User Interactions With Waffle Menu Tabs
+	Given User opens Waffle Menu
+	When User navigates to <Tab> Tab
+	Then Tab navigates to <Tab> URL
+
+Examples:
+	| Tab            |
+	| Underwriting   |
+	| Billing        |
+	| Administration |
+	| Collections    |
+	| Claims         |

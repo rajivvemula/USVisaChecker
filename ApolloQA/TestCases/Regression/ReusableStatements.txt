@@ -5,7 +5,7 @@
 //Given
 
 Given User is on Homepage
-
+Given User opens Waffle Menu
 
 //When 
 When User navigates to <Tab> Tab
@@ -19,4 +19,5 @@ When User navigates to <Tab> Tab
 
 //Then
 
-
+Then Correct waffleTabs is displayed
+Then User closes Waffle Menu

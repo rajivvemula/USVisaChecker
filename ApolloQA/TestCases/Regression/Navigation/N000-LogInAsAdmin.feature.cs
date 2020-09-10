@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.FNOL
+namespace ApolloQA.TestCases.Regression.Navigation
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,10 +20,10 @@ namespace ApolloQA.TestCases.Regression.FNOL
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("N000-UserLoginAsAdmin")]
+    [NUnit.Framework.DescriptionAttribute("A000-UserLoginAsAdmin")]
     [NUnit.Framework.CategoryAttribute("smoketest")]
     [NUnit.Framework.CategoryAttribute("navigation")]
-    public partial class N000_UserLoginAsAdminFeature
+    public partial class A000_UserLoginAsAdminFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -39,7 +39,7 @@ namespace ApolloQA.TestCases.Regression.FNOL
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/FNOL", "N000-UserLoginAsAdmin", "\tAs a Admin\r\n\tI want to login \r\n\tSo I can access the Apollo", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Navigation", "A000-UserLoginAsAdmin", "\tAs a Admin\r\n\tI want to login \r\n\tSo I can access the Apollo", ProgrammingLanguage.CSharp, new string[] {
                         "smoketest",
                         "navigation"});
             testRunner.OnFeatureStart(featureInfo);
