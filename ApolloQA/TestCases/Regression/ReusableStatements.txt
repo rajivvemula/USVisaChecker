@@ -1,4 +1,4 @@
-﻿This files lists all resuables specflow statements currently implemented in regression test
+﻿This files lists all reusable small specflow statements currently implemented in regression test
 
 
 
