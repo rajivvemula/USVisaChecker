@@ -20,6 +20,16 @@ namespace ApolloQA.Pages.Shared
 
         }
 
+        public IWebElement getElementFromFieldname(string fieldName)
+        {
+            switch (fieldName)
+            {
+                case "orgGridNew": return orgGridNew;
+                default: return null;
+
+            }
+        }
+
         // The buttons are named <section> + <button name> = orgGrid + New = orgGridNew
         /// <Section>
 		/// Organization

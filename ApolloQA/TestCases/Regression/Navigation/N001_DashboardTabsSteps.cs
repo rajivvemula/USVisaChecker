@@ -27,7 +27,18 @@ namespace ApolloQA.TestCases.Regression.Navigation
         [Given(@"User is on Homepage")]
         public void GivenUserIsOnHomepage()
         {
-            components.CheckIfHome();
+            //components.CheckIfHome();
+            if (!driver.Url.Contains(Defaults.QA_URLS["Home"]))
+            {
+                try
+                {
+                    mainNavBar.HomeIcon.Click();
+                }
+                catch (ElementClickInterceptedException clickintercepted)
+                {
+                    driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
+                }
+            }
         }
 
         [Given(@"User opens Waffle Menu")]

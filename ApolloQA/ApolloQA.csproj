@@ -52,7 +52,6 @@
     <Folder Include="TestCases\Regression\Application\" />
     <Folder Include="TestCases\Regression\FNOL\" />
     <Folder Include="TestCases\Regression\Permissions\" />
-    <Folder Include="TestCases\Regression\Organization\" />
     <Folder Include="TestCases\Regression\Policy\" />
   </ItemGroup>
 

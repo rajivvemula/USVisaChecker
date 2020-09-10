@@ -9,7 +9,7 @@ Given User opens Waffle Menu
 
 //When 
 When User navigates to <Tab> Tab
-
+When User clicks <button> button
 
 
 //And
@@ -19,5 +19,6 @@ When User navigates to <Tab> Tab
 
 //Then
 
-Then Correct waffleTabs is displayed
+Then Correct <waffleTabs> is displayed
 Then User closes Waffle Menu
+Then Verify correct page <title> is displayed

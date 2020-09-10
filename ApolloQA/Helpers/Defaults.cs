@@ -37,7 +37,12 @@ namespace ApolloQA.Helpers
                                 "Additional Questions", "Modifiers", "Additional Interests",
                                 "Summary", "Rate Calculation Test", "Coverages List Test", "Documents", "Activities",
                                 "Loss History","Policy History" }},
-    };
+        };
+
+        public static IDictionary<string, string> PageTitles = new Dictionary<string, string>()
+        {
+            {"orgInsert", "Insert Organization" }
+        };
 
         public static readonly string[] adminRoles = {
             "Apollo Accounts Receivable",
