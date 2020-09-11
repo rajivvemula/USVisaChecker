@@ -12,11 +12,9 @@ pool:
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
-- task: NuGetCommand@2
+- task: NuGetToolInstaller@1
   inputs:
-    command: 'restore'
-    restoreSolution: '**/*.sln'
-    feedsToUse: 'select'
+    versionSpec: 
 - task: VSBuild@1
   inputs:
     solution: '**\*.sln'
