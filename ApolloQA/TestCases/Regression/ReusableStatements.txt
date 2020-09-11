@@ -6,11 +6,12 @@
 
 Given User is on Homepage
 Given User opens Waffle Menu
+Given User is on organization <ID>
 
 //When 
 When User navigates to <Tab> Tab
 When User clicks <button> button
-
+When User changes <Field> to <value>
 
 //And
 
@@ -22,3 +23,4 @@ When User clicks <button> button
 Then Correct <waffleTabs> is displayed
 Then User closes Waffle Menu
 Then Verify correct page <title> is displayed
+Then Verify correct toast <message> is displayed

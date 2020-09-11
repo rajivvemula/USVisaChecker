@@ -144,7 +144,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "Role",
                             "First",
                             "Middle",
@@ -157,7 +157,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Remarks",
                             "PhoneType",
                             "PhoneNumber"});
-                table1.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "Customer Service Representative",
                             "John",
                             "J",
@@ -171,7 +171,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Mobile",
                             "3469994485"});
 #line 13
- testRunner.When("User enters all inputs in insert contact screen", ((string)(null)), table1, "When ");
+ testRunner.When("User enters all inputs in insert contact screen", ((string)(null)), table2, "When ");
 #line hidden
 #line 16
  testRunner.When("User clicks the save button in insert contact screen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

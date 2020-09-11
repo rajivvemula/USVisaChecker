@@ -66,6 +66,7 @@ namespace ApolloQA.TestCases.Regression.Organization
                     taxName
                     );
                 state.createdOrgName = orgName;
+                state.createOrgsList.Add(orgName);
                 state.taxName = taxName;
                 //TODO = USE INTERFACES TO STANDARDIZE ORG
             }

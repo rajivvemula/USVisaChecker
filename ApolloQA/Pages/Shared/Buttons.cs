@@ -25,6 +25,9 @@ namespace ApolloQA.Pages.Shared
             switch (fieldName)
             {
                 case "orgGridNew": return orgGridNew;
+                case "fnolGridNew": return fnolGridNew;
+                case "appGridNew": return appGridNew;
+                case "orgInsertSave": return orgInsertSave;
                 default: return null;
 
             }

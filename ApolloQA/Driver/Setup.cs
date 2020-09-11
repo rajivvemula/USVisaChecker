@@ -1,4 +1,5 @@
 ﻿using ApolloQA.DataFiles;
+using ApolloQA.Pages.Shared;
 using BoDi;
 using Microsoft.Azure.Cosmos;
 using OpenQA.Selenium;

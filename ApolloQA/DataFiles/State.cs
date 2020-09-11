@@ -16,7 +16,8 @@ namespace ApolloQA.DataFiles
         public string createdClaimID = "";
         public bool queryFound = false;
         public bool claimFound = false;
-        //public List<string> policyList = new List<string>() { "One", "Two" };
+        public List<string> createOrgsList = new List<string>();
+        public int createOrgRecent;
 
         /*
         How to add state:

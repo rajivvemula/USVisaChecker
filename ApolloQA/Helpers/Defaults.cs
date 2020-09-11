@@ -41,7 +41,14 @@ namespace ApolloQA.Helpers
 
         public static IDictionary<string, string> PageTitles = new Dictionary<string, string>()
         {
-            {"orgInsert", "Insert Organization" }
+            {"orgInsert", "Insert Organization" },
+            {"fnolInsert", "First Notice of Loss" },
+            {"appInsert", "Application" }
+        };
+
+        public static IDictionary<string, string> Toasts = new Dictionary<string, string>()
+        {
+            {"OrgSave", "was saved." }
         };
 
         public static readonly string[] adminRoles = {

@@ -174,7 +174,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "VIN",
                             "Year",
                             "Make",
@@ -189,7 +189,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Business",
                             "Code",
                             "Notes"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "JHMCG56492C003397",
                             "2002",
                             "Honda",
@@ -205,7 +205,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "401",
                             "Sample Vehicle"});
 #line 21
- testRunner.When("I user enter all info into add new vehicle", ((string)(null)), table2, "When ");
+ testRunner.When("I user enter all info into add new vehicle", ((string)(null)), table3, "When ");
 #line hidden
 #line 24
  testRunner.And("User select coverage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
