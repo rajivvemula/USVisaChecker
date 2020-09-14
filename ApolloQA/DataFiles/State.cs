@@ -16,7 +16,7 @@ namespace ApolloQA.DataFiles
         public string createdClaimID = "";
         public bool queryFound = false;
         public bool claimFound = false;
-        public List<string> createOrgsList = new List<string>();
+        public List<IOrganization> createOrgsList = new List<IOrganization>();
         public int createOrgRecent;
 
         /*
@@ -34,3 +34,5 @@ namespace ApolloQA.DataFiles
         */
     }
 }
+
+

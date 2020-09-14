@@ -30,6 +30,8 @@ namespace ApolloQA.TestCases.Regression.Organization
             rnd = new Random();
             components = new Components(driver);
             toaster = new Toaster(driver);
+            organizationAddress = new OrganizationAddress(driver);
+            addAddress = new AddAddress(driver);
         }
         
 

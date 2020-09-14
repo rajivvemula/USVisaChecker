@@ -18,6 +18,7 @@ namespace ApolloQA.TestCases.Regression.Organization
         CreateOrganization createOrg;
         Random rnd;
         State state;
+        OrganizationInformation organizationInformation;
 
         string orgName;
         string taxName;
@@ -28,6 +29,7 @@ namespace ApolloQA.TestCases.Regression.Organization
             this.state = state;
             createOrg = new CreateOrganization(driver);
             rnd = new Random();
+            organizationInformation = new OrganizationInformation(driver);
         }
 
         [When(@"User creates an Organization")]
@@ -66,9 +68,22 @@ namespace ApolloQA.TestCases.Regression.Organization
                     taxName
                     );
                 state.createdOrgName = orgName;
-                state.createOrgsList.Add(orgName);
+                state.createOrgsList.Add(new IOrganization()
+                {
+                    Name = orgName,
+                    DBA = detail.DBA,
+                    BusPhone = detail.BusPhone.ToString(),
+                    BusEmail = detail.BusEmail,
+                    BusWeb = detail.BusWeb,
+                    YearStart =  detail.YearStart.ToString(),
+                    YearOwn = detail.YearOwn.ToString(),
+                    OrgType = detail.OrgType,
+                    TaxType = detail.TaxType,
+                    Keyword = detail.Keyword,
+                    TaxIdNo = taxName
+
+                });
                 state.taxName = taxName;
-                //TODO = USE INTERFACES TO STANDARDIZE ORG
             }
         }
 
@@ -76,7 +91,8 @@ namespace ApolloQA.TestCases.Regression.Organization
         public void ThenVerifyOrganizationIsCreated()
         {
             Assert.That(() => driver.Title, Does.Contain("Organization Details").After(3).Seconds.PollEvery(250).MilliSeconds, "Organization was not created");
-            //Add SQL Verify once setup
+            Assert.That(() => organizationInformation.inputName.Text, Does.Contain(state.createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Organization was not created");
+
         }
 
     }
