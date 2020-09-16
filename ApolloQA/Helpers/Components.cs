@@ -61,9 +61,7 @@ namespace ApolloQA.Helpers
                 return false;
             //otherwise, click the dropdown and make the selection
             dropdownField.Click();
-            //Thread.Sleep(500);
             IWebElement theSelection = functions.FindElementWaitUntilClickable(10, By.XPath("//mat-option/span[normalize-space(text())='" + selection + "']"));
-            //Thread.Sleep(500);
             theSelection.Click();
             return true;
         }

@@ -76,12 +76,18 @@ namespace ApolloQA.TestCases.Regression
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("1 Create new application")]
-        public virtual void _1CreateNewApplication()
+        [NUnit.Framework.TestCaseAttribute("0", "Casey Test Org 904", "Commercial Auto", "10/01/2020", null)]
+        [NUnit.Framework.TestCaseAttribute("1", "Casey Test Org 916", "Commercial Auto", "10/15/2020", null)]
+        public virtual void _1CreateNewApplication(string applicationIndex, string businessName, string lOB, string effectiveDate, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Application Index", applicationIndex);
+            argumentsOfScenario.Add("Business Name", businessName);
+            argumentsOfScenario.Add("LOB", lOB);
+            argumentsOfScenario.Add("Effective Date", effectiveDate);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Create new application", null, tagsOfScenario, argumentsOfScenario);
-#line 6
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -101,25 +107,29 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
- testRunner.When("I attempt to create an application with Casey Test Org 908, Commercial Auto, 09/1" +
-                        "5/2020", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 13
+ testRunner.When(string.Format("I create a new application with values {0}, {1}, {2} as Application Index {3}", businessName, lOB, effectiveDate, applicationIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 9
- testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 15
+ testRunner.Then(string.Format("an application is successfully created with the proper values for Application Ind" +
+                            "ex {0}", applicationIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("2 Business Information tab")]
-        public virtual void _2BusinessInformationTab()
+        [NUnit.Framework.DescriptionAttribute("2 Business Information - Select Mailing")]
+        [NUnit.Framework.TestCaseAttribute("0", "123 Test Address, Forty Fort, PA, 18704", null)]
+        [NUnit.Framework.TestCaseAttribute("1", "345 Existing Address, Plains, PA, 18705", null)]
+        public virtual void _2BusinessInformation_SelectMailing(string applicationIndex, string existingAddress, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Business Information tab", null, tagsOfScenario, argumentsOfScenario);
-#line 13
+            argumentsOfScenario.Add("Application Index", applicationIndex);
+            argumentsOfScenario.Add("Existing Address", existingAddress);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Business Information - Select Mailing", null, tagsOfScenario, argumentsOfScenario);
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -139,12 +149,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 14
- testRunner.When("I update mailing address to existing address 123 Test Address, Forty Fort, PA, 18" +
-                        "704", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 26
+ testRunner.When(string.Format("I update mailing address to existing address {0} for Application Index {1}", existingAddress, applicationIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 16
- testRunner.Then("The Mailing Address is successfully updated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 27
+ testRunner.Then(string.Format("The Mailing Address is successfully updated for Application Index {0}", applicationIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -1,5 +1,6 @@
 ﻿using ApolloQA.DataFiles;
 using BoDi;
+using Dynamitey;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
@@ -15,6 +16,7 @@ namespace ApolloQA.Driver
         private static IObjectContainer _objectContainer;
         public static IWebDriver driver;
         public static State state;
+        public static FeatureContext _featureContext;
 
         public Setup(IObjectContainer objectContainer)
         {
@@ -28,6 +30,24 @@ namespace ApolloQA.Driver
             driver.Manage().Window.Maximize();
             state = new State();
         }
+
+        [BeforeFeature]
+        public static void BeforeFeature(FeatureContext featureContext)
+        {
+            _featureContext = featureContext;
+            _featureContext.Add("Application List", new List<ApplicationObject>());
+        }
+
+        [AfterFeature]
+        public static void AfterFeature(FeatureContext featureContext)
+        {
+            //print current feature's Application List
+
+            //add current Application to State's objects Application List
+
+            //flush the Feature's Application List
+        }
+
 
         [BeforeScenario]
         public void BeforeScenario()

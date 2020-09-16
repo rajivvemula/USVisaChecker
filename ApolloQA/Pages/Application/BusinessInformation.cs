@@ -65,7 +65,7 @@ namespace ApolloQA.Pages.Application
                 matCheckbox.Click();
             }               
 
-            //click the phsyical address drop-down
+            //click the physical address drop-down
             IWebElement physicalAddress = functions.FindElementWaitUntilClickable(10, By.XPath("//mat-select[@formcontrolname='physicalAddressId']"));
             physicalAddress.Click();
 
