@@ -1,4 +1,5 @@
-﻿Feature: S000-SmokeTest
+﻿@SmokeTestBase
+Feature: S000-SmokeTest
 Covers Login and Navigation Tests
 
 
@@ -26,18 +27,7 @@ Scenario:1D Verify Correct Tabs Displayed In Waffle Menu
 	Then Correct waffleTabs is displayed
 	Then User closes Waffle Menu
 
-Scenario Outline:1E User Interactions With Waffle Menu Tabs
-	Given User opens Waffle Menu
-	When User navigates to <Tab> Tab
-	Then Tab navigates to <Tab> URL
 
-Examples:
-	| Tab            |
-	| Underwriting   |
-	| Billing        |
-	| Administration |
-	| Collections    |
-	| Claims         |
 
 Scenario:1F Navigate to Organization Insert Page
 	Given User is on Homepage
@@ -59,4 +49,4 @@ Scenario:1H Navigate to Application Insert Page
 	When User navigates to Application Tab
 	Then Tab navigates to Application URL
 	When User clicks appGridNew button
-	Then Verify correct page orgInsert is displayed
+	Then Verify correct page appInsert is displayed

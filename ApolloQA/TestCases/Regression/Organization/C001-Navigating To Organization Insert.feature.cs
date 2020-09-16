@@ -21,16 +21,12 @@ namespace ApolloQA.TestCases.Regression.Organization
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("C001-Navigating To Organization Insert")]
-    [NUnit.Framework.CategoryAttribute("navigation")]
-    [NUnit.Framework.CategoryAttribute("smoketest")]
     public partial class C001_NavigatingToOrganizationInsertFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "navigation",
-                "smoketest"};
+        private string[] _featureTags = ((string[])(null));
         
 #line 1 "C001-Navigating To Organization Insert.feature"
 #line hidden
@@ -39,9 +35,7 @@ namespace ApolloQA.TestCases.Regression.Organization
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Organization", "C001-Navigating To Organization Insert", "\tNavigate To Organization Insert", ProgrammingLanguage.CSharp, new string[] {
-                        "navigation",
-                        "smoketest"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Organization", "C001-Navigating To Organization Insert", "\tNavigate To Organization Insert", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

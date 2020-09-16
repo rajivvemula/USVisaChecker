@@ -1,4 +1,4 @@
-﻿@smoketest @navigation
+﻿
 Feature: A000-UserLoginAsAdmin
 	As a Admin
 	I want to login 

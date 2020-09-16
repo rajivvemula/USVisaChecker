@@ -18,6 +18,7 @@ namespace ApolloQA.DataFiles
         public bool claimFound = false;
         public List<IOrganization> createOrgsList = new List<IOrganization>();
         public int createOrgRecent;
+        public string recentDriverLicenseNumber;
 
         /*
         How to add state:

@@ -42,7 +42,7 @@ namespace ApolloQA.Helpers
         public static IDictionary<string, string> PageTitles = new Dictionary<string, string>()
         {
             {"orgInsert", "Insert Organization" },
-            {"fnolInsert", "First Notice of Loss" },
+            {"fnolInsert", "Insert First Notice of Loss" },
             {"appInsert", "Application" }
         };
 

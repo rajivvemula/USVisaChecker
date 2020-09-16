@@ -109,18 +109,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
  testRunner.When("User Clicks Add Address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                             "Address",
                             "City",
                             "State",
                             "Zip"});
-                table7.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "39 Public Square",
                             "Wilkes Barre",
                             "Pennsylvania",
                             "18703"});
 #line 9
- testRunner.And("User inputs address details", ((string)(null)), table7, "And ");
+ testRunner.And("User inputs address details", ((string)(null)), table8, "And ");
 #line hidden
 #line 12
  testRunner.Then("User Submits the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

@@ -1,4 +1,4 @@
-﻿@navigation @smoketest @organization
+﻿
 Feature: C003-Save Changes To A Organization
 Save Changes To an Organization With a created organization or specific one
 

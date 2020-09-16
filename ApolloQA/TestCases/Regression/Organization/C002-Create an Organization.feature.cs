@@ -21,16 +21,12 @@ namespace ApolloQA.TestCases.Regression.Organization
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("C002-Create an Organization")]
-    [NUnit.Framework.CategoryAttribute("navigation")]
-    [NUnit.Framework.CategoryAttribute("smoketest")]
     public partial class C002_CreateAnOrganizationFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "navigation",
-                "smoketest"};
+        private string[] _featureTags = ((string[])(null));
         
 #line 1 "C002-Create an Organization.feature"
 #line hidden
@@ -39,9 +35,7 @@ namespace ApolloQA.TestCases.Regression.Organization
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Organization", "C002-Create an Organization", "Create an organization with given parameters", ProgrammingLanguage.CSharp, new string[] {
-                        "navigation",
-                        "smoketest"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Organization", "C002-Create an Organization", "Create an organization with given parameters", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

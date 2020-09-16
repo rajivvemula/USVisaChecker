@@ -21,18 +21,12 @@ namespace ApolloQA.TestCases.Regression.Organization
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("C003-Save Changes To A Organization")]
-    [NUnit.Framework.CategoryAttribute("navigation")]
-    [NUnit.Framework.CategoryAttribute("smoketest")]
-    [NUnit.Framework.CategoryAttribute("organization")]
     public partial class C003_SaveChangesToAOrganizationFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "navigation",
-                "smoketest",
-                "organization"};
+        private string[] _featureTags = ((string[])(null));
         
 #line 1 "C003-Save Changes To A Organization.feature"
 #line hidden
@@ -41,10 +35,7 @@ namespace ApolloQA.TestCases.Regression.Organization
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Organization", "C003-Save Changes To A Organization", "Save Changes To an Organization With a created organization or specific one", ProgrammingLanguage.CSharp, new string[] {
-                        "navigation",
-                        "smoketest",
-                        "organization"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Organization", "C003-Save Changes To A Organization", "Save Changes To an Organization With a created organization or specific one", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

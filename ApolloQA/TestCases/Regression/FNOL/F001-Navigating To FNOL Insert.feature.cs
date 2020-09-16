@@ -21,16 +21,12 @@ namespace ApolloQA.TestCases.Regression.FNOL
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("F001-Navigating To FNOL Insert")]
-    [NUnit.Framework.CategoryAttribute("navigation")]
-    [NUnit.Framework.CategoryAttribute("smoketest")]
     public partial class F001_NavigatingToFNOLInsertFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "navigation",
-                "smoketest"};
+        private string[] _featureTags = ((string[])(null));
         
 #line 1 "F001-Navigating To FNOL Insert.feature"
 #line hidden
@@ -39,9 +35,7 @@ namespace ApolloQA.TestCases.Regression.FNOL
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/FNOL", "F001-Navigating To FNOL Insert", "\tNavigate To FNOL Insert", ProgrammingLanguage.CSharp, new string[] {
-                        "navigation",
-                        "smoketest"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/FNOL", "F001-Navigating To FNOL Insert", "\tNavigate To FNOL Insert", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

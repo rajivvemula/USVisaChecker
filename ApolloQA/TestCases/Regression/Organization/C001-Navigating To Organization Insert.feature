@@ -1,4 +1,4 @@
-﻿@navigation @smoketest
+﻿
 Feature: C001-Navigating To Organization Insert
 	Navigate To Organization Insert
 

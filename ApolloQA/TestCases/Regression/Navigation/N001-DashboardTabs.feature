@@ -1,4 +1,4 @@
-﻿@navigation @smoketest
+﻿
 Feature: B001-DashboardTabs
 	Test Out the initial tabs that are present upon logging in
 

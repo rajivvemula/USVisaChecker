@@ -21,16 +21,12 @@ namespace ApolloQA.TestCases.Regression.Application
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("D001-Navigating To Application Insert")]
-    [NUnit.Framework.CategoryAttribute("navigation")]
-    [NUnit.Framework.CategoryAttribute("smoketest")]
     public partial class D001_NavigatingToApplicationInsertFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "navigation",
-                "smoketest"};
+        private string[] _featureTags = ((string[])(null));
         
 #line 1 "D001-Navigating To Application Insert.feature"
 #line hidden
@@ -39,9 +35,7 @@ namespace ApolloQA.TestCases.Regression.Application
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Application", "D001-Navigating To Application Insert", "\tNavigate To Organization Insert", ProgrammingLanguage.CSharp, new string[] {
-                        "navigation",
-                        "smoketest"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Application", "D001-Navigating To Application Insert", "\tNavigate To Organization Insert", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -119,7 +113,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("User clicks appGridNew button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 11
- testRunner.Then("Verify correct page orgInsert is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Verify correct page appInsert is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -1,4 +1,4 @@
-﻿@navigation @smoketest
+﻿
 Feature: C002-Create an Organization
 Create an organization with given parameters
 

@@ -1,4 +1,4 @@
-﻿@navigation @smoketest
+﻿
 Feature: F001-Navigating To FNOL Insert
 	Navigate To FNOL Insert
 

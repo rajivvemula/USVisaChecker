@@ -326,7 +326,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
         public void AddDriverToOrganization()
         {
             //Navigate to Driver Tab
-            organizationDriver.addressTab.Click();
+            //organizationDriver.addressTab.Click();
             if (components.CheckIfDialogPresent())
             {
                 button.alertContinueAnyway.Click();

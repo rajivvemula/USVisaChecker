@@ -1,4 +1,4 @@
-﻿@navigation @smoketest @organization
+﻿
 Feature: C004-Add An Address To Organization
 Create an organization with given parameters
 
