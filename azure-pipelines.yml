@@ -21,10 +21,16 @@ steps:
   inputs:
     solution: '**\*.sln'
     restoreNugetPackages: true
-
-- task: DotNetCoreCLI@2
+- task: VSTest@2
   inputs:
-    command: 'test'
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\ApolloQA.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    testFiltercriteria: 'TestCategory=SmokeTestBase'
+    testRunTitle: 'SmokeTest'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
