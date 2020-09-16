@@ -7,6 +7,8 @@
 //When 
 When User creates an Organization
 When User adds address to Organization 
+When User adds driver to Organization
+When User adds vehicle to Organization
 
 //And
 
