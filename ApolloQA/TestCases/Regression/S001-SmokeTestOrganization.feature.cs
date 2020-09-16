@@ -20,25 +20,22 @@ namespace ApolloQA.TestCases.Regression
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("R044-AddDriverToOrganization")]
-    [NUnit.Framework.CategoryAttribute("org")]
-    public partial class R044_AddDriverToOrganizationFeature
+    [NUnit.Framework.DescriptionAttribute("S001-SmokeTest")]
+    public partial class S001_SmokeTestFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "org"};
+        private string[] _featureTags = ((string[])(null));
         
-#line 1 "R044-AddDriverToOrganization.feature"
+#line 1 "S001-SmokeTestOrganization.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R044-AddDriverToOrganization", null, ProgrammingLanguage.CSharp, new string[] {
-                        "org"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "S001-SmokeTest", "Smoke Test that covers the Organization", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -77,13 +74,13 @@ namespace ApolloQA.TestCases.Regression
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("1 User can navigate to Drivers tab and click Add Driver")]
-        public virtual void _1UserCanNavigateToDriversTabAndClickAddDriver()
+        [NUnit.Framework.DescriptionAttribute("1 Create an Organization")]
+        public virtual void _1CreateAnOrganization()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 User can navigate to Drivers tab and click Add Driver", null, tagsOfScenario, argumentsOfScenario);
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Create an Organization", null, tagsOfScenario, argumentsOfScenario);
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -103,33 +100,50 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
- testRunner.When("User clicks Drivers Tab In Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 5
+ testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Name",
+                            "DBA",
+                            "OrgType",
+                            "TaxType",
+                            "TaxIDNo",
+                            "BusPhone",
+                            "BusEmail",
+                            "BusWeb",
+                            "YearStart",
+                            "YearOwn",
+                            "Keyword"});
+                table11.AddRow(new string[] {
+                            "Smoke Test",
+                            "Smoke",
+                            "Corporation",
+                            "FEIN",
+                            "Random",
+                            "123-456-7890",
+                            "smoketest@gmail.com",
+                            "smoketest.com",
+                            "2011",
+                            "2012",
+                            "Accountant"});
+#line 6
+ testRunner.When("User creates an Organization", ((string)(null)), table11, "When ");
 #line hidden
 #line 9
- testRunner.When("User clicks Add Driver in Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Verify organization is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("2 Verify All Inputs on Add Driver Modal")]
-        [NUnit.Framework.TestCaseAttribute("first", "John", "true", null)]
-        [NUnit.Framework.TestCaseAttribute("middle", "J", "false", null)]
-        [NUnit.Framework.TestCaseAttribute("last", "Smith", "true", null)]
-        [NUnit.Framework.TestCaseAttribute("suffix", "Mr", "false", null)]
-        [NUnit.Framework.TestCaseAttribute("dob", "7/8/1980", "true", null)]
-        [NUnit.Framework.TestCaseAttribute("licensenumber", "12312312", "true", null)]
-        [NUnit.Framework.TestCaseAttribute("licenseexp", "7/8/2022", "true", null)]
-        public virtual void _2VerifyAllInputsOnAddDriverModal(string input, string value, string required, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("2 Save Changes To An Organization")]
+        public virtual void _2SaveChangesToAnOrganization()
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Input", input);
-            argumentsOfScenario.Add("Value", value);
-            argumentsOfScenario.Add("Required", required);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Verify All Inputs on Add Driver Modal", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Save Changes To An Organization", null, tagsOfScenario, argumentsOfScenario);
 #line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -151,70 +165,29 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 12
- testRunner.When(string.Format("Add Driver Modal User enter {0} for {1}", value, input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("User is on organization Created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 13
- testRunner.Then(string.Format("Add Driver Modal User should see {0} For that {1}", value, input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("User changes dropdown busInfoOrgType to LLC", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 14
- testRunner.And(string.Format("Add Driver Modal User is required to have values for the {0} as {1}", input, required), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("User clicks orgInsertSave button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 15
+ testRunner.Then("Verify correct toast \"was saved.\" is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("3 Verify All Selects on Add Driver Modal")]
-        [NUnit.Framework.TestCaseAttribute("licensestate", "true", null)]
-        [NUnit.Framework.TestCaseAttribute("cdl", "true", null)]
-        public virtual void _3VerifyAllSelectsOnAddDriverModal(string select, string selectRequired, string[] exampleTags)
-        {
-            string[] tagsOfScenario = exampleTags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Select", select);
-            argumentsOfScenario.Add("SelectRequired", selectRequired);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("3 Verify All Selects on Add Driver Modal", null, tagsOfScenario, argumentsOfScenario);
-#line 27
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 28
- testRunner.When(string.Format("Add Driver Modal User clicks on {0}", select), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 29
- testRunner.Then(string.Format("Add Driver Modal User should see all values to be present in {0}", select), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 30
- testRunner.And(string.Format("Add Driver Modal User is required to have Select values for the {0} as {1}", select, selectRequired), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("4 User is able to click cancel and exit the add driver modal")]
-        public virtual void _4UserIsAbleToClickCancelAndExitTheAddDriverModal()
+        [NUnit.Framework.DescriptionAttribute("3 Add an address to Organization")]
+        public virtual void _3AddAnAddressToOrganization()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("4 User is able to click cancel and exit the add driver modal", null, tagsOfScenario, argumentsOfScenario);
-#line 38
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("3 Add an address to Organization", null, tagsOfScenario, argumentsOfScenario);
+#line 17
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -234,21 +207,34 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 39
- testRunner.When("User clicks cancel to exit modal for Add Driver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Line1",
+                            "City",
+                            "State",
+                            "Zip"});
+                table12.AddRow(new string[] {
+                            "39 Public Sq",
+                            "Wilkes Barre",
+                            "PA",
+                            "18701"});
+#line 18
+ testRunner.When("User adds address to Organization", ((string)(null)), table12, "When ");
+#line hidden
+#line 21
+ testRunner.Then("Verify address is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("5 User is able to add driver to an organization")]
-        public virtual void _5UserIsAbleToAddDriverToAnOrganization()
+        [NUnit.Framework.DescriptionAttribute("Add a Driver to A Given Organization")]
+        public virtual void AddADriverToAGivenOrganization()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("5 User is able to add driver to an organization", null, tagsOfScenario, argumentsOfScenario);
-#line 42
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a Driver to A Given Organization", null, tagsOfScenario, argumentsOfScenario);
+#line 23
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -268,10 +254,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 43
- testRunner.When("User clicks Add Driver in Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                             "First",
                             "Last",
                             "Middle",
@@ -280,36 +263,33 @@ this.ScenarioInitialize(scenarioInfo);
                             "Number",
                             "Exp",
                             "CDL"});
-                table10.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "Jacob",
                             "Seed",
                             "J",
                             "01/02/1975",
                             "AZ",
-                            "AZ15435",
+                            "Random",
                             "01/01/2022",
                             "No"});
-#line 44
- testRunner.And("user enters inputs for add driver in organization", ((string)(null)), table10, "And ");
+#line 24
+ testRunner.When("User adds driver to Organization", ((string)(null)), table13, "When ");
 #line hidden
-#line 47
- testRunner.And("user clicks submit to add driver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 48
- testRunner.Then("User should see toast confirming driver was added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 27
+ testRunner.Then("Verify driver is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("6 User is able to edit driver in an organization")]
-        public virtual void _6UserIsAbleToEditDriverInAnOrganization()
+        [NUnit.Framework.DescriptionAttribute("Add a Vehicle to Organization")]
+        public virtual void AddAVehicleToOrganization()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("6 User is able to edit driver in an organization", null, tagsOfScenario, argumentsOfScenario);
-#line 50
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a Vehicle to Organization", null, tagsOfScenario, argumentsOfScenario);
+#line 29
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -329,20 +309,41 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 51
- testRunner.When("User clicks edit driver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                            "VIN",
+                            "Year",
+                            "Make",
+                            "Model",
+                            "Trim",
+                            "Type",
+                            "Category",
+                            "SubCategory",
+                            "Code",
+                            "Seating",
+                            "Gross",
+                            "Cost",
+                            "Value",
+                            "Stated"});
+                table14.AddRow(new string[] {
+                            "Random",
+                            "2015",
+                            "Toyota",
+                            "Camry",
+                            "SE",
+                            "Car",
+                            "Cars, Pickup, or SUV",
+                            "Car - Coupe",
+                            "Airport Limousines -826",
+                            "5 or less",
+                            "0 - 5000",
+                            "10000",
+                            "11000",
+                            "12000"});
+#line 30
+ testRunner.When("User adds vehicle to Organization", ((string)(null)), table14, "When ");
 #line hidden
-#line 52
- testRunner.And("changes driver first name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 53
- testRunner.And("user clicks submit to add driver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 54
- testRunner.Then("User should see toast confirming driver was added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 55
- testRunner.Then("wait 5 secs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 33
+ testRunner.Then("Verify vehicle is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

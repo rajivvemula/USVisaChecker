@@ -30,7 +30,7 @@ namespace ApolloQA.TestCases.Regression
         [When(@"User clicks Drivers Tab In Organization")]
         public void WhenUserClicksDriversTabInOrganization()
         {
-            organizationDriver.addressTab.Click();
+            //organizationDriver.addressTab.Click();
         }
         
         [When(@"User clicks Add Driver in Organization")]
