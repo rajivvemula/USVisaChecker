@@ -15,8 +15,6 @@ variables:
 
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
@@ -46,7 +44,3 @@ steps:
     testFiltercriteria: 'TestCategory=SmokeTestBase'
     testRunTitle: 'SmokeTest'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
