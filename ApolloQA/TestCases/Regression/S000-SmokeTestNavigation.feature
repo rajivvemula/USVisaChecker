@@ -51,14 +51,14 @@ Scenario:1H Navigate to Application Insert Page
 	Then Verify correct page appInsert is displayed
 
 Scenario:1I Can search by valid policy number
-	When I enter policy number 10543 in the search field
-	And I click the first search result
-	Then I should be directed to policy 10543
+	When User enters 10543 in search field
+	And User selects the first result
+	Then User is directed to Policy URL with ID 10543
 
-Scenario:1J Can search by valid organization
-	When I enter organization name Casey Test Org 916 in the search field
-	And I click the first search result
-	Then I should be directed to organization Casey Test Org 916
+Scenario:1J Can search by valid organization number
+	When User enters Casey Test Org 916 in search field
+	And User selects the first result
+	Then User is directed to Organization
 
 Scenario:1K Can impersonate impersonateable user
 	When I impersonate impersonateable user Sonia.Amaravel@biberk.com
