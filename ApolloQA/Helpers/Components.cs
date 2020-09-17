@@ -79,7 +79,7 @@ namespace ApolloQA.Helpers
 
             //REQUIRED - OTHERWISE CLICKING AUTOCOMPLETED SELECTION HAPPENS TOO QUICKLY 
             // issue notced when creating new Application and selecting business name, taxonomy field is missing without this sleep
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             IWebElement theSelection = functions.FindElementWaitUntilClickable(5, 
                 By.XPath("//mat-option[contains(@class,'provided') and .//div[@class='line-label' and translate(normalize-space(text()), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + selection.ToLower() + "']]"));

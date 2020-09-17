@@ -1,4 +1,4 @@
-﻿Feature: R060-NewApplication
+﻿Feature: R060-NewApplicationMultiple
 	In order to test application creation
 	As an authorized user
 	I want to be able to create an application

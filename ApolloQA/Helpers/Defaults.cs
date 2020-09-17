@@ -22,7 +22,8 @@ namespace ApolloQA.Helpers
             {"Administration", "https://biberk-apollo-qa2.azurewebsites.net/administration" },
             {"Application", "https://biberk-apollo-qa2.azurewebsites.net/application" },
             {"Collections", "https://biberk-apollo-qa2.azurewebsites.net/collections/dashboard" },
-            {"Claims", "https://biberk-apollo-qa2.azurewebsites.net/claims/fnol-dashboard" }
+            {"Claims", "https://biberk-apollo-qa2.azurewebsites.net/claims/fnol-dashboard" },
+            {"Quote", "https://biberk-apollo-qa2.azurewebsites.net/quote/" }
         };
 
         public static IDictionary<string, List<string>> TabSets = new Dictionary<string, List<string>>()
@@ -48,7 +49,7 @@ namespace ApolloQA.Helpers
 
         public static IDictionary<string, string> Toasts = new Dictionary<string, string>()
         {
-            {"OrgSave", "was saved." }
+            {"OrgSave", "was saved." },
             {"Application", "https://biberk-apollo-qa2.azurewebsites.net/quote/" }
         };
 

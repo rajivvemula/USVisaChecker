@@ -12,7 +12,7 @@ using TechTalk.SpecFlow;
 namespace ApolloQA.TestCases.Regression
 {
     [Binding]
-    public class R060_NewApplicationSteps
+    public class R060_NewApplicationMultipleSteps
     {
         private FeatureContext _featureContext;
         private List<ApplicationObject> applicationList;
@@ -27,7 +27,7 @@ namespace ApolloQA.TestCases.Regression
         private Functions functions;
         private Toaster toaster;
 
-        public R060_NewApplicationSteps(IWebDriver driver, FeatureContext featureContext)
+        public R060_NewApplicationMultipleSteps(IWebDriver driver, FeatureContext featureContext)
         {
             this.driver = driver;
             _featureContext = featureContext;

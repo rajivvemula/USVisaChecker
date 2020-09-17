@@ -28,7 +28,6 @@ Scenario:1D Verify Correct Tabs Displayed In Waffle Menu
 	Then User closes Waffle Menu
 
 
-
 Scenario:1F Navigate to Organization Insert Page
 	Given User is on Homepage
 	When User navigates to Organization Tab
@@ -50,3 +49,21 @@ Scenario:1H Navigate to Application Insert Page
 	Then Tab navigates to Application URL
 	When User clicks appGridNew button
 	Then Verify correct page appInsert is displayed
+
+Scenario:1I Can search by valid policy number
+	When I enter policy number 10543 in the search field
+	And I click the first search result
+	Then I should be directed to policy 10543
+
+Scenario:1J Can search by valid organization
+	When I enter organization name Casey Test Org 916 in the search field
+	And I click the first search result
+	Then I should be directed to organization Casey Test Org 916
+
+Scenario:1K Can impersonate impersonateable user
+	When I impersonate impersonateable user Sonia.Amaravel@biberk.com
+	Then I am currently impersonating user Sonia.Amaravel@biberk.com
+
+Scenario:1L Can stop impersonation
+	When I click stop impersonation
+	Then I am not impersonating

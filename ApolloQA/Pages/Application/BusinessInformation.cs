@@ -26,7 +26,7 @@ namespace ApolloQA.Pages.Application
 
         public IWebElement selectMailing => functions.FindElementWaitUntilClickable(10, By.XPath("//mat-label[@class='ng-star-inserted' and normalize-space(text())='Mailing Address']"));
         public IWebElement nextButton => functions.FindElementWaitUntilClickable(10, By.XPath("//button[.//span[@class='mat-button-wrapper' and normalize-space(text())='Next'] and not(@disabled)]"));
-        public IWebElement continueAnyway => functions.FindElementWaitUntilClickable(15, By.XPath("//button[.//span[normalize-space(text())='Continue anyway']]"));
+        public IWebElement continueAnyway => functions.FindElementWaitUntilClickable(10, By.XPath("//button[.//span[normalize-space(text())='Continue anyway']]"));
 
         private IWebElement mailingAddress => functions.FindElementWaitUntilClickable(10, By.XPath("//mat-select[@formcontrolname='mailingAddressId']"));
 
@@ -34,7 +34,9 @@ namespace ApolloQA.Pages.Application
         public void SaveChanges()
         {
             nextButton.Click();
-            continueAnyway.Click();
+            //REMOVE LATER ONCE CONTINUE ANYWAY BUG IS FIXED
+            try { continueAnyway.Click(); }
+            catch { }
         }
 
         public string GetCurrentMailingAddress()

@@ -53,22 +53,22 @@ namespace ApolloQA.Driver
             database = client.GetDatabase("apollo");
         }
 
-        [BeforeFeature]
-        public static void BeforeFeature(FeatureContext featureContext)
-        {
-            _featureContext = featureContext;
-            _featureContext.Add("Application List", new List<ApplicationObject>());
-        }
+        //[BeforeFeature]
+        //public static void BeforeFeature(FeatureContext featureContext)
+        //{
+        //    _featureContext = featureContext;
+        //    _featureContext.Add("Application List", new List<ApplicationObject>());
+        //}
 
-        [AfterFeature]
-        public static void AfterFeature(FeatureContext featureContext)
-        {
-            //print current feature's Application List
+        //[AfterFeature]
+        //public static void AfterFeature(FeatureContext featureContext)
+        //{
+        //    //print current feature's Application List
 
-            //add current Application to State's objects Application List
+        //    //add current Application to State's objects Application List
 
-            //flush the Feature's Application List
-        }
+        //    //flush the Feature's Application List
+        //}
 
 
         [BeforeScenario]
