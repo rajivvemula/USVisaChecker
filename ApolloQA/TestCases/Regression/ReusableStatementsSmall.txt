@@ -12,9 +12,10 @@ Given User is on organization <ID>
 When User navigates to <Tab> Tab
 When User clicks <button> button
 When User changes <Field> to <value>
+When User enters <Value> in search field
 
 //And
-
+And User selects the first result
 
 
 
@@ -24,3 +25,4 @@ Then Correct <waffleTabs> is displayed
 Then User closes Waffle Menu
 Then Verify correct page <title> is displayed
 Then Verify correct toast <message> is displayed
+Then User is directed to <policy> URL with ID <10543>

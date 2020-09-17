@@ -1,4 +1,5 @@
-﻿Feature: S001-SmokeTest
+﻿@SmokeTestBase
+Feature: S001-SmokeTest
 Smoke Test that covers the Organization
 
 Scenario:1 Create an Organization
@@ -9,10 +10,10 @@ Scenario:1 Create an Organization
 	Then Verify organization is created
 
 Scenario:2 Save Changes To An Organization
-	Given User is on organization Created
+	#Given User is on organization Created
 	When User changes dropdown busInfoOrgType to LLC
 	When User clicks orgInsertSave button
-	Then Verify correct toast "was saved." is displayed
+	Then Verify correct toast was saved. is displayed
 
 Scenario:3 Add an address to Organization
 	When User adds address to Organization 

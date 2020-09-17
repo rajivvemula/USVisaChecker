@@ -47,7 +47,7 @@ namespace ApolloQA.TestCases.Regression.Organization
                     orgName = detail.Name + orgRND;
                 } else { orgName = detail.Name; };
                 
-                if(detail.TaxIDNo = "Random")
+                if(detail.TaxIDNo == "Random")
                 {
                     string taxRND = rnd.Next(100, 900).ToString();
                     taxName = "12-4489" + taxRND;
@@ -90,8 +90,8 @@ namespace ApolloQA.TestCases.Regression.Organization
         [Then(@"Verify organization is created")]
         public void ThenVerifyOrganizationIsCreated()
         {
-            Assert.That(() => driver.Title, Does.Contain("Organization Details").After(3).Seconds.PollEvery(250).MilliSeconds, "Organization was not created");
-            Assert.That(() => organizationInformation.inputName.Text, Does.Contain(state.createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Organization was not created");
+            Assert.That(() => driver.Title, Does.Contain("Organization Details").After(30).Seconds.PollEvery(250).MilliSeconds, "Organization was not created");
+            Assert.That(() => organizationInformation.inputName.GetAttribute("value"), Does.Contain(state.createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Organization was not created");
 
         }
 

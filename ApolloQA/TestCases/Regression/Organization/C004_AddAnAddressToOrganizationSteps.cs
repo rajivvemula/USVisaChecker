@@ -50,14 +50,14 @@ namespace ApolloQA.TestCases.Regression.Organization
             {
                 components.EnterInput(addAddress.inputAddressLine1, detail.Line1);
                 components.EnterInput(addAddress.inputCity, detail.City);
-                components.EnterInput(addAddress.inputZipCode, detail.State);
-                components.EnterSelect(addAddress.selectState, detail.Zip.ToString());
+                components.EnterInput(addAddress.inputZipCode, detail.Zip.ToString());
+                components.EnterSelect(addAddress.selectState, detail.State);
                 createdAdd = detail.Line1;
             }
             addAddress.saveButton.Click();
             //Select Default Address
-            addAddress.defaultAddressInfo.Click();
-            addAddress.useSelectedButton.Click();
+            //addAddress.defaultAddressInfo.Click();
+            //addAddress.useSelectedButton.Click();
 
         }
         

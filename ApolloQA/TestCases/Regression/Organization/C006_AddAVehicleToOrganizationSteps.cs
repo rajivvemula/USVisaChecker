@@ -56,7 +56,7 @@ namespace ApolloQA.TestCases.Regression.Organization
                 // Generate a random Vin
                 // add if conditions
                 string vinNumber;
-                if (detail.VIN = "Random")
+                if (detail.VIN == "Random")
                 {
                     string vinRND = rnd.Next(100, 900).ToString();
                     vinNumber = "1FAFP34N97W156" + vinRND;

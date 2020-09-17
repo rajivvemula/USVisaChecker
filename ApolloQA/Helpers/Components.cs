@@ -119,6 +119,12 @@ namespace ApolloQA.Helpers
             return verifyTab;
         }
 
+        public void ClickSideTab(string tabName)
+        {
+            IWebElement tabLink = functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='" + tabName + "']"));
+            tabLink.Click();
+        }
+
         // Below EnterInput, EnterSelect, GetRequired, GetValue replace switch case in POMs
         public void EnterInput(IWebElement locator, string value)
         {
