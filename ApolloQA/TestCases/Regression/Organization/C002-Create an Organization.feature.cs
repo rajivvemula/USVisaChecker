@@ -103,7 +103,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
  testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "DBA",
                             "OrgType",
@@ -115,7 +115,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "YearStart",
                             "YearOwn",
                             "Keyword"});
-                table1.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "Smoke Test",
                             "Smoke",
                             "Corporation",
@@ -128,7 +128,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2012",
                             "Accountant"});
 #line 8
- testRunner.When("User creates an Organization", ((string)(null)), table1, "When ");
+ testRunner.When("User creates an Organization", ((string)(null)), table2, "When ");
 #line hidden
 #line 11
  testRunner.Then("Verify organization is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

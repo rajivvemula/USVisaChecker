@@ -1,4 +1,4 @@
-﻿@SmokeTestBase
+﻿
 Feature: S002-SmokeTestApplication
 	In order to test application creation
 	As an authorized user
