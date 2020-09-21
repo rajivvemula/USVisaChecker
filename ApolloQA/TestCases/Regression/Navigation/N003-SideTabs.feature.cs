@@ -103,6 +103,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  testRunner.When("User navigates to <Tab> SideTab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+#line 7
+ testRunner.Then("Verify <tabset> are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

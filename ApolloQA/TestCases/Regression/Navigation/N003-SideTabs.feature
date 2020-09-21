@@ -4,3 +4,4 @@ Test Side Tab and Interactions located in such as policy, org etc
 
 Scenario: User Interaction With Side Tab
 	When User navigates to <Tab> SideTab
+	Then Verify <tabset> are present

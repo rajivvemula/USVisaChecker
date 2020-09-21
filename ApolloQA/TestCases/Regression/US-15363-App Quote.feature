@@ -1,12 +1,13 @@
 ﻿Feature: US-15363-App Quote
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+As an underwriter,
+I want to create a new Application Quote 
+and have the Business Information pre-filled with data captured from the Organization level so that I start the application quote process.
 
 
-#Also covers TC02 and TC03
+#Also covers TC02 and TC03 and TC 05
 #TC 02 - Verify existing Organization name display in search result
 #TC 03 -Verify Application Information page and Next should navigate Business Information page
+#TC 05 - App Quote - Verify left navigation bar sections
 Scenario: TC1 - Verify business name is new and Organization has not been created
 	Given User is on Homepage
 	When User Navigates to Application Insert 
@@ -21,5 +22,5 @@ Scenario: TC1 - Verify business name is new and Organization has not been create
 	Then Search Smoke Test10023 displayed is true
 	When User enters Smoke Test10023 in Business Name
 	And User clicks appInsertNext button
-	Then <pageName> page is displayed
-	
+	Then Business Information page is displayed
+	Then Verify applicationTabs are present
