@@ -9,3 +9,6 @@ Scenario: 1 Navigate to Application Insert Page
 	Then Tab navigates to Application URL
 	When User clicks appGridNew button
 	Then Verify correct page appInsert is displayed
+
+Scenario: Navigate to Application Insert Page(Single Step)
+	When User Navigates to Application Insert 
