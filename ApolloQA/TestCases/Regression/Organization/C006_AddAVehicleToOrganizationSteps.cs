@@ -48,7 +48,7 @@ namespace ApolloQA.TestCases.Regression.Organization
 
             // Add Vehicle Button
             organizationVehicle.addDriverButton.Click();
-            Assert.That(() => components.GetDialogTitle(), Is.EqualTo("Add vehicle for " + state.createdOrgName).After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add Vehicle Button/Open Add Vehicle Dialog");
+            Assert.That(() => components.GetDialogTitle(), Is.EqualTo("New Vehicle").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add Vehicle Button/Open Add Vehicle Dialog");
 
             var details = table.CreateDynamicSet();
             foreach (var detail in details)
