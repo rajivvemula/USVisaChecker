@@ -51,7 +51,6 @@
     <Folder Include="Selenium\" />
     <Folder Include="Pages\Claims\" />
     <Folder Include="Pages\Grid\" />
-    <Folder Include="TestCases\Regression\General\" />
     <Folder Include="TestCases\Regression\Permissions\" />
     <Folder Include="TestCases\Regression\Policy\" />
   </ItemGroup>

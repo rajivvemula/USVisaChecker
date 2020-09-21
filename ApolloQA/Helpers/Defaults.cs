@@ -53,6 +53,13 @@ namespace ApolloQA.Helpers
             {"Application", "https://biberk-apollo-qa2.azurewebsites.net/quote/" }
         };
 
+        public static IDictionary<string, string> URLContains = new Dictionary<string, string>()
+        {
+            {"Business Information", "section/9000" },
+        };
+
+
+
         public static readonly string[] adminRoles = {
             "Apollo Accounts Receivable",
             "Apollo Actuarial",

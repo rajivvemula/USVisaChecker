@@ -21,14 +21,12 @@ namespace ApolloQA.TestCases.Regression
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("S002-SmokeTestApplication")]
-    [NUnit.Framework.CategoryAttribute("SmokeTestBase")]
     public partial class S002_SmokeTestApplicationFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "SmokeTestBase"};
+        private string[] _featureTags = ((string[])(null));
         
 #line 1 "S002-SmokeTestApplication.feature"
 #line hidden
@@ -38,8 +36,7 @@ namespace ApolloQA.TestCases.Regression
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "S002-SmokeTestApplication", "\tIn order to test application creation\r\n\tAs an authorized user\r\n\tI want to be abl" +
-                    "e to create an application and get a quote", ProgrammingLanguage.CSharp, new string[] {
-                        "SmokeTestBase"});
+                    "e to create an application and get a quote", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -104,16 +101,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                             "Business Name",
                             "LOB",
                             "Effective Date"});
-                table18.AddRow(new string[] {
+                table17.AddRow(new string[] {
                             "Casey Test Org 916",
                             "Commercial Auto",
                             "10/13/2020"});
 #line 13
- testRunner.When("I create a new application with values", ((string)(null)), table18, "When ");
+ testRunner.When("I create a new application with values", ((string)(null)), table17, "When ");
 #line hidden
 #line 16
  testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

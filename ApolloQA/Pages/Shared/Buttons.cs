@@ -29,6 +29,7 @@ namespace ApolloQA.Pages.Shared
                 case "appGridNew": return appGridNew;
                 case "orgInsertSave": return orgInsertSave;
                 case "appInsertCreateNewOrg": return appInsertCreateNewOrg;
+                case "appInsertNext": return appInsertNext;
                 default: return null;
 
             }

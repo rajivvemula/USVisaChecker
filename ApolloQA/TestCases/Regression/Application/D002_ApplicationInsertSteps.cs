@@ -32,7 +32,23 @@ namespace ApolloQA.TestCases.Regression.Application
         {
             applicationInformation.businessName.SendKeys(value);
         }
-        
+
+        [When(@"User enters (.*) in Business Name")]
+        public void WhenUserEntersInBusinessName(string name)
+        {
+            string valueInPlace = applicationInformation.businessName.GetAttribute("value");
+            if (valueInPlace.Length > 0)
+            {
+                applicationInformation.businessName.Clear();
+                applicationInformation.EnterBusinessName(name);
+            } else
+            {
+                applicationInformation.EnterBusinessName(name);
+            }
+            
+        }
+
+
         [Then(@"Search (.*) displayed is (.*)")]
         public void ThenSearchDisplayedIs(string value, bool check)
         {
@@ -46,5 +62,6 @@ namespace ApolloQA.TestCases.Regression.Application
                 Assert.IsTrue(verify, "a result was not found");
             }
         }
+
     }
 }
