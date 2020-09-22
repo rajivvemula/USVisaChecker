@@ -35,12 +35,22 @@ Scenario:1D TC1 - Verify business name is new and Organization has not been crea
 	| Name            | DBA   | OrgType     | TaxType | TaxIDNo | BusPhone     | BusEmail            | BusWeb        | YearStart | YearOwn | Keyword    |
 	| Smoke Test10023 | Smoke | Corporation | FEIN    | Random  | 123-456-7890 | smoketest@gmail.com | smoketest.com | 2011      | 2012    | Accountant |
 	Then Verify organization is created
+
+Scenario:1E TC 02 - Verify existing Organization name display in search result
 	When User Navigates to Application Insert 
 	When User searches Smoke Test10023 in Business Name
 	Then Search Smoke Test10023 displayed is true
+
+Scenario:1F TC 03 - Verify Application Information page and Next should navigate Business Information page
+	When User Navigates to Application Insert 
 	When User enters Smoke Test10023 in Business Name
 	And User clicks appInsertNext button
 	Then Business Information page is displayed
+
+Scenario: 1G TC 04 - Verify Business Information page sections and fields
+	Then Verify organization Smoke Test10023 has correct values in business information
+
+Scenario:1H TC 05 - App Quote - Verify left navigation bar sections
 	Then Verify sidetab is present
 	| Key | Value                   |
 	| a   | Application Information |
