@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.Organization
+namespace ApolloQA.TestCases.Regression.FNOL
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,22 +20,22 @@ namespace ApolloQA.TestCases.Regression.Organization
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("C004-Add An Address To Organization")]
-    public partial class C004_AddAnAddressToOrganizationFeature
+    [NUnit.Framework.DescriptionAttribute("F002-Create An FNOL")]
+    public partial class F002_CreateAnFNOLFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "C004-Add An Address To Organization.feature"
+#line 1 "F002-Create An FNOL.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Organization", "C004-Add An Address To Organization", "Create an organization with given parameters", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/FNOL", "F002-Create An FNOL", "Singular workflow to create a FNOL ", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,13 +74,13 @@ namespace ApolloQA.TestCases.Regression.Organization
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Add an address to Organization")]
-        public virtual void AddAnAddressToOrganization()
+        [NUnit.Framework.DescriptionAttribute("Create a FNOL")]
+        public virtual void CreateAFNOL()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add an address to Organization", null, tagsOfScenario, argumentsOfScenario);
-#line 6
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a FNOL", null, tagsOfScenario, argumentsOfScenario);
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -100,21 +100,45 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Line1",
-                            "City",
-                            "State",
-                            "Zip"});
-                table4.AddRow(new string[] {
-                            "39 Public Sq",
-                            "Wilkes Barre",
-                            "PA",
-                            "18701"});
-#line 7
- testRunner.When("User adds address to Organization", ((string)(null)), table4, "When ");
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Received",
+                            "Related",
+                            "First",
+                            "Last",
+                            "Suffix",
+                            "Email",
+                            "PhoneType",
+                            "PhoneNumber",
+                            "ClaimCategory",
+                            "LossDesc",
+                            "Police",
+                            "PoliceName",
+                            "PoliceNumber",
+                            "Fire",
+                            "FireName",
+                            "FireNumber"});
+                table1.AddRow(new string[] {
+                            "Phone",
+                            "No",
+                            "Joseph",
+                            "Seed",
+                            "Mr",
+                            "josephseed@gmail.com",
+                            "Mobile",
+                            "5452156532",
+                            "Option 1",
+                            "Sample Desc",
+                            "Yes",
+                            "PAPD",
+                            "1234",
+                            "Yes",
+                            "PAFD",
+                            "4567"});
+#line 6
+ testRunner.When("User creates a FNOL", ((string)(null)), table1, "When ");
 #line hidden
-#line 10
- testRunner.Then("Verify address is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 9
+ testRunner.Then("Verify FNOL is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

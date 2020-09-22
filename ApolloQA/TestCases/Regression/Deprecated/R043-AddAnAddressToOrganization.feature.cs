@@ -20,9 +20,9 @@ namespace ApolloQA.TestCases.Regression
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("R041-AddNewOrganization")]
+    [NUnit.Framework.DescriptionAttribute("R043-AddAnAddressToOrganization")]
     [NUnit.Framework.CategoryAttribute("org")]
-    public partial class R041_AddNewOrganizationFeature
+    public partial class R043_AddAnAddressToOrganizationFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,15 +30,14 @@ namespace ApolloQA.TestCases.Regression
         private string[] _featureTags = new string[] {
                 "org"};
         
-#line 1 "R041-AddNewOrganization.feature"
+#line 1 "R043-AddAnAddressToOrganization.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R041-AddNewOrganization", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
-                    "f two numbers", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R043-AddAnAddressToOrganization", null, ProgrammingLanguage.CSharp, new string[] {
                         "org"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -78,13 +77,13 @@ namespace ApolloQA.TestCases.Regression
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("1 Insert New Organization")]
-        public virtual void _1InsertNewOrganization()
+        [NUnit.Framework.DescriptionAttribute("User is able to add an address to a newly created organization")]
+        public virtual void UserIsAbleToAddAnAddressToANewlyCreatedOrganization()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Insert New Organization", null, tagsOfScenario, argumentsOfScenario);
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User is able to add an address to a newly created organization", null, tagsOfScenario, argumentsOfScenario);
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -104,24 +103,43 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
- testRunner.When("I click the New Organization button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 7
+ testRunner.Given("User is Address Tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 10
- testRunner.Then("I am taken to the OrganizationInsert page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 8
+ testRunner.When("User Clicks Add Address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Address",
+                            "City",
+                            "State",
+                            "Zip"});
+                table11.AddRow(new string[] {
+                            "39 Public Square",
+                            "Wilkes Barre",
+                            "Pennsylvania",
+                            "18703"});
+#line 9
+ testRunner.And("User inputs address details", ((string)(null)), table11, "And ");
+#line hidden
+#line 12
+ testRunner.Then("User Submits the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 13
+ testRunner.Then("Address is added in the grid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("User is able to add new organization")]
-        public virtual void UserIsAbleToAddNewOrganization()
+        [NUnit.Framework.DescriptionAttribute("User is able to edit the address")]
+        public virtual void UserIsAbleToEditTheAddress()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User is able to add new organization", null, tagsOfScenario, argumentsOfScenario);
-#line 13
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User is able to edit the address", null, tagsOfScenario, argumentsOfScenario);
+#line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -141,41 +159,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Name",
-                            "DBA",
-                            "OrgType",
-                            "TaxType",
-                            "TaxNo",
-                            "Phone",
-                            "Email",
-                            "Website",
-                            "IndustryType",
-                            "SubType",
-                            "Class",
-                            "YearStarted",
-                            "YearOwnership",
-                            "Desc"});
-                table8.AddRow(new string[] {
-                            "BiberkAutomation",
-                            "BA",
-                            "Corporation",
-                            "FEIN",
-                            "12-3489779",
-                            "123-456-7890",
-                            "automation@biberk.com",
-                            "biberk.com",
-                            "Aviation",
-                            "Carpentry",
-                            "Commercial",
-                            "2005",
-                            "2005",
-                            "Sample"});
-#line 14
- testRunner.When("I user enter all info into Organization Insert", ((string)(null)), table8, "When ");
+#line 16
+ testRunner.When("User clicks edit on a adress in the grid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
- testRunner.Then("Organization with those inputs is added and confirmed via toast", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Address model is shown with address filled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 18
+ testRunner.When("user edits Address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 19
+ testRunner.And("User saves changes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 20
+ testRunner.Then("Edited addrress should appear in the grid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.Organization
+namespace ApolloQA.TestCases.Regression.Navigation
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,22 +20,22 @@ namespace ApolloQA.TestCases.Regression.Organization
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("C004-Add An Address To Organization")]
-    public partial class C004_AddAnAddressToOrganizationFeature
+    [NUnit.Framework.DescriptionAttribute("N003-SideTabs")]
+    public partial class N003_SideTabsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "C004-Add An Address To Organization.feature"
+#line 1 "N003-SideTabs.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Organization", "C004-Add An Address To Organization", "Create an organization with given parameters", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Navigation", "N003-SideTabs", "Test Side Tab and Interactions located in such as policy, org etc", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,13 +74,13 @@ namespace ApolloQA.TestCases.Regression.Organization
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Add an address to Organization")]
-        public virtual void AddAnAddressToOrganization()
+        [NUnit.Framework.DescriptionAttribute("User Interaction With Side Tab")]
+        public virtual void UserInteractionWithSideTab()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add an address to Organization", null, tagsOfScenario, argumentsOfScenario);
-#line 6
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User Interaction With Side Tab", null, tagsOfScenario, argumentsOfScenario);
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -100,21 +100,44 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Line1",
-                            "City",
-                            "State",
-                            "Zip"});
-                table4.AddRow(new string[] {
-                            "39 Public Sq",
-                            "Wilkes Barre",
-                            "PA",
-                            "18701"});
-#line 7
- testRunner.When("User adds address to Organization", ((string)(null)), table4, "When ");
+#line 6
+ testRunner.When("User navigates to <Tab> SideTab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 10
- testRunner.Then("Verify address is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 7
+ testRunner.Then("Verify <tabset> are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Key",
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "a",
+                            "Application Information"});
+                table2.AddRow(new string[] {
+                            "b",
+                            "Business Information"});
+                table2.AddRow(new string[] {
+                            "c",
+                            "Contacts"});
+                table2.AddRow(new string[] {
+                            "d",
+                            "UW Questions"});
+                table2.AddRow(new string[] {
+                            "e",
+                            "Policy Coverages"});
+                table2.AddRow(new string[] {
+                            "f",
+                            "Drivers"});
+                table2.AddRow(new string[] {
+                            "g",
+                            "Vehicles"});
+                table2.AddRow(new string[] {
+                            "h",
+                            "Additional Questions"});
+                table2.AddRow(new string[] {
+                            "i",
+                            "Summary"});
+#line 8
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table2, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

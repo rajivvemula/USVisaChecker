@@ -312,7 +312,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 52
  testRunner.When("User clicks Add Driver in Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                             "First",
                             "Last",
                             "Middle",
@@ -321,7 +321,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Number",
                             "Exp",
                             "CDL"});
-                table7.AddRow(new string[] {
+                table9.AddRow(new string[] {
                             "Jacob",
                             "Seed",
                             "J",
@@ -331,7 +331,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "01/01/2022",
                             "Yes"});
 #line 53
- testRunner.And("user enters inputs for add driver in organization", ((string)(null)), table7, "And ");
+ testRunner.And("user enters inputs for add driver in organization", ((string)(null)), table9, "And ");
 #line hidden
 #line 56
  testRunner.And("User select coverage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

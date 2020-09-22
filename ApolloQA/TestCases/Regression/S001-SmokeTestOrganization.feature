@@ -1,4 +1,5 @@
-﻿Feature: S001-SmokeTest
+﻿@SmokeTestBase
+Feature: S001-SmokeTest
 Smoke Test that covers the Organization
 
 Scenario:1 Create an Organization
@@ -9,10 +10,10 @@ Scenario:1 Create an Organization
 	Then Verify organization is created
 
 Scenario:2 Save Changes To An Organization
-	Given User is on organization Created
+	#Given User is on organization Created
 	When User changes dropdown busInfoOrgType to LLC
 	When User clicks orgInsertSave button
-	Then Verify correct toast "was saved." is displayed
+	Then Verify correct toast was saved. is displayed
 
 Scenario:3 Add an address to Organization
 	When User adds address to Organization 
@@ -28,6 +29,6 @@ Scenario: Add a Driver to A Given Organization
 
 Scenario: Add a Vehicle to Organization
 	When User adds vehicle to Organization
-	| VIN    | Year | Make   | Model | Trim |  Type | Category             | SubCategory | Code                    | Seating   | Gross    | Cost  | Value | Stated |
-	| Random | 2015 | Toyota | Camry | SE   |  Car  | Cars, Pickup, or SUV | Car - Coupe | Airport Limousines -826 | 5 or less | 0 - 5000 | 10000 | 11000 | 12000  |
+	| VIN    | Year | Make   | Model | Trim |  Category             | SubCategory | Code                    | Seating   | Gross    | Cost  | Value | Stated |
+	| Random | 2015 | Toyota | Camry | SE   |  Cars, Pickup, or SUV | Car - Coupe | Airport Limousines -826 | 5 or less | 0 - 5000 | 10000 | 11000 | 12000  |
 	Then Verify vehicle is added to Organization

@@ -6,6 +6,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.TestCases.Regression.Organization
@@ -54,7 +55,8 @@ namespace ApolloQA.TestCases.Regression.Organization
         {
 
             component.EnterSelect(input.getElementFromFieldname(locator), value);
-            
+            Thread.Sleep(5000);
+            //Assert.That(() => input.getElementFromFieldname(locator).GetAttribute("value"), Does.Contain(value).After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Change" + locator + " value to " + value);
         }
         
         [Then(@"Verify correct toast (.*) is displayed")]

@@ -33,6 +33,7 @@ namespace ApolloQA.TestCases.Regression.Navigation
                 try
                 {
                     mainNavBar.HomeIcon.Click();
+
                 }
                 catch (ElementClickInterceptedException clickintercepted)
                 {

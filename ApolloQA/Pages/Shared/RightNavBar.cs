@@ -30,6 +30,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement waffleMenu => functions.FindElementWaitUntilClickable(60, By.XPath("//mat-icon[contains(@class, 'waffle-icon')]"));
         public IWebElement sideWaffleMenu => functions.FindElementWait(60, By.XPath("//mat-icon[contains(@class, 'side-navbar-waffle')]"));
         public IWebElement addFnolButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'Add FNOL')]"));
+        public IWebElement addAppButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'New Application')]"));
 
 
         public void ImpersonateValidUser(string userName)

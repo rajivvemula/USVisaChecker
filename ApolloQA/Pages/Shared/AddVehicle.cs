@@ -218,7 +218,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement selectSubcategory => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='bodySubCategoryTypeId']"));
 
         public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
-        public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
+        public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Save']"));
         public IWebElement searchButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Search Vin']"));
 
        

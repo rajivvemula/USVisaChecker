@@ -51,7 +51,7 @@ namespace ApolloQA.Driver
             driver.Manage().Window.Maximize();
             state = new State();
             client = new CosmosClient("https://zbibaoazcdb1qa2.documents.azure.com:443/", "p9fiijwywnNpP4gRROO0NNA2sDMPyyjZ0OfMzJGriSCZIEKUGNrIyzut20ICyyGnGtbVwRr5rmgT57TIBE0LvQ==");
-
+            database = client.GetDatabase("apollo");
         }
 
         [BeforeFeature]

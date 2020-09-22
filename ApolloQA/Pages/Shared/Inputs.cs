@@ -1,4 +1,5 @@
-﻿using ApolloQA.Pages.Organization;
+﻿using ApolloQA.Helpers;
+using ApolloQA.Pages.Organization;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,18 @@ namespace ApolloQA.Pages.Shared
         OrganizationInformation organizationInformation;
 
         IWebDriver driver;
+        Functions functions;
 
+        //mat-option/span/b[normalize-space(text())='No results found']
+        //div[@class='line-label' and normalize-space(text())='Smoke Test873']
+
+        public IWebElement noResultFound => functions.FindElementWait(10, By.XPath("//mat-option/span/b[normalize-space(text())='No results found']"));
 
         public Inputs(IWebDriver driver)
         {
             this.driver = driver;
             organizationInformation = new OrganizationInformation(driver);
+            functions = new Functions(driver);
 
         }
 
@@ -28,6 +35,12 @@ namespace ApolloQA.Pages.Shared
                 default: return null;
 
             }
+        }
+
+        public bool CheckIfResultExists(string value)
+        {
+            IWebElement valueToBeChecked = functions.FindElementWaitUntilClickable(10, By.XPath("//div[@class='line-label' and normalize-space(text())='" + value + "']"));
+            return valueToBeChecked.Displayed;
         }
     }
 }

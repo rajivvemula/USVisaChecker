@@ -53,6 +53,13 @@ namespace ApolloQA.Helpers
             {"Application", "https://biberk-apollo-qa2.azurewebsites.net/quote/" }
         };
 
+        public static IDictionary<string, string> URLContains = new Dictionary<string, string>()
+        {
+            {"Business Information", "section/9000" },
+        };
+
+
+
         public static readonly string[] adminRoles = {
             "Apollo Accounts Receivable",
             "Apollo Actuarial",
@@ -64,19 +71,7 @@ namespace ApolloQA.Helpers
             "Apollo Users"
         };
 
-        public static readonly string[] insertPolicyLabels =
-        {
-            "Insured organization",
-            "Agency",
-            "Line of Business",
-            "Effective date",
-            "Expiration date",
-            "Issue date",
-            "Business Type",
-            "Years in business",
-            "Tax ID Type",
-            "Tax ID"
-        };
+
 
     }
 }

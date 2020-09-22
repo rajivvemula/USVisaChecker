@@ -20,25 +20,29 @@ namespace ApolloQA.TestCases.Regression
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("R043-AddAnAddressToOrganization")]
-    [NUnit.Framework.CategoryAttribute("org")]
-    public partial class R043_AddAnAddressToOrganizationFeature
+    [NUnit.Framework.DescriptionAttribute("R015-PolicyContactsCreateContact")]
+    [NUnit.Framework.CategoryAttribute("reg")]
+    [NUnit.Framework.CategoryAttribute("pol")]
+    public partial class R015_PolicyContactsCreateContactFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "org"};
+                "reg",
+                "pol"};
         
-#line 1 "R043-AddAnAddressToOrganization.feature"
+#line 1 "R015-PolicyContactsCreateContact.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R043-AddAnAddressToOrganization", null, ProgrammingLanguage.CSharp, new string[] {
-                        "org"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R015-PolicyContactsCreateContact", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
+                    "f two numbers", ProgrammingLanguage.CSharp, new string[] {
+                        "reg",
+                        "pol"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -77,13 +81,13 @@ namespace ApolloQA.TestCases.Regression
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("User is able to add an address to a newly created organization")]
-        public virtual void UserIsAbleToAddAnAddressToANewlyCreatedOrganization()
+        [NUnit.Framework.DescriptionAttribute("1 User Can Click Add New Contact Button")]
+        public virtual void _1UserCanClickAddNewContactButton()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User is able to add an address to a newly created organization", null, tagsOfScenario, argumentsOfScenario);
-#line 6
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 User Can Click Add New Contact Button", null, tagsOfScenario, argumentsOfScenario);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -103,43 +107,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
- testRunner.Given("User is Address Tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 8
- testRunner.When("User Clicks Add Address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Address",
-                            "City",
-                            "State",
-                            "Zip"});
-                table9.AddRow(new string[] {
-                            "39 Public Square",
-                            "Wilkes Barre",
-                            "Pennsylvania",
-                            "18703"});
 #line 9
- testRunner.And("User inputs address details", ((string)(null)), table9, "And ");
+ testRunner.When("User Click Add New Contact Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 12
- testRunner.Then("User Submits the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 13
- testRunner.Then("Address is added in the grid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 10
+ testRunner.Then("User is shown the Contact Insert Screen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("User is able to edit the address")]
-        public virtual void UserIsAbleToEditTheAddress()
+        [NUnit.Framework.DescriptionAttribute("2 User enters a new contact to be verified")]
+        public virtual void _2UserEntersANewContactToBeVerified()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User is able to edit the address", null, tagsOfScenario, argumentsOfScenario);
-#line 15
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 User enters a new contact to be verified", null, tagsOfScenario, argumentsOfScenario);
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -159,20 +144,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Role",
+                            "First",
+                            "Middle",
+                            "Last",
+                            "Suffix",
+                            "Email",
+                            "Job",
+                            "Company",
+                            "Internet",
+                            "Remarks",
+                            "PhoneType",
+                            "PhoneNumber"});
+                table7.AddRow(new string[] {
+                            "Customer Service Representative",
+                            "John",
+                            "J",
+                            "Smith",
+                            "Mr",
+                            "JSmith@Gmail.com",
+                            "Developer",
+                            "Biberk",
+                            "Biberk.com",
+                            "Internal",
+                            "Mobile",
+                            "3469994485"});
+#line 13
+ testRunner.When("User enters all inputs in insert contact screen", ((string)(null)), table7, "When ");
+#line hidden
 #line 16
- testRunner.When("User clicks edit on a adress in the grid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("User clicks the save button in insert contact screen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
- testRunner.Then("Address model is shown with address filled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 18
- testRunner.When("user edits Address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 19
- testRunner.And("User saves changes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 20
- testRunner.Then("Edited addrress should appear in the grid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("User is shown a toast saying Contact Saved Succesfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
