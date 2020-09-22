@@ -38,7 +38,7 @@ namespace ApolloQA.TestCases.Regression
         [When(@"User changes sub-industry type")]
         public void WhenUserChangesSub_IndustryType()
         {
-            organizationInformation.EnterSelect("subtype", "Camps");
+            //organizationInformation.EnterSelect("subtype", "Camps");
         }
         
         [Then(@"Change should be saved to the organization")]

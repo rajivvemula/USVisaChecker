@@ -17,7 +17,7 @@ namespace ApolloQA.Pages.Application
             functions = new Functions(driver);
         }
 
-        private IWebElement newButton => functions.FindElementWait(5, By.XPath("//button[@aria-label='New Application']"));
+        public IWebElement newButton => functions.FindElementWait(5, By.XPath("//button[@aria-label='New Application']"));
 
         public bool ClickNew()
         {

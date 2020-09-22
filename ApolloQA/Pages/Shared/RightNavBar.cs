@@ -27,14 +27,11 @@ namespace ApolloQA.Pages.Shared
         public IWebElement RedImpersonateIcon => functions.FindElementWait(30, By.XPath("//button/span/mat-icon[contains(@class, 'is-impersonated')]/../.."));
         public IWebElement HistoryIcon => functions.FindElementWait(10, By.XPath("//button/span/mat-icon[text()='history']/../.."));
         public IWebElement AddIcon => functions.FindElementWait(10, By.XPath("//mat-icon[normalize-space(text())='add']"));
-        public IWebElement waffleMenu => functions.FindElementWait(60, By.XPath("//mat-icon[contains(@class, 'waffle-icon')]"));
+        public IWebElement waffleMenu => functions.FindElementWaitUntilClickable(60, By.XPath("//mat-icon[contains(@class, 'waffle-icon')]"));
+        public IWebElement sideWaffleMenu => functions.FindElementWait(60, By.XPath("//mat-icon[contains(@class, 'side-navbar-waffle')]"));
         public IWebElement addFnolButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'Add FNOL')]"));
+        public IWebElement addAppButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'New Application')]"));
 
-        public IWebElement waffleUWTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Underwriting']"));
-        public IWebElement waffleBillingTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Billing']"));
-        public IWebElement waffleAdminTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Administration']"));
-        public IWebElement waffleCollectionTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Collections Center']"));
-        public IWebElement waffleClaimTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Claims']"));
 
         public void ImpersonateValidUser(string userName)
         {

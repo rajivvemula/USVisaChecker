@@ -23,24 +23,13 @@ namespace ApolloQA.Pages.Organization
         public IWebElement selectOrgType => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
         public IWebElement saveButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Save']"));
 
-
-
-        public IWebElement getElementFromFieldname(string fieldName)
-        {
-            switch (fieldName)
-            {
-                case "subtype": return selectSubType;
-                case "orgtype": return selectOrgType;
-                default: return null;
-
-            }
-        }
-
-        public void EnterSelect(string locator, string value)
-        {
-            getElementFromFieldname(locator).Click();
-            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
-        }
+        public IWebElement inputName => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='name']"));
+        public IWebElement inputDBA => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='dba']"));
+        public IWebElement inputTaxID => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='taxId']"));
+        public IWebElement inputBusPhone => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='businessPhone']"));
+        public IWebElement inputBusEmail => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='businessEmail']"));
+        public IWebElement inputBusWeb => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='businessWebsite']"));
+        public IWebElement inputDesc => functions.FindElementWait(10, By.XPath("//textarea[@formcontrolname='description']"));
 
     }
 }

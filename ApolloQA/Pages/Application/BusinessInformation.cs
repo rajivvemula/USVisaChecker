@@ -22,16 +22,36 @@ namespace ApolloQA.Pages.Application
         public IWebElement businessName => functions.FindElementWait(10, By.XPath("//input[@name='businessName']"));
         public IWebElement taxNo => functions.FindElementWait(10, By.XPath("//input[@name='taxId']"));
 
+        public IWebElement appIDNo => functions.FindElementWait(10, By.XPath("//div[text()=' Application Number ']/../div/strong"));
+
+        public IWebElement selectMailing => functions.FindElementWaitUntilClickable(10, By.XPath("//mat-label[@class='ng-star-inserted' and normalize-space(text())='Mailing Address']"));
+        public IWebElement nextButton => functions.FindElementWaitUntilClickable(10, By.XPath("//button[.//span[@class='mat-button-wrapper' and normalize-space(text())='Next'] and not(@disabled)]"));
+        public IWebElement continueAnyway => functions.FindElementWaitUntilClickable(10, By.XPath("//button[.//span[normalize-space(text())='Continue anyway']]"));
+
+        private IWebElement mailingAddress => functions.FindElementWaitUntilClickable(10, By.XPath("//mat-select[@formcontrolname='mailingAddressId']"));
+
+
+        public void SaveChanges()
+        {
+            nextButton.Click();
+            //REMOVE LATER ONCE CONTINUE ANYWAY BUG IS FIXED
+            try { continueAnyway.Click(); }
+            catch { }
+        }
+
+        public string GetCurrentMailingAddress()
+        {
+            return mailingAddress.Text;
+        }
 
         public void UpdateMailingAddress(string selection)
         {
             //click the mailing address drop-down
-            IWebElement mailingAddress = functions.FindElementWaitUntilClickable(10, By.XPath("//mat-select[@formcontrolname='mailingAddressId']"));
             mailingAddress.Click();
 
             //find and click the target (ignores case differences)
             IWebElement theSelection = functions.FindElementWaitUntilClickable(5,
-                By.XPath("//mat-option[*//div[@class='address-info' and translate(normalize-space(text()), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + selection.Trim().ToLower() + "']]"));
+                By.XPath("//mat-option[.//div[@class='address-info' and translate(normalize-space(text()), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + selection.Trim().ToLower() + "']]"));
             theSelection.Click();
         }
 
@@ -47,13 +67,13 @@ namespace ApolloQA.Pages.Application
                 matCheckbox.Click();
             }               
 
-            //click the phsyical address drop-down
+            //click the physical address drop-down
             IWebElement physicalAddress = functions.FindElementWaitUntilClickable(10, By.XPath("//mat-select[@formcontrolname='physicalAddressId']"));
             physicalAddress.Click();
 
             //find and click the target (ignores case differences)
             IWebElement theSelection = functions.FindElementWaitUntilClickable(5,
-                By.XPath("//mat-option[*//div[@class='address-info' and translate(normalize-space(text()), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + selection.Trim().ToLower() + "']]"));
+                By.XPath("//mat-option[.//div[@class='address-info' and translate(normalize-space(text()), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + selection.Trim().ToLower() + "']]"));
             theSelection.Click();
         }
 

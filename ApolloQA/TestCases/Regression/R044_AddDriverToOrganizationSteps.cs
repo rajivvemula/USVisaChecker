@@ -30,7 +30,7 @@ namespace ApolloQA.TestCases.Regression
         [When(@"User clicks Drivers Tab In Organization")]
         public void WhenUserClicksDriversTabInOrganization()
         {
-            organizationDriver.addressTab.Click();
+            //organizationDriver.addressTab.Click();
         }
         
         [When(@"User clicks Add Driver in Organization")]
@@ -47,14 +47,14 @@ namespace ApolloQA.TestCases.Regression
             var detail = table.CreateDynamicSet();
             foreach (var details in detail)
             {
-                addDriver.EnterInput("first", details.First);
-                addDriver.EnterInput("last", details.Last);
-                addDriver.EnterInput("middle", details.Middle);
-                addDriver.EnterInput("dob", details.DOB.ToString());
-                addDriver.EnterSelect("licensestate", details.State);
-                addDriver.EnterInput("licensenumber", details.Number.ToString());
-                addDriver.EnterInput("licenseexp", details.Exp.ToString());
-                addDriver.EnterSelect("cdl", details.CDL);
+                //addDriver.EnterInput("first", details.First);
+                //addDriver.EnterInput("last", details.Last);
+                //addDriver.EnterInput("middle", details.Middle);
+                //addDriver.EnterInput("dob", details.DOB.ToString());
+                //addDriver.EnterSelect("licensestate", details.State);
+                //addDriver.EnterInput("licensenumber", details.Number.ToString());
+                //addDriver.EnterInput("licenseexp", details.Exp.ToString());
+                //addDriver.EnterSelect("cdl", details.CDL);
             }
         }
         [When(@"user clicks submit to add driver")]
@@ -81,7 +81,7 @@ namespace ApolloQA.TestCases.Regression
         public void WhenChangesDriverFirstName()
         {
             addDriver.inputFirst.Clear();
-            addDriver.EnterInput("first", "Joseph");
+            //addDriver.EnterInput("first", "Joseph");
         }
 
         [Then(@"wait (.*) secs")]

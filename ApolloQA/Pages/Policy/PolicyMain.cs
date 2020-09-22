@@ -27,7 +27,7 @@ namespace ApolloQA.Pages.Policy
         public IWebElement addQuestionsLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Additional Questions']"));
         public IWebElement modifierLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Modifiers']"));
         public IWebElement interestsLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Additional Interests']"));
-        public IWebElement summaryLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Summary]"));
+        public IWebElement summaryLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Summary']"));
         public IWebElement coverageLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Policy Coverages']"));
         public IWebElement rateLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Rate Calculation']"));
         public IWebElement documentLink => functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Documents']"));
