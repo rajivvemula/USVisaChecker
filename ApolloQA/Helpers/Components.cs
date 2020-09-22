@@ -95,6 +95,13 @@ namespace ApolloQA.Helpers
             return theField.Text;
         }
 
+        public string GetValueFromInputFieldByNameAttribute(string name)
+        {
+            IWebElement theField = functions.FindElementWait(10, By.XPath("//*[@name='" + name + "']"));
+
+            return theField.GetAttribute("value");
+        }
+
 
         public bool CheckIfDialogPresent()
         {
