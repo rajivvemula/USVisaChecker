@@ -104,16 +104,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                             "Business Name",
                             "LOB",
                             "Effective Date"});
-                table12.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "Casey Test Org 916",
                             "Commercial Auto",
                             "10/13/2020"});
 #line 13
- testRunner.When("I create a new application with values", ((string)(null)), table12, "When ");
+ testRunner.When("I create a new application with values", ((string)(null)), table13, "When ");
 #line hidden
 #line 16
  testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

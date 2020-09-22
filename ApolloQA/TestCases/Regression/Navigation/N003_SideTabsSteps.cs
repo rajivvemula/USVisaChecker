@@ -4,6 +4,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.TestCases.Regression.Navigation
 {
@@ -36,5 +37,17 @@ namespace ApolloQA.TestCases.Regression.Navigation
             }
         }
 
+        [Then(@"Verify sidetab is present")]
+        public void ThenVerifySidetabIsPresent(Table table)
+        {
+            var details = table.CreateDynamicSet();
+            foreach (var detail in details)
+            {
+                bool verifyTab = components.CheckIfTabPresent(detail.Value);
+                Assert.IsTrue(verifyTab, "Tab " + detail.Value + " not found");
+            }
+
+
+        }
     }
 }

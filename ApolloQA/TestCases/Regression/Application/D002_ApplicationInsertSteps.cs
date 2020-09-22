@@ -45,17 +45,18 @@ namespace ApolloQA.TestCases.Regression.Application
             {
                 applicationInformation.EnterBusinessName(name);
             }
-            
+            Assert.That(() => applicationInformation.businessName.GetAttribute("value"), Does.Contain(name).After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Qoute Creation From App Grid");
+
         }
 
 
         [Then(@"Search (.*) displayed is (.*)")]
-        public void ThenSearchDisplayedIs(string value, bool check)
+        public void ThenSearchDisplayedIs(string value, string check)
         {
-            if (check == false)
+            if (check == "false")
             {
                 bool verify = inputs.noResultFound.Displayed;
-                Assert.IsFalse(verify, "a result was found");
+                Assert.IsTrue(verify, "a result was found");
             } else
             {
                 bool verify = inputs.CheckIfResultExists(value);

@@ -70,7 +70,7 @@ namespace ApolloQA.TestCases.Regression.Organization
                 addVehicle.EnterInput("Make", detail.Make);
                 addVehicle.EnterInput("Model", detail.Model);
                 addVehicle.EnterInput("Trim", detail.Trim);
-                addVehicle.EnterSelect("Type", detail.Type);
+                //addVehicle.EnterSelect("Type", detail.Type);
                 addVehicle.EnterSelect("Category", detail.Category);
                 addVehicle.EnterSelect("SubCategory", detail.SubCategory);
                 //addVehicle.EnterSelect("Code", "Airport Limousines -826");

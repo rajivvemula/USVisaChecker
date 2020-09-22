@@ -141,7 +141,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "DBA",
                             "OrgType",
@@ -156,7 +156,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "YearStarted",
                             "YearOwnership",
                             "Desc"});
-                table9.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "BiberkAutomation",
                             "BA",
                             "Corporation",
@@ -172,7 +172,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2005",
                             "Sample"});
 #line 14
- testRunner.When("I user enter all info into Organization Insert", ((string)(null)), table9, "When ");
+ testRunner.When("I user enter all info into Organization Insert", ((string)(null)), table10, "When ");
 #line hidden
 #line 17
  testRunner.Then("Organization with those inputs is added and confirmed via toast", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

@@ -76,12 +76,52 @@ namespace ApolloQA.TestCases.Regression
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("TC1 - Verify business name is new and Organization has not been created")]
-        public virtual void TC1_VerifyBusinessNameIsNewAndOrganizationHasNotBeenCreated()
+        [NUnit.Framework.DescriptionAttribute("1A User is able to login as Admin")]
+        public virtual void _1AUserIsAbleToLoginAsAdmin()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC1 - Verify business name is new and Organization has not been created", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1A User is able to login as Admin", null, tagsOfScenario, argumentsOfScenario);
+#line 6
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 7
+ testRunner.Given("User is on Apollo Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 8
+ testRunner.When("I enter AdminUsername and AdminPassword", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 9
+ testRunner.Then("I should see the Apollo Dashboard as Admin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("1B User Navigates to Homepage")]
+        public virtual void _1BUserNavigatesToHomepage()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1B User Navigates to Homepage", null, tagsOfScenario, argumentsOfScenario);
 #line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -103,18 +143,94 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 12
+testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("1C User Interactions With Dashboard Tabs")]
+        [NUnit.Framework.TestCaseAttribute("Policy", null)]
+        [NUnit.Framework.TestCaseAttribute("Application", null)]
+        [NUnit.Framework.TestCaseAttribute("Organization", null)]
+        [NUnit.Framework.TestCaseAttribute("Home", null)]
+        public virtual void _1CUserInteractionsWithDashboardTabs(string tab, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Tab", tab);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1C User Interactions With Dashboard Tabs", null, tagsOfScenario, argumentsOfScenario);
+#line 14
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 15
+ testRunner.When(string.Format("User navigates to {0} Tab", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 16
+ testRunner.Then(string.Format("Tab navigates to {0} URL", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("1D TC1 - Verify business name is new and Organization has not been created")]
+        public virtual void _1DTC1_VerifyBusinessNameIsNewAndOrganizationHasNotBeenCreated()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1D TC1 - Verify business name is new and Organization has not been created", null, tagsOfScenario, argumentsOfScenario);
+#line 29
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 30
  testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 13
+#line 31
  testRunner.When("User Navigates to Application Insert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 14
+#line 32
  testRunner.When("User searches ShouldNotExist in Business Name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 15
+#line 33
  testRunner.Then("Search ShouldNotExist displayed is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "DBA",
                             "OrgType",
@@ -126,7 +242,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "YearStart",
                             "YearOwn",
                             "Keyword"});
-                table18.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "Smoke Test10023",
                             "Smoke",
                             "Corporation",
@@ -138,32 +254,62 @@ this.ScenarioInitialize(scenarioInfo);
                             "2011",
                             "2012",
                             "Accountant"});
-#line 16
- testRunner.When("User creates an Organization", ((string)(null)), table18, "When ");
+#line 34
+ testRunner.When("User creates an Organization", ((string)(null)), table19, "When ");
 #line hidden
-#line 19
+#line 37
  testRunner.Then("Verify organization is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 20
+#line 38
  testRunner.When("User Navigates to Application Insert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 21
+#line 39
  testRunner.When("User searches Smoke Test10023 in Business Name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 22
+#line 40
  testRunner.Then("Search Smoke Test10023 displayed is true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 23
+#line 41
  testRunner.When("User enters Smoke Test10023 in Business Name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 24
+#line 42
  testRunner.And("User clicks appInsertNext button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 43
  testRunner.Then("Business Information page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 26
- testRunner.Then("Verify applicationTabs are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Key",
+                            "Value"});
+                table20.AddRow(new string[] {
+                            "a",
+                            "Application Information"});
+                table20.AddRow(new string[] {
+                            "b",
+                            "Business Information"});
+                table20.AddRow(new string[] {
+                            "c",
+                            "Contacts"});
+                table20.AddRow(new string[] {
+                            "d",
+                            "UW Questions"});
+                table20.AddRow(new string[] {
+                            "e",
+                            "Policy Coverages"});
+                table20.AddRow(new string[] {
+                            "f",
+                            "Drivers"});
+                table20.AddRow(new string[] {
+                            "g",
+                            "Vehicles"});
+                table20.AddRow(new string[] {
+                            "h",
+                            "Additional Questions"});
+                table20.AddRow(new string[] {
+                            "i",
+                            "Summary"});
+#line 44
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table20, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
