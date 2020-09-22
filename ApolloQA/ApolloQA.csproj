@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <SpecFlowObsoleteCodeBehindFiles Remove="TestCases\Regression\FNOL\N000-LogInAsAdmin.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="TestCases\Regression\Rating\N000-LogInAsAdmin.feature.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,10 +60,17 @@
     <Compile Update="TestCases\Regression\Navigation\N000-LogInAsAdmin.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="TestCases\Regression\Rating\RA000_LogInAsAdmin.feature.cs">
+      <DependentUpon>RA000_LogInAsAdmin.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <SpecFlowFeatureFiles Update="TestCases\Regression\Navigation\N000-LogInAsAdmin.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="TestCases\Regression\Rating\RA000_LogInAsAdmin.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
