@@ -137,7 +137,7 @@ namespace ApolloQA.Pages.Policy
         }
         public void EnterPhoneType()
         {
-            phoneType.Click();
+            //phoneType.Click();
             functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Business']")).Click();
         }
         public void EmptyClick()
