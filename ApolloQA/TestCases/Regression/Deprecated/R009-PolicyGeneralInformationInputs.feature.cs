@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.Regression.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -39,7 +39,7 @@ namespace ApolloQA.TestCases.Regression
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R009-PolicyGeneralInformationInputs", "\tAs any User(defaults to admin)\r\n\tI want to confirm all inputs and their function" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Deprecated", "R009-PolicyGeneralInformationInputs", "\tAs any User(defaults to admin)\r\n\tI want to confirm all inputs and their function" +
                     "ality is present", ProgrammingLanguage.CSharp, new string[] {
                         "reg",
                         "pol"});

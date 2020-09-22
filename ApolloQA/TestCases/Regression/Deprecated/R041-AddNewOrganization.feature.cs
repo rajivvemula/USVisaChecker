@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.Regression.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -37,7 +37,7 @@ namespace ApolloQA.TestCases.Regression
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R041-AddNewOrganization", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Deprecated", "R041-AddNewOrganization", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
                     "f two numbers", ProgrammingLanguage.CSharp, new string[] {
                         "org"});
             testRunner.OnFeatureStart(featureInfo);
@@ -141,7 +141,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "DBA",
                             "OrgType",
@@ -156,7 +156,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "YearStarted",
                             "YearOwnership",
                             "Desc"});
-                table10.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "BiberkAutomation",
                             "BA",
                             "Corporation",
@@ -172,7 +172,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2005",
                             "Sample"});
 #line 14
- testRunner.When("I user enter all info into Organization Insert", ((string)(null)), table10, "When ");
+ testRunner.When("I user enter all info into Organization Insert", ((string)(null)), table4, "When ");
 #line hidden
 #line 17
  testRunner.Then("Organization with those inputs is added and confirmed via toast", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

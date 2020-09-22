@@ -101,16 +101,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                             "Business Name",
                             "LOB",
                             "Effective Date"});
-                table17.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "Casey Test Organization 921",
                             "Commercial Auto",
                             "10/21/2020"});
 #line 18
- testRunner.When("I create a new application with values", ((string)(null)), table17, "When ");
+ testRunner.When("I create a new application with values", ((string)(null)), table19, "When ");
 #line hidden
 #line 21
  testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -184,23 +184,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "Business Name",
                             "Casey Test Organization 921"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "Business Phone No",
                             "982-389-4712"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "Business Email Address",
                             "CaseyTest@test.com"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "Business Website",
                             "CaseyTest.com"});
 #line 30
- testRunner.Then("the following values are displayed on application\'s Business Information tab", ((string)(null)), table18, "Then ");
+ testRunner.Then("the following values are displayed on application\'s Business Information tab", ((string)(null)), table20, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

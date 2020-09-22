@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.Regression.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -37,7 +37,7 @@ namespace ApolloQA.TestCases.Regression
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R043-AddAnAddressToOrganization", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Deprecated", "R043-AddAnAddressToOrganization", null, ProgrammingLanguage.CSharp, new string[] {
                         "org"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -109,18 +109,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
  testRunner.When("User Clicks Add Address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                             "Address",
                             "City",
                             "State",
                             "Zip"});
-                table11.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "39 Public Square",
                             "Wilkes Barre",
                             "Pennsylvania",
                             "18703"});
 #line 9
- testRunner.And("User inputs address details", ((string)(null)), table11, "And ");
+ testRunner.And("User inputs address details", ((string)(null)), table5, "And ");
 #line hidden
 #line 12
  testRunner.Then("User Submits the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
