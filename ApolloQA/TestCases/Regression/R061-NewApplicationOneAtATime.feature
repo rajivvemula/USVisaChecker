@@ -5,7 +5,7 @@ Feature: R061-NewApplicationOneAtATime
 	I want to be able to create an application and get a quote
 
 # This is more of a full workflow just covering required values, rather than a thorough test of the individual pages. 
-# To do - add page tags to steps to identify which page they belong to (e.g. @Application-BusinessInformation)
+# To do - add page tags to steps to identify which page they belong to (e.g. @Application-BusinessInformation) or which test case they apply to
 
 ##This part was added for parallel feature execution
 #Scenario:0 User is able to login as Admin

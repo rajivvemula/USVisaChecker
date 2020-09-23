@@ -71,7 +71,7 @@ namespace ApolloQA.Helpers
          */
         public void UpdateAutoCompleteInput(string formcontrolname, string selection)
         {
-            IWebElement inputField = functions.FindElementWaitUntilClickable(10, By.XPath("//bh-input-autocomplete[@formcontrolname='" + formcontrolname + "']/input"));
+            IWebElement inputField = functions.FindElementWaitUntilClickable(15, By.XPath("//bh-input-autocomplete[@formcontrolname='" + formcontrolname + "']/input"));
 
             inputField.Click();
             //inputField.Clear();
@@ -81,7 +81,7 @@ namespace ApolloQA.Helpers
             // issue notced when creating new Application and selecting business name, taxonomy field is missing without this sleep
             Thread.Sleep(2000);
 
-            IWebElement theSelection = functions.FindElementWaitUntilClickable(5, 
+            IWebElement theSelection = functions.FindElementWaitUntilClickable(10, 
                 By.XPath("//mat-option[contains(@class,'provided') and .//div[@class='line-label' and translate(normalize-space(text()), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + selection.ToLower() + "']]"));
 
             theSelection.Click();

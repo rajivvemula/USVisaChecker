@@ -1,11 +1,11 @@
-﻿@SmokeTestBase
+﻿
 Feature: S002-SmokeTestApplication
 	In order to test application creation
 	As an authorized user
 	I want to be able to create an application and get a quote
 
 # This is more of a full workflow just covering required values, rather than a thorough test of the individual pages. 
-# To do - add page tags to steps to identify which page they belong to (e.g. @Application-BusinessInformation)
+# To do - add page tags to steps to identify which page they belong to (e.g. @Application-BusinessInformation) or which test case they apply to
 
 ##This part was added for parallel feature execution
 #Scenario:0 User is able to login as Admin
@@ -48,3 +48,5 @@ Examples:
 	| bh-question-singleselect | How far at most would your vehicles be driven from their base locations? | 51 to 100 miles |
 	| bh-question-boolean      | Do you have operating authority from any other states?                   | false           |
 	| bh-question-boolean      | Do you have 6 or more vehicles and >= 1 year in business?                | false           |
+
+#Scenario: 5 UW Questions - Verify Answers Saved on Webpage and in Database
