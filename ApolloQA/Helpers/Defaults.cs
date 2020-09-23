@@ -56,6 +56,18 @@ namespace ApolloQA.Helpers
         public static IDictionary<string, string> URLContains = new Dictionary<string, string>()
         {
             {"Business Information", "section/9000" },
+            { "Contacts", "section/9002" },
+            {"UW Questions", "section/9005" },          
+            {"Additional Questions", "section/9020"},  
+            {"Drivers", "section/9015"},               
+            {"Vehicles", "section/9010"},              
+            {"Additional Interests", "section/9030"},  
+            {"Coverages List Test", "coverages"},   
+            {"Rating Worksheet", "rating-worksheet"},      
+            {"Documents", "document"},             
+            {"Activities", "activities"},            
+            {"Loss History", ""},          
+            {"Policy History", "history"}        
         };
 
 

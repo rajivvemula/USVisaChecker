@@ -38,5 +38,29 @@ namespace ApolloQA.Helpers
             return returnValue;
 
         }
+
+        public async Task<int> GetLatestPolicyID()
+        {
+            database = client.GetDatabase("apollo");
+            string queryA = "SELECT * FROM c ORDER BY c._ts DESC OFFSET 0 LIMIT 1";
+            container = database.GetContainer("Policy");
+            int policyID = 1;
+            using (FeedIterator<dynamic> feedIterator = container.GetItemQueryIterator<dynamic>(queryA))
+            {
+                while (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<dynamic> response = await feedIterator.ReadNextAsync();
+                    foreach (var item in response)
+                    {
+                        //simple check for right now
+                        Console.WriteLine(item);
+                        policyID = item.Id;
+                        
+
+                    }
+                }
+            }
+            return policyID;
+        }
     }
 }

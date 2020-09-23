@@ -83,6 +83,7 @@ namespace ApolloQA.Driver
         public static void AfterTestRun()
         {
             driver.Quit();
+            client.Dispose();
         }
     }
 }

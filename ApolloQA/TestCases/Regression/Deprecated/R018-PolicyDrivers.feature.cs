@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.Regression.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -39,7 +39,7 @@ namespace ApolloQA.TestCases.Regression
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R018-PolicyDrivers", "\tAs any user(defaults to admin)\r\n\tI want to be able to add a new driver to an exi" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Deprecated", "R018-PolicyDrivers", "\tAs any user(defaults to admin)\r\n\tI want to be able to add a new driver to an exi" +
                     "sting policy", ProgrammingLanguage.CSharp, new string[] {
                         "reg",
                         "pol"});
@@ -312,7 +312,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 52
  testRunner.When("User clicks Add Driver in Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "First",
                             "Last",
                             "Middle",
@@ -321,7 +321,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Number",
                             "Exp",
                             "CDL"});
-                table9.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Jacob",
                             "Seed",
                             "J",
@@ -331,7 +331,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "01/01/2022",
                             "Yes"});
 #line 53
- testRunner.And("user enters inputs for add driver in organization", ((string)(null)), table9, "And ");
+ testRunner.And("user enters inputs for add driver in organization", ((string)(null)), table3, "And ");
 #line hidden
 #line 56
  testRunner.And("User select coverage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

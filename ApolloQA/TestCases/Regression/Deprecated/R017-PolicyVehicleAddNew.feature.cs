@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.Regression.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -35,7 +35,7 @@ namespace ApolloQA.TestCases.Regression
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R017-PolicyVehicleAddNew", "\tAs any User(defaults to admin)\r\n\tI want to be able to add a new vehicle", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Deprecated", "R017-PolicyVehicleAddNew", "\tAs any User(defaults to admin)\r\n\tI want to be able to add a new vehicle", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -174,7 +174,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "VIN",
                             "Year",
                             "Make",
@@ -189,7 +189,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Business",
                             "Code",
                             "Notes"});
-                table8.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "JHMCG56492C003397",
                             "2002",
                             "Honda",
@@ -205,7 +205,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "401",
                             "Sample Vehicle"});
 #line 21
- testRunner.When("I user enter all info into add new vehicle", ((string)(null)), table8, "When ");
+ testRunner.When("I user enter all info into add new vehicle", ((string)(null)), table2, "When ");
 #line hidden
 #line 24
  testRunner.And("User select coverage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
