@@ -7,8 +7,9 @@ namespace ApolloQA.Helpers
     static class Defaults
     {
         public const string
-            ADMIN_USERNAME = "ApolloTestUserG301@biberk.com",
-            DEFAULT_PASSWORD = "HashTagApollo#24";
+            ADMIN_USERNAME = "ApolloTestUserG311@biberk.com",
+            DEFAULT_PASSWORD = "ApolloTest12",
+            SQLCONNECTIONSTRING =  "Server=xbibaoazadb1qa.database.windows.net;Database=bibapollodb;User Id=bbadmin;Password=Pqatdi6fkpwtvbbu!;";
         
         //QA URLs
         public static IDictionary<string, string> QA_URLS = new Dictionary<string, string>()
@@ -23,7 +24,8 @@ namespace ApolloQA.Helpers
             {"Application", "https://biberk-apollo-qa2.azurewebsites.net/application" },
             {"Collections", "https://biberk-apollo-qa2.azurewebsites.net/collections/dashboard" },
             {"Claims", "https://biberk-apollo-qa2.azurewebsites.net/claims/fnol-dashboard" },
-            {"Quote", "https://biberk-apollo-qa2.azurewebsites.net/quote/" }
+            {"Quote", "https://biberk-apollo-qa2.azurewebsites.net/quote/" },
+            {"API",  "https://bibaoqa2-fd.azurefd.net/api/"},
         };
 
         public static IDictionary<string, List<string>> TabSets = new Dictionary<string, List<string>>()

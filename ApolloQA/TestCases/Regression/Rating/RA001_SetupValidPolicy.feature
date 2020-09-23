@@ -9,5 +9,5 @@ Scenario: Find a valid Policy
 	When User Navigates to Policy
 	Then The policy should load successfully
 	And The policy should have Driver
-	And the policy should have Vehicle
-	And the policy should have Coverage
+	And The policy should have Vehicle
+	And The policy should have Coverage

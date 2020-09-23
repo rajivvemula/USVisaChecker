@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TechTalk.SpecFlow;
+using ApolloQA.Helpers;
 
 namespace ApolloQA.Driver
 {
@@ -22,6 +23,7 @@ namespace ApolloQA.Driver
         public static CosmosClient client;
         public static Database database;
         public static FeatureContext _featureContext;
+        public static RestAPI api;
 
         public Setup(IObjectContainer objectContainer)
         {
@@ -50,7 +52,7 @@ namespace ApolloQA.Driver
             driver.Manage().Window.Maximize();
             state = new State();
             client = new CosmosClient("https://zbibaoazcdb1qa2.documents.azure.com:443/", "p9fiijwywnNpP4gRROO0NNA2sDMPyyjZ0OfMzJGriSCZIEKUGNrIyzut20ICyyGnGtbVwRr5rmgT57TIBE0LvQ==");
-            
+            api = new RestAPI(driver);
         }
 
         //[BeforeFeature]
@@ -77,6 +79,8 @@ namespace ApolloQA.Driver
             _objectContainer.RegisterInstanceAs(driver);
             _objectContainer.RegisterInstanceAs(state);
             _objectContainer.RegisterInstanceAs(client);
+            _objectContainer.RegisterInstanceAs(api);
+
         }
 
         [AfterTestRun]

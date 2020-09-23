@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System.Text.Json;
-
+using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace ApolloQA.Helpers
 {
-    class RestAPI
+    public class RestAPI
     {
         private IWebDriver driver;
 
-        private static String host= "https://bibaoqa-fd.azurefd.net/api";
+        private static String host= Defaults.QA_URLS["API"];
 
         public RestAPI(IWebDriver driver)
         {
@@ -22,62 +21,67 @@ namespace ApolloQA.Helpers
             
         }
 
-        public Object GET( String URL)
+        
+        public dynamic GET( String URL)
         {
-            if (!URL.StartsWith(host))
-            {
-                URL = host + URL; 
-            }
+
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(URL);
+
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getAuthToken());
-
-            HttpResponseMessage response  = client.GetAsync(URL).Result;
+            HttpResponseMessage response  = client.GetAsync(processURL(URL)).Result;
             return ConsumeResponse(response);
 
         }
-        public Object POST(String URL, Object body)
+        public dynamic POST(String URL, dynamic body)
         {
-            if (!URL.StartsWith(host))
-            {
-                URL = host + URL;
-            }
+            
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(URL);
+            client.BaseAddress = new Uri(processURL(URL));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer ", getAuthToken());
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getAuthToken());
 
             String bodyString;
             if (body is String)
             {
-                bodyString = (String)body;
+                bodyString = body;
             }
             else
             {
-                bodyString = JsonSerializer.Serialize(body);
+                bodyString = JsonConvert.SerializeObject(body);
             }
 
             HttpContent content = new StringContent(bodyString, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = client.PostAsync(URL, content).Result;
+            HttpResponseMessage response = client.PostAsync(processURL(URL), content).Result;
             return ConsumeResponse(response);
         }
+        private String processURL(String URL)
+        {
+            if (!URL.StartsWith("http"))
+            {
+                if (URL.StartsWith("/"))
+                {
+                    return host+URL.Substring(1);
+                }
+                return host + URL;
+            }
 
-        private Object ConsumeResponse(HttpResponseMessage response)
+            return URL;
+        }
+
+        private dynamic ConsumeResponse(HttpResponseMessage response)
         {
             response.EnsureSuccessStatusCode();
-            var dataObjects = response.Content.ReadAsByteArrayAsync().Result;
-            var utf8Reader = new Utf8JsonReader(dataObjects);
-
-            return JsonSerializer.Deserialize<Object>(ref utf8Reader);
+            String dataObjects = response.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<dynamic>(dataObjects);
         }
 
         private String getAuthToken()
         {
 
             String currentUser= (String)((IJavaScriptExecutor)driver).ExecuteScript("return window.localStorage.getItem('currentUser')");
-            return JsonSerializer.Deserialize<JsonElement>(currentUser).GetProperty("accessToken").GetString();
+            return (String)JsonConvert.DeserializeObject<dynamic>(currentUser)["accessToken"];
 
         }
     }
