@@ -13,6 +13,9 @@ NUnit3TestAdapter
 Specflow
 SpecFlow.NUnit
 SpecFlow.Tools.MsBuild.Generation
+Newtonsoft.Json
+Dapper
+System.Data.SqlClient
 ```
 # Overview
 
