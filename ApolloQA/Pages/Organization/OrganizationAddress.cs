@@ -32,7 +32,7 @@ namespace ApolloQA.Pages.Organization
 
         public bool CheckAddress(string title)
         {
-            return functions.FindElementWait(10, By.XPath("//span[@title='" + title + "']")).Displayed;
+            return functions.FindElementWait(60, By.XPath("//span[@title='" + title + "']")).Displayed;
         }
     }
 }

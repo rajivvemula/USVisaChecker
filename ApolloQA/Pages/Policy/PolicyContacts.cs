@@ -1,9 +1,11 @@
 ﻿using ApolloQA.Helpers;
+using ApolloQA.Pages.Shared;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace ApolloQA.Pages.Policy
 {
@@ -12,11 +14,13 @@ namespace ApolloQA.Pages.Policy
 
         private IWebDriver policyDriver;
         Functions functions;
+        Toaster toaster;
 
         public PolicyContacts(IWebDriver driver)
         {
             policyDriver = driver;
             functions = new Functions(driver);
+            toaster = new Toaster(driver);
         }
 
         public readonly string[] contactLabels =
@@ -64,10 +68,9 @@ namespace ApolloQA.Pages.Policy
         public IWebElement inputCompany => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='company']"));
         public IWebElement inputInternet => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='internetAddress']"));
         public IWebElement inputRemarks => functions.FindElementWait(10, By.Name("remarks"));
-        public IWebElement phoneType => functions.FindElementWait(10, By.XPath("//mat-select[@class= 'mat-select'][2]"));
         public IWebElement inputPhoneNumber=> functions.FindElementWait(10, By.Name("phone"));
         public IWebElement inputExtension => functions.FindElementWait(10, By.Name("extension"));
-
+        public IWebElement selectPhoneType => functions.FindElementWait(10, By.Name("phoneTypeId"));
         public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//button[@aria-label='Submit']"));
         public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
 
@@ -86,7 +89,7 @@ namespace ApolloQA.Pages.Policy
                 case "company": return inputCompany;
                 case "internet": return inputInternet;
                 case "remarks": return inputRemarks;
-                case "phonetype": return phoneType;
+                case "phonetype": return selectPhoneType;
                 case "phonenumber": return inputPhoneNumber;
                 default: return null;
 
@@ -109,22 +112,32 @@ namespace ApolloQA.Pages.Policy
             //Console.WriteLine(anchors);
             selects[2].Click();
             functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + option + "']")).Click();
-            
-        }
 
-        public void ClickAddContact()
+        }
+        public bool ClickAddContact()
         {
-            addContact.Click();
+            //check if new contact button is disabled
+            if (addContact.GetAttribute("disabled") == null)
+            {
+                addContact.Click();
+                return true;  
+            }
+            else
+            {
+                Console.WriteLine("add contact button is disabled");
+                return false;
+            }
         }
 
         public void EnterPartyRole()
         {
+            Thread.Sleep(2000);
             partyRole.Click();
-            policyDriver.FindElement(By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Underwriter']")).Click();
+            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Underwriter']")).Click();
         }
         public void EnterPhoneType()
         {
-            phoneType.Click();
+            selectPhoneType.Click();
             functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Business']")).Click();
         }
         public void EmptyClick()
@@ -245,9 +258,19 @@ namespace ApolloQA.Pages.Policy
             inputInternet.SendKeys("test");
             inputPhoneNumber.SendKeys("1231231234");
         }
-        public void SubmitContact()
+        public bool SubmitContact()
         {
-            submitButton.Click();
+            //check if save button is disabled
+            if (submitButton.GetAttribute("disabled") == null)
+            {
+                submitButton.Click();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         public bool CheckLabel(string label)
@@ -266,6 +289,28 @@ namespace ApolloQA.Pages.Policy
             bool verifyError = error.Displayed;
             return verifyError;
             
+        }
+
+        public bool CanAddContact()
+        {
+
+            // if we can't click New Contact button, return false
+            if (!ClickAddContact())
+            {
+                Console.WriteLine("could not add contact - add contact button is disabled");
+                return false;
+            }
+
+            EnterPartyRole();
+            EnterPhoneTypeWorkaround("Business");
+            EnterAllInputs();
+            SubmitContact();
+
+            string toastTitle = toaster.GetToastTitle();
+            if (toastTitle.Contains("Contact was successfully saved"))
+                return true;
+            else return false;
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ApolloQA.Helpers;
 using ApolloQA.Pages;
+using ApolloQA.Pages.Application;
 using ApolloQA.Pages.Login;
 using ApolloQA.Pages.Organization;
 using ApolloQA.Pages.Policy;
@@ -11,6 +12,7 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace ApolloQA.TestCases.Smoke_Tests
 {
@@ -24,55 +26,86 @@ namespace ApolloQA.TestCases.Smoke_Tests
             driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
             LoginPage loginPage = new LoginPage(driver);
             loginPage.loginValidUser(Defaults.ADMIN_USERNAME, Defaults.DEFAULT_PASSWORD);
-            ////Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Home"]));
-            //homePage.MainNavBar.ClickOnTab("Policy");
-            //homePage.MainNavBar.SearchQuery("10005");
-            //homePage.MainNavBar.ClickFirstSearchResult();
-            //driver.Navigate().GoToUrl(Defaults.QA_URLS["Organization"]);
-            //OrganizationGrid orgGrid = new OrganizationGrid(driver);
-            //OrganizationInsert orgInsert = orgGrid.ClickNewButton();
-            //orgInsert.EnterAllValues();
-            //OrganizationDetails orgDetails = orgInsert.ClickSubmitButton();
-            //AddAddress orgAddress = orgDetails.ClickAddAddress();
-            //orgAddress.SelectAddressType("Billing");
-            //orgAddress.AddressLine1.SendKeys("57 Yeager Ave");
-            //orgAddress.AddressCity.SendKeys("Forty Fort");
-            //orgAddress.SelectState("Pennsylvania");
-            //orgAddress.AddressZipCode.SendKeys("18704");
-            //orgAddress.SelectCountry("United States");
-            //orgAddress.ClickSubmit();
+            //////Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Home"]));
+            ////homePage.MainNavBar.ClickOnTab("Policy");
+            ////homePage.MainNavBar.SearchQuery("10005");
+            ////homePage.MainNavBar.ClickFirstSearchResult();
+            ////driver.Navigate().GoToUrl(Defaults.QA_URLS["Organization"]);
+            ////OrganizationGrid orgGrid = new OrganizationGrid(driver);
+            ////OrganizationInsert orgInsert = orgGrid.ClickNewButton();
+            ////orgInsert.EnterAllValues();
+            ////OrganizationDetails orgDetails = orgInsert.ClickSubmitButton();
+            ////AddAddress orgAddress = orgDetails.ClickAddAddress();
+            ////orgAddress.SelectAddressType("Billing");
+            ////orgAddress.AddressLine1.SendKeys("57 Yeager Ave");
+            ////orgAddress.AddressCity.SendKeys("Forty Fort");
+            ////orgAddress.SelectState("Pennsylvania");
+            ////orgAddress.AddressZipCode.SendKeys("18704");
+            ////orgAddress.SelectCountry("United States");
+            ////orgAddress.ClickSubmit();
 
 
-            //RightNavBar rightNavBar = new RightNavBar(driver);
-            //rightNavBar.PolicyTab.Click();
-            //rightNavBar.HomeIcon.Click();
-            //rightNavBar.OrganizationTab.Click();
-            //rightNavBar.SearchQuery("test");
-            //rightNavBar.ClickFirstSearchResult();
-            //rightNavBar.OrganizationTab.Click();
-            ////rightNavBar.HistoryIcon.Click();
-            //rightNavBar.ImpersonateIcon.Click();
+            ////RightNavBar rightNavBar = new RightNavBar(driver);
+            ////rightNavBar.PolicyTab.Click();
+            ////rightNavBar.HomeIcon.Click();
+            ////rightNavBar.OrganizationTab.Click();
+            ////rightNavBar.SearchQuery("test");
+            ////rightNavBar.ClickFirstSearchResult();
+            ////rightNavBar.OrganizationTab.Click();
+            //////rightNavBar.HistoryIcon.Click();
+            ////rightNavBar.ImpersonateIcon.Click();
+
+            //MainNavBar mainNavBar = new MainNavBar(driver);
+            //mainNavBar.ImpersonateValidUser("ApolloTestUserG105@biberk.com");
+
+            ////PolicyCRUD policyCrud = new PolicyCRUD(driver);
+            ////string result = policyCrud.CreateDefaultPolicy();
+            ////Console.WriteLine(result);
+
+            //mainNavBar.SearchQuery("10170");
+            //mainNavBar.ClickFirstSearchResult();
+
+            //PolicyMain policyMain = new PolicyMain(driver);
+            //policyMain.GoToSummary();
+
+            //PolicySummary policySummary = new PolicySummary(driver);
+            ////string busType = policySummary.CheckBusinessType();
+            ////Console.WriteLine(busType);
+            ///
+
+            ////grabs random vin
+            //ChromeDriver vinDriver = new ChromeDriver();
+            //vinDriver.Navigate().GoToUrl("https://randomvin.com/");
+            //Thread.Sleep(2000);
+            //string randomVin = vinDriver.FindElement(By.XPath("//span[@id='Result']/h2")).Text;
+            //Console.WriteLine("the random vin is: " + randomVin);
+
 
             MainNavBar mainNavBar = new MainNavBar(driver);
-            mainNavBar.ImpersonateValidUser("ApolloTestUserG105@biberk.com");
+            //mainNavBar.ClickApplicationTab();
 
-            //PolicyCRUD policyCrud = new PolicyCRUD(driver);
-            //string result = policyCrud.CreateDefaultPolicy();
-            //Console.WriteLine(result);
+            ApplicationGrid appGrid = new ApplicationGrid(driver);
+            //appGrid.ClickNew();
 
-            mainNavBar.SearchQuery("10170");
-            mainNavBar.ClickFirstSearchResult();
+            ApplicationInformation appInfo = new ApplicationInformation(driver);
+            //appInfo.EnterBusinessName("Casey Test Org 827");
+            //appInfo.SelectLOB("Commercial Auto");
+            ////appQuote.EnterAgency("biBerk");
+            ////appQuote.EnterCarrier("BHDIC");
+            //appInfo.EnterEffectiveDate("09/01/2020");
+            ////appQuote.EnterExpirationDate("08/25/2020");
+            //appInfo.ClickNext();
 
-            PolicyMain policyMain = new PolicyMain(driver);
-            policyMain.GoToSummary();
+            //BusinessInformation busInfo = new BusinessInformation(driver);
+            //busInfo.UpdateMailingAddress(" 123 test address, FORTY Fort, pa, 18704  ");
+            //busInfo.UpdatePhysicalAddress(" 345 New AddRess, FORTY Fort, pa, 18704  ");
 
-            PolicySummary policySummary = new PolicySummary(driver);
-            string busType = policySummary.CheckBusinessType();
-            Console.WriteLine(busType);
-
-
-
-
+            mainNavBar.ClickApplicationTab();
+            appGrid.ClickNew();
+            appInfo.EnterBusinessName("Casey Test Org 904");
+            appInfo.SelectLOB("Commercial Auto");
+            appInfo.EnterEffectiveDate("09/15/2020");
+            appInfo.ClickNext();
 
         }
     }

@@ -28,7 +28,7 @@ namespace ApolloQA.Pages.Dashboard
             //bool verifyUser = homeDriver.FindElement(By.XPath("//p[contains(text(),'Email: " + user + "')]")).Text;
             //return verifyUser;
 
-            IWebElement target = functions.FindElementWait(20, By.XPath("//p[contains(text(),'Email: " + user + "')]"));
+            IWebElement target = functions.FindElementWait(100, By.XPath("//p[contains(text(),'Email: " + user + "')]"));
             bool verifyUser = target.Displayed;
 
             return verifyUser;

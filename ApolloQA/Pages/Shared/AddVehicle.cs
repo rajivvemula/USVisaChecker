@@ -157,12 +157,17 @@ namespace ApolloQA.Pages.Shared
                 case "Type": return selectType;
                 case "Cost": return inputCost;
                 case "Value": return inputValue;
-                case "Radius": return inputRadius;
+                case "Stated": return inputStated;
+                //case "Radius": return inputRadius;
                 case "Business": return selectBusUse;
-                case "Code": return inputCode;
-                case "Rating Group": return inputRatingGroup;
-                case "Rating Plan": return inputRatingPlan;
-                case "Limit": return inputLimit;
+                case "Code": return selectCode;
+                case "Gross": return selectGross;
+                case "Seating": return selectSeating;
+                case "Category": return selectCategory;
+                case "SubCategory": return selectSubcategory;
+                //case "Rating Group": return inputRatingGroup;
+                //case "Rating Plan": return inputRatingPlan;
+                //case "Limit": return inputLimit;
                 case "Notes": return inputNotes;
                 default: return inputNotes;
                    
@@ -196,24 +201,27 @@ namespace ApolloQA.Pages.Shared
         public IWebElement inputPlatNum => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='plateNumber']"));
         public IWebElement inputCost => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='costNew']"));
         public IWebElement inputValue => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='estimatedCurrentValue']"));
-        public IWebElement inputRadius => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='radiusOfOperation']"));
+        public IWebElement inputStated => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='statedAmount']"));
+        //public IWebElement inputRadius => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='radiusOfOperation']"));
         public IWebElement inputNotes => functions.FindElementWait(10, By.XPath("//textarea[@formcontrolname='notes']"));
-        public IWebElement inputCode => functions.FindElementWait(60, By.XPath("//bh-input-autocomplete[@formcontrolname='classCode']/input"));
-        public IWebElement inputRatingGroup => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='ratingGroup']"));
-        public IWebElement inputRatingPlan => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='driverRatingPlan']"));
-        public IWebElement inputLimit => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='increasedLimitGroup']"));
+        public IWebElement inputModifications => functions.FindElementWait(10, By.XPath("//textarea[@formcontrolname='additionalModifications']"));
+        //public IWebElement inputRatingGroup => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='ratingGroup']"));
+        //public IWebElement inputRatingPlan => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='driverRatingPlan']"));
+        //public IWebElement inputLimit => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='increasedLimitGroup']"));
         public IWebElement selectState => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='plateStateProvinceId']"));
         public IWebElement selectType => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='typeId']"));
         public IWebElement selectBusUse => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='businessUseId']"));
+        public IWebElement selectCode => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='classCode']"));
+        public IWebElement selectSeating => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='seatingCapacity']"));
+        public IWebElement selectGross => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='grossVehicleWeight']"));
+        public IWebElement selectCategory => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='bodyCategoryTypeId']"));
+        public IWebElement selectSubcategory => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='bodySubCategoryTypeId']"));
+
         public IWebElement cancelButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
-        public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
+        public IWebElement submitButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Save']"));
         public IWebElement searchButton => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Search Vin']"));
 
-        public void ClickClassCodeOption(string value)
-        {
-            //IWebElement selectValue = functions.FindElementWait(20, By.XPath("//div[@class='mat-option-text']/div/div/div/div[normalize-space(text())='" + value + "']"));
-            functions.FindElementWait(20, By.XPath("//span[@class='mat-option-text']/div/div/div/div[contains(text(),'401: Truckers - Long Haul')]")).Click();
-        }
+       
         
 
         public void EnterVin(string vin)
@@ -247,10 +255,6 @@ namespace ApolloQA.Pages.Shared
         public void EnterValue(string value)
         {
             inputValue.SendKeys(value);
-        }
-        public void EnterRadius(string radius)
-        {
-            inputRadius.SendKeys(radius);
         }
         public void EnterNotes(string note)
         {

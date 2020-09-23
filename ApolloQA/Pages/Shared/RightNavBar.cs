@@ -26,9 +26,17 @@ namespace ApolloQA.Pages.Shared
         public IWebElement ImpersonateIcon => functions.FindElementWait(30, By.XPath("//button/span/mat-icon[text()='assignment_ind']/../.."));
         public IWebElement RedImpersonateIcon => functions.FindElementWait(30, By.XPath("//button/span/mat-icon[contains(@class, 'is-impersonated')]/../.."));
         public IWebElement HistoryIcon => functions.FindElementWait(10, By.XPath("//button/span/mat-icon[text()='history']/../.."));
+        public IWebElement AddIcon => functions.FindElementWait(10, By.XPath("//mat-icon[normalize-space(text())='add']"));
+        public IWebElement waffleMenu => functions.FindElementWaitUntilClickable(60, By.XPath("//mat-icon[contains(@class, 'waffle-icon')]"));
+        public IWebElement sideWaffleMenu => functions.FindElementWait(60, By.XPath("//mat-icon[contains(@class, 'side-navbar-waffle')]"));
+        public IWebElement addFnolButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'Add FNOL')]"));
+        public IWebElement addAppButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'New Application')]"));
+
 
         public void ImpersonateValidUser(string userName)
         {
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
+
             string currentImpersonatedUser = CurrentlyImpersonatedUser();
 
             //if already impersonating this user

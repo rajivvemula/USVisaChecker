@@ -18,11 +18,11 @@ namespace ApolloQA.Pages.Fnol
             functions = new Functions(driver);
         }
 
-        public IWebElement addFNOLButton => functions.FindElementWait(10, By.XPath("//button[@aria-label = 'Add FNOL']"));
+        public IWebElement addFNOLButton => functions.FindElementWait(10, By.XPath("//button[@aria-label = 'New FNOL']"));
 
         public void GoToFNOL()
         {
-            fnolDriver.Navigate().GoToUrl("https://biberk-apollo-qa.azurewebsites.net/claims/fnol");
+            fnolDriver.Navigate().GoToUrl("https://biberk-apollo-qa.azurewebsites.net/claims/fnol-dashboard");
         }
 
         public void AddNewFNOL()

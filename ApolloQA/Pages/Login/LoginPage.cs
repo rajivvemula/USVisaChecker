@@ -20,8 +20,8 @@ namespace ApolloQA.Pages.Login
             functions = new Functions(driver);
         }
 
-        public IWebElement usernameField => functions.FindElementWait(10, By.XPath("//input[@class='form-control ltr_override' and @name='loginfmt']"));
-        public IWebElement passwordField => functions.FindElementWait(10, By.XPath("//input[@class='form-control' and @name='passwd']"));
+        public IWebElement usernameField => functions.FindElementWait(10, By.XPath("//input[@type='email' and @name='loginfmt']"));
+        public IWebElement passwordField => functions.FindElementWait(10, By.XPath("//input[@type='password' and @name='passwd']"));
         public IWebElement nextButton => functions.FindElementWait(10, By.Id("idSIButton9"));
         public IWebElement noButton => functions.FindElementWait(10, By.Id("idBtn_Back"));
         public IWebElement bottomText => functions.FindElementWait(10, By.XPath("idBoilerPlateText"));
