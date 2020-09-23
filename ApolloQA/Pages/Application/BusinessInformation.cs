@@ -38,6 +38,17 @@ namespace ApolloQA.Pages.Application
         public IWebElement continueAnyway => functions.FindElementWaitUntilClickable(10, By.XPath("//button[.//span[normalize-space(text())='Continue anyway']]"));
 
         private IWebElement mailingAddress => functions.FindElementWaitUntilClickable(10, By.XPath("//mat-select[@formcontrolname='mailingAddressId']"));
+        private IWebElement physicalAddress => functions.FindElementWaitUntilClickable(10, By.XPath("//mat-select[@formcontrolname='physicalAddressId']"));
+
+        //input field title to name mappings
+        public static IDictionary<string, string> inputFieldNames = new Dictionary<string, string>()
+        {
+            {"Business Name", "businessName" },
+            {"Organization Type", "bussinessType" }, //typo in name
+            {"Business Phone No", "businessPhone" },
+            {"Business Email Address", "businessEmail" },
+            {"Business Website", "businessWebsite" }
+        };
 
 
         public void SaveChanges()
@@ -48,15 +59,15 @@ namespace ApolloQA.Pages.Application
             catch { }
         }
 
-        public string GetCurrentMailingAddress()
+        public string GetCurrentPhysicalAddress()
         {
-            return mailingAddress.Text;
+            return physicalAddress.Text;
         }
 
-        public void UpdateMailingAddress(string selection)
+        public void UpdatePhysicalAddress(string selection)
         {
             //click the mailing address drop-down
-            mailingAddress.Click();
+            physicalAddress.Click();
 
             //find and click the target (ignores case differences)
             IWebElement theSelection = functions.FindElementWaitUntilClickable(5,
@@ -65,20 +76,19 @@ namespace ApolloQA.Pages.Application
         }
 
 
-        public void UpdatePhysicalAddress(string selection)
+        public void UpdateMailingAddress(string selection)
         {
-            //first, make sure physical address checkbox is checked
+            //first, make sure different mailing address checkbox is checked
             IWebElement checkbox = functions.FindElementWaitUntilClickable(10, By.XPath("//input[@name='differentMailingAddress']"));
             if (checkbox.GetAttribute("aria-checked").Equals("false"))
             {
                 //have to click the mat-checkbox not the input
                 IWebElement matCheckbox = functions.FindElementWaitUntilClickable(10, By.XPath("//mat-checkbox[@name='differentMailingAddress']"));
                 matCheckbox.Click();
-            }               
+            }
 
-            //click the physical address drop-down
-            IWebElement physicalAddress = functions.FindElementWaitUntilClickable(10, By.XPath("//mat-select[@formcontrolname='physicalAddressId']"));
-            physicalAddress.Click();
+            //click the mailing address drop-down
+            mailingAddress.Click();
 
             //find and click the target (ignores case differences)
             IWebElement theSelection = functions.FindElementWaitUntilClickable(5,

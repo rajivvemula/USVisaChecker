@@ -15,6 +15,7 @@ namespace ApolloQA.TestCases.Regression
     public class R061_NewApplicationOneAtATimeSteps
     {
         private IWebDriver driver;
+        private FeatureContext _featureContext;
         private ScenarioContext _scenarioContext;
 
         private MainNavBar mainNavBar;
@@ -27,9 +28,10 @@ namespace ApolloQA.TestCases.Regression
         private Toaster toaster;
         private ApplicationUWQuestions appUWQuestions;
 
-        public R061_NewApplicationOneAtATimeSteps(IWebDriver driver, ScenarioContext scenarioContext)
+        public R061_NewApplicationOneAtATimeSteps(IWebDriver driver, FeatureContext featureContext, ScenarioContext scenarioContext)
         {
             this.driver = driver;
+            _featureContext = featureContext;
             _scenarioContext = scenarioContext;
 
             mainNavBar = new MainNavBar(driver);
@@ -59,20 +61,20 @@ namespace ApolloQA.TestCases.Regression
             appInfo.ClickNext();
 
             //save parameters to scenario context for use in then step
-            _scenarioContext.Add("Organization Name", orgName);
-            _scenarioContext.Add("LOB", lob);
-            _scenarioContext.Add("Effective Date", effectiveDate);
+            _featureContext.Add("Organization Name", orgName);
+            _featureContext.Add("LOB", lob);
+            _featureContext.Add("Effective Date", effectiveDate);
 
         }
 
-        [When(@"I update mailing address to existing address (.*)")]
-        public void WhenIUpdateMailingAddressToExistingAddress(string existingAddress)
+        [When(@"I update physical address to existing address (.*)")]
+        public void WhenIUpdatePhysicalAddressToExistingAddress(string existingAddress)
         {
-            busInfo.UpdateMailingAddress(existingAddress);
+            busInfo.UpdatePhysicalAddress(existingAddress);
             busInfo.SaveChanges();
 
-            //update mailing address in scenario context for use in then step
-            _scenarioContext.Add("Mailing Address", existingAddress);
+            //update physical address in feature context for use in then step
+            _featureContext.Add("Physical Address", existingAddress);
         }
 
         [Then(@"an application is successfully created with the proper values")]
@@ -83,17 +85,52 @@ namespace ApolloQA.TestCases.Regression
             Console.WriteLine(toastTitle);
             Assert.That(toastTitle, Does.Contain("was created"));
 
-            Assert.That(components.GetValueFromHeaderField("Business Name"), Is.EqualTo(_scenarioContext.Get<string>("Organization Name")), "Organization Name does not match expected.");
-            Assert.That(components.GetValueFromHeaderField("Line of Business"), Is.EqualTo(_scenarioContext.Get<string>("LOB")), "LOB does not match expected.");
-            Assert.That(components.GetValueFromHeaderField("Effective Date"), Is.EqualTo(_scenarioContext.Get<string>("Effective Date")), "Effective Date does not match expected.");
+            Assert.That(components.GetValueFromHeaderField("Business Name"), Is.EqualTo(_featureContext.Get<string>("Organization Name")), "Organization Name does not match expected.");
+            Assert.That(components.GetValueFromHeaderField("Line of Business"), Is.EqualTo(_featureContext.Get<string>("LOB")), "LOB does not match expected.");
+            Assert.That(components.GetValueFromHeaderField("Effective Date"), Is.EqualTo(_featureContext.Get<string>("Effective Date")), "Effective Date does not match expected.");
         }
 
-        [Then(@"The Mailing Address is successfully updated")]
-        public void ThenTheMailingAddressIsSuccessfullyUpdated()
+        [Then(@"The Physical Address is successfully updated")]
+        public void ThenThePhysicalAddressIsSuccessfullyUpdated()
         {
-            appMain.busInfoLink.Click();
-            Assert.That(busInfo.GetCurrentMailingAddress(), Is.EqualTo(_scenarioContext.Get<string>("Mailing Address")), "Mailing Address does not match expected.");
+
+            //Remove later - related to continue anyway bug
+            try
+            {
+                appMain.busInfoLink.Click();
+            }
+            catch
+            {
+                try { busInfo.continueAnyway.Click(); }
+                catch { }
+
+                appMain.busInfoLink.Click();
+            }
+            Assert.That(busInfo.GetCurrentPhysicalAddress(), Is.EqualTo(_featureContext.Get<string>("Physical Address")), "Physical Address does not match expected.");
         }
+
+        [Then(@"the following values are displayed on application's Business Information tab")]
+        public void ThenTheFollowingValuesAreDisplayedOnApplicationsBusinessInformationTab(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                string fieldName = row[0];
+
+                string displayedValue = components.GetValueFromInputFieldByNameAttribute(BusinessInformation.inputFieldNames[fieldName]);
+
+                string expectedValue = row[1];
+
+                Assert.AreEqual(expectedValue, displayedValue);
+                
+            }
+        }
+
+        //[Then(@"the values are stored in the application's database entry")]
+        //public void ThenTheValuesAreStoredInTheApplicationsDatabaseEntry()
+        //{
+        //    ScenarioContext.Current.Pending();
+        //}
+
 
         [Given(@"I am on the application's UW Questions tab")]
         public void GivenIAmOnTheApplicationsUWQuestionsTab()
