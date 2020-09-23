@@ -3,6 +3,7 @@ using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.TestCases.Regression.Application
@@ -31,6 +32,7 @@ namespace ApolloQA.TestCases.Regression.Application
             rightNavBar.AddIcon.Click();
             rightNavBar.addAppButton.Click();
             Assert.That(() => driver.Url, Does.Contain("quote/create").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Qoute Creation From App Grid");
+            Thread.Sleep(5000);
         }
     }
 }

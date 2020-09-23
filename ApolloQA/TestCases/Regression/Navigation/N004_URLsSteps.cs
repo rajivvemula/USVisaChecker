@@ -19,7 +19,7 @@ namespace ApolloQA.TestCases.Regression.Navigation
         [Then(@"(.*) page is displayed")]
         public void ThenURLIsDisplayed(string url)
         {
-            Assert.That(() => driver.Url, Does.Contain(Defaults.URLContains["Business Information"]).After(30).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Qoute Creation From App Grid");
+            Assert.That(() => driver.Url, Does.Contain(Defaults.URLContains[url]).After(15).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Qoute Creation From App Grid");
         }
     }
 }

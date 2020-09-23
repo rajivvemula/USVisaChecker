@@ -20,7 +20,7 @@ namespace ApolloQA.Pages.Application
         }
 
         //auto-completes
-        public IWebElement businessName => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='insuredPartyId']"));
+        public IWebElement businessName => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='insuredPartyId']/input"));
         public IWebElement agencyName => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='insuredAgencyId']"));
         private IWebElement carrierName => functions.FindElementWait(10, By.XPath("//bh-input-autocomplete[@formcontrolname='insuredCarrierId']"));
 

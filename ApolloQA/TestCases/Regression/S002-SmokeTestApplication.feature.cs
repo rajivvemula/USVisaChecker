@@ -21,12 +21,14 @@ namespace ApolloQA.TestCases.Regression
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("S002-SmokeTestApplication")]
+    [NUnit.Framework.CategoryAttribute("SmokeTestBase")]
     public partial class S002_SmokeTestApplicationFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "SmokeTestBase"};
         
 #line 1 "S002-SmokeTestApplication.feature"
 #line hidden
@@ -36,7 +38,8 @@ namespace ApolloQA.TestCases.Regression
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "S002-SmokeTestApplication", "\tIn order to test application creation\r\n\tAs an authorized user\r\n\tI want to be abl" +
-                    "e to create an application and get a quote", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "e to create an application and get a quote", ProgrammingLanguage.CSharp, new string[] {
+                        "SmokeTestBase"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,7 +84,7 @@ namespace ApolloQA.TestCases.Regression
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Create new application", null, tagsOfScenario, argumentsOfScenario);
-#line 12
+#line 17
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -101,18 +104,18 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                             "Business Name",
                             "LOB",
                             "Effective Date"});
-                table17.AddRow(new string[] {
-                            "Casey Test Org 916",
+                table19.AddRow(new string[] {
+                            "Casey Test Organization 921",
                             "Commercial Auto",
-                            "10/13/2020"});
-#line 13
- testRunner.When("I create a new application with values", ((string)(null)), table17, "When ");
+                            "10/21/2020"});
+#line 18
+ testRunner.When("I create a new application with values", ((string)(null)), table19, "When ");
 #line hidden
-#line 16
+#line 21
  testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -120,57 +123,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("2 Business Information - Select Mailing")]
-        public virtual void _2BusinessInformation_SelectMailing()
+        [NUnit.Framework.DescriptionAttribute("2 Business Information - Select Physical")]
+        public virtual void _2BusinessInformation_SelectPhysical()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Business Information - Select Mailing", null, tagsOfScenario, argumentsOfScenario);
-#line 19
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 21
- testRunner.When("I update mailing address to existing address 345 Existing Address, Plains, PA, 18" +
-                        "705", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 22
- testRunner.Then("The Mailing Address is successfully updated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("3 UW Questions - Answer Questions")]
-        [NUnit.Framework.TestCaseAttribute("bh-question-singleselect", "How far at most would your vehicles be driven from their base locations?", "51 to 100 miles", null)]
-        [NUnit.Framework.TestCaseAttribute("bh-question-boolean", "Do you haul any non-owned goods for pay?", "false", null)]
-        [NUnit.Framework.TestCaseAttribute("bh-question-boolean", "Do you have operating authority from any other states?", "false", null)]
-        [NUnit.Framework.TestCaseAttribute("bh-question-boolean", "Do you have 6 or more vehicles and >= 1 year in business?", "false", null)]
-        public virtual void _3UWQuestions_AnswerQuestions(string questionType, string questionText, string selection, string[] exampleTags)
-        {
-            string[] tagsOfScenario = exampleTags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Question Type", questionType);
-            argumentsOfScenario.Add("Question Text", questionText);
-            argumentsOfScenario.Add("Selection", selection);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("3 UW Questions - Answer Questions", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Business Information - Select Physical", null, tagsOfScenario, argumentsOfScenario);
 #line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -191,16 +149,110 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 25
- testRunner.Given("I am on the application\'s UW Questions tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 26
- testRunner.Then(string.Format("question type {0} is displayed with text: {1}", questionType, questionText), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I update physical address to existing address 345 Existing Address, Plains, PA, 1" +
+                        "8705", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 27
+ testRunner.Then("The Physical Address is successfully updated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("3 Business Information - Validate Fields")]
+        public virtual void _3BusinessInformation_ValidateFields()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("3 Business Information - Validate Fields", null, tagsOfScenario, argumentsOfScenario);
+#line 29
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Key",
+                            "Value"});
+                table20.AddRow(new string[] {
+                            "Business Name",
+                            "Casey Test Organization 921"});
+                table20.AddRow(new string[] {
+                            "Business Phone No",
+                            "982-389-4712"});
+                table20.AddRow(new string[] {
+                            "Business Email Address",
+                            "CaseyTest@test.com"});
+                table20.AddRow(new string[] {
+                            "Business Website",
+                            "CaseyTest.com"});
+#line 30
+ testRunner.Then("the following values are displayed on application\'s Business Information tab", ((string)(null)), table20, "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("4 UW Questions - Answer Questions")]
+        [NUnit.Framework.TestCaseAttribute("bh-question-boolean", "Do you have an inventory of vehicles that you sell or lease?", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("bh-question-singleselect", "How far at most would your vehicles be driven from their base locations?", "51 to 100 miles", null)]
+        [NUnit.Framework.TestCaseAttribute("bh-question-boolean", "Do you have operating authority from any other states?", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("bh-question-boolean", "Do you have 6 or more vehicles and >= 1 year in business?", "false", null)]
+        public virtual void _4UWQuestions_AnswerQuestions(string questionType, string questionText, string selection, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Question Type", questionType);
+            argumentsOfScenario.Add("Question Text", questionText);
+            argumentsOfScenario.Add("Selection", selection);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("4 UW Questions - Answer Questions", null, tagsOfScenario, argumentsOfScenario);
+#line 39
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 40
+ testRunner.Given("I am on the application\'s UW Questions tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 41
+ testRunner.Then(string.Format("question type {0} is displayed with text: {1}", questionType, questionText), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 42
  testRunner.When(string.Format("I attempt to answer with selection: {0}", selection), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 43
  testRunner.Then("the selection is recorded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using TechTalk.SpecFlow;
 
 namespace ApolloQA.Helpers
 {
@@ -73,6 +74,17 @@ namespace ApolloQA.Helpers
             }
 
             return target;
+        }
+
+
+        public static Dictionary<string, string> TableToDictionary(Table table)
+        {
+            var dictionary = new Dictionary<string, string>();
+            foreach (var row in table.Rows)
+            {
+                dictionary.Add(row[0], row[1]);
+            }
+            return dictionary;
         }
 
     }

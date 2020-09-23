@@ -24,6 +24,7 @@ namespace ApolloQA.Driver
         public static Database database;
         public static FeatureContext _featureContext;
         public static RestAPI api;
+        public static ScenarioContext _scenarioContext;
 
         public Setup(IObjectContainer objectContainer)
         {
@@ -53,14 +54,16 @@ namespace ApolloQA.Driver
             state = new State();
             client = new CosmosClient("https://zbibaoazcdb1qa2.documents.azure.com:443/", "p9fiijwywnNpP4gRROO0NNA2sDMPyyjZ0OfMzJGriSCZIEKUGNrIyzut20ICyyGnGtbVwRr5rmgT57TIBE0LvQ==");
             api = new RestAPI(driver);
+            database = client.GetDatabase("apollo");
         }
 
-        //[BeforeFeature]
-        //public static void BeforeFeature(FeatureContext featureContext)
-        //{
-        //    _featureContext = featureContext;
-        //    _featureContext.Add("Application List", new List<ApplicationObject>());
-        //}
+        [BeforeFeature]
+        public static void BeforeFeature(FeatureContext featureContext)
+        {
+            _featureContext = featureContext;
+            //_featureContext.Add("Application List", new List<ApplicationObject>());
+
+        }
 
         //[AfterFeature]
         //public static void AfterFeature(FeatureContext featureContext)
@@ -74,8 +77,10 @@ namespace ApolloQA.Driver
 
 
         [BeforeScenario]
-        public void BeforeScenario()
+        public void BeforeScenario(ScenarioContext scenarioContext)
         {
+            _scenarioContext = scenarioContext;
+
             _objectContainer.RegisterInstanceAs(driver);
             _objectContainer.RegisterInstanceAs(state);
             _objectContainer.RegisterInstanceAs(client);
@@ -87,6 +92,7 @@ namespace ApolloQA.Driver
         public static void AfterTestRun()
         {
             driver.Quit();
+            client.Dispose();
         }
     }
 }

@@ -100,7 +100,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                             "Received",
                             "Related",
                             "First",
@@ -117,7 +117,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Fire",
                             "FireName",
                             "FireNumber"});
-                table1.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "Phone",
                             "No",
                             "Joseph",
@@ -135,7 +135,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "PAFD",
                             "4567"});
 #line 6
- testRunner.When("User creates a FNOL", ((string)(null)), table1, "When ");
+ testRunner.When("User creates a FNOL", ((string)(null)), table7, "When ");
 #line hidden
 #line 9
  testRunner.Then("Verify FNOL is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
