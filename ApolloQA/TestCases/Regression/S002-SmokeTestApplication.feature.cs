@@ -21,12 +21,14 @@ namespace ApolloQA.TestCases.Regression
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("S002-SmokeTestApplication")]
+    [NUnit.Framework.CategoryAttribute("SmokeTestBase")]
     public partial class S002_SmokeTestApplicationFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "SmokeTestBase"};
         
 #line 1 "S002-SmokeTestApplication.feature"
 #line hidden
@@ -36,7 +38,8 @@ namespace ApolloQA.TestCases.Regression
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "S002-SmokeTestApplication", "\tIn order to test application creation\r\n\tAs an authorized user\r\n\tI want to be abl" +
-                    "e to create an application and get a quote", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "e to create an application and get a quote", ProgrammingLanguage.CSharp, new string[] {
+                        "SmokeTestBase"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
