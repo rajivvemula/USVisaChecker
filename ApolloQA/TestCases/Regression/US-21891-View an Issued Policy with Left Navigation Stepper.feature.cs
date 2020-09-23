@@ -223,53 +223,53 @@ this.ScenarioInitialize(scenarioInfo);
 #line 27
  testRunner.When("User navigates to policy ID 10562", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "a",
                             "Business Information"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "b",
                             "Contacts"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "c",
                             "UW Questions"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "d",
                             "Additional Questions"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "e",
                             "Drivers"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "f",
                             "Vehicles"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "g",
                             "Additional Interests"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "h",
                             "Coverages List Test"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "i",
                             "Rating Worksheet"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "j",
                             "Documents"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "k",
                             "Activities"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "l",
                             "Loss History"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "m",
                             "Policy History"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "n",
                             "Summary"});
 #line 28
- testRunner.Then("Verify sidetab is present", ((string)(null)), table21, "Then ");
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table23, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
