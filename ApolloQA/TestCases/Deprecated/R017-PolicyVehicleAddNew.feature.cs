@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.Deprecated
+namespace ApolloQA.TestCases.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -35,7 +35,7 @@ namespace ApolloQA.TestCases.Regression.Deprecated
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Deprecated", "R017-PolicyVehicleAddNew", "\tAs any User(defaults to admin)\r\n\tI want to be able to add a new vehicle", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Deprecated", "R017-PolicyVehicleAddNew", "\tAs any User(defaults to admin)\r\n\tI want to be able to add a new vehicle", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

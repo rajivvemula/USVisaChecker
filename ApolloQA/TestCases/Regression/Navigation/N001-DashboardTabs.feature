@@ -18,7 +18,7 @@ Examples:
 
 Scenario: 3 Verify Correct Tabs Displayed In Waffle Menu
 	Given User opens Waffle Menu
-	Then Correct waffleTabs is displayed
+	Then Correct waffleTabs are displayed
 	Then User closes Waffle Menu
 
 Scenario Outline: 4 User Interactions With Waffle Menu Tabs

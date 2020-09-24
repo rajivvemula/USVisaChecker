@@ -58,9 +58,9 @@ namespace ApolloQA.Driver
         }
 
         [BeforeFeature]
-        public static void BeforeFeature(FeatureContext featureContext)
+        public static void BeforeFeature()
         {
-            _featureContext = featureContext;
+            //_featureContext = featureContext;
             //_featureContext.Add("Application List", new List<ApplicationObject>());
 
         }
@@ -77,10 +77,8 @@ namespace ApolloQA.Driver
 
 
         [BeforeScenario]
-        public void BeforeScenario(ScenarioContext scenarioContext)
+        public void BeforeScenario()
         {
-            _scenarioContext = scenarioContext;
-
             _objectContainer.RegisterInstanceAs(driver);
             _objectContainer.RegisterInstanceAs(state);
             _objectContainer.RegisterInstanceAs(client);

@@ -21,6 +21,7 @@ namespace ApolloQA.TestCases.Regression.Organization
         OrganizationVehicle organizationVehicle;
         AddVehicle addVehicle;
         Buttons button;
+        Grid grid;
 
 
         public C006_AddAVehicleToOrganizationSteps(IWebDriver driver, State state)
@@ -33,6 +34,7 @@ namespace ApolloQA.TestCases.Regression.Organization
             addVehicle = new AddVehicle(driver);
             organizationVehicle = new OrganizationVehicle(driver);
             button = new Buttons(driver);
+            grid = new Grid(driver);
         }
 
         [When(@"User adds vehicle to Organization")]
@@ -81,6 +83,8 @@ namespace ApolloQA.TestCases.Regression.Organization
                 addVehicle.EnterInput("Value", detail.Value.ToString());
                 addVehicle.EnterInput("Stated", detail.Stated.ToString());
 
+                state.recentVehicleVIN = vinNumber;
+
             }
             // Vehicle Submit and Toast
             addVehicle.submitButton.Click();
@@ -93,5 +97,12 @@ namespace ApolloQA.TestCases.Regression.Organization
             string verifyToast = toaster.GetToastTitle();
             Assert.That(verifyToast, Does.Contain("Vehicle saved"), "Vehicle not added to organization");
         }
+        [Then(@"Verify vehicle VIN is displayed in grid")]
+        public void ThenVerifyVehicleVINIsDisplayedInGrid()
+        {
+            bool checkLabel = grid.CheckValueDisplayed(state.recentVehicleVIN);
+            Assert.IsTrue(checkLabel, "Vehicle Vin:" + state.recentVehicleVIN + " not found in Grid");
+        }
+
     }
 }
