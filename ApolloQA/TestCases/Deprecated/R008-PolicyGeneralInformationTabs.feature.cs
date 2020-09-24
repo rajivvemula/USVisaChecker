@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.Deprecated
+namespace ApolloQA.TestCases.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -39,7 +39,7 @@ namespace ApolloQA.TestCases.Regression.Deprecated
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Deprecated", "R008-PolicyGeneralInformationTabs", "\tAs Any User\r\n\tI want to navigate the tabs within General Information", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Deprecated", "R008-PolicyGeneralInformationTabs", "\tAs Any User\r\n\tI want to navigate the tabs within General Information", ProgrammingLanguage.CSharp, new string[] {
                         "reg",
                         "pol"});
             testRunner.OnFeatureStart(featureInfo);

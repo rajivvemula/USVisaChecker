@@ -180,7 +180,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("User opens Waffle Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 21
- testRunner.Then("Correct waffleTabs is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Correct waffleTabs are displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 22
  testRunner.Then("User closes Waffle Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
