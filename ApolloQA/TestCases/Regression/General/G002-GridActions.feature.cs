@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.Navigation
+namespace ApolloQA.TestCases.Regression.General
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,22 +20,22 @@ namespace ApolloQA.TestCases.Regression.Navigation
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("N003-SideTabs")]
-    public partial class N003_SideTabsFeature
+    [NUnit.Framework.DescriptionAttribute("G002-GridActions")]
+    public partial class G002_GridActionsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "N003-SideTabs.feature"
+#line 1 "G002-GridActions.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Navigation", "N003-SideTabs", "Test Side Tab and Interactions located in such as policy, org etc", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/General", "G002-GridActions", "Test Various Actions on Grid Pages", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,12 +74,12 @@ namespace ApolloQA.TestCases.Regression.Navigation
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("User Interaction With Side Tab")]
-        public virtual void UserInteractionWithSideTab()
+        [NUnit.Framework.DescriptionAttribute("Grid Titles")]
+        public virtual void GridTitles()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User Interaction With Side Tab", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Grid Titles", null, tagsOfScenario, argumentsOfScenario);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -100,44 +100,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
- testRunner.When("User navigates to <Tab> SideTab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 7
- testRunner.Then("Verify <tabset> are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table9.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "a",
-                            "Application Information"});
-                table9.AddRow(new string[] {
-                            "b",
-                            "Business Information"});
-                table9.AddRow(new string[] {
-                            "c",
-                            "Contacts"});
-                table9.AddRow(new string[] {
-                            "d",
-                            "UW Questions"});
-                table9.AddRow(new string[] {
-                            "e",
-                            "Policy Coverages"});
-                table9.AddRow(new string[] {
-                            "f",
-                            "Drivers"});
-                table9.AddRow(new string[] {
-                            "g",
-                            "Vehicles"});
-                table9.AddRow(new string[] {
-                            "h",
-                            "Additional Questions"});
-                table9.AddRow(new string[] {
-                            "i",
-                            "Summary"});
-#line 8
- testRunner.Then("Verify sidetab is present", ((string)(null)), table9, "Then ");
+                            "label"});
+#line 6
+ testRunner.Then("Grid column label is displayed", ((string)(null)), table8, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

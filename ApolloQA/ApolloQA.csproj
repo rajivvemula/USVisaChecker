@@ -5,18 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Grid\**" />
     <Compile Remove="Pages\Organization\OrganizationGrid\**" />
     <Compile Remove="Pages\Organization\OrganizationInsert\**" />
     <Compile Remove="Pages\Organization\OrganizationView\**" />
+    <EmbeddedResource Remove="Pages\Grid\**" />
     <EmbeddedResource Remove="Pages\Organization\OrganizationGrid\**" />
     <EmbeddedResource Remove="Pages\Organization\OrganizationInsert\**" />
     <EmbeddedResource Remove="Pages\Organization\OrganizationView\**" />
+    <None Remove="Pages\Grid\**" />
     <None Remove="Pages\Organization\OrganizationGrid\**" />
     <None Remove="Pages\Organization\OrganizationInsert\**" />
     <None Remove="Pages\Organization\OrganizationView\**" />
+    <SpecFlowFeatureFiles Remove="Pages\Grid\**" />
     <SpecFlowFeatureFiles Remove="Pages\Organization\OrganizationGrid\**" />
     <SpecFlowFeatureFiles Remove="Pages\Organization\OrganizationInsert\**" />
     <SpecFlowFeatureFiles Remove="Pages\Organization\OrganizationView\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Grid\**" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Organization\OrganizationGrid\**" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Organization\OrganizationInsert\**" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Organization\OrganizationView\**" />
@@ -50,7 +55,6 @@
   <ItemGroup>
     <Folder Include="Selenium\" />
     <Folder Include="Pages\Claims\" />
-    <Folder Include="Pages\Grid\" />
     <Folder Include="TestCases\Regression\Permissions\" />
   </ItemGroup>
 
