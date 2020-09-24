@@ -54,7 +54,7 @@ namespace ApolloQA.TestCases.Regression.Navigation
             mainNavBar.getElementFromFieldname(name).Click();
         }
 
-        [Then(@"Correct (.*) is displayed")]
+        [Then(@"Correct (.*) are displayed")]
         public void ThenCorrectIsDisplayed(string tabsetName)
         {
             foreach (var i in Defaults.TabSets[tabsetName])

@@ -24,7 +24,7 @@ Examples:
 
 Scenario:1D Verify Correct Tabs Displayed In Waffle Menu
 	Given User opens Waffle Menu
-	Then Correct waffleTabs is displayed
+	Then Correct waffleTabs are displayed
 	Then User closes Waffle Menu
 
 

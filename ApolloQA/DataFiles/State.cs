@@ -19,6 +19,7 @@ namespace ApolloQA.DataFiles
         public List<IOrganization> createOrgsList = new List<IOrganization>();
         public int createOrgRecent;
         public string recentDriverLicenseNumber;
+        public string recentVehicleVIN;
 
         /*
         How to add state:

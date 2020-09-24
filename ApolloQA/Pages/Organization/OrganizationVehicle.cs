@@ -26,5 +26,7 @@ namespace ApolloQA.Pages.Organization
 
         public IWebElement moreButton => functions.FindElementWait(10, By.XPath("//mat-icon[@aria-label='more']"));
         public IWebElement editButton => functions.FindElementWait(10, By.XPath("//button[normalize-space(text())='Edit']"));
+
+
     }
 }

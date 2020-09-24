@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.Deprecated
+namespace ApolloQA.TestCases.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -39,7 +39,7 @@ namespace ApolloQA.TestCases.Regression.Deprecated
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Deprecated", "R012-PolicyLocation", "\tIn order to Policy Locations is working as intended\r\n\tAs any User(defaults to ad" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Deprecated", "R012-PolicyLocation", "\tIn order to Policy Locations is working as intended\r\n\tAs any User(defaults to ad" +
                     "min)\r\n\tI want to be able to add, delete locations", ProgrammingLanguage.CSharp, new string[] {
                         "reg",
                         "pol"});
