@@ -14,11 +14,13 @@ Feature: S002-SmokeTestApplication
 #	Then I should see the Apollo Dashboard as Admin
 
 
+
 Scenario: 1 Create new application
 	When I create a new application with values
 	| Business Name               | LOB             | Effective Date |
 	| Casey Test Organization 921 | Commercial Auto | 10/21/2020     |
 	Then an application is successfully created with the proper values
+	And I am on the Business Information tab
 
 
 Scenario: 2 Business Information - Select Physical

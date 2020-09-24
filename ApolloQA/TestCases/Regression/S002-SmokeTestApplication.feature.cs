@@ -84,7 +84,7 @@ namespace ApolloQA.TestCases.Regression
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Create new application", null, tagsOfScenario, argumentsOfScenario);
-#line 17
+#line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -112,11 +112,14 @@ this.ScenarioInitialize(scenarioInfo);
                             "Casey Test Organization 921",
                             "Commercial Auto",
                             "10/21/2020"});
-#line 18
+#line 19
  testRunner.When("I create a new application with values", ((string)(null)), table19, "When ");
 #line hidden
-#line 21
+#line 22
  testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 23
+ testRunner.And("I am on the Business Information tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -129,7 +132,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Business Information - Select Physical", null, tagsOfScenario, argumentsOfScenario);
-#line 24
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -149,11 +152,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
+#line 28
  testRunner.When("I update physical address to existing address 345 Existing Address, Plains, PA, 1" +
                         "8705", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 29
  testRunner.Then("The Physical Address is successfully updated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -167,7 +170,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("3 Business Information - Validate Fields", null, tagsOfScenario, argumentsOfScenario);
-#line 29
+#line 31
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -202,7 +205,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table20.AddRow(new string[] {
                             "Business Website",
                             "CaseyTest.com"});
-#line 30
+#line 32
  testRunner.Then("the following values are displayed on application\'s Business Information tab", ((string)(null)), table20, "Then ");
 #line hidden
             }
@@ -223,7 +226,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("Question Text", questionText);
             argumentsOfScenario.Add("Selection", selection);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("4 UW Questions - Answer Questions", null, tagsOfScenario, argumentsOfScenario);
-#line 39
+#line 41
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -243,16 +246,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 40
+#line 42
  testRunner.Given("I am on the application\'s UW Questions tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 41
+#line 43
  testRunner.Then(string.Format("question type {0} is displayed with text: {1}", questionType, questionText), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 42
+#line 44
  testRunner.When(string.Format("I attempt to answer with selection: {0}", selection), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 43
+#line 45
  testRunner.Then("the selection is recorded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

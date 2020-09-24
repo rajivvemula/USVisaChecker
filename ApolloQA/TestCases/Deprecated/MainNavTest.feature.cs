@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.NavTests
+namespace ApolloQA.TestCases.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -35,7 +35,7 @@ namespace ApolloQA.TestCases.NavTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/NavTests", "MainNavTest", "In order to test the main navigation bar\r\nAs a currently logged in user on a page" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Deprecated", "MainNavTest", "In order to test the main navigation bar\r\nAs a currently logged in user on a page" +
                     " containing the Main Navigation Bar\r\nI want to validate the shortcuts, search, a" +
                     "nd other functionality", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
