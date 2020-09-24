@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- Casey
 
 pool:
   vmImage: 'windows-latest'
