@@ -9,7 +9,7 @@ namespace ApolloQA.Helpers
         public const string
             ADMIN_USERNAME = "ApolloTestUserG311@biberk.com",
             DEFAULT_PASSWORD = "ApolloTest12",
-            SQLCONNECTIONSTRING =  "Server=xbibaoazadb1qa.database.windows.net;Database=bibapollodb;User Id=bbadmin;Password=Pqatdi6fkpwtvbbu!;";
+            SQLCONNECTIONSTRING = "Server=xbibaoazadb1qa2.database.windows.net;Database=bibapollodb;User Id=bbadmin;Password=Pqa2l2kr2ltjnaj4y!;";
         
         //QA URLs
         public static IDictionary<string, string> QA_URLS = new Dictionary<string, string>()

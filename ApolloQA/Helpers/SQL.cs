@@ -14,17 +14,17 @@ namespace ApolloQA.Helpers
         {
             return executeQuery(query, ("",""));
         }
-        public static List<Dictionary<String, dynamic>> executeQuery(String query, params (string key, object value)[] parameters)
+        public static List<Dictionary<String, dynamic>> executeQuery(String query, params (string key, dynamic value)[] parameters)
         {
             
             using (SqlConnection connection = new SqlConnection(Defaults.SQLCONNECTIONSTRING))
             {
                 SqlCommand command = new SqlCommand(query, connection);
 
-                foreach(var parameter in parameters)
+
+                foreach (var parameter in parameters)
                 {
                     command.Parameters.AddWithValue(parameter.key, parameter.value);
-
                 }
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
