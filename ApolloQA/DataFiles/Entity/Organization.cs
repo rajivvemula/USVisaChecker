@@ -35,7 +35,7 @@ namespace ApolloQA.DataFiles.Entity
         }
 
 
-        public dynamic getProperties()
+        public dynamic GetProperties()
         {
             return Setup.api.GET($"/organization/{Id}");
         }

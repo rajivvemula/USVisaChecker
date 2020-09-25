@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Entity = ApolloQA.DataFiles.Entity;
 using ApolloQA.DataFiles;
+using DynamicExpresso;
 
 namespace ApolloQA.TestCases.Regression.Rating
 {
@@ -20,13 +21,23 @@ namespace ApolloQA.TestCases.Regression.Rating
         {
             this.driver = driver;
             this.api = api;
+            this.policy = new Entity.Policy(10564);
+
             //this.policy = new Entity.Policy(int.Parse(state.PolicyId));
+
         }
 
         [When(@"User Navigates to Policy")]
         public void WhenUserNavigatesToPolicy()
         {
-            Console.WriteLine("Navigate");
+
+            var rating = new DataFiles.Rating(new Entity.Policy(10564), "VA00034", policy.GetApplication().GetVehicles()[0]);
+
+            foreach (var item in rating.GetRatingFactor("ClassCodeFactors"))
+            {
+                Console.WriteLine($" DEBUG ---------------> Factor: {item.Key}:{item.Value}");
+            }
+            
         }
         
         [Then(@"The policy should load successfully")]
@@ -35,13 +46,9 @@ namespace ApolloQA.TestCases.Regression.Rating
             this.policy = new Entity.Policy(10564);
 
 
+            int scheduleTypeID = policy.GetProperties()["billing"]["scheduleTypeId"];
 
-            Console.WriteLine($"coverage 1: {this.policy.getCoverageCodes()[0]}");
-            Console.WriteLine($"coverage 2: {this.policy.getCoverageCodes()[1]}");
-
-            int scheduleTypeID = policy.getProperties()["billing"]["scheduleTypeId"];
-
-            String scheduleTypeStr = policy.getProperties()["billing"]["scheduleTypeId"];
+            String scheduleTypeStr = policy.GetProperties()["billing"]["scheduleTypeId"];
 
             Console.WriteLine($"{scheduleTypeID} {scheduleTypeStr}");
         }
@@ -56,17 +63,14 @@ namespace ApolloQA.TestCases.Regression.Rating
         [Then(@"The policy should have Vehicle")]
         public void ThenThePolicyShouldHaveVehicle()
         {
-            
             Console.WriteLine("Vehicle");
+            Entity.Vehicle vehicle = policy.GetApplication().GetVehicles()[0];
+            Console.WriteLine(vehicle["RadiusOfOperation"]);
+            vehicle.SetProperties(("YearOfManufacture", 2011));
 
-            Entity.Vehicle vehicle = new Entity.Vehicle(10054);
-            vehicle.setProperties(("YearOfManufacture", 2010));
-            Console.WriteLine(" ");
-
-            foreach (var column in vehicle.getProperties())
+            foreach (var column in vehicle.GetProperties())
             {
-                Console.Write($"{column.Key}:{column.Value}, ");
-
+                Console.Write($"{column.Key}:{column.Value}, "); 
             }
             Console.WriteLine(" ");
 

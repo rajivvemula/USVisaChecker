@@ -16,24 +16,24 @@ namespace ApolloQA.DataFiles.Entity
         }
 
 
-        public dynamic getProperties()
+        public dynamic GetProperties()
         {
             return Setup.api.GET($"/application/{this.Id}");
         }
 
-        public dynamic getVehicleTypeRisk()
+        public dynamic GetVehicleTypeRisk()
         {
             int riskTypeId = 1;
 
             return Setup.api.GET($"/application/{this.Id}/risktype/{riskTypeId}");
         }
 
-        public List<Vehicle> getVehicles()
+        public List<Vehicle> GetVehicles()
         {
-            return ((JArray)getVehicleTypeRisk().risks).Select(risk => risk).ToList<dynamic>().Select(risk => new Vehicle(risk.risk.id)).ToList<Vehicle>();
+            return ((JArray)GetVehicleTypeRisk().risks).Select(risk => risk).ToList<dynamic>().Select(risk => new Vehicle(risk.risk.id.ToObject<int>())).ToList<Vehicle>();
         }
 
-        public dynamic getDriverTypeRisk()
+        public dynamic GetDriverTypeRisk()
         {
             int riskTypeId = 2;
 

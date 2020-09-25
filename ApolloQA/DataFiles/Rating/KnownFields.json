@@ -1,0 +1,44 @@
+﻿{
+  "Accident Prevention": {
+    "source": "root.Metadata.AccidentPreventionCredit"
+  },
+  "Class Code": {
+    "source": "Vehicle.ClassCode"
+  },
+  "Covered Autos": {
+    "source": "root.Metadata.CoveredAutos"
+  },
+  "Radius": {
+    "source": "Vehicle.RadiusOfOperation"
+  },
+  "Vehicle Age": {
+    "source": "DateTime.Now.Year - Vehicle.YearOfManufacture"
+  },
+  "Fleet Size": {
+    "source": "root.GetVehicles().Count"
+  },
+  "Motor Carrier Filing Type": {
+    "source": "root.Metadata.MotorCarrierFiling"
+  },
+  "Insurrance Score Tier": {
+    "source": "root.Organization.InsurranceScoreTier"
+  },
+  "Territory": {
+    "source": "Vehicle.Territory"
+  },
+  "Organization Type": {
+    "source": "root.Organization.Type"
+  },
+  "Billing Type ": {
+    "source": "root.Metadata.BillingType"
+  },
+  "Payment Plan": {
+    "source": "root.Metadata.PaymentPlan"
+  },
+  "EFT": {
+    "source": "root.Metadata.IsEFT"
+  }
+
+}
+  
+

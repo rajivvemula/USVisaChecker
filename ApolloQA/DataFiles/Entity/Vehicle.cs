@@ -18,11 +18,18 @@ namespace ApolloQA.DataFiles.Entity
 
         }
 
-        public Dictionary<String, dynamic> getProperties()
+        public Dictionary<String, dynamic> GetProperties()
         {
             return SQL.executeQuery("SELECT *  FROM [risk].[Vehicle] where Id = @Id;", (("@Id", $"{this.Id}")))[0];
         }
-        public void setProperties(params (String key, dynamic value)[] fields)
+        public dynamic this[String propertyName] { get { return this.GetProperty(propertyName); }
+        }
+        public dynamic GetProperty(String propertyName)
+        {
+            var property = this.GetProperties()[propertyName];
+            return property == DBNull.Value ? "" : property;
+        }
+        public void SetProperties(params (String key, dynamic value)[] fields)
         {
             var fieldMap = new Dictionary<String, dynamic>();
             String keyValue = "";

@@ -17,28 +17,28 @@ namespace ApolloQA.DataFiles.Entity
 
         }
 
-        public dynamic getProperties()
+        public dynamic GetProperties()
         {
             return Setup.api.GET($"/policy/{Id}");
         }
 
-        public List<dynamic> getCoverages()
+        public List<dynamic> GetCoverages()
         {
-            return ((JArray)this.getProperties().coverages).Select(coverage => coverage ).ToList<dynamic>();
+            return ((JArray)this.GetProperties().coverages).Select(coverage => coverage).ToList<dynamic>();
         }
-        public List<String> getCoverageCodes()
+        public List<String> GetCoverageCodes()
         {
-            return getCoverages().Select( coverage => (String)coverage["associatedCoverage"]["coverageCode"]  ).ToList<String>();
+            return GetCoverages().Select(coverage => (String)coverage["associatedCoverage"]["coverageCode"]).ToList<String>();
 
 
         }
-        public Application getApplication()
+        public Application GetApplication()
         {
-            return new Application(getProperties()["applicationId"]);
+            return new Application(GetProperties()["applicationId"].ToObject<int>());
         }
         public Organization getOrganization()
         {
-            return new Organization("PartyId", getProperties().insurredPartyId.ToString());
+            return new Organization("PartyId", GetProperties().insurredPartyId.ToString());
         }
     }
 }
