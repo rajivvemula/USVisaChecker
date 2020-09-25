@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace ApolloQA.Pages.Application
 {
@@ -17,12 +18,14 @@ namespace ApolloQA.Pages.Application
             functions = new Functions(driver);
         }
 
-        public IWebElement newButton => functions.FindElementWait(5, By.XPath("//button[@aria-label='New Application']"));
+        public IWebElement newButton => functions.FindElementWaitUntilClickable(10, By.XPath("//button[@aria-label='New Application']"));
 
         public bool ClickNew()
         {
             try
             {
+                //This sleep is required for now as it the new button becomes clickable before it's functionality loads (clicking it does nothing)
+                Thread.Sleep(5000);
                 newButton.Click();
                 return true;
             }
@@ -30,6 +33,7 @@ namespace ApolloQA.Pages.Application
             {
                 return false;
             }
+
         }
 
     }
