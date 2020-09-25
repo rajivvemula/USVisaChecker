@@ -30,6 +30,8 @@ namespace ApolloQA.Pages.Shared
                 case "orgInsertSave": return orgInsertSave;
                 case "appInsertCreateNewOrg": return appInsertCreateNewOrg;
                 case "appInsertNext": return appInsertNext;
+                case "orgDriverAdd": return orgDriverAdd;
+                case "buttonCancel": return buttonCancel;
                 default: return null;
 
             }
@@ -170,13 +172,13 @@ namespace ApolloQA.Pages.Shared
         public IWebElement modalAddressCancel => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
 
         /// <Section>
-        /// Address Modal
+        /// Driver Modal
         /// </Section>
         public IWebElement modalDriverSubmit => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
         public IWebElement modalDriverCancel => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
 
         /// <Section>
-        /// Address Modal
+        /// Vehicle
         /// </Section>
         public IWebElement modalVehicleSubmit => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Submit']"));
         public IWebElement modalVehicleCancel => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Cancel']"));
