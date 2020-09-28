@@ -45,7 +45,8 @@ namespace ApolloQA.Helpers
             {"orgInsert", "Insert Organization" },
             {"fnolInsert", "Insert First Notice of Loss" },
             {"appInsert", "Application" },
-            {"orgVehicle", "Vehicles" }
+            {"orgVehicle", "Vehicles" },
+            {"orgDrivers", "Apollo" }
         };
 
         public static IDictionary<string, string> Toasts = new Dictionary<string, string>()
@@ -68,7 +69,7 @@ namespace ApolloQA.Helpers
             {"Documents", "document"},             
             {"Activities", "activities"},            
             {"Loss History", ""},          
-            {"Policy History", "history"}        
+            {"Policy History", "history"}
         };
 
 
