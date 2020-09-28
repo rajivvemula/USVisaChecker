@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.Deprecated
 {
     using TechTalk.SpecFlow;
     using System;
@@ -37,7 +37,7 @@ namespace ApolloQA.TestCases.Regression
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "R050-UserPermissions", "\tIn order to validate user permissions\r\n\tAs an impersonated user \r\n\tI want to ver" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Deprecated", "R050-UserPermissions", "\tIn order to validate user permissions\r\n\tAs an impersonated user \r\n\tI want to ver" +
                     "ify the user\'s ability to perform policy actions is based on their role", ProgrammingLanguage.CSharp, new string[] {
                         "reg"});
             testRunner.OnFeatureStart(featureInfo);

@@ -28,7 +28,7 @@ namespace ApolloQA.TestCases.Regression.Application
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "D001-Navigating To Application Insert.feature"
+#line 1 "D001-NavigatingToApplicationInsert.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]

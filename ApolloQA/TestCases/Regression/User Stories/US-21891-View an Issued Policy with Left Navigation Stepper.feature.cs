@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.Regression.UserStories
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,23 +20,23 @@ namespace ApolloQA.TestCases.Regression
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("US-13121-Add vehicle screen to Organization")]
-    public partial class US_13121_AddVehicleScreenToOrganizationFeature
+    [NUnit.Framework.DescriptionAttribute("US-21891-View an Issued Policy with Left Navigation Stepper")]
+    public partial class US_21891_ViewAnIssuedPolicyWithLeftNavigationStepperFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "US-13121-Add vehicle screen to Organization.feature"
+#line 1 "US-21891-View an Issued Policy with Left Navigation Stepper.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "US-13121-Add vehicle screen to Organization", "\tAs an underwriter, \r\n\tI want to be able to add vehicles to an organization \r\n\tan" +
-                    "d show them in a grid, so that I can associate them in a policy coverage.", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-21891-View an Issued Policy with Left Navigation Stepper", "\tAs an underwriter, \r\n\tI want to be able to view an issued Policy \r\n\twith the Lef" +
+                    "t Navigation stepper.", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -191,13 +191,13 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("1D Verify Grid Titles in Vehicle Organization")]
-        public virtual void _1DVerifyGridTitlesInVehicleOrganization()
+        [NUnit.Framework.DescriptionAttribute("1D Verify Policy Left Nav Exists")]
+        public virtual void _1DVerifyPolicyLeftNavExists()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1D Verify Grid Titles in Vehicle Organization", null, tagsOfScenario, argumentsOfScenario);
-#line 26
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1D Verify Policy Left Nav Exists", null, tagsOfScenario, argumentsOfScenario);
+#line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -217,149 +217,86 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 27
+#line 26
  testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+#line 27
+ testRunner.When("User navigates to policy ID 10562", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
                 TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Name",
-                            "DBA",
-                            "OrgType",
-                            "TaxType",
-                            "TaxIDNo",
-                            "BusPhone",
-                            "BusEmail",
-                            "BusWeb",
-                            "YearStart",
-                            "YearOwn",
-                            "Keyword"});
-                table22.AddRow(new string[] {
-                            "Smoke Test",
-                            "Smoke",
-                            "Corporation",
-                            "FEIN",
-                            "Random",
-                            "123-456-7890",
-                            "smoketest@gmail.com",
-                            "smoketest.com",
-                            "2011",
-                            "2012",
-                            "Accountant"});
-#line 28
- testRunner.When("User creates an Organization", ((string)(null)), table22, "When ");
-#line hidden
-#line 31
- testRunner.Then("Verify organization is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 32
- testRunner.When("User navigates to Vehicles SideTab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 33
- testRunner.Then("Verify correct page orgVehicle is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table23.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "a",
-                            "Veh #"});
-                table23.AddRow(new string[] {
+                            "Business Information"});
+                table22.AddRow(new string[] {
                             "b",
-                            "Year"});
-                table23.AddRow(new string[] {
+                            "Contacts"});
+                table22.AddRow(new string[] {
                             "c",
-                            "Make & Model"});
-                table23.AddRow(new string[] {
+                            "UW Questions"});
+                table22.AddRow(new string[] {
                             "d",
-                            "VIN"});
-                table23.AddRow(new string[] {
+                            "Additional Questions"});
+                table22.AddRow(new string[] {
                             "e",
-                            "GVW"});
-                table23.AddRow(new string[] {
+                            "Drivers"});
+                table22.AddRow(new string[] {
                             "f",
-                            "Cost New"});
-                table23.AddRow(new string[] {
+                            "Vehicles"});
+                table22.AddRow(new string[] {
                             "g",
-                            "Stated Amount"});
-#line 34
- testRunner.Then("Grid column label is displayed", ((string)(null)), table23, "Then ");
+                            "Additional Interests"});
+                table22.AddRow(new string[] {
+                            "h",
+                            "Coverages List Test"});
+                table22.AddRow(new string[] {
+                            "i",
+                            "Rating Worksheet"});
+                table22.AddRow(new string[] {
+                            "j",
+                            "Documents"});
+                table22.AddRow(new string[] {
+                            "k",
+                            "Activities"});
+                table22.AddRow(new string[] {
+                            "l",
+                            "Loss History"});
+                table22.AddRow(new string[] {
+                            "m",
+                            "Policy History"});
+                table22.AddRow(new string[] {
+                            "n",
+                            "Summary"});
+#line 28
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table22, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("1E Add a Vehicle to Organization")]
-        public virtual void _1EAddAVehicleToOrganization()
+        [NUnit.Framework.DescriptionAttribute("1E Verify each tab within policy left nav is working")]
+        [NUnit.Framework.TestCaseAttribute("a", "Business Information", null)]
+        [NUnit.Framework.TestCaseAttribute("b", "Contacts", null)]
+        [NUnit.Framework.TestCaseAttribute("c", "UW Questions", null)]
+        [NUnit.Framework.TestCaseAttribute("d", "Additional Questions", null)]
+        [NUnit.Framework.TestCaseAttribute("e", "Drivers", null)]
+        [NUnit.Framework.TestCaseAttribute("f", "Vehicles", null)]
+        [NUnit.Framework.TestCaseAttribute("g", "Additional Interests", null)]
+        [NUnit.Framework.TestCaseAttribute("h", "Coverages List Test", null)]
+        [NUnit.Framework.TestCaseAttribute("i", "Rating Worksheet", null)]
+        [NUnit.Framework.TestCaseAttribute("j", "Documents", null)]
+        [NUnit.Framework.TestCaseAttribute("k", "Activities", null)]
+        [NUnit.Framework.TestCaseAttribute("m", "Policy History", null)]
+        public virtual void _1EVerifyEachTabWithinPolicyLeftNavIsWorking(string key, string tab, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1E Add a Vehicle to Organization", null, tagsOfScenario, argumentsOfScenario);
-#line 44
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
-                            "VIN",
-                            "Year",
-                            "Make",
-                            "Model",
-                            "Trim",
-                            "Category",
-                            "SubCategory",
-                            "Code",
-                            "Seating",
-                            "Gross",
-                            "Cost",
-                            "Value",
-                            "Stated"});
-                table24.AddRow(new string[] {
-                            "Random",
-                            "2015",
-                            "Toyota",
-                            "Camry",
-                            "SE",
-                            "Cars, Pickup, or SUV",
-                            "Car - Coupe",
-                            "Airport Limousines -826",
-                            "5 or less",
-                            "0 - 5000",
-                            "10000",
-                            "11000",
-                            "12000"});
+            argumentsOfScenario.Add("Key", key);
+            argumentsOfScenario.Add("Tab", tab);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1E Verify each tab within policy left nav is working", null, tagsOfScenario, argumentsOfScenario);
 #line 45
- testRunner.When("User adds vehicle to Organization", ((string)(null)), table24, "When ");
-#line hidden
-#line 48
- testRunner.Then("Verify vehicle is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("1F Vehicle Added is displayed in Grid")]
-        public virtual void _1FVehicleAddedIsDisplayedInGrid()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1F Vehicle Added is displayed in Grid", null, tagsOfScenario, argumentsOfScenario);
-#line 50
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -379,8 +316,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 51
- testRunner.Then("Verify vehicle VIN is displayed in grid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 46
+ testRunner.When(string.Format("User navigates to {0} SideTab", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 47
+ testRunner.Then(string.Format("{0} page is displayed", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

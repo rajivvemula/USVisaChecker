@@ -26,7 +26,7 @@ Scenario:1D Verify Policy Left Nav Exists
 	Given User is on Homepage
 	When User navigates to policy ID 10562
 	Then Verify sidetab is present
-	| Key | Value                 |
+	| Key | Value                |
 	| a   | Business Information |
 	| b   | Contacts              |
 	| c   | UW Questions          |

@@ -1,4 +1,4 @@
-﻿@SmokeTestBase
+﻿
 Feature: S002-SmokeTestApplication
 	In order to test application creation
 	As an authorized user
@@ -8,11 +8,10 @@ Feature: S002-SmokeTestApplication
 # To do - add page tags to steps to identify which page they belong to (e.g. @Application-BusinessInformation) or which test case they apply to
 
 ##This part was added for parallel feature execution
-#Scenario:0 User is able to login as Admin
+#Scenario: 0 User is able to login as Admin
 #	Given User is on Apollo Homepage
 #	When I enter AdminUsername and AdminPassword 
 #	Then I should see the Apollo Dashboard as Admin
-
 
 
 Scenario: 1 Create new application

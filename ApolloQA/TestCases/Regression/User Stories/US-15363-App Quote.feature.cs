@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.Regression.UserStories
 {
     using TechTalk.SpecFlow;
     using System;
@@ -35,7 +35,7 @@ namespace ApolloQA.TestCases.Regression
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "US-15363-App Quote", "As an underwriter,\r\nI want to create a new Application Quote \r\nand have the Busin" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-15363-App Quote", "As an underwriter,\r\nI want to create a new Application Quote \r\nand have the Busin" +
                     "ess Information pre-filled with data captured from the Organization level so tha" +
                     "t I start the application quote process.", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
@@ -230,7 +230,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 33
  testRunner.Then("Search ShouldNotExist displayed is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "DBA",
                             "OrgType",
@@ -242,7 +242,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "YearStart",
                             "YearOwn",
                             "Keyword"});
-                table25.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "Smoke Test10023",
                             "Smoke",
                             "Corporation",
@@ -255,7 +255,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2012",
                             "Accountant"});
 #line 34
- testRunner.When("User creates an Organization", ((string)(null)), table25, "When ");
+ testRunner.When("User creates an Organization", ((string)(null)), table20, "When ");
 #line hidden
 #line 37
  testRunner.Then("Verify organization is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -410,38 +410,38 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table26.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "a",
                             "Application Information"});
-                table26.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "b",
                             "Business Information"});
-                table26.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "c",
                             "Contacts"});
-                table26.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "d",
                             "UW Questions"});
-                table26.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "e",
                             "Policy Coverages"});
-                table26.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "f",
                             "Drivers"});
-                table26.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "g",
                             "Vehicles"});
-                table26.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "h",
                             "Additional Questions"});
-                table26.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "i",
                             "Summary"});
 #line 54
- testRunner.Then("Verify sidetab is present", ((string)(null)), table26, "Then ");
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table21, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

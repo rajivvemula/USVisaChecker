@@ -100,7 +100,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                             "First",
                             "Last",
                             "Middle",
@@ -109,7 +109,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Number",
                             "Exp",
                             "CDL"});
-                table12.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "Jacob",
                             "Seed",
                             "J",
@@ -119,7 +119,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "01/01/2022",
                             "No"});
 #line 6
- testRunner.When("User adds driver to Organization", ((string)(null)), table12, "When ");
+ testRunner.When("User adds driver to Organization", ((string)(null)), table13, "When ");
 #line hidden
 #line 9
  testRunner.Then("Verify driver is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

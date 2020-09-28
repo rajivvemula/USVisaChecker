@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.SmokeTests
 {
     using TechTalk.SpecFlow;
     using System;
@@ -37,7 +37,7 @@ namespace ApolloQA.TestCases.Regression
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "S000-SmokeTest", "Covers Login and Navigation Tests", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Smoke Tests", "S000-SmokeTest", "Covers Login and Navigation Tests", ProgrammingLanguage.CSharp, new string[] {
                         "SmokeTestBase"});
             testRunner.OnFeatureStart(featureInfo);
         }

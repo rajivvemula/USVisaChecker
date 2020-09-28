@@ -100,14 +100,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table8.AddRow(new string[] {
+                table9.AddRow(new string[] {
                             "a",
                             "label"});
 #line 6
- testRunner.Then("Grid column label is displayed", ((string)(null)), table8, "Then ");
+ testRunner.Then("Grid column label is displayed", ((string)(null)), table9, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
