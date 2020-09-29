@@ -72,9 +72,11 @@ namespace ApolloQA.Helpers
             {"Documents", "document"},             
             {"Activities", "activities"},            
             {"Loss History", ""},          
-            {"Policy History", "history"}
+            {"Policy History", "history"},
+            {"Occurence", "occurence" },
+            {"Loss Details", "loss-details" },
+            {"Supervisor Review", "supervisor-review" }
         };
-
 
 
         public static readonly string[] adminRoles = {
