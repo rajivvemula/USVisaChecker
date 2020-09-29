@@ -30,14 +30,17 @@ namespace ApolloQA.TestCases.Regression.Rating
         [When(@"User Navigates to Policy")]
         public void WhenUserNavigatesToPolicy()
         {
-
             var rating = new DataFiles.Rating(new Entity.Policy(10564), "VA00034", policy.GetApplication().GetVehicles()[0]);
-
             foreach (var item in rating.GetRatingFactor("ClassCodeFactors"))
             {
-                Console.WriteLine($" DEBUG ---------------> Factor: {item.Key}:{item.Value}");
+                Console.WriteLine($" DEBUG -----------------------------> Factor: {item.Key}:{item.Value}");
             }
             
+            foreach (var item in rating.GetRatingFactor("OrganizationTypeFactors"))
+            {
+                Console.WriteLine($" DEBUG2 ----------------------------> Factor: {item.Key}:{item.Value}");
+            }
+
         }
         
         [Then(@"The policy should load successfully")]

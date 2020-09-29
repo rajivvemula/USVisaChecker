@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ApolloQA.Driver;
+using ApolloQA.Helpers;
 using Newtonsoft.Json.Linq;
 
 namespace ApolloQA.DataFiles.Entity
@@ -16,12 +17,13 @@ namespace ApolloQA.DataFiles.Entity
             this.Id = Id;
 
         }
+
         public Organization(String filterName, String filterValue )
         {
 
             dynamic body = new JObject();
-            body.filter = new JObject();
-            body.filter[$"{filterName}"] = filterValue;
+            body.filters = new JObject();
+            body.filters[$"{filterName}"] = filterValue;
             body.loadChildren = true;
 
             dynamic response = Setup.api.POST($"/organization/search", body);
@@ -33,12 +35,47 @@ namespace ApolloQA.DataFiles.Entity
             this.Id = response.results[0].id;
 
         }
+        public dynamic this[String propertyName]
+        {
+            get
+            {
+                var method = this.GetType().GetProperty(propertyName);
+                if (method != null)
+                {
+                    return method.GetGetMethod().Invoke(this,null);
+
+                }
+                else
+                {
+                    return this.GetProperty(propertyName);
+                }
+            }
+        }
 
 
         public dynamic GetProperties()
         {
             return Setup.api.GET($"/organization/{Id}");
         }
+
+        public dynamic GetProperty(String propertyName)
+        {
+            var property = this.GetProperties()[propertyName];
+            return property == null ? "" : property;
+
+            
+        }
+
+        public String TypeName
+        {
+            get
+            {
+                var typeID = this["businessTypeEntityId"].ToString();
+                List<dynamic> list = Setup.api.GET("/config/lookup/4").ToObject<List<dynamic>>();
+
+                return (String)list.Find(type => type.id == typeID).name;
+            }
+        } 
 
     }
 }

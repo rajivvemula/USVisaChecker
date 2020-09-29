@@ -18,7 +18,7 @@
     "Fields": [ "Fleet Size" ]
   },
   "OrganizationTypeFactors": {
-    "Fields": [ "Organization Type " ]
+    "Fields": [ "Organization Type" ]
   },
   "MotorCarrierFilingTypeFactors": {
     "Fields": [ "Motor Carrier Filing Type" ]

@@ -27,7 +27,7 @@ namespace ApolloQA.DataFiles.Entity
         public dynamic GetProperty(String propertyName)
         {
             var property = this.GetProperties()[propertyName];
-            return property == DBNull.Value ? "" : property;
+            return property == null ? "" : property;
         }
         public void SetProperties(params (String key, dynamic value)[] fields)
         {
@@ -42,12 +42,15 @@ namespace ApolloQA.DataFiles.Entity
 
             fieldMap.Add("@Id", $"{this.Id}");
 
-            
-
-            
-
             SQL.executeQuery($"UPDATE risk.Vehicle SET {keyValue} where Id=@Id;", fieldMap.Select(field => (field.Key, field.Value)).ToArray())    ;
 
+        }
+
+        public String ClassCode { get
+            {
+                return this["ClassCode"];
+
+            } 
         }
     }
 }

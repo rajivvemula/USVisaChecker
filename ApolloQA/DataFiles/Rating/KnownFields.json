@@ -27,7 +27,7 @@
     "source": "Vehicle.Territory"
   },
   "Organization Type": {
-    "source": "root.Organization.Type"
+    "source": "root.Organization.TypeName"
   },
   "Billing Type ": {
     "source": "root.Metadata.BillingType"
