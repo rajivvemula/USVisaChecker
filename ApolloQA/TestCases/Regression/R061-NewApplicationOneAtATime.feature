@@ -14,19 +14,45 @@ Feature: R061-NewApplicationOneAtATime
 #	Then I should see the Apollo Dashboard as Admin
 
 
+
+
+#TAKE THESE AND SPLIT INTO SPECFLOW OBJECTS
+
+
 Scenario: 1 Create new application
 	When I create a new application with values
 	| Business Name               | LOB             | Effective Date |
 	| Casey Test Organization 921 | Commercial Auto | 10/21/2020     |
 	Then an application is successfully created with the proper values
+	And Business Information page is displayed
+
+Scenario Outline: 2 Check Application tabs are present and clickable
+	When User navigates to <Tab Name> SideTab
+	Then <Tab Name> page is displayed
+	And Verify applicationTabs are present
+
+Examples:
+	| Tab Name                |
+	| Application Information |
+	| Business Information    |
+	| Contacts                |
+	| UW Questions            |
+	| Additional Questions    |
+	| Policy Coverages        |
+	| Drivers                 |
+	| Vehicles                |
+	| Additional Interests    |
+	| Summary                 |
 
 
-Scenario: 2 Business Information - Select Physical
-	#Given I am on the application's Business Information tab
-	When I update physical address to existing address 345 Existing Address, Plains, PA, 18705
+Scenario: 3 Business Information - Select Physical
+	When User navigates to Business Information SideTab
+	And I update physical address to existing address 345 Existing Address, Plains, PA, 18705
+	#Then The Next button is enabled
+	#When I click the Next button
 	Then The Physical Address is successfully updated
 
-Scenario: 3 Business Information - Validate Fields
+Scenario: 4 Business Information - Validate Fields
 	Then the following values are displayed on application's Business Information tab
 	| Key                    | Value                       |
 	| Business Name          | Casey Test Organization 921 |
@@ -36,15 +62,15 @@ Scenario: 3 Business Information - Validate Fields
 	#And the values are stored in the application's database entry
 
 
-Scenario Outline: 4 UW Questions - Answer Questions
+Scenario Outline: 5 UW Questions - Answer Questions
 	Given I am on the application's UW Questions tab
 	Then question type <Question Type> is displayed with text: <Question Text>
 	When I attempt to answer with selection: <Selection>
 	Then the selection is recorded
 
 Examples:
-	| Question Type            | Question Text                                                            | Selection       |
-	| bh-question-boolean      | Do you have an inventory of vehicles that you sell or lease?             | false           |
-	| bh-question-singleselect | How far at most would your vehicles be driven from their base locations? | 51 to 100 miles |
-	| bh-question-boolean      | Do you have operating authority from any other states?                   | false           |
-	| bh-question-boolean      | Do you have 6 or more vehicles and >= 1 year in business?                | false           |
+	| Question Type            | Question Text                                                            | Selection |
+	| bh-question-boolean      | Do you have an inventory of vehicles that you sell or lease?             | false     |
+	| bh-question-singleselect | How far at most would your vehicles be driven from their base locations? | 100       |
+	| bh-question-boolean      | Do you have operating authority from any other states?                   | false     |
+	| bh-question-boolean      | Do you have 6 or more vehicles and >= 1 year in business?                | false     |

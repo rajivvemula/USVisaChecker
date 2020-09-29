@@ -16,3 +16,22 @@ Scenario: User Interaction With Side Tab
 	| g   | Vehicles                |
 	| h   | Additional Questions    |
 	| i   | Summary                 |
+
+#clicks tabs listed in examples table, also pulls applicationTabs tabset from Defaults for verification
+Scenario Outline: Check Application tabs are present and clickable
+	When User navigates to <Tab Name> SideTab
+	Then <Tab Name> page is displayed
+	And Verify applicationTabs are present
+
+Examples:
+	| Tab Name                |
+	| Application Information |
+	| Business Information    |
+	| Contacts                |
+	| UW Questions            |
+	| Additional Questions    |
+	| Policy Coverages        |
+	| Drivers                 |
+	| Vehicles                |
+	| Additional Interests    |
+	| Summary                 |

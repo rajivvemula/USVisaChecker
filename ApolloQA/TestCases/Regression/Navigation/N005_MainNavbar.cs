@@ -10,13 +10,13 @@ using TechTalk.SpecFlow;
 namespace ApolloQA.TestCases.Regression
 {
     [Binding]
-    public class R030_MainNavBarNavigationSteps
+    public class N005_MainNavbar
     {
         private IWebDriver driver;
         MainNavBar mainNavBar;
         WebDriverWait wait;
 
-        public R030_MainNavBarNavigationSteps(IWebDriver driver)
+        public N005_MainNavbar(IWebDriver driver)
         {
             this.driver = driver;
             mainNavBar = new MainNavBar(driver);

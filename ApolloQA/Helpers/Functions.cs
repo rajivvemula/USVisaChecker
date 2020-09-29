@@ -31,7 +31,7 @@ namespace ApolloQA.Helpers
             }
             catch(StaleElementReferenceException stale)
             {
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
 
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));

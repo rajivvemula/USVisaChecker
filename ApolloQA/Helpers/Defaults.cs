@@ -32,7 +32,7 @@ namespace ApolloQA.Helpers
         {
             { "waffleTabs" , new List<string>{ "Underwriting", "Billing", "Administration", "Collections Center", "Claims" } },
             { "organizationTabs" , new List<string>{ "Business Information", "Addresses", "Drivers", "Vehicles", "Trailers" }},
-            { "applicationTabs" , new List<string>{   "Application Information","Business Information", "Contacts", "UW Questions",
+            { "applicationTabs" , new List<string>{  "Application Information","Business Information", "Contacts", "UW Questions",
                                 "Policy Coverages", "Drivers", "Vehicles", "Additional Questions",
                                 "Summary"}},
             { "policyTabs" , new List<string>{   "Business Information", "Contacts", "UW Questions",
@@ -47,7 +47,8 @@ namespace ApolloQA.Helpers
             {"orgInsert", "Insert Organization" },
             {"fnolInsert", "Insert First Notice of Loss" },
             {"appInsert", "Application" },
-            {"orgVehicle", "Vehicles" }
+            {"orgVehicle", "Vehicles" },
+            {"orgDrivers", "Apollo" }
         };
 
         public static IDictionary<string, string> Toasts = new Dictionary<string, string>()
@@ -58,21 +59,26 @@ namespace ApolloQA.Helpers
 
         public static IDictionary<string, string> URLContains = new Dictionary<string, string>()
         {
+            {"Application Information", "section/9001" },
             {"Business Information", "section/9000" },
-            { "Contacts", "section/9002" },
+            {"Contacts", "section/9002" },
             {"UW Questions", "section/9005" },          
-            {"Additional Questions", "section/9020"},  
+            {"Additional Questions", "section/9020"},
+            {"Policy Coverages", "section/9035" },
             {"Drivers", "section/9015"},               
             {"Vehicles", "section/9010"},              
-            {"Additional Interests", "section/9030"},  
+            {"Additional Interests", "section/9030"},
+            {"Summary", "section/9025"},
             {"Coverages List Test", "coverages"},   
             {"Rating Worksheet", "rating-worksheet"},      
             {"Documents", "document"},             
             {"Activities", "activities"},            
             {"Loss History", ""},          
-            {"Policy History", "history"}        
+            {"Policy History", "history"},
+            {"Occurence", "occurence" },
+            {"Loss Details", "loss-details" },
+            {"Supervisor Review", "supervisor-review" }
         };
-
 
 
         public static readonly string[] adminRoles = {

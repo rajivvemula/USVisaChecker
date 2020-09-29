@@ -62,5 +62,30 @@ namespace ApolloQA.Helpers
             }
             return policyID;
         }
+
+        public async Task<int> GetLatestClaimID()
+        {
+            database = client.GetDatabase("apollo");
+            string queryA = "SELECT * FROM c ORDER BY c._ts DESC OFFSET 0 LIMIT 1";
+            container = database.GetContainer("Claim");
+            int claimID = 1;
+            using (FeedIterator<dynamic> feedIterator = container.GetItemQueryIterator<dynamic>(queryA))
+            {
+                while (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<dynamic> response = await feedIterator.ReadNextAsync();
+                    foreach (var item in response)
+                    {
+                        //simple check for right now
+                        Console.WriteLine(item);
+                        claimID = item.ClaimNumber;
+
+
+                    }
+                }
+            }
+            return claimID;
+        }
+
     }
 }

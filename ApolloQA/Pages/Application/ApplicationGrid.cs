@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace ApolloQA.Pages.Application
 {
-    class ApplicationGrid
+    class ApplicationGrid                                                     
     {
         private IWebDriver driver;
         private Functions functions;
@@ -15,7 +15,7 @@ namespace ApolloQA.Pages.Application
         public ApplicationGrid(IWebDriver driver)
         {
             this.driver = driver;
-            functions = new Functions(driver);
+           functions = new Functions(driver);
         }
 
         public IWebElement newButton => functions.FindElementWaitUntilClickable(10, By.XPath("//button[@aria-label='New Application']"));

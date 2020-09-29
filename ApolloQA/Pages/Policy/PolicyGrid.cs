@@ -18,6 +18,12 @@ namespace ApolloQA.Pages.Policy
             functions = new Functions(driver);
         }
 
+        public IWebElement getPolicyNumberElement(int policyNumber)
+        {
+            return functions.FindElementWait(20, By.XPath("//a[contains(text(),'" + policyNumber + "')]"));
+        }
+
+        public IWebElement PolicyCTA => functions.FindElementWait(30, By.XPath("//span[contains(text(),'Policy')]"));
         public IWebElement newButton => functions.FindElementWait(5, By.XPath("//button[@aria-label = 'Add Policy']"));
         public IWebElement nextPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to next page']"));
         public IWebElement firstPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to first page']"));
@@ -26,6 +32,7 @@ namespace ApolloQA.Pages.Policy
 
         //returns true if user is able to click New, returns false if user does not have New button
         // this is not a good implementation
+      
         public bool ClickNew()
         {
             try

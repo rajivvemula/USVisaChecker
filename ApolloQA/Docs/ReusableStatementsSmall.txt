@@ -26,3 +26,5 @@ Then User closes Waffle Menu
 Then Verify correct page <title> is displayed
 Then Verify correct toast <message> is displayed
 Then User is directed to <policy> URL with ID <10543>
+
+branch test
