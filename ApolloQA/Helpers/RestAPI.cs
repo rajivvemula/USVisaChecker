@@ -6,6 +6,7 @@ using OpenQA.Selenium.Chrome;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 
 namespace ApolloQA.Helpers
 {

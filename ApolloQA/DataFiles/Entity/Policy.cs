@@ -59,6 +59,10 @@ namespace ApolloQA.DataFiles.Entity
         {
             return new Application(GetProperties()["applicationId"].ToObject<int>());
         }
+        public List<Vehicle> GetVehicles()
+        {
+            return this.GetApplication().GetVehicles();
+        }
 
         public Organization Organization{ get
             {
@@ -66,11 +70,57 @@ namespace ApolloQA.DataFiles.Entity
                 {
                     return new Organization("PartyId", this.GetProperties().insuredPartyId.Value.ToString());
                 }
-                catch(Exception e)
+                catch(Exception exception)
                 {
                     throw new Exception($"error constructing Organization with the following params 1=PartyId 2={this.GetProperties()?.insuredPartyId?.Value?.ToString()}");
                 }
             }
         }
+        
+        public Boolean accidentPreventionCredit
+        {
+            get
+            {
+                return (Boolean)this["ratingFactors"]["accidentPreventionCredit"];
+            }
+
+        }
+        public String coveredAutos
+        {
+            get
+            {
+                return (String)this["ratingFactors"]["coveredAutos"];
+            }
+        }
+        public String motorCarrierFiling
+        {
+            get
+            {
+                return (String)this["ratingFactors"]["motorCarrierFiling"];
+            }
+        }
+        public String BillingType
+        {
+            get
+            {
+                return (String)this["ratingFactors"]["billingType"];
+            }
+        }
+        public String PaymentPlan
+        {
+            get
+            {
+                return (String)this["ratingFactors"]["paymentPlan"];
+            }
+        }
+        public String isEft
+        {
+            get
+            {
+                return (String)this["ratingFactors"]["isEft"];
+            }
+
+        }
+
     }
 }

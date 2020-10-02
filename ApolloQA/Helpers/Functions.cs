@@ -1,7 +1,11 @@
-﻿using OpenQA.Selenium;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using TechTalk.SpecFlow;
@@ -77,7 +81,7 @@ namespace ApolloQA.Helpers
         }
 
 
-        public static Dictionary<string, string> TableToDictionary(Table table)
+        public static Dictionary<string, string> TableToDictionary(TechTalk.SpecFlow.Table table)
         {
             var dictionary = new Dictionary<string, string>();
             foreach (var row in table.Rows)
@@ -85,6 +89,50 @@ namespace ApolloQA.Helpers
                 dictionary.Add(row[0], row[1]);
             }
             return dictionary;
+        }
+
+        public static IEnumerable<Dictionary<String, String>> parseCSV(String filePath, int headerRow=0)
+        {
+            List<Dictionary<String, String>> result = new List<Dictionary<String, String>>();
+
+            using (SpreadsheetDocument doc = SpreadsheetDocument.Open(filePath, false))
+            {
+                WorkbookPart workbookPart = doc.WorkbookPart;
+                WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
+                Row[] sheetData = worksheetPart.Worksheet.Elements<SheetData>().First().Elements<Row>().ToArray<Row>();
+
+                var header = sheetData[0].Elements<Cell>().Select(cell =>cell.CellValue.Text ).ToArray<string>();
+
+                for (int rowIndex = 1; rowIndex < sheetData.Length; rowIndex++)
+                {
+                    
+                    var cells = sheetData[rowIndex].Elements<Cell>().ToArray<Cell>();
+
+                    var dict = new Dictionary<String, String>();
+                    for (int i = 0; i < header.Length; i++)
+                    {
+                        dict.Add(header[i], cells[i].CellValue.Text);
+                    }
+                    yield return dict;
+                }
+            }
+
+           
+        }
+        public static dynamic parseRatingFactorNumericalValues(String value)
+        {
+            if (value.Contains("+"))
+            {
+                return int.MaxValue;
+            }
+            else if(int.TryParse(value, out int intValue))
+            {
+                return intValue;
+            }
+            else
+            {
+                return null;
+            }
         }
 
     }

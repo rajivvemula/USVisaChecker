@@ -7,6 +7,7 @@ using System.Text.Json;
 using Entity = ApolloQA.DataFiles.Entity;
 using ApolloQA.DataFiles;
 using DynamicExpresso;
+using Newtonsoft.Json.Linq;
 
 namespace ApolloQA.TestCases.Regression.Rating
 {
@@ -30,15 +31,17 @@ namespace ApolloQA.TestCases.Regression.Rating
         [When(@"User Navigates to Policy")]
         public void WhenUserNavigatesToPolicy()
         {
-            var rating = new DataFiles.Rating(new Entity.Policy(10564), "VA00034", policy.GetApplication().GetVehicles()[0]);
-            foreach (var item in rating.GetRatingFactor("ClassCodeFactors"))
+            var rating = new DataFiles.Engine(new Entity.Policy(10564), "VA00034", policy.GetApplication().GetVehicles()[0]);
+            /*foreach (var item in rating.GetRatingFactor("ClassCodeFactors"))
             {
                 Console.WriteLine($" DEBUG -----------------------------> Factor: {item.Key}:{item.Value}");
-            }
-            
-            foreach (var item in rating.GetRatingFactor("OrganizationTypeFactors"))
+            }*/
+
+            foreach (var factor in rating.getAlgorithmFactors())
             {
-                Console.WriteLine($" DEBUG2 ----------------------------> Factor: {item.Key}:{item.Value}");
+
+                Console.WriteLine($"{factor.Key} ->{factor.Value}");
+
             }
 
         }

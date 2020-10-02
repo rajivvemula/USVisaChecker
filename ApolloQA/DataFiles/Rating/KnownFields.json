@@ -1,12 +1,15 @@
 ﻿{
+  "BaseRateFactors": {
+    "source": "BaseRateFactors"
+  },
   "Accident Prevention": {
-    "source": "root.Metadata.AccidentPreventionCredit"
+    "source": "root.accidentPreventionCredit"
   },
   "Class Code": {
     "source": "Vehicle.ClassCode"
   },
   "Covered Autos": {
-    "source": "root.Metadata.CoveredAutos"
+    "source": "root.coveredAutos"
   },
   "Radius": {
     "source": "Vehicle.RadiusOfOperation"
@@ -18,7 +21,7 @@
     "source": "root.GetVehicles().Count"
   },
   "Motor Carrier Filing Type": {
-    "source": "root.Metadata.MotorCarrierFiling"
+    "source": "root.motorCarrierFiling"
   },
   "Insurrance Score Tier": {
     "source": "root.Organization.InsurranceScoreTier"
@@ -29,16 +32,16 @@
   "Organization Type": {
     "source": "root.Organization.TypeName"
   },
-  "Billing Type ": {
-    "source": "root.Metadata.BillingType"
+  "Billing Type": {
+    "source": "root.BillingType"
   },
   "Payment Plan": {
-    "source": "root.Metadata.PaymentPlan"
+    "source": "root.PaymentPlan"
   },
   "EFT": {
-    "source": "root.Metadata.IsEFT"
+    "source": "root.isEft"
   }
-
+ 
 }
   
 

@@ -18,16 +18,17 @@ namespace ApolloQA.DataFiles.Entity
 
         }
 
-        public Dictionary<String, dynamic> GetProperties()
-        {
-            return SQL.executeQuery("SELECT *  FROM [risk].[Vehicle] where Id = @Id;", (("@Id", $"{this.Id}")))[0];
-        }
+        
         public dynamic this[String propertyName] { get { return this.GetProperty(propertyName); }
         }
         public dynamic GetProperty(String propertyName)
         {
             var property = this.GetProperties()[propertyName];
-            return property == null ? "" : property;
+            return property is DBNull ? "" : property;
+        }
+        public Dictionary<String, dynamic> GetProperties()
+        {
+            return SQL.executeQuery("SELECT *  FROM [risk].[Vehicle] where Id = @Id;", (("@Id", $"{this.Id}")))[0];
         }
         public void SetProperties(params (String key, dynamic value)[] fields)
         {
@@ -51,6 +52,35 @@ namespace ApolloQA.DataFiles.Entity
                 return this["ClassCode"];
 
             } 
+        }
+        public int RadiusOfOperation
+        {
+            get
+            {
+                var value = this["RadiusOfOperation"];
+                return value is int ? value : 0;
+            }
+        }
+        public int YearOfManufacture
+        {
+            get
+            {
+                var value = this["YearOfManufacture"];
+                return value is int ? value : 0;
+            }
+        }
+        public Int64 Territory
+        {
+            get
+            {
+                var zip = this["ZipCode"]?.ToString();
+
+                var data = Engine.getTable("TT.1");
+
+                return int.TryParse(data.Find(row => row["Zip Code"] == zip)?["Territory"], out int value)? value:0;
+                
+
+            }
         }
     }
 }
