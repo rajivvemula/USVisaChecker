@@ -3,7 +3,7 @@
 	claims adjuster bodily injury, claims manager and claims representative 
 	I will be able to navigate to various claims screen using the left navigation.  
 
-Scenario:1D Verify Policy Left Nav Exists
+Scenario:TC1 Verify Policy Left Nav Exists
 	Given User is on Homepage
 	When User navigates to claim ID recent
 	Then Verify sidetab is present
@@ -14,7 +14,7 @@ Scenario:1D Verify Policy Left Nav Exists
 	| d   | Documents         |
 	| e   | Supervisor Review |
 
-Scenario Outline:1E Verify each tab within policy left nav is working
+Scenario Outline:TC2 Verify each tab within policy left nav is working
 	When User navigates to <Tab> SideTab
 	Then <Tab> page is displayed
 
