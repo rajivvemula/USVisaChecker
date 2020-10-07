@@ -3,6 +3,7 @@ using ApolloQA.Helpers;
 using ApolloQA.Pages.Fnol;
 using ApolloQA.Pages.Shared;
 using Microsoft.Azure.Cosmos;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using TechTalk.SpecFlow;
@@ -53,5 +54,16 @@ namespace ApolloQA.TestCases.Regression.FNOL
             }
             
         }
+
+        [When(@"User navigates to FNOl Insert Via Navbar")]
+        public void WhenUserNavigatesToFNOlInsertViaNavbar()
+        {
+            mainNavBar.HomeIcon.Click();
+            Assert.That(() => driver.Title, Does.Contain("Home").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Navigate To Home");
+            mainNavBar.AddIcon.Click();
+            mainNavBar.addFnolButton.Click();
+            Assert.That(() => driver.Title, Does.Contain("Insert First Notice of Loss").After(3).Seconds.PollEvery(250).MilliSeconds, "Unable To Click Add New FNOl Button In Navbar/Navigate to FNOL Insert");
+        }
+
     }
 }

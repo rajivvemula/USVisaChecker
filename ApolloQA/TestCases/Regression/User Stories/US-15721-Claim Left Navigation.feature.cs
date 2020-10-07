@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.Navigation
+namespace ApolloQA.TestCases.Regression.UserStories
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,22 +20,24 @@ namespace ApolloQA.TestCases.Regression.Navigation
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("N003-SideTabs")]
-    public partial class N003_SideTabsFeature
+    [NUnit.Framework.DescriptionAttribute("US-15721-Claim Left Navigation")]
+    public partial class US_15721_ClaimLeftNavigationFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "N003-SideTabs.feature"
+#line 1 "US-15721-Claim Left Navigation.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Navigation", "N003-SideTabs", "Test Side Tab and Interactions located in such as policy, org etc", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-15721-Claim Left Navigation", "\tAs a claims adjuster property damage, \r\n\tclaims adjuster bodily injury, claims m" +
+                    "anager and claims representative \r\n\tI will be able to navigate to various claims" +
+                    " screen using the left navigation.  ", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,13 +76,13 @@ namespace ApolloQA.TestCases.Regression.Navigation
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("User Interaction With Side Tab")]
-        public virtual void UserInteractionWithSideTab()
+        [NUnit.Framework.DescriptionAttribute("TC1 Verify Policy Left Nav Exists")]
+        public virtual void TC1VerifyPolicyLeftNavExists()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User Interaction With Side Tab", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC1 Verify Policy Left Nav Exists", null, tagsOfScenario, argumentsOfScenario);
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -100,68 +102,52 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
- testRunner.When("User navigates to <Tab> SideTab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 7
- testRunner.Then("Verify <tabset> are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+#line 8
+ testRunner.When("User navigates to claim ID recent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table11.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "a",
-                            "Application Information"});
-                table11.AddRow(new string[] {
+                            "Occurence"});
+                table24.AddRow(new string[] {
                             "b",
-                            "Business Information"});
-                table11.AddRow(new string[] {
+                            "Loss Details"});
+                table24.AddRow(new string[] {
                             "c",
                             "Contacts"});
-                table11.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "d",
-                            "UW Questions"});
-                table11.AddRow(new string[] {
+                            "Documents"});
+                table24.AddRow(new string[] {
                             "e",
-                            "Policy Coverages"});
-                table11.AddRow(new string[] {
-                            "f",
-                            "Drivers"});
-                table11.AddRow(new string[] {
-                            "g",
-                            "Vehicles"});
-                table11.AddRow(new string[] {
-                            "h",
-                            "Additional Questions"});
-                table11.AddRow(new string[] {
-                            "i",
-                            "Summary"});
-#line 8
- testRunner.Then("Verify sidetab is present", ((string)(null)), table11, "Then ");
+                            "Supervisor Review"});
+#line 9
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table24, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Check Application tabs are present and clickable")]
-        [NUnit.Framework.TestCaseAttribute("Application Information", null)]
-        [NUnit.Framework.TestCaseAttribute("Business Information", null)]
-        [NUnit.Framework.TestCaseAttribute("Contacts", null)]
-        [NUnit.Framework.TestCaseAttribute("UW Questions", null)]
-        [NUnit.Framework.TestCaseAttribute("Additional Questions", null)]
-        [NUnit.Framework.TestCaseAttribute("Policy Coverages", null)]
-        [NUnit.Framework.TestCaseAttribute("Drivers", null)]
-        [NUnit.Framework.TestCaseAttribute("Vehicles", null)]
-        [NUnit.Framework.TestCaseAttribute("Additional Interests", null)]
-        [NUnit.Framework.TestCaseAttribute("Summary", null)]
-        public virtual void CheckApplicationTabsArePresentAndClickable(string tabName, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("TC2 Verify each tab within policy left nav is working")]
+        [NUnit.Framework.TestCaseAttribute("a", "Occurence", null)]
+        [NUnit.Framework.TestCaseAttribute("b", "Loss Details", null)]
+        [NUnit.Framework.TestCaseAttribute("c", "Contacts", null)]
+        [NUnit.Framework.TestCaseAttribute("d", "Documents", null)]
+        [NUnit.Framework.TestCaseAttribute("e", "Supervisor Review", null)]
+        public virtual void TC2VerifyEachTabWithinPolicyLeftNavIsWorking(string key, string tab, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Tab Name", tabName);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check Application tabs are present and clickable", null, tagsOfScenario, argumentsOfScenario);
-#line 21
+            argumentsOfScenario.Add("Key", key);
+            argumentsOfScenario.Add("Tab", tab);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC2 Verify each tab within policy left nav is working", null, tagsOfScenario, argumentsOfScenario);
+#line 17
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -181,14 +167,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 22
- testRunner.When(string.Format("User navigates to {0} SideTab", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 18
+ testRunner.When(string.Format("User navigates to {0} SideTab", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 23
- testRunner.Then(string.Format("{0} page is displayed", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 24
- testRunner.And("Verify applicationTabs are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+ testRunner.Then(string.Format("{0} page is displayed", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

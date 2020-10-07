@@ -29,6 +29,18 @@ namespace ApolloQA.Helpers
             return verify;
         }
 
+        public bool CheckError(string label)
+        {
+            bool verify = cDriver.FindElement(By.XPath("//mat-error[contains(text(),'" + label + "')]")).Displayed;
+            return verify;
+        }
+
+        public bool CheckSelectValue(string value)
+        {
+            IWebElement valueToBeChecked = functions.FindElementWaitUntilClickable(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']"));
+            return valueToBeChecked.Displayed;
+        }
+
         public bool GetTitle(string titleToBeChecked)
         {
             bool title = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleContains(titleToBeChecked));
