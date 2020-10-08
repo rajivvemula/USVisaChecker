@@ -27,7 +27,7 @@
     "Fields": [ "Motor Carrier Filing Type" ]
   },
   "InsuranceScoreTierFactors": {
-    "Fields": [ "Insurrance Score Tier" ]
+    "Fields": [ "Insurance Score Tier" ]
   },
   "TerritoryFactors": {
     "Fields": [ "Territory" ]

@@ -22,11 +22,7 @@ namespace ApolloQA.DataFiles
         //properties public in order to be mentioned in the json files
         public readonly Entity.Policy root;
         public readonly Entity.Vehicle Vehicle;
-        public float BaseRateFactors
-        { 
-            get {return float.Parse(getTable($"{CoverageCode}.BaseRateFactors")[0]["Base Rate Factor"]);} 
-        }
-
+        
 
         private readonly String CoverageCode;
 
@@ -41,6 +37,7 @@ namespace ApolloQA.DataFiles
             interpreter.SetVariable("root", this.root);
             interpreter.SetVariable("Vehicle", this.Vehicle);
             interpreter.SetVariable("BaseRateFactors", this.BaseRateFactors);
+            interpreter.SetVariable("Territory", this.Territory);
 
         }
 
@@ -66,30 +63,39 @@ namespace ApolloQA.DataFiles
 
 
                 dynamic factor = interpreter.Eval(source);
-
+                var factorField = new JObject();
                 if (factor is String)
                 {
-                    values[field.Value] = (String)factor;
+                    factorField.Add("type", "string");
+                    factorField.Add("value", (String)factor);
+
+                    values[field.Value] = factorField;
                 }
                 else if (factor is float)
                 {
-                    values[field.Value] = (float)factor;
+                    factorField.Add("type", "float");
+                    factorField.Add("value", (float)factor);
+
+                    values[field.Value] = factorField;
                 }
-                else if (factor is int)
+                else if (factor is int || factor is Int64)
                 {
-                    values[field.Value] = (int)factor;
-                }
-                else if (factor is Int64)
-                {
-                    values[field.Value] = (Int64)factor;
+                    factorField.Add("type", "int");
+                    factorField.Add("value", (int)factor);
+
+                    values[field.Value] = factorField;
                 }
                 else if(factor is bool)
                 {
-                    values[field.Value] = (bool)factor;
+                    factorField.Add("type", "bool");
+                    factorField.Add("value", (bool)factor);
+                    values[field.Value] = factorField;
                 }
                 else if(factor is null)
                 {
-                    values[field.Value] = null;
+                    factorField.Add("type", "null");
+                    factorField.Add("value", factor);
+                    values[field.Value] = factorField;
                 }
                 else
                 {
@@ -103,7 +109,7 @@ namespace ApolloQA.DataFiles
             return values;
         }
 
-        public JObject getAlgorithmFactors()
+        public JObject getAlgorithmFactorParameters()
         {
             var algorithmPage = getTable(this.CoverageCode);
             
@@ -128,7 +134,124 @@ namespace ApolloQA.DataFiles
             return result;
             
         }
+        public JObject getAlgorithmFactors()
+        {
+            var factors = this.getAlgorithmFactorParameters();
+            const string LOWERBOUND = "Lower Bound";
+            const string UPPERBOUND = "Upper Bound";
 
-        
+            foreach (var factor in factors)
+            {
+                var factorTable = getTable(factor.Key);
+                JObject parameters = (JObject)factor.Value;
+                float value = 1;
+                foreach(var row in factorTable)
+                {
+                   Dictionary<string, bool> match = new Dictionary<string, bool>();
+                   bool lowerBoundMatch = false;
+                   bool upperBoundMatch = false;
+                   foreach(var column in row)
+                    {
+                        var columnToMatch = column.Key;
+
+                        if (columnToMatch.Contains(LOWERBOUND))
+                        {
+                            columnToMatch = column.Key.Replace(" " + LOWERBOUND, "");
+                        }
+                        else if (columnToMatch.Contains(UPPERBOUND))
+                        {
+                            columnToMatch = column.Key.Replace(" " + UPPERBOUND, "");
+                        }
+    
+                        if (!column.Key.Contains("Factor"))
+                        {
+                            var param = parameters[columnToMatch];
+                            if(param == null)
+                            {
+                                throw new NullReferenceException($"The column [{columnToMatch}] was not matched to any field on DataFiled/Rating/KnownFields.json");
+                            }
+                            if (param["type"]?.ToString() == "bool")
+                            {
+                                
+                                param["parsedValue"] = ((bool)param["value"]) ? "Yes" : "No";
+                            }
+                            
+                            if (column.Key.Contains(LOWERBOUND) && param["value"].ToObject<int>()>=int.Parse(column.Value) )
+                            {
+                                lowerBoundMatch = true;   
+                            }
+                            else if(column.Key.Contains(UPPERBOUND) && param["value"].ToObject<int>() <= (column.Value == "+" ? int.MaxValue : int.Parse(column.Value)))
+                            {
+                                upperBoundMatch = true;
+                            }
+
+                            if(lowerBoundMatch && upperBoundMatch)
+                            {
+                                match.Add(column.Key,true);
+                            }
+                            else if (column.Value != null && column.Value == param["value"]?.ToString() || column.Value == param["parsedValue"]?.ToString())
+                            {
+                                match.Add(column.Key, true);
+                            }
+                            else
+                            {
+                                match.Add(column.Key, false);
+                            }
+
+                        }
+                        
+                        
+                    }
+                   if(!match.ContainsValue(false))
+                    {
+                        string factorColName = row.Keys.ToList<string>().Find(column => column.Contains("Factor"));
+                        Console.WriteLine(factorColName);
+                        ((JObject)factor.Value).Add("matchedRow", JObject.FromObject(row));
+                        ((JObject)factor.Value).Add("factor", float.Parse(row[factorColName]));
+                        break;
+
+                    }
+                  
+
+                }
+
+                if (!((JObject)factor.Value).ContainsKey("factor") )
+                {
+                    ((JObject)factor.Value).Add("factor", float.Parse("1"));
+                }
+
+            }
+
+            return factors;
+        }
+
+        public float BaseRateFactors
+        {
+            get { return float.Parse(getTable($"{CoverageCode}.BaseRateFactors")[0]["Base Rate Factor"]); }
+        }
+        public int? Territory
+        {
+            get
+            {
+
+                var riskId = this.Vehicle["RiskId"];
+                var risk = ((JArray)this.root.GetApplication()["risks"]).ToObject<List<dynamic>>().Find(risk => risk["riskId"] == riskId);
+
+                var locationID = risk["VehicleDriverLocation"]?["locationId"];
+                if(locationID == null)
+                {
+                    return null;
+                }
+                var zip = SQL.executeQuery($"SELECT PostalCode FROM [location].[Address] where Id = {locationID}")[0]["PostalCode"];
+                var data = Engine.getTable("TT.1");
+
+                if (int.TryParse(data.Find(row => row["Zip Code"] == zip)?["Territory"], out int value))
+                { return value; }
+
+                return null;
+
+            }
+        }
+
     }
 }

@@ -24,7 +24,7 @@ namespace ApolloQA.DataFiles.Entity
         public dynamic GetProperty(String propertyName)
         {
             var property = this.GetProperties()[propertyName];
-            return property is DBNull ? "" : property;
+            return property is DBNull ? null : property;
         }
         public Dictionary<String, dynamic> GetProperties()
         {
@@ -47,29 +47,33 @@ namespace ApolloQA.DataFiles.Entity
 
         }
 
-        public String ClassCode { get
+        public String? ClassCode { get
             {
                 return this["ClassCode"];
 
             } 
         }
-        public int RadiusOfOperation
+        public int? RadiusOfOperation
         {
             get
             {
                 var value = this["RadiusOfOperation"];
-                return value is int ? value : 0;
+                if (value != null)
+                {
+                    return int.Parse(value);
+                }
+                return null;
             }
         }
-        public int YearOfManufacture
+        public int? YearOfManufacture
         {
             get
             {
-                var value = this["YearOfManufacture"];
-                return value is int ? value : 0;
+                return this["YearOfManufacture"];
+                
             }
         }
-        public Int64 Territory
+        public int? Territory
         {
             get
             {
@@ -77,8 +81,11 @@ namespace ApolloQA.DataFiles.Entity
 
                 var data = Engine.getTable("TT.1");
 
-                return int.TryParse(data.Find(row => row["Zip Code"] == zip)?["Territory"], out int value)? value:0;
-                
+
+                if (int.TryParse(data.Find(row => row["Zip Code"] == zip)?["Territory"], out int value))
+                { return value; }
+
+                return null;               
 
             }
         }

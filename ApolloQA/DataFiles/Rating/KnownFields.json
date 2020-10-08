@@ -23,11 +23,11 @@
   "Motor Carrier Filing Type": {
     "source": "root.motorCarrierFiling"
   },
-  "Insurrance Score Tier": {
+  "Insurance Score Tier": {
     "source": "root.Organization.InsurranceScoreTier"
   },
   "Territory": {
-    "source": "Vehicle.Territory"
+    "source": "Territory"
   },
   "Organization Type": {
     "source": "root.Organization.TypeName"

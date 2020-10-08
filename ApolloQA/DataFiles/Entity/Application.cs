@@ -14,10 +14,34 @@ namespace ApolloQA.DataFiles.Entity
         public Application(int Id) {
             this.Id = Id;
         }
+        public dynamic this[String propertyName]
+        {
+            get
+            {
+
+
+                var method = this.GetType().GetProperty(propertyName);
+                if (method != null)
+                {
+                    return method.GetGetMethod().Invoke(this, null);
+
+                }
+                else
+                {
+                    return GetProperty(propertyName);
+                }
+            }
+        }
         public dynamic GetProperties()
         {
             return Setup.api.GET($"/application/{this.Id}");
         }
+        public dynamic GetProperty(String propertyName)
+        {
+            var property = this.GetProperties()[propertyName];
+            return property == null ? "" : property;
+        }
+
         public dynamic GetVehicleTypeRisk()
         {
             int riskTypeId = 1;
@@ -34,5 +58,6 @@ namespace ApolloQA.DataFiles.Entity
 
             return Setup.api.GET($"/application/{this.Id}/risktype/{riskTypeId}");
         }
+        
     }
 }

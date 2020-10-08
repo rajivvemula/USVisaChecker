@@ -22,7 +22,7 @@ namespace ApolloQA.TestCases.Regression.Rating
         {
             this.driver = driver;
             this.api = api;
-            this.policy = new Entity.Policy(10564);
+            this.policy = new Entity.Policy(10000);
 
             //this.policy = new Entity.Policy(int.Parse(state.PolicyId));
 
@@ -31,7 +31,7 @@ namespace ApolloQA.TestCases.Regression.Rating
         [When(@"User Navigates to Policy")]
         public void WhenUserNavigatesToPolicy()
         {
-            var rating = new DataFiles.Engine(new Entity.Policy(10564), "VA00034", policy.GetApplication().GetVehicles()[0]);
+            var rating = new DataFiles.Engine(new Entity.Policy(10000), "VA00034", policy.GetApplication().GetVehicles()[0]);
             /*foreach (var item in rating.GetRatingFactor("ClassCodeFactors"))
             {
                 Console.WriteLine($" DEBUG -----------------------------> Factor: {item.Key}:{item.Value}");
@@ -70,15 +70,15 @@ namespace ApolloQA.TestCases.Regression.Rating
         public void ThenThePolicyShouldHaveVehicle()
         {
             Console.WriteLine("Vehicle");
-            Entity.Vehicle vehicle = policy.GetApplication().GetVehicles()[0];
-            Console.WriteLine(vehicle["RadiusOfOperation"]);
+            /*Entity.Vehicle vehicle = policy.GetApplication().GetVehicles()[0];
+            Console.WriteLine((String)vehicle["RadiusOfOperation"]);
             vehicle.SetProperties(("YearOfManufacture", 2011));
 
             foreach (var column in vehicle.GetProperties())
             {
                 Console.Write($"{column.Key}:{column.Value}, "); 
             }
-            Console.WriteLine(" ");
+            Console.WriteLine(" ");*/
 
         }
 
