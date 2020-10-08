@@ -4,11 +4,6 @@ Feature: US-9314 - 9 Create an Application Quote with Left Navigation Stepper
 	As an authorized user
 	I want to verify the application tabs are present and clickable
 
-Scenario: 0 User is able to login as Admin
-	Given User is on Apollo Homepage
-	When I enter AdminUsername and AdminPassword 
-	Then I should see the Apollo Dashboard as Admin
-
 Scenario: 1 Create new application
 	When I create a new application with values
 	| Business Name               | LOB             | Effective Date |

@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.Navigation
+namespace ApolloQA.TestCases.Regression.UserStories
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,22 +20,25 @@ namespace ApolloQA.TestCases.Regression.Navigation
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("N003-SideTabs")]
-    public partial class N003_SideTabsFeature
+    [NUnit.Framework.DescriptionAttribute("S000-SmokeTest")]
+    [NUnit.Framework.CategoryAttribute("RegressionTesting")]
+    public partial class S000_SmokeTestFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "RegressionTesting"};
         
-#line 1 "N003-SideTabs.feature"
+#line 1 "US-00000-LoginAsAdminForUS.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Navigation", "N003-SideTabs", "Test Side Tab and Interactions located in such as policy, org etc", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "S000-SmokeTest", "Covers Login and Navigation Tests", ProgrammingLanguage.CSharp, new string[] {
+                        "RegressionTesting"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,13 +77,13 @@ namespace ApolloQA.TestCases.Regression.Navigation
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("User Interaction With Side Tab")]
-        public virtual void UserInteractionWithSideTab()
+        [NUnit.Framework.DescriptionAttribute("1A User is able to login as Admin")]
+        public virtual void _1AUserIsAbleToLoginAsAdmin()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User Interaction With Side Tab", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1A User is able to login as Admin", null, tagsOfScenario, argumentsOfScenario);
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -100,68 +103,27 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
- testRunner.When("User navigates to <Tab> SideTab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 7
- testRunner.Then("Verify <tabset> are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("User is on Apollo Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Key",
-                            "Value"});
-                table11.AddRow(new string[] {
-                            "a",
-                            "Application Information"});
-                table11.AddRow(new string[] {
-                            "b",
-                            "Business Information"});
-                table11.AddRow(new string[] {
-                            "c",
-                            "Contacts"});
-                table11.AddRow(new string[] {
-                            "d",
-                            "UW Questions"});
-                table11.AddRow(new string[] {
-                            "e",
-                            "Policy Coverages"});
-                table11.AddRow(new string[] {
-                            "f",
-                            "Drivers"});
-                table11.AddRow(new string[] {
-                            "g",
-                            "Vehicles"});
-                table11.AddRow(new string[] {
-                            "h",
-                            "Additional Questions"});
-                table11.AddRow(new string[] {
-                            "i",
-                            "Summary"});
 #line 8
- testRunner.Then("Verify sidetab is present", ((string)(null)), table11, "Then ");
+ testRunner.When("I enter AdminUsername and AdminPassword", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 9
+ testRunner.Then("I should see the Apollo Dashboard as Admin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Check Application tabs are present and clickable")]
-        [NUnit.Framework.TestCaseAttribute("Application Information", null)]
-        [NUnit.Framework.TestCaseAttribute("Business Information", null)]
-        [NUnit.Framework.TestCaseAttribute("Contacts", null)]
-        [NUnit.Framework.TestCaseAttribute("UW Questions", null)]
-        [NUnit.Framework.TestCaseAttribute("Additional Questions", null)]
-        [NUnit.Framework.TestCaseAttribute("Policy Coverages", null)]
-        [NUnit.Framework.TestCaseAttribute("Drivers", null)]
-        [NUnit.Framework.TestCaseAttribute("Vehicles", null)]
-        [NUnit.Framework.TestCaseAttribute("Additional Interests", null)]
-        [NUnit.Framework.TestCaseAttribute("Summary", null)]
-        public virtual void CheckApplicationTabsArePresentAndClickable(string tabName, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("1B User Navigates to Homepage")]
+        public virtual void _1BUserNavigatesToHomepage()
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Tab Name", tabName);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check Application tabs are present and clickable", null, tagsOfScenario, argumentsOfScenario);
-#line 21
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1B User Navigates to Homepage", null, tagsOfScenario, argumentsOfScenario);
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -181,14 +143,50 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 22
- testRunner.When(string.Format("User navigates to {0} SideTab", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
+testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 23
- testRunner.Then(string.Format("{0} page is displayed", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("1C User Interactions With Dashboard Tabs")]
+        [NUnit.Framework.TestCaseAttribute("Policy", null)]
+        [NUnit.Framework.TestCaseAttribute("Application", null)]
+        [NUnit.Framework.TestCaseAttribute("Organization", null)]
+        [NUnit.Framework.TestCaseAttribute("Home", null)]
+        public virtual void _1CUserInteractionsWithDashboardTabs(string tab, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Tab", tab);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1C User Interactions With Dashboard Tabs", null, tagsOfScenario, argumentsOfScenario);
+#line 14
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
-#line 24
- testRunner.And("Verify applicationTabs are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 15
+ testRunner.When(string.Format("User navigates to {0} Tab", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 16
+ testRunner.Then(string.Format("Tab navigates to {0} URL", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -29,6 +29,18 @@ namespace ApolloQA.Helpers
             return verify;
         }
 
+        public bool CheckError(string label)
+        {
+            bool verify = cDriver.FindElement(By.XPath("//mat-error[contains(text(),'" + label + "')]")).Displayed;
+            return verify;
+        }
+
+        public bool CheckSelectValue(string value)
+        {
+            IWebElement valueToBeChecked = functions.FindElementWaitUntilClickable(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']"));
+            return valueToBeChecked.Displayed;
+        }
+
         public bool GetTitle(string titleToBeChecked)
         {
             bool title = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleContains(titleToBeChecked));
@@ -142,6 +154,12 @@ namespace ApolloQA.Helpers
             locator.Click();
             functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
         }
+        public void ClickSelect(string locator)
+        {
+            IWebElement select = functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='" + locator + "']"));
+            select.Click();
+            //add a body click
+        }
         public string GetRequired(IWebElement locator)
         {
             return locator.GetAttribute("aria-required");
@@ -164,6 +182,12 @@ namespace ApolloQA.Helpers
             }
         }
 
+        public bool CheckIfRadioExists(string radioValue)
+        {
+            //IWebElement checkbox = functions.FindElementWait(10, By.XPath("//span[@class='mat-checkbox-label' and normalize-space(text())='" + radioValue + "']"));
+            IWebElement checkbox = functions.FindElementWait(10, By.XPath("//div[@class='mat-radio-label-content' and text() = ' " + radioValue + " '])"));
+            return checkbox.Displayed;
+    }
         //public void UpdateResourceSelectDropdown()
         //{
 

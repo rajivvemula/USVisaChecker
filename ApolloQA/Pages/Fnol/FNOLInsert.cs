@@ -1,4 +1,5 @@
 ﻿using ApolloQA.Helpers;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -84,119 +85,6 @@ namespace ApolloQA.Pages.Fnol
             functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='" + value + "']")).Click();
         }
 
-        public void EnterDateOfLoss(string date)
-        {
-            dateOfLossInput.SendKeys(date);
-        }
-        public void EnterTimeOfLos(string lossTime)
-        {
-            timeOfLossInput.SendKeys(lossTime);
-        }
-        public void EnterLosDesc(string desc)
-        {
-            lossDescInput.SendKeys(desc);
-        }
-        public void EnterDateReported(string date)
-        {
-            dateReportedInput.SendKeys(date);
-        }
-        public void EnterPolicyNumber(string number)
-        {
-            policyNumberInput.SendKeys(number);
-            policyNumberInput.SendKeys(Keys.Enter);
-
-        }
-
-        public void EnterFirstName(string name)
-        {
-            inputFirstName.SendKeys(name);
-        }
-        public void EnterMiddleName(string name)
-        {
-            inputMiddleName.SendKeys(name);
-        }
-        public void EnterLastName(string name)
-        {
-            inputLastName.SendKeys(name);
-        }
-        public void EnterSuffix(string name)
-        {
-            inputSuffixName.SendKeys(name);
-        }
-        public void EnterEmail(string email)
-        {
-            inputEmail.SendKeys(email);
-        }
-
-        public void EnterPhoneNumber(string phone)
-        {
-            inputPhoneNumber.SendKeys(phone);
-        }
-
-        public void EnterLossDesc(string desc)
-        {
-            lossDescInput.SendKeys(desc);
-        }
-
-        public void EnterAllInputs()
-        {
-            
-            inputFirstName.SendKeys("test111");
-            inputMiddleName.SendKeys("test");
-            inputLastName.SendKeys("test");
-            inputSuffixName.SendKeys("test");
-            inputEmail.SendKeys("test@email.com");
-            inputPhoneNumber.SendKeys("(123) 123-1234");
-            lossDescInput.SendKeys("test");
-            policyNumberInput.SendKeys("12843");
-            SelectHowNoticeReceived();
-            SelectRelatedClaim();
-            SelectClaimCategory();
-            EnterFireInfo();
-            EnterPoliceInfo();
-            
-            //sameAsCheckbox.Click();
-            Thread.Sleep(5000);
-            SubmitFNOL();
-        }
-
-        public void EnterPoliceInfo()
-        {
-            policeInvolved.Click();
-            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Yes']")).Click();
-            policeName.SendKeys("test");
-            policeNumber.SendKeys("123");
-        }
-
-        public void EnterFireInfo()
-        {
-            fireInvolved.Click();
-            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Yes']")).Click();
-            fireName.SendKeys("test");
-            fireNumber.SendKeys("123");
-        }
-        public void SelectHowNoticeReceived()
-        {
-            // modify later to receive selection
-            receivedSelect.Click();
-            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Email']")).Click();
-        }
-        public void SelectRelatedClaim()
-        {
-            // modify later to receive selection
-            relatedClaim.Click();
-            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Yes']")).Click();
-        }
-        public void SelectClaimCategory()
-        {
-            // modify later to receive selection
-            claimCategory.Click();
-            functions.FindElementWait(10, By.XPath("//span[@class='mat-option-text' and normalize-space(text())='Option 1']")).Click();
-        }
-
-        public void SubmitFNOL()
-        {
-            submitButton.Click();
-        }
     }
 }
+

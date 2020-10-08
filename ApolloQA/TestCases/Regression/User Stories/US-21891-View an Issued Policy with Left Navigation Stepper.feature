@@ -3,26 +3,9 @@
 	I want to be able to view an issued Policy 
 	with the Left Navigation stepper.
 
-Scenario:1A User is able to login as Admin
-	Given User is on Apollo Homepage
-	When I enter AdminUsername and AdminPassword 
-	Then I should see the Apollo Dashboard as Admin
 
-Scenario:1B User Navigates to Homepage
-Given User is on Homepage
 
-Scenario Outline:1C User Interactions With Dashboard Tabs
-	When User navigates to <Tab> Tab
-	Then Tab navigates to <Tab> URL
-
-Examples:
-	| Tab          |  
-	| Policy       | 
-	| Application  | 
-	| Organization | 
-	| Home         |
-
-Scenario:1D Verify Policy Left Nav Exists
+Scenario:TC01 Verify Policy Left Nav Exists
 	Given User is on Homepage
 	When User navigates to policy ID 10562
 	Then Verify sidetab is present
@@ -42,7 +25,7 @@ Scenario:1D Verify Policy Left Nav Exists
 	| m   | Policy History        |
 	| n   | Summary               |
 
-Scenario Outline:1E Verify each tab within policy left nav is working
+Scenario Outline:TC02 Verify each tab within policy left nav is working
 	When User navigates to <Tab> SideTab
 	Then <Tab> page is displayed
 

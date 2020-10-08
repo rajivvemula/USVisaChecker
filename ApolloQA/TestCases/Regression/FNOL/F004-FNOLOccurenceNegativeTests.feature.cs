@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression.Organization
+namespace ApolloQA.TestCases.Regression.FNOL
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,22 +20,22 @@ namespace ApolloQA.TestCases.Regression.Organization
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("C006-Add A Vehicle To Organization")]
-    public partial class C006_AddAVehicleToOrganizationFeature
+    [NUnit.Framework.DescriptionAttribute("F004-FNOLOccurenceNegativeTests")]
+    public partial class F004_FNOLOccurenceNegativeTestsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "C006-Add A Vehicle To Organization.feature"
+#line 1 "F004-FNOLOccurenceNegativeTests.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/Organization", "C006-Add A Vehicle To Organization", "Add a Vehicle to Organization", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/FNOL", "F004-FNOLOccurenceNegativeTests", "Negative Tests for FNOL Occurence Page", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,12 +74,12 @@ namespace ApolloQA.TestCases.Regression.Organization
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Add a Vehicle to Organization")]
-        public virtual void AddAVehicleToOrganization()
+        [NUnit.Framework.DescriptionAttribute("Negative Tests")]
+        public virtual void NegativeTests()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a Vehicle to Organization", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Negative Tests", null, tagsOfScenario, argumentsOfScenario);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -100,42 +100,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
-                            "VIN",
-                            "Year",
-                            "Make",
-                            "Model",
-                            "Trim",
-                            "Category",
-                            "SubCategory",
-                            "Code",
-                            "Seating",
-                            "Gross",
-                            "Cost",
-                            "Value",
-                            "Stated"});
-                table15.AddRow(new string[] {
-                            "Random",
-                            "2015",
-                            "Toyota",
-                            "Camry",
-                            "SE",
-                            "Cars, Pickup, or SUV",
-                            "Car - Coupe",
-                            "Airport Limousines -826",
-                            "5 or less",
-                            "0 - 5000",
-                            "10000",
-                            "11000",
-                            "12000"});
 #line 6
- testRunner.When("User adds vehicle to Organization", ((string)(null)), table15, "When ");
+ testRunner.Then("Verify Date of Loss - cannot be a future date.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 7
+ testRunner.Then("Verify Time of Loss - default time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 8
+ testRunner.Then("Verify How Received contains phone - email - carrier pigeon", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 9
- testRunner.Then("Verify vehicle is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Verify Date Reported - defaults to today", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 10
- testRunner.Then("Verify vehicle VIN is displayed in grid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Verify CAT defaults to None and has option1 and option2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

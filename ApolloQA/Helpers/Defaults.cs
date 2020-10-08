@@ -77,7 +77,8 @@ namespace ApolloQA.Helpers
             {"Policy History", "history"},
             {"Occurence", "occurence" },
             {"Loss Details", "loss-details" },
-            {"Supervisor Review", "supervisor-review" }
+            {"Supervisor Review", "supervisor-review" },
+            {"FNOL Dashboard", "fnol-dashboard" }
         };
 
 
