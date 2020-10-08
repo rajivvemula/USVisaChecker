@@ -20,6 +20,7 @@ namespace ApolloQA.TestCases.Smoke_Tests
 {
 
     [TestFixture]
+    [Category("SmokeTests")]
     class SmokeTest
     {
 

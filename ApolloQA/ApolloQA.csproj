@@ -32,18 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <COMReference Include="AutoItX3Lib.dll">
-      <Guid>f8937e53-d444-4e71-9275-35b64210cc3b</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>false</Isolated>
-    </COMReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AutoItX.Dotnet" Version="3.3.14.5" />
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
@@ -81,6 +69,22 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\ahanson\.nuget\packages\autoitx.dotnet\3.3.14.5\build\AutoItX3.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\ahanson\.nuget\packages\autoitx.dotnet\3.3.14.5\build\AutoItX3_x64.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\ahanson\.nuget\packages\autoitx.dotnet\3.3.14.5\build\AutoItX3.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\ahanson\.nuget\packages\autoitx.dotnet\3.3.14.5\build\AutoItX3_x64.dll" />
   </ItemGroup>
 
 </Project>

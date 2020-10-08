@@ -1,5 +1,5 @@
 ﻿using ApolloQA.Helpers;
-using AutoIt;
+//using AutoIt;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -19,12 +19,12 @@ namespace ApolloQA.Pages.Policy
         //Upload and download file methood using AutoIT
         public void autoITFileUpload()
         {
-            AutoItX autoIt = new AutoItX();
-            autoIt.WinActivate("Open");
-            Thread.Sleep(2000);
-            autoIt.Send(@"C:\Users\agencer\Desktop\TestPNG.png");
-            Thread.Sleep(1000);
-            autoIt.Send("{ENTER}");
+            //AutoItX autoIt = new AutoItX();
+            //autoIt.WinActivate("Open");
+            //Thread.Sleep(2000);
+            //autoIt.Send(@"C:\Users\agencer\Desktop\TestPNG.png");
+            //Thread.Sleep(1000);
+            //autoIt.Send("{ENTER}");
         }
 
         public PolicyDocument(IWebDriver driver)
