@@ -6,3 +6,6 @@ Scenario: Verify Inputs
 	Then Verify an input is displayed with label
 	| Key | Value        |
 	| a   | Date of Loss |
+	Then Verify a Select contains value : <Select Name>
+	| Key | Value            |
+	| a   | DropDown Value 1 |
