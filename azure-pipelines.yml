@@ -6,44 +6,44 @@
 trigger:
   - master
   
-  pool:
-    vmImage: 'windows-latest'
-  
-  variables:
-  - name: Browser
-    value: Chrome
-  
-  
-  steps:
-  - task: NuGetCommand@2
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-  - task: VSBuild@1
-    inputs:
-      solution: '**\*.sln'
-      restoreNugetPackages: true
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        $env:Browser = "chrome"
-        Write-Host "Current Browser Value is $env:Browser"
-  - task: VSTest@2
-    displayName: 'Running a Smoke Test'
-    continueOnError: true
-    timeoutInMinutes: 10
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\ApolloQA.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      testFiltercriteria: 'TestCategory=SmokeTestBase'
-      testRunTitle: 'SmokeTest'
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFormat: 'NUnit'
-      testResultsFiles: '**/TEST-*.xml'
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+- name: Browser
+  value: Chrome
+
+
+steps:
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+- task: VSBuild@1
+  inputs:
+    solution: '**\*.sln'
+    restoreNugetPackages: true
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $env:Browser = "chrome"
+      Write-Host "Current Browser Value is $env:Browser"
+- task: VSTest@2
+  displayName: 'Running a Smoke Test'
+  continueOnError: true
+  timeoutInMinutes: 10
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\ApolloQA.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    testFiltercriteria: 'TestCategory=SmokeTestBase'
+    testRunTitle: 'SmokeTest'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**/TEST-*.xml'
