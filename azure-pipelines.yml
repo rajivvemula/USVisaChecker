@@ -43,7 +43,6 @@ trigger:
       searchFolder: '$(System.DefaultWorkingDirectory)'
       testFiltercriteria: 'TestCategory=SmokeTestBase'
       testRunTitle: 'SmokeTest'
-  
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'NUnit'
