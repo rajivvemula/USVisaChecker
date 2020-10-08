@@ -38,6 +38,10 @@ Scenario: TC03 Date of Loss Negative Test
 Scenario: TC04 Time of Loss Negative Test
 	Then Verify Time of Loss - default time
 
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< master
+========================================================================
+#US 14299
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Saeed
 Scenario: TC05 How Notice Receieved Negative Test
 	Then Verify How Received contains phone - email - carrier pigeon
 
