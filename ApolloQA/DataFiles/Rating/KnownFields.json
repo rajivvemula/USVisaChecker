@@ -6,6 +6,7 @@
     "source": "root.accidentPreventionCredit"
   },
   "Class Code": {
+    "type": "string",
     "source": "Vehicle.ClassCode"
   },
   "Covered Autos": {
@@ -15,6 +16,7 @@
     "source": "Vehicle.RadiusOfOperation"
   },
   "Vehicle Age": {
+    "setter": "Vehicle.YearOfManufacture = DateTime.Now.Year - value",
     "source": "DateTime.Now.Year - Vehicle.YearOfManufacture"
   },
   "Fleet Size": {

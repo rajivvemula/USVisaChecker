@@ -16,13 +16,15 @@ namespace ApolloQA.TestCases.Regression.Rating
     {
         private IWebDriver driver;
         private Entity.Policy policy;
-
+        State state;
         RestAPI api;
         public RA001_SetupValidPolicySteps(IWebDriver driver, RestAPI api, State state)
         {
             this.driver = driver;
             this.api = api;
             this.policy = new Entity.Policy(10000);
+            this.state = state;
+            Console.WriteLine("was set");
 
             //this.policy = new Entity.Policy(int.Parse(state.PolicyId));
 
@@ -31,32 +33,20 @@ namespace ApolloQA.TestCases.Regression.Rating
         [When(@"User Navigates to Policy")]
         public void WhenUserNavigatesToPolicy()
         {
-            var rating = new DataFiles.Engine(new Entity.Policy(10000), "VA00034", policy.GetApplication().GetVehicles()[0]);
-            /*foreach (var item in rating.GetRatingFactor("ClassCodeFactors"))
-            {
-                Console.WriteLine($" DEBUG -----------------------------> Factor: {item.Key}:{item.Value}");
-            }*/
-
-            foreach (var factor in rating.getAlgorithmFactors())
-            {
-
-                Console.WriteLine($"{factor.Key} ->{factor.Value}");
-
-            }
+            this.state.engine = new Engine(new Entity.Policy(10000), "VA00034");
 
         }
-        
+
         [Then(@"The policy should load successfully")]
         public void ThenThePolicyShouldLoadSuccessfully()
         {
-            this.policy = new Entity.Policy(10564);
-
-
-            int scheduleTypeID = policy.GetProperties()["billing"]["scheduleTypeId"];
-
-            String scheduleTypeStr = policy.GetProperties()["billing"]["scheduleTypeId"];
-
-            Console.WriteLine($"{scheduleTypeID} {scheduleTypeStr}");
+            foreach (var coverage in this.state.engine.Run())
+            {
+                foreach (var factor in coverage)
+                {
+                    Console.WriteLine($"{factor.Key} ->{factor.Value}");
+                }
+            }
         }
         
         [Then(@"The policy should have Driver")]

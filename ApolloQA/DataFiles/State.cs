@@ -20,7 +20,7 @@ namespace ApolloQA.DataFiles
         public int createOrgRecent;
         public string recentDriverLicenseNumber;
         public string recentVehicleVIN;
-
+        public Engine engine;
         /*
         How to add state:
 

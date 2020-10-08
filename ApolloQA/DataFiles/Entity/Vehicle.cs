@@ -8,7 +8,7 @@ using ApolloQA.Helpers;
 
 namespace ApolloQA.DataFiles.Entity
 {
-    class Vehicle
+    public class Vehicle
     {
         private readonly int Id;
 
@@ -18,7 +18,6 @@ namespace ApolloQA.DataFiles.Entity
 
         }
 
-        
         public dynamic this[String propertyName] { get { return this.GetProperty(propertyName); }
         }
         public dynamic GetProperty(String propertyName)
@@ -51,7 +50,11 @@ namespace ApolloQA.DataFiles.Entity
             {
                 return this["ClassCode"];
 
-            } 
+            }
+            set
+            {
+                SetProperties(("ClassCode", value));
+            }
         }
         public int? RadiusOfOperation
         {
@@ -64,30 +67,22 @@ namespace ApolloQA.DataFiles.Entity
                 }
                 return null;
             }
+            set
+            {
+                SetProperties(("RadiusOfOperation", value));
+            }
         }
         public int? YearOfManufacture
         {
             get
             {
                 return this["YearOfManufacture"];
-                
             }
-        }
-        public int? Territory
-        {
-            get
+            set
             {
-                var zip = this["ZipCode"]?.ToString();
-
-                var data = Engine.getTable("TT.1");
-
-
-                if (int.TryParse(data.Find(row => row["Zip Code"] == zip)?["Territory"], out int value))
-                { return value; }
-
-                return null;               
-
+                SetProperties(("YearOfManufacture", value));
             }
         }
+
     }
 }

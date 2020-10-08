@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace ApolloQA.DataFiles.Entity
 {
-    class Policy
+    public class Policy
     {
         private readonly int Id;
 

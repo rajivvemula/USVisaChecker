@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ApolloQA.DataFiles.Entity
 {
-    class Application
+    public class Application
     {
         private readonly int Id;
 
