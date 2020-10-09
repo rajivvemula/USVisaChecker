@@ -10,7 +10,7 @@ namespace ApolloQA.DataFiles.Entity
 {
     public class Policy
     {
-        private readonly int Id;
+        public readonly int Id;
 
         public Policy(int Id)
         {

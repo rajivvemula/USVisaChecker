@@ -19,12 +19,13 @@ namespace ApolloQA.Pages.Policy
         //Upload and download file methood using AutoIT
         public void autoITFileUpload()
         {
+            /*
             AutoItX autoIt = new AutoItX();
             autoIt.WinActivate("Open");
             Thread.Sleep(2000);
             autoIt.Send(@"C:\Users\agencer\Desktop\TestPNG.png");
             Thread.Sleep(1000);
-            autoIt.Send("{ENTER}");
+            autoIt.Send("{ENTER}");*/
         }
 
         public PolicyDocument(IWebDriver driver)

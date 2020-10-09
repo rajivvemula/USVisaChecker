@@ -10,7 +10,7 @@ namespace ApolloQA.DataFiles.Entity
 {
     public class Vehicle
     {
-        private readonly int Id;
+        public readonly int Id;
 
         public Vehicle(int Id)
         {

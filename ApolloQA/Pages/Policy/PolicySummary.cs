@@ -56,6 +56,7 @@ namespace ApolloQA.Pages.Policy
         public IWebElement websiteTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-tab-label-content' and normalize-space(text())='Web Site']"));
         public IWebElement selectBus => functions.FindElementWait(10, By.XPath("//mat-select[@formcontrolname='businessTypeEntityId']"));
         public IWebElement saveButton => functions.FindElementWait(10, By.ClassName("save-button"));
+        public IWebElement viewRatingWorksheetButton => functions.FindElementWait(10, By.XPath("//button[normalize-space(text())='View Rating Worksheet']"));
 
         public IWebElement getElementFromFieldname(string fieldName)
         {
@@ -110,6 +111,9 @@ namespace ApolloQA.Pages.Policy
             saveButton.Click();
         }
 
-
+        public void NavigateToRatingWorksheet()
+        {
+            this.viewRatingWorksheetButton.Click();
+        }
     }
 }

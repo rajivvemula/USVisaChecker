@@ -6,11 +6,11 @@
 
 Scenario: Find a valid Policy
 	Given User is on Homepage
-	When User Navigates to Policy
-	When user Selects Vehicle Type risks with the following relevant values
+	When User navigates to policy ID 10000
+	And user Selects Vehicle Type risks with the following relevant values
 	| Vehicle Age | Radius | Class Code | 
 	| 7           | 150    | 603        | 
-	Then The policy should load successfully
-	And The policy should have Driver
-	And The policy should have Vehicle
-	And The policy should have Coverage
+	And User navigates to Policy Summary Section
+	And the premium is calculated
+	And User navigates to the Policy Rating Worksheet
+	Then Rating Worksheet should display the correct result

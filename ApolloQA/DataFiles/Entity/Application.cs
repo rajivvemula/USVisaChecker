@@ -9,7 +9,7 @@ namespace ApolloQA.DataFiles.Entity
 {
     public class Application
     {
-        private readonly int Id;
+        public readonly int Id;
 
         public Application(int Id) {
             this.Id = Id;

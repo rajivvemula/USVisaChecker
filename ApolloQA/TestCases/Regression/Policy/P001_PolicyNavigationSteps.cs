@@ -4,7 +4,8 @@ using Microsoft.Azure.Cosmos;
 using OpenQA.Selenium;
 using System;
 using TechTalk.SpecFlow;
-
+using ApolloQA.DataFiles;
+using ApolloQA.Pages.Policy;
 namespace ApolloQA.TestCases.Regression.Policy
 {
     [Binding]
@@ -13,24 +14,45 @@ namespace ApolloQA.TestCases.Regression.Policy
         private IWebDriver driver;
         Buttons buttons;
         Cosmos cosmos;
-
-        public P001_PolicyNavigationSteps(IWebDriver driver, CosmosClient cosmosClient)
+        State state;
+        PolicyMain policyMain;
+        public P001_PolicyNavigationSteps(IWebDriver driver, CosmosClient cosmosClient, State state)
         {
             this.driver = driver;
             buttons = new Buttons(driver);
             cosmos = new Cosmos(cosmosClient);
+            this.state = state;
+            this.policyMain  = new PolicyMain(driver);
+
         }
 
         [When(@"User navigates to policy ID (.*)")]
         public void WhenUserNavigatesToPolicyID(string id)
         {
             //todo: modify it to where if no ID is provided, the it grabs the last id in policy 
-            string policyID = id;
+            int policyID = int.Parse(id);
             if (id == "recent")
             {
-                policyID = cosmos.GetLatestPolicyID().ToString();
+                policyID = cosmos.GetLatestPolicyID().Result;
             }
-            driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + policyID);
+            this.state.currentPolicy = new DataFiles.Entity.Policy(policyID);
+            this.state.engine = new Engine(state.currentPolicy, "VA00034");
+
+            policyMain.NavigateToPolicy(policyID);
         }
+
+        [When(@"User navigates to Policy Summary Section")]
+        public void WhenUserNavigatesToPolicySummarySection()
+        {
+            policyMain.GoToSummary();
+        }
+
+        [When(@"User navigates to the Policy Rating Worksheet")]
+        public void WhenUserNavigatesToThePolicyRatingWorksheet()
+        {
+            new PolicySummary(driver).NavigateToRatingWorksheet();
+        }
+
+
     }
 }

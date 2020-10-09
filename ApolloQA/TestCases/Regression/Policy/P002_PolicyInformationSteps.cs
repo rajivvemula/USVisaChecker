@@ -20,17 +20,17 @@ namespace ApolloQA.TestCases.Regression.Policy
         [When(@"user Selects an Organization with the following relevant values")]
         public void WhenUserSelectsAnOrganizationWithTheFollowingRelevantValues(Table table)
         {
-
-            foreach (TableRow row in table.Rows)
+            //Any Row after first will be ignored
+            foreach (var field in table.Rows[0])
             {
-                foreach (var field in row)
-                {
-                    state.engine.setKnownFieldValue(field.Key, field.Value);
-                }
+                state.engine.setKnownFieldValue(field.Key, field.Value);
             }
             
         }
-        
+
+        /// <summary>
+        ///  this function requires an engine to be set on the state object
+        /// </summary>
         [When(@"user Selects Vehicle Type risks with the following relevant values")]
         public void WhenUserSelectsVehicleTypeRisksWithTheFollowingRelevantValues(Table table)
         {
@@ -54,6 +54,7 @@ namespace ApolloQA.TestCases.Regression.Policy
                     {                       
                         state.engine.setKnownFieldValue(field.Key, field.Value);
                     }
+                    index++;
                 }
             }
         }

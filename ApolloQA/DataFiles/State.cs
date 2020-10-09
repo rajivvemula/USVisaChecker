@@ -21,6 +21,7 @@ namespace ApolloQA.DataFiles
         public string recentDriverLicenseNumber;
         public string recentVehicleVIN;
         public Engine engine;
+        public Entity.Policy currentPolicy;
         /*
         How to add state:
 

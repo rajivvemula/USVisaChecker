@@ -10,7 +10,7 @@ namespace ApolloQA.DataFiles.Entity
     public class Organization
     {
 
-        private readonly int Id;
+        public readonly int Id;
 
         public Organization(int Id)
         {
