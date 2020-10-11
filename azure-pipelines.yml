@@ -18,11 +18,11 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/*.sln'
+    restoreSolution: '**/ApolloQA_Test.sln'
     feedsToUse: 'select'
 - task: VSBuild@1
   inputs:
-    solution: '**\*.sln'
+    solution: '**\ApolloQA_Test.sln'
     restoreNugetPackages: true
 - task: PowerShell@2
   inputs:
@@ -37,13 +37,8 @@ steps:
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\ApolloQA.dll
+      **\ApolloQA_Test.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
-    testFiltercriteria: 'TestCategory=SmokeTestBase'
     testRunTitle: 'SmokeTest'
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '**/TEST-*.xml'
