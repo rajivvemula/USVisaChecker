@@ -19,8 +19,7 @@ namespace ApolloQA_Test
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("BiBerkLogin")]
+    [TechTalk.SpecRun.FeatureAttribute("BiBerkLogin", Description="\tLogin biBerk home page with valid credentials", SourceFile="BiberkValidLogin.feature", SourceLine=0)]
     public partial class BiBerkLoginFeature
     {
         
@@ -31,7 +30,7 @@ namespace ApolloQA_Test
 #line 1 "BiberkValidLogin.feature"
 #line hidden
         
-        [NUnit.Framework.OneTimeSetUpAttribute()]
+        [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
@@ -39,19 +38,18 @@ namespace ApolloQA_Test
             testRunner.OnFeatureStart(featureInfo);
         }
         
-        [NUnit.Framework.OneTimeTearDownAttribute()]
+        [TechTalk.SpecRun.FeatureCleanup()]
         public virtual void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
         
-        [NUnit.Framework.SetUpAttribute()]
         public virtual void TestInitialize()
         {
         }
         
-        [NUnit.Framework.TearDownAttribute()]
+        [TechTalk.SpecRun.ScenarioCleanup()]
         public virtual void TestTearDown()
         {
             testRunner.OnScenarioEnd();
@@ -60,7 +58,6 @@ namespace ApolloQA_Test
         public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<NUnit.Framework.TestContext>(NUnit.Framework.TestContext.CurrentContext);
         }
         
         public virtual void ScenarioStart()
@@ -73,9 +70,8 @@ namespace ApolloQA_Test
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Login biBerk home page with valid credentials")]
-        [NUnit.Framework.CategoryAttribute("biBerkLogin")]
+        [TechTalk.SpecRun.ScenarioAttribute("Login biBerk home page with valid credentials", new string[] {
+                "biBerkLogin"}, SourceLine=6)]
         public virtual void LoginBiBerkHomePageWithValidCredentials()
         {
             string[] tagsOfScenario = new string[] {
