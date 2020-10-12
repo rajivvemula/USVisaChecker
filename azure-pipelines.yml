@@ -22,7 +22,7 @@ steps:
     feedsToUse: 'select'
 - task: VSBuild@1
   inputs:
-    solution: '**\ApolloQA_Test.sln'
+    solution: '**\ApolloQA_SpecFlow.sln'
     restoreNugetPackages: true
 - task: PowerShell@2
   inputs:
