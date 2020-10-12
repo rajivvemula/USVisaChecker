@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA_Test
+namespace ApolloQA_SpecFlow
 {
     using TechTalk.SpecFlow;
     using System;

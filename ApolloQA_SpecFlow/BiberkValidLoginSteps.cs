@@ -3,13 +3,15 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using TechTalk.SpecFlow;
 
 
-namespace Test2.Steps
+namespace ApolloQA_SpecFlow.Steps
 {
     [Binding]
     public sealed class BiberkValidLoginSteps
@@ -31,7 +33,7 @@ namespace Test2.Steps
         public void GivenUserLandedBiBerkPageWithValidURL(int p0)
         {
             Console.WriteLine("01 user1 landed biBerk page with valid URL");
-            driver = new ChromeDriver(Environment.CurrentDirectory);
+            driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             driver.Manage().Window.Maximize();
             driver.Url = "https://biberk-apollo-qa2.azurewebsites.net";
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);

@@ -18,7 +18,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/ApolloQA_Test.sln'
+    restoreSolution: '**/ApolloQA_SpecFlow.sln'
     feedsToUse: 'select'
 - task: VSBuild@1
   inputs:
@@ -37,7 +37,7 @@ steps:
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\ApolloQA_Test.dll
+      **\ApolloQA_SpecFlow.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
