@@ -100,18 +100,18 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                             "Line1",
                             "City",
                             "State",
                             "Zip"});
-                table13.AddRow(new string[] {
+                table15.AddRow(new string[] {
                             "39 Public Sq",
                             "Wilkes Barre",
                             "PA",
                             "18701"});
 #line 7
- testRunner.When("User adds address to Organization", ((string)(null)), table13, "When ");
+ testRunner.When("User adds address to Organization", ((string)(null)), table15, "When ");
 #line hidden
 #line 10
  testRunner.Then("Verify address is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

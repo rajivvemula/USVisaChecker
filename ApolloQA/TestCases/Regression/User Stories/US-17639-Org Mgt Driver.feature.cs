@@ -105,7 +105,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
  testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "DBA",
                             "OrgType",
@@ -117,7 +117,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "YearStart",
                             "YearOwn",
                             "Keyword"});
-                table25.AddRow(new string[] {
+                table32.AddRow(new string[] {
                             "Smoke Test",
                             "Smoke",
                             "Corporation",
@@ -130,7 +130,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2012",
                             "Accountant"});
 #line 9
- testRunner.When("User creates an Organization", ((string)(null)), table25, "When ");
+ testRunner.When("User creates an Organization", ((string)(null)), table32, "When ");
 #line hidden
 #line 12
  testRunner.Then("Verify organization is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -141,35 +141,35 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
  testRunner.Then("Verify correct page orgDriver is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table26.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "a",
                             "First Name"});
-                table26.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "b",
                             "Last Name"});
-                table26.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "c",
                             "Middle Name"});
-                table26.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "d",
                             "Suffix"});
-                table26.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "e",
                             "DOB"});
-                table26.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "f",
                             "State"});
-                table26.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "g",
                             "License #"});
-                table26.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "h",
                             "Expiration"});
 #line 15
- testRunner.Then("Grid column label is displayed", ((string)(null)), table26, "Then ");
+ testRunner.Then("Grid column label is displayed", ((string)(null)), table33, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -202,7 +202,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                             "First",
                             "Last",
                             "Middle",
@@ -211,7 +211,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Number",
                             "Exp",
                             "CDL"});
-                table27.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "Jacob",
                             "Seed",
                             "J",
@@ -221,7 +221,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "01/01/2022",
                             "No"});
 #line 27
- testRunner.When("User adds driver to Organization", ((string)(null)), table27, "When ");
+ testRunner.When("User adds driver to Organization", ((string)(null)), table34, "When ");
 #line hidden
 #line 30
  testRunner.Then("Verify driver is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -294,26 +294,26 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table28.AddRow(new string[] {
+                table35.AddRow(new string[] {
                             "a",
                             "Business Information"});
-                table28.AddRow(new string[] {
+                table35.AddRow(new string[] {
                             "b",
                             "Addresses"});
-                table28.AddRow(new string[] {
+                table35.AddRow(new string[] {
                             "d",
                             "Drivers"});
-                table28.AddRow(new string[] {
+                table35.AddRow(new string[] {
                             "e",
                             "Vehicles"});
-                table28.AddRow(new string[] {
+                table35.AddRow(new string[] {
                             "f",
                             "Trailers"});
 #line 37
- testRunner.Then("Verify sidetab is present", ((string)(null)), table28, "Then ");
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table35, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -100,14 +100,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table10.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "a",
                             "Date of Loss"});
 #line 6
- testRunner.Then("Verify an input is displayed with label", ((string)(null)), table10, "Then ");
+ testRunner.Then("Verify an input is displayed with label", ((string)(null)), table11, "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Key",
+                            "Value"});
+                table12.AddRow(new string[] {
+                            "a",
+                            "DropDown Value 1"});
+#line 9
+ testRunner.Then("Verify a Select contains value : <Select Name>", ((string)(null)), table12, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -20,23 +20,23 @@ namespace ApolloQA.TestCases.Regression.UserStories
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("US-13121-Add vehicle screen to Organization")]
-    public partial class US_13121_AddVehicleScreenToOrganizationFeature
+    [NUnit.Framework.DescriptionAttribute("US-14816- Add Adjuster and Complexity to FNOL")]
+    public partial class US_14816_AddAdjusterAndComplexityToFNOLFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "US-13121-Add vehicle screen to Organization.feature"
+#line 1 "US-14816- Add Adjuster and Complexity to FNOL.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-13121-Add vehicle screen to Organization", "\tAs an underwriter, \r\n\tI want to be able to add vehicles to an organization \r\n\tan" +
-                    "d show them in a grid, so that I can associate them in a policy coverage.", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-14816- Add Adjuster and Complexity to FNOL", "\tAs a claim user\r\n\tI will be able to assign an adjuster and complexity to the FNO" +
+                    "L/Claim details.  ", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -75,13 +75,13 @@ namespace ApolloQA.TestCases.Regression.UserStories
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("TC01 Verify Grid Titles in Vehicle Organization")]
-        public virtual void TC01VerifyGridTitlesInVehicleOrganization()
+        [NUnit.Framework.DescriptionAttribute("TC01 Verify Claim Type")]
+        public virtual void TC01VerifyClaimType()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC01 Verify Grid Titles in Vehicle Organization", null, tagsOfScenario, argumentsOfScenario);
-#line 8
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC01 Verify Claim Type", null, tagsOfScenario, argumentsOfScenario);
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -101,84 +101,110 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
+#line 7
  testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Name",
-                            "DBA",
-                            "OrgType",
-                            "TaxType",
-                            "TaxIDNo",
-                            "BusPhone",
-                            "BusEmail",
-                            "BusWeb",
-                            "YearStart",
-                            "YearOwn",
-                            "Keyword"});
-                table21.AddRow(new string[] {
-                            "Smoke Test",
-                            "Smoke",
-                            "Corporation",
-                            "FEIN",
-                            "Random",
-                            "123-456-7890",
-                            "smoketest@gmail.com",
-                            "smoketest.com",
-                            "2011",
-                            "2012",
-                            "Accountant"});
-#line 10
- testRunner.When("User creates an Organization", ((string)(null)), table21, "When ");
+                TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Received",
+                            "Related",
+                            "First",
+                            "Last",
+                            "Suffix",
+                            "Email",
+                            "PhoneType",
+                            "PhoneNumber",
+                            "ClaimCategory",
+                            "LossDesc",
+                            "Police",
+                            "PoliceName",
+                            "PoliceNumber",
+                            "Fire",
+                            "FireName",
+                            "FireNumber"});
+                table27.AddRow(new string[] {
+                            "Phone",
+                            "No",
+                            "Joseph",
+                            "Seed",
+                            "Mr",
+                            "josephseed@gmail.com",
+                            "Mobile",
+                            "5452156532",
+                            "Option 1",
+                            "Sample Desc",
+                            "Yes",
+                            "PAPD",
+                            "1234",
+                            "Yes",
+                            "PAFD",
+                            "4567"});
+#line 8
+ testRunner.When("User creates a FNOL", ((string)(null)), table27, "When ");
+#line hidden
+#line 11
+ testRunner.Then("Verify FNOL is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 12
+ testRunner.Then("Verify Radio Option is present : Property Damage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 13
- testRunner.Then("Verify organization is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Verify Radio Option is present : Bodily Injury", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 14
- testRunner.When("User navigates to Vehicles SideTab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("TC02 Verify Complexity Type")]
+        public virtual void TC02VerifyComplexityType()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC02 Verify Complexity Type", null, tagsOfScenario, argumentsOfScenario);
 #line 15
- testRunner.Then("Verify correct page orgVehicle is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
-                TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table22.AddRow(new string[] {
+                table28.AddRow(new string[] {
                             "a",
-                            "Veh #"});
-                table22.AddRow(new string[] {
+                            "Complex"});
+                table28.AddRow(new string[] {
                             "b",
-                            "Year"});
-                table22.AddRow(new string[] {
-                            "c",
-                            "Make & Model"});
-                table22.AddRow(new string[] {
-                            "d",
-                            "VIN"});
-                table22.AddRow(new string[] {
-                            "e",
-                            "GVW"});
-                table22.AddRow(new string[] {
-                            "f",
-                            "Cost New"});
-                table22.AddRow(new string[] {
-                            "g",
-                            "Stated Amount"});
+                            "Fastrack"});
 #line 16
- testRunner.Then("Grid column label is displayed", ((string)(null)), table22, "Then ");
+ testRunner.Then("Verify a Select contains value : complexityId", ((string)(null)), table28, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("TC02 Add a Vehicle to Organization")]
-        public virtual void TC02AddAVehicleToOrganization()
+        [NUnit.Framework.DescriptionAttribute("TC03 Verify Clicking Cancel")]
+        public virtual void TC03VerifyClickingCancel()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC02 Add a Vehicle to Organization", null, tagsOfScenario, argumentsOfScenario);
-#line 26
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC03 Verify Clicking Cancel", null, tagsOfScenario, argumentsOfScenario);
+#line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -198,73 +224,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
-                            "VIN",
-                            "Year",
-                            "Make",
-                            "Model",
-                            "Trim",
-                            "Category",
-                            "SubCategory",
-                            "Code",
-                            "Seating",
-                            "Gross",
-                            "Cost",
-                            "Value",
-                            "Stated"});
-                table23.AddRow(new string[] {
-                            "Random",
-                            "2015",
-                            "Toyota",
-                            "Camry",
-                            "SE",
-                            "Cars, Pickup, or SUV",
-                            "Car - Coupe",
-                            "Airport Limousines -826",
-                            "5 or less",
-                            "0 - 5000",
-                            "10000",
-                            "11000",
-                            "12000"});
-#line 27
- testRunner.When("User adds vehicle to Organization", ((string)(null)), table23, "When ");
+#line 23
+ testRunner.When("User clicks buttonCancel button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 30
- testRunner.Then("Verify vehicle is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("TC03 Vehicle Added is displayed in Grid")]
-        public virtual void TC03VehicleAddedIsDisplayedInGrid()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC03 Vehicle Added is displayed in Grid", null, tagsOfScenario, argumentsOfScenario);
-#line 32
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 33
- testRunner.Then("Verify vehicle VIN is displayed in grid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 24
+ testRunner.Then("fnol-dashboard page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

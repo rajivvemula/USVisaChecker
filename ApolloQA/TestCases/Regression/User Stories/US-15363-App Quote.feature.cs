@@ -114,7 +114,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 16
  testRunner.Then("Search ShouldNotExist displayed is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "DBA",
                             "OrgType",
@@ -126,7 +126,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "YearStart",
                             "YearOwn",
                             "Keyword"});
-                table22.AddRow(new string[] {
+                table29.AddRow(new string[] {
                             "Smoke Test10023",
                             "Smoke",
                             "Corporation",
@@ -139,7 +139,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2012",
                             "Accountant"});
 #line 17
- testRunner.When("User creates an Organization", ((string)(null)), table22, "When ");
+ testRunner.When("User creates an Organization", ((string)(null)), table29, "When ");
 #line hidden
 #line 20
  testRunner.Then("Verify organization is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -294,38 +294,38 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table23.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "a",
                             "Application Information"});
-                table23.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "b",
                             "Business Information"});
-                table23.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "c",
                             "Contacts"});
-                table23.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "d",
                             "UW Questions"});
-                table23.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "e",
                             "Policy Coverages"});
-                table23.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "f",
                             "Drivers"});
-                table23.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "g",
                             "Vehicles"});
-                table23.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "h",
                             "Additional Questions"});
-                table23.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "i",
                             "Summary"});
 #line 37
- testRunner.Then("Verify sidetab is present", ((string)(null)), table23, "Then ");
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table30, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
