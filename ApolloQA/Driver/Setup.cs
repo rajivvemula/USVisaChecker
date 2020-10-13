@@ -57,20 +57,9 @@ namespace ApolloQA.Driver
         [BeforeFeature]
         public static void BeforeFeature()
         {
-            //_featureContext = featureContext;
-            //_featureContext.Add("Application List", new List<ApplicationObject>());
+            
 
         }
-
-        //[AfterFeature]
-        //public static void AfterFeature(FeatureContext featureContext)
-        //{
-        //    //print current feature's Application List
-
-        //    //add current Application to State's objects Application List
-
-        //    //flush the Feature's Application List
-        //}
 
 
         [BeforeScenario]

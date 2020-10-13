@@ -109,21 +109,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  testRunner.Then("Grid column label is displayed", ((string)(null)), table9, "Then ");
 #line hidden
-#line 9
- testRunner.Then("Verify grid contains ellipsis", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 10
- testRunner.Then("Verify grid does not contain ellipsis", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Key",
-                            "Value"});
-                table10.AddRow(new string[] {
-                            "a",
-                            "Delete"});
-#line 11
- testRunner.Then("Verify ellipsis contains the following options", ((string)(null)), table10, "Then ");
-#line hidden
             }
             this.ScenarioCleanup();
         }

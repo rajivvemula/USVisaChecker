@@ -8,7 +8,8 @@ namespace ApolloQA.Helpers
     {
         public const string
             ADMIN_USERNAME = "ApolloTestUserG301@biberk.com",
-            DEFAULT_PASSWORD = "HashTagApollo#24";
+            DEFAULT_PASSWORD = "HashTagApollo#24",
+            DEFAULT_PASSWORD2 = "ApolloTest12";
         
         //QA URLs
         public static IDictionary<string, string> QA_URLS = new Dictionary<string, string>()
@@ -30,8 +31,8 @@ namespace ApolloQA.Helpers
         {
             { "waffleTabs" , new List<string>{ "Underwriting", "Billing", "Administration", "Collections Center", "Claims" } },
             { "organizationTabs" , new List<string>{ "Business Information", "Addresses", "Drivers", "Vehicles", "Trailers" }},
-            { "applicationTabs" , new List<string>{  "Application Information","Business Information", "Contacts", "UW Questions",
-                                "Policy Coverages", "Drivers", "Vehicles", "Additional Questions",
+            { "applicationTabs" , new List<string>{  "Application Information", "Business Information", "Contacts", "UW Questions", 
+                                "Additional Questions", "Policy Coverages", "Drivers", "Vehicles", "Additional Interests",
                                 "Summary"}},
             { "policyTabs" , new List<string>{   "Business Information", "Contacts", "UW Questions",
                                 "Policy Coverages", "Drivers", "Vehicles", "Trailers",
@@ -73,11 +74,9 @@ namespace ApolloQA.Helpers
             {"Activities", "activities"},            
             {"Loss History", ""},          
             {"Policy History", "history"},
-            {"Occurence", "occurence" },
-            {"Loss Details", "loss-details" },
-            {"Supervisor Review", "supervisor-review" },
-            {"FNOL Dashboard", "fnol-dashboard" }
+            {"Home", "home"}
         };
+
 
 
         public static readonly string[] adminRoles = {

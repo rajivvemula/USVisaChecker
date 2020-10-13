@@ -22,13 +22,19 @@ namespace ApolloQA.TestCases.Regression.UserStories
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("US-9314 - 9 Create an Application Quote with Left Navigation Stepper")]
     [NUnit.Framework.CategoryAttribute("US-9314")]
+    [NUnit.Framework.CategoryAttribute("US-9314-TC01")]
+    [NUnit.Framework.CategoryAttribute("US-9314-TC02")]
+    [NUnit.Framework.CategoryAttribute("BuzzSmoke")]
     public partial class US_9314_9CreateAnApplicationQuoteWithLeftNavigationStepperFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "US-9314"};
+                "US-9314",
+                "US-9314-TC01",
+                "US-9314-TC02",
+                "BuzzSmoke"};
         
 #line 1 "US-9314 - Create an Application Quote with Left Navigation Stepper.feature"
 #line hidden
@@ -39,7 +45,10 @@ namespace ApolloQA.TestCases.Regression.UserStories
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-9314 - 9 Create an Application Quote with Left Navigation Stepper", "\tIn order to test application navigation\r\n\tAs an authorized user\r\n\tI want to veri" +
                     "fy the application tabs are present and clickable", ProgrammingLanguage.CSharp, new string[] {
-                        "US-9314"});
+                        "US-9314",
+                        "US-9314-TC01",
+                        "US-9314-TC02",
+                        "BuzzSmoke"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -84,74 +93,6 @@ namespace ApolloQA.TestCases.Regression.UserStories
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Create new application", null, tagsOfScenario, argumentsOfScenario);
-#line 7
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-                TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Business Name",
-                            "LOB",
-                            "Effective Date"});
-                table37.AddRow(new string[] {
-                            "Casey Test Organization 921",
-                            "Commercial Auto",
-                            "10/21/2020"});
-#line 8
- testRunner.When("I create a new application with values", ((string)(null)), table37, "When ");
-#line hidden
-#line 11
- testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 12
- testRunner.And("Business Information page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("2 Check Application tabs are present and clickable")]
-        [NUnit.Framework.CategoryAttribute("US-9314-TC01")]
-        [NUnit.Framework.CategoryAttribute("US-9314-TC02")]
-        [NUnit.Framework.TestCaseAttribute("Application Information", null)]
-        [NUnit.Framework.TestCaseAttribute("Business Information", null)]
-        [NUnit.Framework.TestCaseAttribute("Contacts", null)]
-        [NUnit.Framework.TestCaseAttribute("UW Questions", null)]
-        [NUnit.Framework.TestCaseAttribute("Additional Questions", null)]
-        [NUnit.Framework.TestCaseAttribute("Policy Coverages", null)]
-        [NUnit.Framework.TestCaseAttribute("Drivers", null)]
-        [NUnit.Framework.TestCaseAttribute("Vehicles", null)]
-        [NUnit.Framework.TestCaseAttribute("Additional Interests", null)]
-        [NUnit.Framework.TestCaseAttribute("Summary", null)]
-        public virtual void _2CheckApplicationTabsArePresentAndClickable(string tabName, string[] exampleTags)
-        {
-            string[] @__tags = new string[] {
-                    "US-9314-TC01",
-                    "US-9314-TC02"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Tab Name", tabName);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Check Application tabs are present and clickable", null, tagsOfScenario, argumentsOfScenario);
 #line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -173,12 +114,74 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 17
+ testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+                TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Business Name",
+                            "LOB",
+                            "Effective Date"});
+                table27.AddRow(new string[] {
+                            "Casey Test Organization 921",
+                            "Commercial Auto",
+                            "10/21/2020"});
+#line 18
+ testRunner.When("I create a new application with values", ((string)(null)), table27, "When ");
+#line hidden
+#line 21
+ testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 22
+ testRunner.And("Business Information page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("2 Check Application tabs are present and clickable")]
+        [NUnit.Framework.TestCaseAttribute("Application Information", null)]
+        [NUnit.Framework.TestCaseAttribute("Business Information", null)]
+        [NUnit.Framework.TestCaseAttribute("Contacts", null)]
+        [NUnit.Framework.TestCaseAttribute("UW Questions", null)]
+        [NUnit.Framework.TestCaseAttribute("Additional Questions", null)]
+        [NUnit.Framework.TestCaseAttribute("Policy Coverages", null)]
+        [NUnit.Framework.TestCaseAttribute("Drivers", null)]
+        [NUnit.Framework.TestCaseAttribute("Vehicles", null)]
+        [NUnit.Framework.TestCaseAttribute("Additional Interests", null)]
+        [NUnit.Framework.TestCaseAttribute("Summary", null)]
+        public virtual void _2CheckApplicationTabsArePresentAndClickable(string tabName, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Tab Name", tabName);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Check Application tabs are present and clickable", null, tagsOfScenario, argumentsOfScenario);
+#line 24
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 25
  testRunner.When(string.Format("User navigates to {0} SideTab", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 18
+#line 26
  testRunner.Then(string.Format("{0} page is displayed", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 19
+#line 27
  testRunner.And("Verify applicationTabs are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

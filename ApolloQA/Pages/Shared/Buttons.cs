@@ -162,7 +162,7 @@ namespace ApolloQA.Pages.Shared
         /// Alerts
         /// </Section>
         public IWebElement alertCancel => functions.FindElementWait(10, By.XPath("//button[@aria-label='Close']"));
-        public IWebElement alertContinueAnyway => functions.FindElementWait(10, By.XPath("//button[.//span[normalize-space(text())='Continue anyway']]"));
+        public IWebElement alertContinueAnyway => functions.FindElementWait(3, By.XPath("//button[.//span[normalize-space(text())='Continue anyway']]"));
 
 
         /// <Section>
