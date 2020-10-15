@@ -79,7 +79,23 @@ namespace ApolloQA.Helpers
 
             return target;
         }
+        public static IEnumerable<Dictionary<String, String>> parseUITable(IWebElement ngxDatatableElement)
+        {
+            List<String> columnNames = ngxDatatableElement.FindElements(By.XPath("//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();
 
+            foreach(var row in ngxDatatableElement.FindElements(By.XPath("//datatable-body-row")))
+            {
+                List<IWebElement> cells = row.FindElements(By.XPath("//datatable-body-cell")).ToList<IWebElement>();
+                var rowDict = new Dictionary<String, String>();
+
+                for(int i=0; i<columnNames.Count(); i++)
+                {
+                    String cellText = string.Join("", cells[i].FindElements(By.XPath("/descendant::*/text()")).Select(child => child.Text));
+                    rowDict.Add(columnNames[i], cellText);
+                }
+                yield return rowDict;
+            }
+        }
 
         public static Dictionary<string, string> TableToDictionary(TechTalk.SpecFlow.Table table)
         {
@@ -93,7 +109,6 @@ namespace ApolloQA.Helpers
 
         public static IEnumerable<Dictionary<String, String>> parseCSV(String filePath, int headerRow=0)
         {
-            List<Dictionary<String, String>> result = new List<Dictionary<String, String>>();
 
             using (SpreadsheetDocument doc = SpreadsheetDocument.Open(filePath, false))
             {

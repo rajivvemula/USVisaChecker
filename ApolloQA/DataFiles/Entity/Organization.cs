@@ -105,18 +105,9 @@ namespace ApolloQA.DataFiles.Entity
                     int score = int.Parse(nfcResponse.results[0].rawScore);
                     String type = this.TypeName;
 
-                    const int numberOfColumns = 6;
-                    const int itemsToIgnoreTop = 1;
-
 
                     foreach(Dictionary<String, String>row in Engine.getTable("CT.2"))
                     {
-                        Console.WriteLine("Row: ->");
-                        foreach (var column in row)
-                        {
-                            Console.Write($"{column.Key}:{column.Value}, ");
-
-                        }
 
                         if (Functions.parseRatingFactorNumericalValues(row["Fleet Size Lower Bound"]) <= fleetSize &&
                             Functions.parseRatingFactorNumericalValues(row["Fleet Size Upper Bound"]) >= fleetSize &&

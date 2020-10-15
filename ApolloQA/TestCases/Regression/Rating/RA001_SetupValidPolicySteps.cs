@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
+using ApolloQA.Pages.Shared;
 
 namespace ApolloQA.TestCases.Regression.Rating
 {
@@ -18,12 +19,15 @@ namespace ApolloQA.TestCases.Regression.Rating
         RestAPI api;
 
         List<JObject> ratingResult;
+        RatingWorksheet ratingWorksheet;
        
         public RA001_SetupValidPolicySteps(IWebDriver driver, RestAPI api, State state)
         {
             this.driver = driver;
             this.api = api;
             this.state = state;
+            ratingWorksheet = new RatingWorksheet(driver);
+
 
         }
 
@@ -39,11 +43,13 @@ namespace ApolloQA.TestCases.Regression.Rating
                 }
             }
         }
+       
 
         [Then(@"Rating Worksheet should display the correct result")]
         public void ThenRatingWorksheetShouldDisplayTheCorrectResult()
         {
-            ScenarioContext.Current.Pending();
+
+
         }
 
 

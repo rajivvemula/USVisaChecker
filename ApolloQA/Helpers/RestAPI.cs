@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
 
 namespace ApolloQA.Helpers
 {
@@ -19,10 +16,7 @@ namespace ApolloQA.Helpers
         public RestAPI(IWebDriver driver)
         {
             this.driver = driver;
-            
         }
-
-        
         public dynamic GET( String URL)
         {
 

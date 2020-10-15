@@ -55,7 +55,30 @@ namespace ApolloQA.DataFiles
             //for each vehicle in the Policy/Application find it's algorithm factors
             foreach (var vehicle in root.GetVehicles())
             {
-                yield return GetAlgorithmFactors(this.CoverageCode, vehicle);
+                var factors = GetAlgorithmFactors(this.CoverageCode, vehicle);
+                float premium = 0;
+                foreach (var factor in factors)
+                {
+                    if(factor.Key == "CoverageCode")
+                    {
+                        continue;
+                    }
+                    if (factor.Key.Contains("BaseRateFactors"))
+                    {
+                        premium = (float)factor.Value["factor"];
+                    }
+                    else
+                    {
+                        premium = premium * (float)factor.Value["factor"];
+                    }
+
+                    ((JObject)factor.Value).Add("currentPremium", premium);
+
+
+                }
+                factors.Add("TotalPremium", premium);
+                factors.Add("Vehicle", JObject.FromObject(vehicle.GetProperties()));
+                yield return factors;
             }
         }
 
@@ -236,7 +259,6 @@ namespace ApolloQA.DataFiles
 
 
                 dynamic factor = interpreter.Eval(source);
-
                 var factorField = new JObject();
                 if (factor is String)
                 {
