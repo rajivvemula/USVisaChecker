@@ -21,9 +21,7 @@ namespace ApolloQA.TestCases.Regression.UserStories
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("US-9314 - 9 Create an Application Quote with Left Navigation Stepper")]
-    [NUnit.Framework.CategoryAttribute("US-9314")]
-    [NUnit.Framework.CategoryAttribute("US-9314-TC01")]
-    [NUnit.Framework.CategoryAttribute("US-9314-TC02")]
+    [NUnit.Framework.CategoryAttribute("newWindow")]
     [NUnit.Framework.CategoryAttribute("BuzzSmoke")]
     public partial class US_9314_9CreateAnApplicationQuoteWithLeftNavigationStepperFeature
     {
@@ -31,9 +29,7 @@ namespace ApolloQA.TestCases.Regression.UserStories
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "US-9314",
-                "US-9314-TC01",
-                "US-9314-TC02",
+                "newWindow",
                 "BuzzSmoke"};
         
 #line 1 "US-9314 - Create an Application Quote with Left Navigation Stepper.feature"
@@ -45,9 +41,7 @@ namespace ApolloQA.TestCases.Regression.UserStories
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-9314 - 9 Create an Application Quote with Left Navigation Stepper", "\tIn order to test application navigation\r\n\tAs an authorized user\r\n\tI want to veri" +
                     "fy the application tabs are present and clickable", ProgrammingLanguage.CSharp, new string[] {
-                        "US-9314",
-                        "US-9314-TC01",
-                        "US-9314-TC02",
+                        "newWindow",
                         "BuzzSmoke"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -87,13 +81,13 @@ namespace ApolloQA.TestCases.Regression.UserStories
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("1 Create new application")]
-        public virtual void _1CreateNewApplication()
+        [NUnit.Framework.DescriptionAttribute("0 Login")]
+        public virtual void _0Login()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Create new application", null, tagsOfScenario, argumentsOfScenario);
-#line 16
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("0 Login", null, tagsOfScenario, argumentsOfScenario);
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -113,7 +107,47 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 17
+#line 14
+ testRunner.Given("User is on Apollo Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 15
+ testRunner.When("User logs in as ApolloTestUserG301@biberk.com with default password 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 16
+ testRunner.Then("current logged in user is ApolloTestUserG301@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("1 Create new application")]
+        public virtual void _1CreateNewApplication()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Create new application", null, tagsOfScenario, argumentsOfScenario);
+#line 18
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 19
  testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -124,13 +158,13 @@ this.ScenarioInitialize(scenarioInfo);
                             "Casey Test Organization 921",
                             "Commercial Auto",
                             "10/21/2020"});
-#line 18
+#line 20
  testRunner.When("I create a new application with values", ((string)(null)), table27, "When ");
 #line hidden
-#line 21
+#line 23
  testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 22
+#line 24
  testRunner.And("Business Information page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -155,7 +189,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Tab Name", tabName);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Check Application tabs are present and clickable", null, tagsOfScenario, argumentsOfScenario);
-#line 24
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -175,13 +209,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 25
+#line 27
  testRunner.When(string.Format("User navigates to {0} SideTab", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 26
+#line 28
  testRunner.Then(string.Format("{0} page is displayed", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 27
+#line 29
  testRunner.And("Verify applicationTabs are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

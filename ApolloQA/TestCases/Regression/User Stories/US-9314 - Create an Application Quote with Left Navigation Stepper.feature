@@ -1,17 +1,19 @@
-﻿@US-9314
-@US-9314-TC01
-@US-9314-TC02
+﻿@newWindow
 @BuzzSmoke
+
+#US-9314
+#US-9314-TC01
+#US-9314-TC02
 
 Feature: US-9314 - 9 Create an Application Quote with Left Navigation Stepper
 	In order to test application navigation
 	As an authorized user
 	I want to verify the application tabs are present and clickable
 
-#Scenario: 0 User is able to login as Admin
-#	Given User is on Apollo Homepage
-#	When I enter AdminUsername and AdminPassword 
-#	Then I should see the Apollo Dashboard as Admin
+Scenario: 0 Login
+	Given User is on Apollo Homepage
+	When User logs in as ApolloTestUserG301@biberk.com with default password 1
+	Then current logged in user is ApolloTestUserG301@biberk.com
 
 Scenario: 1 Create new application
 	Given User is on Homepage

@@ -1,4 +1,5 @@
 ﻿@buzzsmoke
+@newWindow
 Feature: US-9158-Create Impersonation
 
 #TC01 - Verify impersonating access in UI only for users who has impersonate role
@@ -11,11 +12,11 @@ Feature: US-9158-Create Impersonation
 # Roles/permissions are currently being re-worked (TC-03 and TC-05 not implemented)
 
 
-#Scenario: 0 Login as user with impersonation access and verify impersonation icon is available/clickable
-#	Given User is on Apollo Homepage
-#	When User logs in as ApolloTestUserG301@biberk.com with default password 1
-#	Then current logged in user is ApolloTestUserG301@biberk.com
-#	And the Impersonate icon is visible
+Scenario: 0 Login as user with impersonation access and verify impersonation icon is available/clickable
+	Given User is on Apollo Homepage
+	When User logs in as ApolloTestUserG301@biberk.com with default password 1
+	Then current logged in user is ApolloTestUserG301@biberk.com
+	And the Impersonate icon is visible
 
 
 Scenario Outline: 1 Attempt to impersonate invalid user
@@ -51,8 +52,3 @@ Scenario: 4 Login as user without impersonation access and verify unable to impe
 	When User logs in as ApolloTestUserG312@biberk.com with default password 2
 	Then current logged in user is ApolloTestUserG312@biberk.com
 	Then the Impersonate icon is not visible
-
-Scenario: 5 Log back in as G301 for test suite purposes
-	When User logs out
-	When User logs in as ApolloTestUserG301@biberk.com with default password 1
-	Then current logged in user is ApolloTestUserG301@biberk.com

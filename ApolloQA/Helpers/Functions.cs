@@ -46,7 +46,15 @@ namespace ApolloQA.Helpers
 
             JavaScriptExecutor.highlight(driver, target);
             Thread.Sleep(250);
-            JavaScriptExecutor.highlight(driver, target, 0);
+            try
+            {
+                JavaScriptExecutor.highlight(driver, target, 0);
+            } 
+            catch
+            {
+                //do nothing
+            }
+
             return target;
         }
 
@@ -78,7 +86,15 @@ namespace ApolloQA.Helpers
 
             JavaScriptExecutor.highlight(driver, target);
             Thread.Sleep(250);
-            JavaScriptExecutor.highlight(driver, target, 0);
+            try
+            {
+                JavaScriptExecutor.highlight(driver, target, 0);
+            }
+            catch
+            {
+                //do nothing
+            }
+
             return target;
         }
 

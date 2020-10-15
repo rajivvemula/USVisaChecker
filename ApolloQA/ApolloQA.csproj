@@ -36,8 +36,8 @@
       <Guid>f8937e53-d444-4e71-9275-35b64210cc3b</Guid>
       <VersionMajor>1</VersionMajor>
       <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
+      <Lcid>0</Lcid>
       <Isolated>false</Isolated>
     </COMReference>
   </ItemGroup>
