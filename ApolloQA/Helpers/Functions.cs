@@ -48,6 +48,17 @@ namespace ApolloQA.Helpers
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
 
+            JavaScriptExecutor.highlight(driver, target);
+            Thread.Sleep(250);
+            try
+            {
+                JavaScriptExecutor.highlight(driver, target, 0);
+            } 
+            catch
+            {
+                //do nothing
+            }
+
             return target;
         }
 
@@ -75,6 +86,17 @@ namespace ApolloQA.Helpers
 
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
+            }
+
+            JavaScriptExecutor.highlight(driver, target);
+            Thread.Sleep(250);
+            try
+            {
+                JavaScriptExecutor.highlight(driver, target, 0);
+            }
+            catch
+            {
+                //do nothing
             }
 
             return target;

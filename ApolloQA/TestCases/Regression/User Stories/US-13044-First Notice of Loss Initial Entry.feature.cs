@@ -151,62 +151,62 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "a",
                             "Date of Loss"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "b",
                             "Time of Loss (HH:MM AM/PM)"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "c",
                             "How was the Notice Received"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "d",
                             "Date Reported"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "e",
                             "Time Reported (HH:MM AM/PM)"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "f",
                             "Related to an Existing Claim?"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "g",
                             "Policy Number"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "h",
                             "First Name"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "i",
                             "Middle Name"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "j",
                             "Last Name"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "k",
                             "Suffix"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "l",
                             "Email"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "m",
                             "Phone Type"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "n",
                             "CAT Field"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "o",
                             "Description of Loss"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "p",
                             "Police Involved?"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "q",
                             "Fire Department Involved?"});
 #line 15
- testRunner.Then("Verify an input is displayed with label", ((string)(null)), table18, "Then ");
+ testRunner.Then("Verify an input is displayed with label", ((string)(null)), table20, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -287,7 +287,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC05 How Notice Receieved Negative Test", null, tagsOfScenario, argumentsOfScenario);
-#line 41
+#line 42
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -307,7 +307,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 42
+#line 43
  testRunner.Then("Verify How Received contains phone - email - carrier pigeon", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -321,7 +321,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC06 Date Reported Negative Test", null, tagsOfScenario, argumentsOfScenario);
-#line 44
+#line 45
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -341,7 +341,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 45
+#line 46
  testRunner.Then("Verify Date Reported - defaults to today", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -355,7 +355,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC07 CAT Negative Test", null, tagsOfScenario, argumentsOfScenario);
-#line 47
+#line 48
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -375,7 +375,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 48
+#line 49
  testRunner.Then("Verify CAT defaults to None and has option1 and option2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

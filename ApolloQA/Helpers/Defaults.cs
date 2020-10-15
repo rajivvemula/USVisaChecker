@@ -9,6 +9,7 @@ namespace ApolloQA.Helpers
         public const string
             ADMIN_USERNAME = "ApolloTestUserG311@biberk.com",
             DEFAULT_PASSWORD = "ApolloTest12",
+            DEFAULT_PASSWORD2 = "ApolloTest12",
             SQLCONNECTIONSTRING = "Server=xbibaoazadb1qa2.database.windows.net;Database=bibapollodb;User Id=bbadmin;Password=Pqa2l2kr2ltjnaj4y!;";
         
         //QA URLs
@@ -32,8 +33,8 @@ namespace ApolloQA.Helpers
         {
             { "waffleTabs" , new List<string>{ "Underwriting", "Billing", "Administration", "Collections Center", "Claims" } },
             { "organizationTabs" , new List<string>{ "Business Information", "Addresses", "Drivers", "Vehicles", "Trailers" }},
-            { "applicationTabs" , new List<string>{  "Application Information","Business Information", "Contacts", "UW Questions",
-                                "Policy Coverages", "Drivers", "Vehicles", "Additional Questions",
+            { "applicationTabs" , new List<string>{  "Application Information", "Business Information", "Contacts", "UW Questions", 
+                                "Additional Questions", "Policy Coverages", "Drivers", "Vehicles", "Additional Interests",
                                 "Summary"}},
             { "policyTabs" , new List<string>{   "Business Information", "Contacts", "UW Questions",
                                 "Policy Coverages", "Drivers", "Vehicles", "Trailers",
@@ -75,11 +76,9 @@ namespace ApolloQA.Helpers
             {"Activities", "activities"},            
             {"Loss History", ""},          
             {"Policy History", "history"},
-            {"Occurence", "occurence" },
-            {"Loss Details", "loss-details" },
-            {"Supervisor Review", "supervisor-review" },
-            {"FNOL Dashboard", "fnol-dashboard" }
+            {"Home", "home"}
         };
+
 
 
         public static readonly string[] adminRoles = {

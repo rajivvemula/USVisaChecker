@@ -20,29 +20,23 @@ namespace ApolloQA.TestCases.Regression.UserStories
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("US-9314 - 9 Create an Application Quote with Left Navigation Stepper")]
-    [NUnit.Framework.CategoryAttribute("newWindow")]
-    [NUnit.Framework.CategoryAttribute("BuzzSmoke")]
-    public partial class US_9314_9CreateAnApplicationQuoteWithLeftNavigationStepperFeature
+    [NUnit.Framework.DescriptionAttribute("US-14816- Add Adjuster and Complexity to FNOL")]
+    public partial class US_14816_AddAdjusterAndComplexityToFNOLFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "newWindow",
-                "BuzzSmoke"};
+        private string[] _featureTags = ((string[])(null));
         
-#line 1 "US-9314 - Create an Application Quote with Left Navigation Stepper.feature"
+#line 1 "US-14816- Add Adjuster and Complexity to FNOL.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-9314 - 9 Create an Application Quote with Left Navigation Stepper", "\tIn order to test application navigation\r\n\tAs an authorized user\r\n\tI want to veri" +
-                    "fy the application tabs are present and clickable", ProgrammingLanguage.CSharp, new string[] {
-                        "newWindow",
-                        "BuzzSmoke"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-14816- Add Adjuster and Complexity to FNOL", "\tAs a claim user\r\n\tI will be able to assign an adjuster and complexity to the FNO" +
+                    "L/Claim details.  ", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,13 +75,13 @@ namespace ApolloQA.TestCases.Regression.UserStories
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("0 Login")]
-        public virtual void _0Login()
+        [NUnit.Framework.DescriptionAttribute("TC01 Verify Claim Type")]
+        public virtual void TC01VerifyClaimType()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("0 Login", null, tagsOfScenario, argumentsOfScenario);
-#line 13
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC01 Verify Claim Type", null, tagsOfScenario, argumentsOfScenario);
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -107,89 +101,67 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 14
- testRunner.Given("User is on Apollo Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 15
- testRunner.When("User logs in as ApolloTestUserG301@biberk.com with default password 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 16
- testRunner.Then("current logged in user is ApolloTestUserG301@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("1 Create new application")]
-        public virtual void _1CreateNewApplication()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Create new application", null, tagsOfScenario, argumentsOfScenario);
-#line 18
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 19
+#line 7
  testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Business Name",
-                            "LOB",
-                            "Effective Date"});
+                            "Received",
+                            "Related",
+                            "First",
+                            "Last",
+                            "Suffix",
+                            "Email",
+                            "PhoneType",
+                            "PhoneNumber",
+                            "ClaimCategory",
+                            "LossDesc",
+                            "Police",
+                            "PoliceName",
+                            "PoliceNumber",
+                            "Fire",
+                            "FireName",
+                            "FireNumber"});
                 table27.AddRow(new string[] {
-                            "Casey Test Organization 921",
-                            "Commercial Auto",
-                            "10/21/2020"});
-#line 20
- testRunner.When("I create a new application with values", ((string)(null)), table27, "When ");
+                            "Phone",
+                            "No",
+                            "Joseph",
+                            "Seed",
+                            "Mr",
+                            "josephseed@gmail.com",
+                            "Mobile",
+                            "5452156532",
+                            "Option 1",
+                            "Sample Desc",
+                            "Yes",
+                            "PAPD",
+                            "1234",
+                            "Yes",
+                            "PAFD",
+                            "4567"});
+#line 8
+ testRunner.When("User creates a FNOL", ((string)(null)), table27, "When ");
 #line hidden
-#line 23
- testRunner.Then("an application is successfully created with the proper values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 11
+ testRunner.Then("Verify FNOL is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 24
- testRunner.And("Business Information page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 12
+ testRunner.Then("Verify Radio Option is present : Property Damage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 13
+ testRunner.Then("Verify Radio Option is present : Bodily Injury", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("2 Check Application tabs are present and clickable")]
-        [NUnit.Framework.TestCaseAttribute("Application Information", null)]
-        [NUnit.Framework.TestCaseAttribute("Business Information", null)]
-        [NUnit.Framework.TestCaseAttribute("Contacts", null)]
-        [NUnit.Framework.TestCaseAttribute("UW Questions", null)]
-        [NUnit.Framework.TestCaseAttribute("Additional Questions", null)]
-        [NUnit.Framework.TestCaseAttribute("Policy Coverages", null)]
-        [NUnit.Framework.TestCaseAttribute("Drivers", null)]
-        [NUnit.Framework.TestCaseAttribute("Vehicles", null)]
-        [NUnit.Framework.TestCaseAttribute("Additional Interests", null)]
-        [NUnit.Framework.TestCaseAttribute("Summary", null)]
-        public virtual void _2CheckApplicationTabsArePresentAndClickable(string tabName, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("TC02 Verify Complexity Type")]
+        public virtual void TC02VerifyComplexityType()
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Tab Name", tabName);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2 Check Application tabs are present and clickable", null, tagsOfScenario, argumentsOfScenario);
-#line 26
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC02 Verify Complexity Type", null, tagsOfScenario, argumentsOfScenario);
+#line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -209,14 +181,54 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 27
- testRunner.When(string.Format("User navigates to {0} SideTab", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Key",
+                            "Value"});
+                table28.AddRow(new string[] {
+                            "a",
+                            "Complex"});
+                table28.AddRow(new string[] {
+                            "b",
+                            "Fastrack"});
+#line 16
+ testRunner.Then("Verify a Select contains value : complexityId", ((string)(null)), table28, "Then ");
 #line hidden
-#line 28
- testRunner.Then(string.Format("{0} page is displayed", tabName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("TC03 Verify Clicking Cancel")]
+        public virtual void TC03VerifyClickingCancel()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC03 Verify Clicking Cancel", null, tagsOfScenario, argumentsOfScenario);
+#line 22
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
-#line 29
- testRunner.And("Verify applicationTabs are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 23
+ testRunner.When("User clicks buttonCancel button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 24
+ testRunner.Then("fnol-dashboard page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
