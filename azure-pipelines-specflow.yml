@@ -7,10 +7,9 @@ trigger:
   branches:
     include:
       - master
-      - Casey
   paths:
     exclude:
-      - ApolloQA_SpecFlow/*
+      - ApolloQA/*
 
 pool:
   vmImage: 'windows-latest'
@@ -24,11 +23,11 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/ApolloQA.sln'
+    restoreSolution: '**/ApolloQA_SpecFlow.sln'
     feedsToUse: 'select'
 - task: VSBuild@1
   inputs:
-    solution: '**\ApolloQA.sln'
+    solution: '**\ApolloQA_SpecFlow.sln'
     restoreNugetPackages: true
 - task: PowerShell@2
   inputs:
@@ -43,9 +42,8 @@ steps:
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\ApolloQA.dll
+      **\ApolloQA_SpecFlow.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
-    testFiltercriteria: 'TestCategory=SmokeTestBase'
     testRunTitle: 'SmokeTest'
