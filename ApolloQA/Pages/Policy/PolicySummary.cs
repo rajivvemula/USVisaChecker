@@ -113,6 +113,7 @@ namespace ApolloQA.Pages.Policy
 
         public void NavigateToRatingWorksheet()
         {
+            functions.WaitForElementToDisappear(120, By.XPath("//bh-mat-spinner-overlay/*"));
             this.viewRatingWorksheetButton.Click();
         }
     }

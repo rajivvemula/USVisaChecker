@@ -101,6 +101,14 @@ namespace ApolloQA.Helpers
 
             return target;
         }
+
+        public void WaitForElementToDisappear(int seconds, By by)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
+            
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(by));
+
+        }
         public static IEnumerable<Dictionary<String, String>> parseUITable(IWebElement ngxDatatableElement)
         {
             List<String> columnNames = ngxDatatableElement.FindElements(By.XPath("//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();
@@ -138,7 +146,7 @@ namespace ApolloQA.Helpers
                 WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
                 Row[] sheetData = worksheetPart.Worksheet.Elements<SheetData>().First().Elements<Row>().ToArray<Row>();
 
-                var header = sheetData[0].Elements<Cell>().Select(cell =>cell.CellValue.Text ).ToArray<string>();
+                var header = sheetData[0].Elements<Cell>().Select(cell =>extractCellText(workbookPart, cell)).ToArray<string>();
 
                 for (int rowIndex = 1; rowIndex < sheetData.Length; rowIndex++)
                 {
@@ -147,14 +155,28 @@ namespace ApolloQA.Helpers
 
                     var dict = new Dictionary<String, String>();
                     for (int i = 0; i < header.Length; i++)
-                    {
-                        dict.Add(header[i], cells[i].CellValue.Text);
+                    {                        
+                        
+                        dict.Add(header[i], extractCellText(workbookPart, (Cell)cells[i]));
                     }
                     yield return dict;
                 }
             }
 
            
+        }
+
+        private static String extractCellText(WorkbookPart workbookPart, Cell cell)
+        {
+            var cellValue = cell.CellValue;
+            var text = (cellValue == null) ? cell.InnerText : cellValue.Text;
+            if ((cell.DataType != null) && (cell.DataType == CellValues.SharedString))
+            {
+                text = workbookPart.SharedStringTablePart.SharedStringTable
+                    .Elements<SharedStringItem>().ElementAt(
+                        Convert.ToInt32(cell.CellValue.Text)).InnerText;
+            }
+            return (text ?? string.Empty).Trim();
         }
         public static dynamic parseRatingFactorNumericalValues(String value)
         {

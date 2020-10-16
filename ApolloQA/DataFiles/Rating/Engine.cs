@@ -119,18 +119,20 @@ namespace ApolloQA.DataFiles
             var factors = this.getAlgorithmFactorParameters(CoverageCode, vehicle);
             const string LOWERBOUND = "Lower Bound";
             const string UPPERBOUND = "Upper Bound";
-
+            const string INTERPOLATIONUPPERMATCH = "Interpolation Upper Row Match";
             foreach (var factor in factors)
             {
                 var factorTable = getTable(factor.Key);
                 JObject parameters = (JObject)factor.Value;
-                foreach (var row in factorTable)
+                for (int rowIndex = 0; rowIndex < factorTable.Count; rowIndex++)
                 {
+                    var row = factorTable[rowIndex];
                     Dictionary<string, bool> match = new Dictionary<string, bool>();
                     bool lowerBoundMatch = false;
                     bool upperBoundMatch = false;
-                    foreach (var column in row)
+                    for (int columnIndex = 0; columnIndex < row.Count; columnIndex++)
                     {
+                        KeyValuePair<string, string> column = row.ElementAt(columnIndex);
                         var columnToMatch = column.Key;
 
                         if (columnToMatch.Contains(LOWERBOUND))
@@ -154,19 +156,36 @@ namespace ApolloQA.DataFiles
 
                                 param["parsedValue"] = ((bool)param["value"]) ? "Yes" : "No";
                             }
-
                             if (column.Key.Contains(LOWERBOUND) && param["value"].ToObject<int>() >= int.Parse(column.Value))
                             {
                                 lowerBoundMatch = true;
                             }
-                            else if (column.Key.Contains(UPPERBOUND) && param["value"].ToObject<int>() <= (column.Value == "+" ? int.MaxValue : int.Parse(column.Value)))
+                            else if (column.Key.Contains(UPPERBOUND))
                             {
-                                upperBoundMatch = true;
+                                var columnValue = column.Value == "+" ? int.MaxValue : int.Parse(column.Value);
+                                var nextRowLowerBound = rowIndex == factorTable.Count-1 ? null :factorTable[rowIndex + 1][columnToMatch + $" {LOWERBOUND}"];
+                                if (param["value"].ToObject<int>() <= columnValue)
+                                {
+                                    upperBoundMatch = true;
+                                }
+                                //check for interpolation US 12209
+                                else if(columnValue != int.MaxValue && 
+                                        columnValue+1 != int.Parse(nextRowLowerBound) &&
+                                        param["value"].ToObject<int>() < int.Parse(nextRowLowerBound)
+                                        )
+                                {
+                                    match.Add(INTERPOLATIONUPPERMATCH, true);
+                                    upperBoundMatch = true;
+                                }
                             }
+                           
 
-                            if (lowerBoundMatch && upperBoundMatch)
+                            if (lowerBoundMatch || upperBoundMatch)
                             {
                                 match.Add(column.Key, true);
+
+                                lowerBoundMatch = false;
+                                lowerBoundMatch = false;
                             }
                             else if (column.Value != null && column.Value == param["value"]?.ToString() || column.Value == param["parsedValue"]?.ToString())
                             {
@@ -183,9 +202,27 @@ namespace ApolloQA.DataFiles
                     }
                     if (!match.ContainsValue(false))
                     {
+                        
                         string factorColName = row.Keys.ToList<string>().Find(column => column.Contains("Factor"));
-                        ((JObject)factor.Value).Add("matchedRow", JObject.FromObject(row));
-                        ((JObject)factor.Value).Add("factor", float.Parse(row[factorColName]));
+                        if (match.ContainsKey(INTERPOLATIONUPPERMATCH))
+                        {
+                            var nextRow = factorTable[rowIndex + 1];
+
+
+                            ((JObject)factor.Value).Add("matchedRow", JObject.FromObject(row));
+                            ((JObject)factor.Value).Add("matchedNextRow", JObject.FromObject(nextRow));
+                            ((JObject)factor.Value).Add("interpolated", true);
+
+                            ((JObject)factor.Value).Add("factor", (float.Parse(row[factorColName])+ float.Parse(nextRow[factorColName]))/2);
+                        }
+                        else
+                        {
+                            ((JObject)factor.Value).Add("matchedRow", JObject.FromObject(row));
+                            ((JObject)factor.Value).Add("factor", float.Parse(row[factorColName]));
+
+                        }
+
+                       
                         break;
 
                     }
