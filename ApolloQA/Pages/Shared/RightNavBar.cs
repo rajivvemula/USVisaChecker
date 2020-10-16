@@ -31,6 +31,48 @@ namespace ApolloQA.Pages.Shared
         public IWebElement sideWaffleMenu => functions.FindElementWait(60, By.XPath("//mat-icon[contains(@class, 'side-navbar-waffle')]"));
         public IWebElement addFnolButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'Add FNOL')]"));
         public IWebElement addAppButton => functions.FindElementWait(10, By.XPath("//button[contains(text(),'New Application')]"));
+        public IWebElement currentUserIcon => functions.FindElementWait(30, By.XPath("//button[.//mat-icon[contains(text(),'person')]]"));
+
+        /* For Impersonation modal*/
+        public IWebElement usernameField => functions.FindElementWait(10, By.XPath("//input[@formcontrolname='email']"));
+        public IWebElement submitButton => functions.FindElementWaitUntilClickable(10, By.XPath("//button[@aria-label='Submit']"));
+        public IWebElement errorMessage => functions.FindElementWait(10, By.XPath("//mat-error"));
+
+
+        public string GetCurrentLoggedInUser()
+        {
+            currentUserIcon.Click();
+
+            IWebElement theCurrentUser = functions.FindElementWait(30, By.XPath("//button[.//u[string-length(text()) > 0]]"));
+
+            string currentUser = theCurrentUser.Text;
+
+            //to close pop-up
+            IWebElement currentElement = driver.SwitchTo().ActiveElement();
+            currentElement.SendKeys(Keys.Escape);
+
+            return currentUser;
+        }
+
+        public void LogoutCurrentUser()
+        {
+            currentUserIcon.Click();
+
+            IWebElement logoutButton = functions.FindElementWaitUntilClickable(10, By.XPath("//button[contains(text(),'Logout')]"));
+
+            logoutButton.Click();
+
+            IWebElement pickAnAccount = functions.FindElementWaitUntilClickable(10, By.XPath("//div[@class='row tile']"));
+            pickAnAccount.Click();
+
+            //wait for successful logout logout
+            IWebElement logoutConfirmation = functions.FindElementWaitUntilClickable(30, By.XPath("//div[@id='login_workload_logo_text']"));
+
+            //need to click use another account
+            IWebElement anotherAccount = functions.FindElementWaitUntilClickable(10, By.XPath("//div[@id='otherTile']"));
+            anotherAccount.Click();
+
+        }
 
 
         public void ImpersonateValidUser(string userName)
@@ -57,8 +99,37 @@ namespace ApolloQA.Pages.Shared
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(RedImpersonateIcon));
         }
 
+        public string ImpersonateInvalidUser(string userName)
+        {
+            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
+
+            string currentImpersonatedUser = CurrentlyImpersonatedUser();
+
+            //if impersonating other user, need to stop impersonation
+            if (!currentImpersonatedUser.Equals("NULL"))
+                StopImpersonation();
+
+            ImpersonateIcon.Click();
+            IWebElement usernameField = functions.FindElementWait(10, By.XPath("//input[@formcontrolname='email']"));
+            usernameField.SendKeys(userName);
+            IWebElement submitButton = functions.FindElementWait(10, By.XPath("//button[@aria-label='Submit']"));
+            submitButton.Click();
+
+            //grab error text
+            IWebElement errorMessage = functions.FindElementWait(10, By.XPath("//mat-error"));
+            string errorText = errorMessage.Text;
+
+            //close impersonate window
+            IWebElement cancelButton = functions.FindElementWait(10, By.XPath("//button[@aria-label='Cancel']"));
+            cancelButton.Click();
+
+            //return error text
+            return errorText;
+        }
+
         public string CurrentlyImpersonatedUser()
         {
+            Thread.Sleep(2000);
 
             //if impersonating, the impersonate icon will have title="On Behalf Of Sonia.Amaravel@biberk.com  Click to stop impersonation"
             //if not impersonating, title="Choose user to impersonate"

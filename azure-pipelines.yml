@@ -4,8 +4,9 @@
 # https://aka.ms/yaml
 
 trigger:
-  - master
-  
+- master
+- Casey
+
 pool:
   vmImage: 'windows-latest'
 
@@ -41,4 +42,5 @@ steps:
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
+    testFiltercriteria: 'TestCategory=SmokeTestBase'
     testRunTitle: 'SmokeTest'

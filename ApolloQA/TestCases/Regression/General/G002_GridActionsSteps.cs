@@ -26,9 +26,36 @@ namespace ApolloQA.TestCases.Regression.General
             foreach (var detail in details)
             {
                 bool checkLabel = grid.CheckColumnLabel(detail.Value);
-                Assert.IsTrue(checkLabel, "Column Title:" + detail + " not found");
+                Assert.IsTrue(checkLabel, "Column Title:" + detail.value + " not found");
             }
 
         }
+        [Then(@"Verify grid contains ellipsis")]
+        public void ThenVerifyGridContainsEllipsis()
+        {
+            bool verifyEllipsis = grid.gridEllipsis.Displayed;
+            Assert.IsTrue(verifyEllipsis, "Grid does not have an ellipsis");
+        }
+
+        [Then(@"Verify grid does not contain ellipsis")]
+        public void ThenVerifyGridDoesNotContainEllipsis()
+        {
+            bool verifyEllipsis = grid.gridEllipsis.Displayed;
+            Assert.IsFalse(verifyEllipsis, "Grid has an ellipsis, when it should not have any");
+        }
+
+        [Then(@"Verify ellipsis contains the following options")]
+        public void ThenVerifyEllipsisContainsTheFollowingOptions(Table table)
+        {
+            var details = table.CreateDynamicSet();
+            foreach (var detail in details)
+            {
+                bool checkMenu = grid.CheckIfEllipsisMenuContains(detail.Value);
+                Assert.IsTrue(checkMenu, "Menu does contain " + detail.value);
+            }
+        }
+
+
+
     }
 }

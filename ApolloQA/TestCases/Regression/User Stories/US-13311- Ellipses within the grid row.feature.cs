@@ -20,24 +20,23 @@ namespace ApolloQA.TestCases.Regression.UserStories
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("US-15721-Claim Left Navigation")]
-    public partial class US_15721_ClaimLeftNavigationFeature
+    [NUnit.Framework.DescriptionAttribute("US- 13311- Ellipses within the grid row")]
+    public partial class US_13311_EllipsesWithinTheGridRowFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "US-15721-Claim Left Navigation.feature"
+#line 1 "US-13311- Ellipses within the grid row.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-15721-Claim Left Navigation", "\tAs a claims adjuster property damage, \r\n\tclaims adjuster bodily injury, claims m" +
-                    "anager and claims representative \r\n\tI will be able to navigate to various claims" +
-                    " screen using the left navigation.  ", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US- 13311- Ellipses within the grid row", "\tAs a user, \r\n\tI want to select the appropriate operation within the selected lin" +
+                    "e of the grid \r\n\tso that navigation is easy", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,13 +75,13 @@ namespace ApolloQA.TestCases.Regression.UserStories
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("TC1 Verify Policy Left Nav Exists")]
-        public virtual void TC1VerifyPolicyLeftNavExists()
+        [NUnit.Framework.DescriptionAttribute("Check If Ellipsis is present")]
+        public virtual void CheckIfEllipsisIsPresent()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC1 Verify Policy Left Nav Exists", null, tagsOfScenario, argumentsOfScenario);
-#line 6
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check If Ellipsis is present", null, tagsOfScenario, argumentsOfScenario);
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -102,52 +101,30 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 8
  testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 8
- testRunner.When("User navigates to claim ID recent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-                TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Key",
-                            "Value"});
-                table31.AddRow(new string[] {
-                            "a",
-                            "Occurence"});
-                table31.AddRow(new string[] {
-                            "b",
-                            "Loss Details"});
-                table31.AddRow(new string[] {
-                            "c",
-                            "Contacts"});
-                table31.AddRow(new string[] {
-                            "d",
-                            "Documents"});
-                table31.AddRow(new string[] {
-                            "e",
-                            "Supervisor Review"});
 #line 9
- testRunner.Then("Verify sidetab is present", ((string)(null)), table31, "Then ");
+ testRunner.When("User navigates to Policy Tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 10
+ testRunner.Then("Tab navigates to Policy URL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 11
+ testRunner.Then("Verify grid contains ellipsis", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("TC2 Verify each tab within policy left nav is working")]
-        [NUnit.Framework.TestCaseAttribute("a", "Occurence", null)]
-        [NUnit.Framework.TestCaseAttribute("b", "Loss Details", null)]
-        [NUnit.Framework.TestCaseAttribute("c", "Contacts", null)]
-        [NUnit.Framework.TestCaseAttribute("d", "Documents", null)]
-        [NUnit.Framework.TestCaseAttribute("e", "Supervisor Review", null)]
-        public virtual void TC2VerifyEachTabWithinPolicyLeftNavIsWorking(string key, string tab, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("Verify ellipsis has correct options displayed")]
+        public virtual void VerifyEllipsisHasCorrectOptionsDisplayed()
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Key", key);
-            argumentsOfScenario.Add("Tab", tab);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC2 Verify each tab within policy left nav is working", null, tagsOfScenario, argumentsOfScenario);
-#line 17
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify ellipsis has correct options displayed", null, tagsOfScenario, argumentsOfScenario);
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -167,11 +144,60 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 18
- testRunner.When(string.Format("User navigates to {0} SideTab", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Key",
+                            "Value"});
+                table24.AddRow(new string[] {
+                            "a",
+                            "Delete"});
+                table24.AddRow(new string[] {
+                            "b",
+                            "View"});
+                table24.AddRow(new string[] {
+                            "c",
+                            "Edit"});
+#line 14
+ testRunner.Then("Verify ellipsis contains the following options", ((string)(null)), table24, "Then ");
 #line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check if Ellpisis is not present")]
+        public virtual void CheckIfEllpisisIsNotPresent()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if Ellpisis is not present", null, tagsOfScenario, argumentsOfScenario);
 #line 19
- testRunner.Then(string.Format("{0} page is displayed", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 20
+ testRunner.Given("User opens Waffle Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 21
+ testRunner.When("User navigates to Claims Tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 22
+ testRunner.Then("Tab navigates to Claims URL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

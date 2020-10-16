@@ -18,6 +18,7 @@ namespace ApolloQA.Driver
     {
         private static IObjectContainer _objectContainer;
         public static IWebDriver driver;
+        public static IWebDriver currentDriver;
         public static State state;
         public static CosmosClient client;
         public static Database database;
@@ -54,31 +55,36 @@ namespace ApolloQA.Driver
             database = client.GetDatabase("apollo");
         }
 
-        [BeforeFeature]
+        [BeforeFeature(Order = 1)]
         public static void BeforeFeature()
         {
-            //_featureContext = featureContext;
-            //_featureContext.Add("Application List", new List<ApplicationObject>());
-
+            currentDriver = driver;
         }
 
-        //[AfterFeature]
-        //public static void AfterFeature(FeatureContext featureContext)
-        //{
-        //    //print current feature's Application List
-
-        //    //add current Application to State's objects Application List
-
-        //    //flush the Feature's Application List
-        //}
+        [BeforeFeature("newWindow", Order = 2)]
+        public static void BeforeFeatureNewWindow()
+        {
+            currentDriver = new ChromeDriver();
+            currentDriver.Manage().Window.Maximize();
+        }
 
 
         [BeforeScenario]
         public void BeforeScenario()
         {
-            _objectContainer.RegisterInstanceAs(driver);
+            _objectContainer.RegisterInstanceAs(currentDriver);
             _objectContainer.RegisterInstanceAs(state);
             _objectContainer.RegisterInstanceAs(client);
+        }
+
+        [AfterFeature]
+        public static void AfterFeature()
+        {
+            if(currentDriver != driver)
+            {
+                currentDriver.Quit();
+                currentDriver = null;
+            }
         }
 
         [AfterTestRun]

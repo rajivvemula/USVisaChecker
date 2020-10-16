@@ -28,5 +28,19 @@ namespace ApolloQA.TestCases.Regression.General
                 Assert.IsTrue(checkLabel, "Label " + detail + " not found");
             }
         }
+
+        [Then(@"Verify a Select contains value : (.*)")]
+        public void ThenVerifyASelectContainsValue(string selectName, Table table)
+        {
+            
+            var details = table.CreateDynamicSet();
+            helper.ClickSelect(selectName);
+            foreach (var detail in details)
+            {
+                bool checkValue = helper.CheckSelectValue(detail.Value);
+                Assert.IsTrue(checkValue, "Value " + detail + " not found");
+            }
+        }
+
     }
 }

@@ -20,22 +20,22 @@ namespace ApolloQA.TestCases.Regression.General
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("G003-VerifyInputs")]
-    public partial class G003_VerifyInputsFeature
+    [NUnit.Framework.DescriptionAttribute("G004-RadioButtons")]
+    public partial class G004_RadioButtonsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "G003-VerifyInputs.feature"
+#line 1 "G004-RadioButtons.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/General", "G003-VerifyInputs", "Test Various Inputs and Select on wether they exist or not", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/General", "G004-RadioButtons", "\tVarious Tests concerning Radio Buttons ", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,12 +74,12 @@ namespace ApolloQA.TestCases.Regression.General
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Verify Inputs")]
-        public virtual void VerifyInputs()
+        [NUnit.Framework.DescriptionAttribute("Verify Radio Inputs")]
+        public virtual void VerifyRadioInputs()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Inputs", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Radio Inputs", null, tagsOfScenario, argumentsOfScenario);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -100,23 +100,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Key",
-                            "Value"});
-                table11.AddRow(new string[] {
-                            "a",
-                            "Date of Loss"});
 #line 6
- testRunner.Then("Verify an input is displayed with label", ((string)(null)), table11, "Then ");
-#line hidden
-                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Key",
-                            "Value"});
-                table12.AddRow(new string[] {
-                            "a",
-                            "DropDown Value 1"});
-#line 9
- testRunner.Then("Verify a Select contains value : <Select Name>", ((string)(null)), table12, "Then ");
+ testRunner.Then("Verify Radio Option is present : <Option>", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -20,24 +20,23 @@ namespace ApolloQA.TestCases.Regression.UserStories
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("US-15721-Claim Left Navigation")]
-    public partial class US_15721_ClaimLeftNavigationFeature
+    [NUnit.Framework.DescriptionAttribute("US-14323- Claims Manager Dashboard")]
+    public partial class US_14323_ClaimsManagerDashboardFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "US-15721-Claim Left Navigation.feature"
+#line 1 "US-14323- Claims Manager Dashboard.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-15721-Claim Left Navigation", "\tAs a claims adjuster property damage, \r\n\tclaims adjuster bodily injury, claims m" +
-                    "anager and claims representative \r\n\tI will be able to navigate to various claims" +
-                    " screen using the left navigation.  ", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-14323- Claims Manager Dashboard", "\tAs a claims manager, \r\n\tI will be able to view my dashboard which will allow me " +
+                    "to view my work as well as a snapshot of my employees work.", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,12 +75,12 @@ namespace ApolloQA.TestCases.Regression.UserStories
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("TC1 Verify Policy Left Nav Exists")]
-        public virtual void TC1VerifyPolicyLeftNavExists()
+        [NUnit.Framework.DescriptionAttribute("TC01 Verify Adjusters Claim Grid FNOL")]
+        public virtual void TC01VerifyAdjustersClaimGridFNOL()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC1 Verify Policy Left Nav Exists", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC01 Verify Adjusters Claim Grid FNOL", null, tagsOfScenario, argumentsOfScenario);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -103,51 +102,56 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 7
- testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("User is on Apollo Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
- testRunner.When("User navigates to claim ID recent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("User opens Waffle Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+#line 9
+ testRunner.When("User navigates to Claims Tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 10
+ testRunner.Then("Tab navigates to Claims URL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table31.AddRow(new string[] {
+                table25.AddRow(new string[] {
                             "a",
-                            "Occurence"});
-                table31.AddRow(new string[] {
+                            "Date Reported"});
+                table25.AddRow(new string[] {
                             "b",
-                            "Loss Details"});
-                table31.AddRow(new string[] {
+                            "FNOL Number"});
+                table25.AddRow(new string[] {
                             "c",
-                            "Contacts"});
-                table31.AddRow(new string[] {
+                            "Claimant"});
+                table25.AddRow(new string[] {
                             "d",
-                            "Documents"});
-                table31.AddRow(new string[] {
+                            "Occurrence Number"});
+                table25.AddRow(new string[] {
                             "e",
-                            "Supervisor Review"});
-#line 9
- testRunner.Then("Verify sidetab is present", ((string)(null)), table31, "Then ");
+                            "FNOL Status"});
+                table25.AddRow(new string[] {
+                            "f",
+                            "Policy Code"});
+                table25.AddRow(new string[] {
+                            "g",
+                            "Date of Loss"});
+#line 11
+ testRunner.Then("Grid column label is displayed", ((string)(null)), table25, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("TC2 Verify each tab within policy left nav is working")]
-        [NUnit.Framework.TestCaseAttribute("a", "Occurence", null)]
-        [NUnit.Framework.TestCaseAttribute("b", "Loss Details", null)]
-        [NUnit.Framework.TestCaseAttribute("c", "Contacts", null)]
-        [NUnit.Framework.TestCaseAttribute("d", "Documents", null)]
-        [NUnit.Framework.TestCaseAttribute("e", "Supervisor Review", null)]
-        public virtual void TC2VerifyEachTabWithinPolicyLeftNavIsWorking(string key, string tab, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("TC02 Verify Adjusters Claim Grid Statistics")]
+        public virtual void TC02VerifyAdjustersClaimGridStatistics()
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Key", key);
-            argumentsOfScenario.Add("Tab", tab);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC2 Verify each tab within policy left nav is working", null, tagsOfScenario, argumentsOfScenario);
-#line 17
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TC02 Verify Adjusters Claim Grid Statistics", null, tagsOfScenario, argumentsOfScenario);
+#line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -167,11 +171,32 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 18
- testRunner.When(string.Format("User navigates to {0} SideTab", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 19
- testRunner.Then(string.Format("{0} page is displayed", tab), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Key",
+                            "Value"});
+                table26.AddRow(new string[] {
+                            "a",
+                            "Adjuster"});
+                table26.AddRow(new string[] {
+                            "b",
+                            "Line of Business"});
+                table26.AddRow(new string[] {
+                            "c",
+                            "Prior Month"});
+                table26.AddRow(new string[] {
+                            "d",
+                            "Open"});
+                table26.AddRow(new string[] {
+                            "e",
+                            "Reopen"});
+                table26.AddRow(new string[] {
+                            "f",
+                            "Closed"});
+                table26.AddRow(new string[] {
+                            "g",
+                            "Current Pending"});
+#line 22
+ testRunner.Then("Grid column label is displayed", ((string)(null)), table26, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

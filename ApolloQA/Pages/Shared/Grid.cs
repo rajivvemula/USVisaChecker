@@ -17,6 +17,9 @@ namespace ApolloQA.Pages.Shared
             functions = new Functions(driver);
         }
 
+        //This is the first ellipsis, use it to verify if it exists.
+        public IWebElement gridEllipsis => functions.FindElementWait(10, By.XPath("//mat-icon[@aria-label='more']"));
+
         public bool CheckColumnLabel(string title)
         {
             IWebElement columnTitle = functions.FindElementWait(10, By.XPath("//datatable-header-cell[@title='" + title + "']"));
@@ -27,6 +30,13 @@ namespace ApolloQA.Pages.Shared
         {
             IWebElement columnTitle = functions.FindElementWait(10, By.XPath("//span[@title='" + title + "']"));
             return columnTitle.Displayed;
+        }
+
+        public bool CheckIfEllipsisMenuContains(string text)
+        {
+            //button[@role='menuitem' and normalize-space(text())='Delete' ]
+            IWebElement menuButton = functions.FindElementWait(10, By.XPath("//button[@role='menuitem' and normalize-space(text())='" + text + "']"));
+            return menuButton.Displayed;
         }
     }
 }
