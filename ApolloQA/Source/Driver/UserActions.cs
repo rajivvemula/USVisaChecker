@@ -24,6 +24,11 @@ namespace ApolloQA.Source.Driver
         {
             FindElementWaitUntilClickable(ElementLocator).Click();
         }
+        public static bool assertElementContainsText(By ElementLocator, string text)
+        {
+            return FindElementWait(ElementLocator).Text.Contains(text);
+        }
+
         public static IWebElement FindElementWait(By by, int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS)
         {
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
@@ -143,15 +148,15 @@ namespace ApolloQA.Source.Driver
         //
         //  Log Handling
         //
-        public static void handleFailure(string message, bool optional=false, Exception ex=null)
+        public static void handleFailure(string message, Exception ex = null, bool optional=false)
         {
-            Console.WriteLine(message);
+            Log.Error(message);
 
             if(ex != null)
             {
                 if (optional)
                 {
-                    Console.WriteLine(ex.Message);
+                    Log.Error(ex.Message);
                 }
                 else
                 {

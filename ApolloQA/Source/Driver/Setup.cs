@@ -64,7 +64,7 @@ namespace ApolloQA.Source.Driver
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            driver.Quit();
+            //driver.Quit();
             Cosmos.client.Dispose();
         }
     }

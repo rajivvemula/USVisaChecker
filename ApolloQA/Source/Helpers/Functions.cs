@@ -12,8 +12,7 @@ namespace ApolloQA.Source.Helpers
     class Functions
     {
 
-        //Find Element - Wait Until Visible
-        
+                
         public static IEnumerable<Dictionary<String, String>> parseUITable(IWebElement ngxDatatableElement)
         {
             List<String> columnNames = ngxDatatableElement.FindElements(By.XPath("//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();
