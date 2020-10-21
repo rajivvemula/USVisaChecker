@@ -42,5 +42,24 @@ namespace ApolloQA.TestCases.Regression.General
             }
         }
 
+        [Then(@"Verify if the input is required")]
+        public void ThenVerifyIfTheInputIsRequired(Table table)
+        {
+            var details = table.CreateDynamicSet();
+            foreach (var detail in details)
+            {
+                string value = detail.Value;
+                if (detail.Required == "False")
+                {
+                    Assert.That(() => helper.CheckInputRequirement(detail.Value), Does.Contain("false").After(3).Seconds.PollEvery(250).MilliSeconds, value + " is required when it should be false");
+                } else
+                {
+                    Assert.That(() => helper.CheckInputRequirement(detail.Value), Does.Contain("true").After(3).Seconds.PollEvery(250).MilliSeconds, value +  " is not required but should be true");
+                }
+                
+
+            }
+
+
     }
 }

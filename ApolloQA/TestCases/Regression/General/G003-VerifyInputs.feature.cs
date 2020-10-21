@@ -118,6 +118,17 @@ this.ScenarioInitialize(scenarioInfo);
 #line 9
  testRunner.Then("Verify a Select contains value : <Select Name>", ((string)(null)), table12, "Then ");
 #line hidden
+                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Key",
+                            "Value",
+                            "Required"});
+                table13.AddRow(new string[] {
+                            "a",
+                            "Something",
+                            "false"});
+#line 12
+ testRunner.Then("Verify if the input is required", ((string)(null)), table13, "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

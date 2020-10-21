@@ -187,7 +187,21 @@ namespace ApolloQA.Helpers
             //IWebElement checkbox = functions.FindElementWait(10, By.XPath("//span[@class='mat-checkbox-label' and normalize-space(text())='" + radioValue + "']"));
             IWebElement checkbox = functions.FindElementWait(10, By.XPath("//div[@class='mat-radio-label-content' and text() = ' " + radioValue + " '])"));
             return checkbox.Displayed;
-    }
+        }
+
+        public void SelectRadioOption(string radio)
+        {
+            IWebElement checkbox = functions.FindElementWait(10, By.XPath("//div[@class='mat-radio-label-content' and text() = ' " + radio + " '])"));
+            checkbox.Click();
+
+        }
+
+        public string CheckInputRequirement(string name)
+        {
+            //*[@formcontrolname='subrogationReferralId']
+            IWebElement input = functions.FindElementWait(10, By.XPath("//*[@formcontrolname='" + name + "'])"));
+            return input.GetAttribute("aria-required");
+        }
         //public void UpdateResourceSelectDropdown()
         //{
 

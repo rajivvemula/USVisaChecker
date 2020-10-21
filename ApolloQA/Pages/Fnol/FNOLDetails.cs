@@ -98,7 +98,7 @@ namespace ApolloQA.Pages.Fnol
                         case "Phone": return inputPhone;
                 default: return null;
 
-            }
+            } 
         }
 
         public void EnterInput(string locator, string value)
