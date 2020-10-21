@@ -25,7 +25,7 @@ namespace ApolloQA.Pages.Shared
         {
             get
             {
-                By by = By.XPath("//input[@formcontrolname='radiusOfOperation']");
+                By by = By.XPath("//mat-label/b[contains(text(), 'Risk')]/../..");
                 functions.FindElementWait(60, by);
                 return this.driver.FindElements(by).ToList<IWebElement>();
             }
@@ -33,13 +33,13 @@ namespace ApolloQA.Pages.Shared
 
         public IEnumerable<Dictionary<String, String>> getResultTable(String risk, String ratingAlgorithm)
         {
-            return Functions.parseUITable(findResult(risk, ratingAlgorithm));
+            return Functions.parseUITable(findResult(risk, ratingAlgorithm).FindElements(By.XPath("//ngx-datatable")).First());
         }
 
         public IWebElement findResult(String risk, String ratingAlgorithm)
         {
-            IWebElement result = resultList.Find(result => result.FindElements(By.XPath($"//*[contains(normalize-space(), '{risk}')]")).Count>0  && 
-                                                           result.FindElements(By.XPath($"//*[contains(normalize-space(), '{ratingAlgorithm}')]")).Count > 0);
+            IWebElement result = resultList.Find(result => result.FindElements(By.XPath($"//mat-label[contains(text(), '{risk}')]")).Count>0  && 
+                                                           result.FindElements(By.XPath($"//mat-label[contains(text(), '{ratingAlgorithm}')]")).Count > 0);
 
             if(result == null)
             {

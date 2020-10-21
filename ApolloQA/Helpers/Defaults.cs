@@ -6,27 +6,36 @@ namespace ApolloQA.Helpers
 {
     static class Defaults
     {
+        /*public const string
+            ADMIN_USERNAME = "ApolloTestUserG311@biberk.com",
+            DEFAULT_PASSWORD = "ApolloTest12",
+            DEFAULT_PASSWORD2 = "ApolloTest12",
+            SQLCONNECTIONSTRING = "Server=xbibaoazadb1qa2.database.windows.net;Database=bibapollodb;User Id=bbadmin;Password=Pqa2l2kr2ltjnaj4y!;",
+            HOST = "https://biberk-apollo-qa2.azurewebsites.net",
+            SERVER_HOST = "https://bibaoqa2-fd.azurefd.net/api/";
+         */
         public const string
             ADMIN_USERNAME = "ApolloTestUserG311@biberk.com",
             DEFAULT_PASSWORD = "ApolloTest12",
             DEFAULT_PASSWORD2 = "ApolloTest12",
-            SQLCONNECTIONSTRING = "Server=xbibaoazadb1qa2.database.windows.net;Database=bibapollodb;User Id=bbadmin;Password=Pqa2l2kr2ltjnaj4y!;";
-        
+            SQLCONNECTIONSTRING = "Server=xbibaoazadb1qa.database.windows.net;Database=bibapollodb;User Id=bbadmin;Password=Pqatdi6fkpwtvbbu!;",
+            HOST = "https://biberk-apollo-qa.azurewebsites.net",
+            SERVER_HOST = "https://bibaoqa-fd.azurefd.net/api/";
+       
         //QA URLs
         public static IDictionary<string, string> QA_URLS = new Dictionary<string, string>()
         {
-            {"Home", "https://biberk-apollo-qa2.azurewebsites.net/home" },
-            {"Policy", "https://biberk-apollo-qa2.azurewebsites.net/policy" },
-            {"Organization", "https://biberk-apollo-qa2.azurewebsites.net/organization" },
-            {"Organization Insert", "https://biberk-apollo-qa2.azurewebsites.net/organization/insert" },
-            {"Underwriting", "https://biberk-apollo-qa2.azurewebsites.net/underwriting/dashboard" },
-            {"Billing", "https://biberk-apollo-qa2.azurewebsites.net/billing-defaults" },
-            {"Administration", "https://biberk-apollo-qa2.azurewebsites.net/administration" },
-            {"Application", "https://biberk-apollo-qa2.azurewebsites.net/application" },
-            {"Collections", "https://biberk-apollo-qa2.azurewebsites.net/collections/dashboard" },
-            {"Claims", "https://biberk-apollo-qa2.azurewebsites.net/claims/fnol-dashboard" },
-            {"Quote", "https://biberk-apollo-qa2.azurewebsites.net/quote/" },
-            {"API",  "https://bibaoqa2-fd.azurefd.net/api/"},
+            {"Home", HOST + "/home" },
+            {"Policy", HOST + "/policy" },
+            {"Organization", HOST + "/organization" },
+            {"Organization Insert", HOST + "/organization/insert" },
+            {"Underwriting", HOST + "/underwriting/dashboard" },
+            {"Billing", HOST + "/billing-defaults" },
+            {"Administration", HOST + "/administration" },
+            {"Application", HOST + "/application" },
+            {"Collections", HOST + "/collections/dashboard" },
+            {"Claims", HOST + "/claims/fnol-dashboard" },
+            {"Quote", HOST + "/quote/" },
         };
 
         public static IDictionary<string, List<string>> TabSets = new Dictionary<string, List<string>>()
@@ -55,7 +64,7 @@ namespace ApolloQA.Helpers
         public static IDictionary<string, string> Toasts = new Dictionary<string, string>()
         {
             {"OrgSave", "was saved." },
-            {"Application", "https://biberk-apollo-qa2.azurewebsites.net/quote/" }
+            {"Application", HOST + "/quote/" }
         };
 
         public static IDictionary<string, string> URLContains = new Dictionary<string, string>()

@@ -21,7 +21,7 @@ namespace ApolloQA.Pages.Dashboard
         //public IWebElement firstName => homeDriver.FindElement(By.XPath("//p[contains(text(),'First Name:')]"));
         public void GotToHome()
         {
-            homeDriver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/home");
+            homeDriver.Navigate().GoToUrl(Defaults.HOST + "/home");
         }
         public bool VerifyLoggedInUser(string user)
         {

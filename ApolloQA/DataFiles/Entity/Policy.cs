@@ -59,10 +59,47 @@ namespace ApolloQA.DataFiles.Entity
         {
             return new Application(GetProperties()["applicationId"].ToObject<int>());
         }
+        public dynamic GetVehicleTypeRisk()
+        {
+            return this.GetApplication().GetVehicleTypeRisk();
+        }
         public List<Vehicle> GetVehicles()
         {
             return this.GetApplication().GetVehicles();
         }
+        public JArray getCoverages()
+        {
+            dynamic body = new JObject();
+            body.filters = new JObject();
+            body.filters["PolicyId"] = this.Id;
+            body.filters["EntityStatusComplexFilter"] = "{\"StatusIds\":[0,2]}";
+            body.loadChildren = true;
+
+            return Setup.api.POST("/policy/coverageoutput/search", body)["results"];
+        }
+        public List<String> getCoverageCodes(Vehicle risk)
+        {
+            var result = new List<String>();
+            foreach(var coverage in this.getCoverages())
+            {
+                dynamic body = new JObject();
+                body.filters = new JObject();
+                body.filters["CoverageOutputId"] = coverage["id"];
+                var risksAssociated = ((JArray)Setup.api.POST("/policy/CoverageOutputRisk/search", body)["results"]).Select(riskOutput => (int)riskOutput["riskId"]).ToList();
+                if(risksAssociated.Contains((int)risk.GetProperty("RiskId")))
+                {
+                    result.Add((String)coverage["associatedCoverage"]["coverageCode"]);
+                }
+            }
+            return result;
+
+        }
+        public List<String> getCoverageCodes()
+        {
+            return this.getCoverages().Select(coverage => (String)coverage["associatedCoverage"]["coverageCode"]).ToList<String>();
+
+        }
+
 
         public Organization Organization{ get
             {

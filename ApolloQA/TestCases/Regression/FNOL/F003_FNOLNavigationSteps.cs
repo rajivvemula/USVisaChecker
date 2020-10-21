@@ -50,7 +50,7 @@ namespace ApolloQA.TestCases.Regression.FNOL
             catch (ElementClickInterceptedException)
             {
 
-                driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/claims/fnol/" + claimID + "/occurence");
+                driver.Navigate().GoToUrl(Defaults.HOST + "/claims/fnol/" + claimID + "/occurence");
             }
             
         }

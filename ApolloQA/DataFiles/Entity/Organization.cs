@@ -76,7 +76,7 @@ namespace ApolloQA.DataFiles.Entity
                 return (String)list.Find(type => type.id == typeID).name;
             }
         }
-        public String InsurranceScoreTier
+        public int? InurranceScore
         {
             get
             {
@@ -87,43 +87,17 @@ namespace ApolloQA.DataFiles.Entity
                 nfcSearchBody.Add("sortOrder", 1);
 
                 dynamic nfcResponse = Setup.api.POST($"/party/{partyID}/ncf/search", nfcSearchBody);
-
-                if(nfcResponse.info.totalRecords ==0)
+                if (nfcResponse.info.totalRecords == 0)
                 {
                     return null;
                 }
                 else
                 {
-                    var VehicleSearchBody = new JObject();
-
-                    VehicleSearchBody.Add("currentPage", 0);
-                    VehicleSearchBody.Add("filters", new JObject("CurrentVehiclesRisksPartyFilter", "\"{\"PartyId\":"+partyID+"}\""));
-                    VehicleSearchBody.Add("loadChildren", true);
-
-
-                    int fleetSize = Setup.api.POST("/vehicle/search", VehicleSearchBody).info.totalRecords;
-                    int score = int.Parse(nfcResponse.results[0].rawScore);
-                    String type = this.TypeName;
-
-
-                    foreach(Dictionary<String, String>row in Engine.getTable("CT.2"))
-                    {
-
-                        if (Functions.parseRatingFactorNumericalValues(row["Fleet Size Lower Bound"]) <= fleetSize &&
-                            Functions.parseRatingFactorNumericalValues(row["Fleet Size Upper Bound"]) >= fleetSize &&
-                            Functions.parseRatingFactorNumericalValues(row["Insurance Score Lower Bound"]) <= score &&
-                            Functions.parseRatingFactorNumericalValues(row["Insurance Score Upper Bound"]) >= score &&
-                            row["Organization Type"] == type
-                            )
-                        {
-                            return row["Insurance Score Tier"];
-                        }
-                    }
-                    return null;
-
+                    return nfcResponse.results[0].rawScore;
                 }
             }
         }
+        
 
     }
 }

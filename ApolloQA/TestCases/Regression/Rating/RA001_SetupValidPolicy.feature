@@ -6,7 +6,7 @@
 
 Scenario: Find a valid Policy
 	Given User is on Homepage
-	When User navigates to policy ID 10000
+	When User navigates to policy ID 10539
 	And user Selects Vehicle Type risks with the following relevant values
 	| Vehicle Age | Radius | Class Code | 
 	| 7           | 150    | 603        | 

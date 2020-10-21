@@ -66,7 +66,7 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I (.*) add a contact")]
         public void ThenICanAddAContact(string canCannot)
         {
-            driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + "10070");
+            driver.Navigate().GoToUrl(Defaults.HOST + "/policy/" + "10070");
             policyMain.GoToContacts();
 
             bool addContact = policyContacts.CanAddContact();
@@ -80,7 +80,7 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I (.*) add a new vehicle")]
         public void ThenICanAddANewVehicle(string canCannot)
         {
-            driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + "10180");
+            driver.Navigate().GoToUrl(Defaults.HOST + "/policy/" + "10180");
             policyMain.GoToVehicles();
 
             bool addVehicle = policyVehicle.CanAddNewVehicle();

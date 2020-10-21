@@ -39,11 +39,11 @@ namespace ApolloQA.TestCases.Regression.Organization
             //Check wether the org has id or created
             if (orgID == "Created")
             {
-                driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/organization/" + state.createOrgsList.First());
-                //driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/organization/" + state.createOrgRecent);
+                driver.Navigate().GoToUrl(Defaults.HOST + "/organization/" + state.createOrgsList.First());
+                //driver.Navigate().GoToUrl(HOST + "/organization/" + state.createOrgRecent);
             } else
             {
-                driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/organization/" + orgID);
+                driver.Navigate().GoToUrl(Defaults.HOST + "/organization/" + orgID);
             };
 
             

@@ -60,7 +60,7 @@ namespace ApolloQA.Workflows
 
         public bool CanUpdatePolicyGeneralInformation(string policyNumber)
         {
-            driver.Navigate().GoToUrl("https://biberk-apollo-qa2.azurewebsites.net/policy/" + policyNumber);
+            driver.Navigate().GoToUrl(Defaults.HOST + "/policy/" + policyNumber);
             policyMain.GoToSummary();
             string toastTitle;
 

@@ -36,7 +36,7 @@ namespace ApolloQA.TestCases.Regression.Policy
                 policyID = cosmos.GetLatestPolicyID().Result;
             }
             this.state.currentPolicy = new DataFiles.Entity.Policy(policyID);
-            this.state.engine = new Engine(state.currentPolicy, "VA00034");
+            this.state.engine = new Engine(state.currentPolicy);
 
             policyMain.NavigateToPolicy(policyID);
         }

@@ -111,17 +111,23 @@ namespace ApolloQA.Helpers
         }
         public static IEnumerable<Dictionary<String, String>> parseUITable(IWebElement ngxDatatableElement)
         {
-            List<String> columnNames = ngxDatatableElement.FindElements(By.XPath("//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();
+            String datatableXpath = "(//ngx-datatable)[1]";
+             List<String> columnNames = ngxDatatableElement.FindElements(By.XPath(datatableXpath+ "//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();
 
-            foreach(var row in ngxDatatableElement.FindElements(By.XPath("//datatable-body-row")))
+            int rowCount = Driver.Setup.driver.FindElements(By.XPath(datatableXpath + "//datatable-body-row")).Count;
+            for (int rowIndex = 1; rowIndex <= rowCount;rowIndex++)
             {
-                List<IWebElement> cells = row.FindElements(By.XPath("//datatable-body-cell")).ToList<IWebElement>();
+               
                 var rowDict = new Dictionary<String, String>();
 
                 for(int i=0; i<columnNames.Count(); i++)
                 {
-                    String cellText = string.Join("", cells[i].FindElements(By.XPath("/descendant::*/text()")).Select(child => child.Text));
-                    rowDict.Add(columnNames[i], cellText);
+                   // String cellText = string.Join("", cells[i].FindElements(By.XPath("/descendant::*"))
+                    String cellText = string.Join("", Driver.Setup.driver
+                                                      .FindElements(By.XPath($"(({datatableXpath} //datatable-body-row)[{rowIndex}] //datatable-body-cell)[{i+1}]/descendant::*"))
+                                                      .Select(child => child.Text).Distinct());
+
+                    rowDict.Add(columnNames[i], cellText.Trim());
                 }
                 yield return rowDict;
             }

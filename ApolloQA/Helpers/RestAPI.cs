@@ -11,7 +11,7 @@ namespace ApolloQA.Helpers
     {
         private IWebDriver driver;
 
-        private static String host= Defaults.QA_URLS["API"];
+        private static String host= Defaults.SERVER_HOST;
 
         public RestAPI(IWebDriver driver)
         {
