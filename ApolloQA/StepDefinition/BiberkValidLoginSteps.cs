@@ -36,6 +36,7 @@ namespace ApolloQA.Steps
             Log.Info("User enters username");
             Log.Critical("critical username");
 
+            
 
             Pages.Login.usernameField.setText(username);
             Pages.Login.nextButton.Click();
@@ -57,9 +58,11 @@ namespace ApolloQA.Steps
             driver.FindElement(By.XPath("//fa-icon[@routerlink='home']"));
             Thread.Sleep(1000);
             driver.FindElement(By.XPath("//fa-icon[@routerlink='home']")).Text.Trim();
-           // Assert.AreEqual(ExpectedHomePage, ActualHomePage);
+            ScreenShot.Debug();
+
+            // Assert.AreEqual(ExpectedHomePage, ActualHomePage);
         }
 
-        
+
     }
 }

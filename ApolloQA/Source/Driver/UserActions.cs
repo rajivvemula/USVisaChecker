@@ -166,16 +166,5 @@ namespace ApolloQA.Source.Driver
             }
         }
         
-
-
-        //
-        // Screenshots
-        //
-        public static void TakeScreenshot()
-        {
-            var screenshot = (Screenshot)Setup.driver;
-            screenshot.SaveAsFile($"TestResults/{DateTime.Now.Millisecond}.png");
-        }
-
     }
 }

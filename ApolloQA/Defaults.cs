@@ -6,6 +6,8 @@ namespace ApolloQA
 {
     static class Defaults
     {
+        public static Severity CurrentSeverityLevel => Severity.DEBUG;
+
         public const string
           
             ADMIN_USERNAME = "ApolloTestUserG311@biberk.com",
