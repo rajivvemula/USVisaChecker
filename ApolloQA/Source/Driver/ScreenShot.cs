@@ -7,13 +7,14 @@ using TechTalk.SpecFlow;
 
 namespace ApolloQA.Source.Driver
 {
-    public class Screenshot
+    public class ScreenShot
     {
         public static void Info() => Take(Severity.INFO);
         public static void Debug() => Take(Severity.DEBUG);
         public static void Warn() => Take(Severity.WARN);
         public static void Error() => Take(Severity.ERROR);
         public static void Critical() => Take(Severity.CRITICAL);
+
 
 
         public static void Take(Severity severity)
