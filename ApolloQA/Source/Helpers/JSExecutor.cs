@@ -7,17 +7,25 @@ using System.Threading;
 namespace ApolloQA.Source.Helpers
 {
  
-    public class JavaScriptExecutor
+    public class JSExecutor
     {
+        public static Object execute(String script, params object[] args)
+        {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver.Setup.driver;
+            return js.ExecuteScript(script,args );
+
+        }
+
         // Highligth Element
         public static void highlight(IWebElement element, int borderwidth = 3)
         {
+            
             if (borderwidth == 0)
             {
                 Thread.Sleep(500);
             }
-            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver.Setup.driver;
-            js.ExecuteScript(script: "arguments[0].style.border='"+ borderwidth + "px solid red'", element);
+            execute(script: "arguments[0].style.border='" + borderwidth + "px solid red'", element);
+
         }
     }
 }

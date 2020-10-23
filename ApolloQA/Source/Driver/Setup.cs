@@ -59,12 +59,20 @@ namespace ApolloQA.Source.Driver
             _objectContainer.RegisterInstanceAs(driver);
 
         }
+        [AfterScenario]
+        public void AfterScenario(ScenarioContext _scenarioContext)
+        {
+            if (_scenarioContext.TestError != null)
+            {
+                ScreenShot.Error();
+            }
+        }
 
 
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            //driver.Quit();
+            driver.Quit();
             Cosmos.client.Dispose();
         }
     }

@@ -28,7 +28,6 @@ namespace ApolloQA
         /// 
         public static void Write(Severity severity, string text)
         {
-
             if (severity.Level <= Defaults.CurrentSeverityLevel.Level)
             {
                 Console.WriteLine($"[{severity.Name}] {text}");

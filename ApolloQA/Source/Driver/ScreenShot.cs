@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using TechTalk.SpecFlow;
 
+
 namespace ApolloQA.Source.Driver
 {
     public class ScreenShot

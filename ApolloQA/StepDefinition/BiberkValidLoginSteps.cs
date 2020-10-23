@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using TechTalk.SpecFlow;
 using ApolloQA.Source.Driver;
+using ApolloQA.Source.Helpers;
 
 namespace ApolloQA.Steps
 {
@@ -36,12 +37,16 @@ namespace ApolloQA.Steps
             Log.Info("User enters username");
             Log.Critical("critical username");
 
-            
 
             Pages.Login.usernameField.setText(username);
             Pages.Login.nextButton.Click();
             Pages.Login.passwordField.setText(password);
-       
+            var sev1 = new Severity(2);
+            var sev2 = new Severity(2);
+            Console.WriteLine(Assert.AreEqual(sev1, sev2,true));
+            Boolean? somebool = null;
+            Console.WriteLine(Assert.IsNull(somebool));
+
         }
 
         [When(@"user attempts to login")]
@@ -49,18 +54,17 @@ namespace ApolloQA.Steps
         {
             Pages.Login.nextButton.Click();
             Pages.Login.noButton.Click();
+            
         }
        
         [Then(@"user login successfully to biBerk page")]
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
-            Console.WriteLine("05 user1 login successfully to biBerk page");
             driver.FindElement(By.XPath("//fa-icon[@routerlink='home']"));
             Thread.Sleep(1000);
             driver.FindElement(By.XPath("//fa-icon[@routerlink='home']")).Text.Trim();
-            ScreenShot.Debug();
+            //ScreenShot.Debug();
 
-            // Assert.AreEqual(ExpectedHomePage, ActualHomePage);
         }
 
 

@@ -6,13 +6,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.Source.Helpers
 {
     class Functions
     {
 
-                
+
+
+        //
+        //  Failure Handling
+        //
+        public static void handleFailure(string message, Exception ex = null, bool optional = false)
+        {
+            if (optional)
+            { Log.Info(message); }
+            else
+            {
+                Log.Error(message);
+                if (ex != null)
+                {
+                    handleFailure(ex, optional);
+                }
+                else
+                {
+                    throw new Exception(message);
+                }
+            }
+
+        }
+        public static void handleFailure(Exception ex, bool optional = false)
+        {
+            if (optional)
+            {
+                Log.Info(ex.Message);
+            }
+            else
+            {
+                Log.Error(ex.Message);
+                throw ex;
+            }
+
+        }
         public static IEnumerable<Dictionary<String, String>> parseUITable(IWebElement ngxDatatableElement)
         {
             List<String> columnNames = ngxDatatableElement.FindElements(By.XPath("//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();

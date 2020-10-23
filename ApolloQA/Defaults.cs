@@ -6,7 +6,7 @@ namespace ApolloQA
 {
     static class Defaults
     {
-        public static Severity CurrentSeverityLevel => Severity.DEBUG;
+        public static Severity CurrentSeverityLevel => Severity.INFO;
 
         public const string
           
