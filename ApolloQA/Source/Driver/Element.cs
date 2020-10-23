@@ -39,7 +39,7 @@ namespace ApolloQA.Source.Driver
         /// <param name="optional">if set to true failure will be contained and no exception will be thrown </param>
         public bool assertElementIsVisible(int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS, bool optional = false)
         {
-            try { UserActions.FindElementWaitVisible(locator, wait_Seconds);
+            try { UserActions.FindElementWaitUntilVisible(locator, wait_Seconds);
                 return true;
             }
             catch (Exception ex)
@@ -55,7 +55,7 @@ namespace ApolloQA.Source.Driver
         /// <param name="optional">if set to true failure will be contained and no exception will be thrown </param>
         public bool assertElementIsPresent(int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS, bool optional = false)
         {
-            try { UserActions.FindElementWaitPresent(locator, wait_Seconds);
+            try { UserActions.FindElementWaitUntilPresent(locator, wait_Seconds);
                 return true;
             }
             catch (Exception ex)
