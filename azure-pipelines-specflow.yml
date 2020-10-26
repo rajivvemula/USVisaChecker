@@ -1,16 +1,4 @@
 # Starter pipeline
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Common.TestResultsDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\TestResults\Screenshots'
-    ArtifactName: 'Screenshots_$(Build.Repository.Name_$(Build.BuildNumber)'
-    publishLocation: 'Container'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/Screenshots_$(Build.Repository.Name)_$(Build.BuildNumber).zip'
-    replaceExistingArchive: true
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
