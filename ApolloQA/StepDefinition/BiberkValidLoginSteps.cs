@@ -63,10 +63,8 @@ namespace ApolloQA.Steps
             driver.FindElement(By.XPath("//fa-icon[@routerlink='home']"));
             Thread.Sleep(1000);
             driver.FindElement(By.XPath("//fa-icon[@routerlink='home']")).Text.Trim();
-            //ScreenShot.Debug();
+            ScreenShot.Debug();
 
         }
-
-
     }
 }
