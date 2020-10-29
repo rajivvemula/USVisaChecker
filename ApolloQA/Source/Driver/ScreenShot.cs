@@ -32,8 +32,9 @@ namespace ApolloQA.Source.Driver
             else if (severity.Level <= currentSev)
             { 
 
-                String fileNameBase = filename ?? string.Format($"{severity.Name}_{FeatureContext.Current.FeatureInfo.Title}_{ScenarioContext.Current.ScenarioInfo.Title}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}");
+                String fileNameBase = filename ?? string.Format($"{FeatureContext.Current.FeatureInfo.Title}_{ScenarioContext.Current.ScenarioInfo.Title}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}");
 
+                fileNameBase = $"{severity.Name}_{fileNameBase}";
                 var artifactDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Screenshots");
 
                 if (!Directory.Exists(artifactDirectory)) { Directory.CreateDirectory(artifactDirectory); }

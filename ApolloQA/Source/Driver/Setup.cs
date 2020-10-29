@@ -82,7 +82,7 @@ namespace ApolloQA.Source.Driver
             JObject environmentVariables;
 /*            try
             {*/
-                environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader($"../{JsonEnvironmentFile_RelativePath}").ReadToEnd());
+                environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Directory.GetCurrentDirectory().Contains("TestResults")?$"../{JsonEnvironmentFile_RelativePath}": JsonEnvironmentFile_RelativePath).ReadToEnd());
  /*           }
             catch(FileNotFoundException)
             {
