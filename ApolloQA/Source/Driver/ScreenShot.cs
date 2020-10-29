@@ -23,9 +23,14 @@ namespace ApolloQA.Source.Driver
         public static void Take(Severity severity, String filename =null)
         {
 
-            if (severity.Level <= Defaults.CurrentSeverityLevel.Level)
-            {
+            var currentSev = Severity.parseLevel(Environment.GetEnvironmentVariable("CURRENT_SEVERITY_LEVEL")).Level;
 
+            if (currentSev == 0)
+            {
+                return;
+            }
+            else if (severity.Level <= currentSev)
+            { 
 
                 String fileNameBase = filename ?? string.Format($"{severity.Name}_{FeatureContext.Current.FeatureInfo.Title}_{ScenarioContext.Current.ScenarioInfo.Title}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}");
 
