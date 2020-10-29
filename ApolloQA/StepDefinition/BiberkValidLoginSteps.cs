@@ -63,10 +63,8 @@ namespace ApolloQA.Steps
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
             Pages.Home.ApolloIcon.assertElementIsVisible();
-            //ScreenShot.Debug();
+            ScreenShot.Info();
 
         }
-
-
     }
 }

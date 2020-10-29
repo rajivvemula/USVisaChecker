@@ -55,9 +55,6 @@ namespace ApolloQA.Source.Driver
 
                     Console.WriteLine($"\nScreenshot: {new Uri(screenshotFilePath)}\n");
                 }
-
-
-
             }
         }
     }

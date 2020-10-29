@@ -22,7 +22,7 @@ namespace ApolloQA
           WARN = new Severity(INT_WARN),
           ERROR = new Severity(INT_ERROR),
           CRITICAL = new Severity(INT_CRITICAL),
-          DEFAULT = WARN;
+          DEFAULT = INFO;
        
 
 

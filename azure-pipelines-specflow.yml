@@ -47,3 +47,17 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     testRunTitle: 'SmokeTest'
+
+- task: CopyFiles@2
+  displayName: 'Copy TestResults'
+  inputs:
+    SourceFolder: $(Agent.TempDirectory)/TestResults
+    Contents: '**/*'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/TestResults'
+    OverWrite: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Test Results Files'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/TestResults'
+    ArtifactName: 'TestResults'
