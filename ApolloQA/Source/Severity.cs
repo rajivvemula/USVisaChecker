@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ApolloQA
@@ -12,15 +13,17 @@ namespace ApolloQA
          INT_CRITICAL = 1,
          INT_ERROR = 2,
          INT_WARN = 3,
-         INT_DEBUG = 4,
-         INT_INFO = 5;
+         INT_INFO = 4,
+         INT_DEBUG = 5;
 
         public static readonly Severity
-          INFO = new Severity(INT_INFO),
           DEBUG = new Severity(INT_DEBUG),
+          INFO = new Severity(INT_INFO),
           WARN = new Severity(INT_WARN),
           ERROR = new Severity(INT_ERROR),
-          CRITICAL = new Severity(INT_CRITICAL);
+          CRITICAL = new Severity(INT_CRITICAL),
+          DEFAULT = WARN;
+       
 
 
 
@@ -30,11 +33,26 @@ namespace ApolloQA
             {INT_CRITICAL,"CRITICAL"},
             {INT_ERROR,   "ERROR"},
             {INT_WARN,    "WARN"},
-            {INT_DEBUG,   "DEBUG"},
             {INT_INFO,    "INFO"},
+            {INT_DEBUG,   "DEBUG"},
 
         };
+        public static Severity parseLevel(string level)
+        {
+            try
+            {
+                if(int.TryParse(level, out int int_level))
+                {
+                    return new Severity(int_level);
+                }
 
+                return new Severity(SEVERITIES.First(it => it.Value == level.ToUpper()).Key);
+            }
+            catch
+            {
+                return DEFAULT;
+            }
+        }
         public int Level { get; }
         public string Name { get { return SEVERITIES[Level]; } }
         public Severity(int level)
@@ -47,7 +65,6 @@ namespace ApolloQA
             {
                 throw new ArgumentException($"Severity Level: [{level}] is not valid");
             }
-
         }
 
 

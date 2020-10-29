@@ -10,7 +10,6 @@ namespace ApolloQA.Source.Helpers
     public class RestAPI
     {
 
-        private static String host= Defaults.QA_URLS["API"];
 
         public static dynamic GET( String URL)
         {
@@ -50,11 +49,11 @@ namespace ApolloQA.Source.Helpers
         {
             if (!URL.StartsWith("http"))
             {
-                if (URL.StartsWith("/"))
+                if (!URL.StartsWith("/"))
                 {
-                    return host+URL.Substring(1);
+                    return Environment.GetEnvironmentVariable("SERVER_HOST") + "/"+URL;
                 }
-                return host + URL;
+                return Environment.GetEnvironmentVariable("SERVER_HOST") + URL;
             }
 
             return URL;

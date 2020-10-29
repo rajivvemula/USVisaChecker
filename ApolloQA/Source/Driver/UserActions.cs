@@ -10,11 +10,27 @@ namespace ApolloQA.Source.Driver
 {
     class UserActions
     {
+        public const int DEFAULT_WAIT_SECONDS = 60;
+        public static void Navigate(string URL_OR_PATH)
+        {
+            string URL;
+            if (URL_OR_PATH.StartsWith("http"))
+            {
+                URL = URL_OR_PATH;
+            }
+            else
+            {
+                URL = Environment.GetEnvironmentVariable("HOST") + (URL_OR_PATH.StartsWith('/') ? URL_OR_PATH : "/"+URL_OR_PATH);
+            }
+             
+            Log.Info("Navigate to: " + URL);
+            Setup.driver.Navigate().GoToUrl(URL);
+        }
 
         //
         // General Element Actions
         //
-        public static string getElementText(By ElementLocator, int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS)
+        public static string getElementText(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilVisible(ElementLocator, wait_Seconds);
             return textField.Text;
@@ -54,7 +70,7 @@ namespace ApolloQA.Source.Driver
             return FindElementWaitUntilVisible(ElementLocator).Text.Contains(text);
         }
 
-        public static IWebElement FindElementWaitUntilVisible(By by, int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS)
+        public static IWebElement FindElementWaitUntilVisible(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
             IWebElement target;
@@ -85,7 +101,7 @@ namespace ApolloQA.Source.Driver
         }
 
         //Find Element - Wait until element is present (different from vissible)
-        public static IWebElement FindElementWaitUntilPresent(By by, int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS)
+        public static IWebElement FindElementWaitUntilPresent(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
             IWebElement target;
@@ -116,7 +132,7 @@ namespace ApolloQA.Source.Driver
         }
 
         //Find Element - Wait Until Clickable
-        public static IWebElement FindElementWaitUntilClickable(By by, int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS)
+        public static IWebElement FindElementWaitUntilClickable(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
             IWebElement target;
@@ -144,7 +160,7 @@ namespace ApolloQA.Source.Driver
 
             return target;
         }
-        public static void WaitForElementToDisappear(By by, int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS)
+        public static void WaitForElementToDisappear(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
 
@@ -156,7 +172,7 @@ namespace ApolloQA.Source.Driver
         //
         //  Text Fields Actions
         //
-        public static void setText(By TextFieldLocator, String TextToEnter, int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS)
+        public static void setText(By TextFieldLocator, String TextToEnter, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
             textField.Click();
@@ -164,13 +180,13 @@ namespace ApolloQA.Source.Driver
             textField.SendKeys(TextToEnter);
 
         }
-        public static string getTextFieldText(By TextFieldLocator, int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS)
+        public static string getTextFieldText(By TextFieldLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
             return textField.GetAttribute("value"); 
 
         }
-        public static void clearTextField(By TextFieldLocator, int wait_Seconds = Defaults.DEFAULT_WAIT_SECONDS)
+        public static void clearTextField(By TextFieldLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
             textField.Clear();

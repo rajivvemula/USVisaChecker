@@ -8,7 +8,7 @@ namespace ApolloQA.Source.Helpers
 {
     public class Cosmos
     {
-        public static CosmosClient client = new CosmosClient(Defaults.COSMOS_TARGETURL, Defaults.COSMOS_APIKEY);
+        public static CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("COSMOS_TARGETURL"), Environment.GetEnvironmentVariable("COSMOS_APIKEY"));
 
 
 

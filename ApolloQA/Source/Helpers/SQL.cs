@@ -16,8 +16,8 @@ namespace ApolloQA.Source.Helpers
         }
         public static List<Dictionary<String, dynamic>> executeQuery(String query, params (string key, dynamic value)[] parameters)
         {
-            
-            using (SqlConnection connection = new SqlConnection(Defaults.SQLCONNECTIONSTRING))
+
+            using (SqlConnection connection = new SqlConnection(Environment.GetEnvironmentVariable("SQL_CONNECTIONSTRING")))
             {
                 SqlCommand command = new SqlCommand(query, connection);
 
@@ -28,14 +28,14 @@ namespace ApolloQA.Source.Helpers
                 }
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
-                
+
                 try
                 {
                     List<Dictionary<String, dynamic>> results = new List<Dictionary<string, dynamic>>();
                     while (reader.Read())
                     {
                         results.Add(Enumerable.Range(0, reader.FieldCount).ToDictionary(keyIndex => reader.GetName(keyIndex), valueIndex => reader.GetValue(valueIndex)));
-                       
+
                     }
                     return results;
                 }

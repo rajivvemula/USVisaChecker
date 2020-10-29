@@ -14,8 +14,8 @@ namespace ApolloQA.Data
 {
     public class Engine
     {
-        private static readonly dynamic Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader("DataFiles/Rating/Factors.json").ReadToEnd());
-        private static readonly dynamic KnownFields =  JsonConvert.DeserializeObject<JObject>(new StreamReader("DataFiles/Rating/KnownFields.json").ReadToEnd());
+        private static readonly dynamic Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader("Data/Rating/Factors.json").ReadToEnd());
+        private static readonly dynamic KnownFields =  JsonConvert.DeserializeObject<JObject>(new StreamReader("Data/Rating/KnownFields.json").ReadToEnd());
 
         /// <summary>
         ///  Interpreter used to evaluate strings of code <br/>

@@ -15,7 +15,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-- name: Browser
+- name: BROWSER
   value: Chrome
 
 
@@ -33,8 +33,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $env:Browser = "chrome"
-      Write-Host "Current Browser Value is $env:Browser"
+      $env:BROWSER = "chrome"
+      Write-Host "Current Browser Value is $env:BROWSER"
 - task: VSTest@2
   displayName: 'Running a Smoke Test'
   continueOnError: true

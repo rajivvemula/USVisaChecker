@@ -28,7 +28,9 @@ namespace ApolloQA.Steps
         [Given(@"user landed biBerk page with valid URL")]
         public void GivenUserLandedBiBerkPageWithValidURL()
         {
-            driver.Navigate().GoToUrl(Defaults.QA_URLS["Home"]);
+            Console.WriteLine("DEBUGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG: " + Environment.GetEnvironmentVariable("HOST"));
+
+            Pages.Login.navigate();
         }
 
         [When(@"user enters username: (.*) and password: (.*)")]
@@ -60,9 +62,7 @@ namespace ApolloQA.Steps
         [Then(@"user login successfully to biBerk page")]
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
-            driver.FindElement(By.XPath("//fa-icon[@routerlink='home']"));
-            Thread.Sleep(1000);
-            driver.FindElement(By.XPath("//fa-icon[@routerlink='home']")).Text.Trim();
+            Pages.Home.ApolloIcon.assertElementIsVisible();
             //ScreenShot.Debug();
 
         }

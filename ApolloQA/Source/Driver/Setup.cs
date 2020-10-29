@@ -14,6 +14,8 @@ using System.IO;
 using System.Reflection;
 using System.Configuration;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ApolloQA.Source.Driver
 {
@@ -31,9 +33,10 @@ namespace ApolloQA.Source.Driver
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-           
-            string browser = Environment.GetEnvironmentVariable("Browser", EnvironmentVariableTarget.Process);
-            switch (browser)
+            invokeEnvironmentVariables(Environment.GetEnvironmentVariable("ENVIRONMENT_FILE") ?? "default.env.json"); 
+
+            string browser = Environment.GetEnvironmentVariable("BROWSER", EnvironmentVariableTarget.Process);
+            switch (browser?.ToLower())
             {
                 case "chrome":
                     driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
@@ -42,10 +45,7 @@ namespace ApolloQA.Source.Driver
                     driver = new FirefoxDriver();
                     break;
                 default:
-                    driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                    break;
-
-
+                    throw new NotImplementedException($"Environment variable BROWSER value={browser} is not supported");
             }
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -74,6 +74,33 @@ namespace ApolloQA.Source.Driver
         {
             driver.Quit();
             Cosmos.client.Dispose();
+        }
+
+
+        private static void invokeEnvironmentVariables(string JsonEnvironmentFile_RelativePath )
+        {
+            JObject environmentVariables;
+/*            try
+            {*/
+                environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader($"../{JsonEnvironmentFile_RelativePath}").ReadToEnd());
+ /*           }
+            catch(FileNotFoundException)
+            {
+               
+                throw new NotFoundException($"missing [{JsonEnvironmentFile_RelativePath}] file, this is needed in order to run this framework");
+            }*/
+
+            foreach (var variable in environmentVariables)
+            {
+                if (Environment.GetEnvironmentVariable(variable.Key) == null)
+                {
+                    Environment.SetEnvironmentVariable(variable.Key, variable.Value.ToString());
+                }
+                else
+                {
+                    Log.Info($"Using {variable.Key} = {variable.Value}");
+                }
+            }
         }
     }
 }
