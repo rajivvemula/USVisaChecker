@@ -15,11 +15,25 @@ namespace ApolloQA
         {
             if (A.Equals(B))
             {
+                success($"Object {A} equals {B}");
                 return true;
             }
             else
             {
-                Functions.handleFailure(new Exception($"Assert - type:[{A?.GetType()?.FullName}] value:[${A}]   does not Equal  type: [{A?.GetType()?.FullName}] value: [{B}] "), optional);
+                Functions.handleFailure(new Exception($"Assert - type:[{A?.GetType()?.FullName}] value:[${A}]   does not Equal  type: [{A?.GetType()?.FullName}] value: [{B}]"), optional);
+                return false;
+            }
+        }
+        public static bool AreNotEqual(object A, object B, bool optional = false)
+        {
+            if (!A.Equals(B))
+            {
+                success($"Object {A} does not equal {B}");
+                return true;
+            }
+            else
+            {
+                Functions.handleFailure(new Exception($"Assert - type:[{A?.GetType()?.FullName}] value:[${A}]   Equals  type: [{A?.GetType()?.FullName}] value: [{B}]"), optional);
                 return false;
             }
         }
@@ -33,6 +47,7 @@ namespace ApolloQA
             
             if(condition.HasValue && condition.Value == true)
             {
+                success($"Condition {condition}");
                 return true;
             }
             else
@@ -56,6 +71,7 @@ namespace ApolloQA
             }
             else
             {
+                success($"Condition {condition}");
                 return true;
             }
         }
@@ -65,6 +81,7 @@ namespace ApolloQA
 
             if (_object == null)
             {
+                success("Object is null");
                 return true;
             }
             else
@@ -79,6 +96,7 @@ namespace ApolloQA
 
             if (_object != null)
             {
+                success("Object is not null");
                 return true;
             }
             else
@@ -87,6 +105,11 @@ namespace ApolloQA
                 Functions.handleFailure(new Exception($"Assert is Not Null - the given Object: ${_object} was null"), optional);
                 return false;
             }
+        }
+
+        private static void success(String message)
+        {
+            Log.Info("Success - Assert: " + message);
         }
     }
 }
