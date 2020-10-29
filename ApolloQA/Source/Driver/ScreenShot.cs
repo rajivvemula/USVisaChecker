@@ -10,21 +10,24 @@ namespace ApolloQA.Source.Driver
 {
     public class ScreenShot
     {
-        public static void Info() => Take(Severity.INFO);
-        public static void Debug() => Take(Severity.DEBUG);
-        public static void Warn() => Take(Severity.WARN);
-        public static void Error() => Take(Severity.ERROR);
-        public static void Critical() => Take(Severity.CRITICAL);
+        public static void Info(String filename = null) => Take(Severity.INFO, filename!);
+        public static void Debug(String filename = null) => Take(Severity.DEBUG, filename!);
+        public static void Warn(String filename = null) => Take(Severity.WARN, filename!);
+        public static void Error(String filename = null) => Take(Severity.ERROR, filename!);
+        public static void Critical(String filename = null) => Take(Severity.CRITICAL, filename!);
 
 
-
-        public static void Take(Severity severity)
+        /// <summary>
+        /// Take screenshot, by defualt the filename will be Severity_CurrentScenario_currentDateTime unless otherwise specified
+        /// </summary>
+        public static void Take(Severity severity, String filename =null)
         {
 
             if (severity.Level <= Defaults.CurrentSeverityLevel.Level)
             {
 
-                string fileNameBase = string.Format($"{severity.Name}_{FeatureContext.Current.FeatureInfo.Title}_{ScenarioContext.Current.ScenarioInfo.Title}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}");
+
+                String fileNameBase = filename ?? string.Format($"{severity.Name}_{FeatureContext.Current.FeatureInfo.Title}_{ScenarioContext.Current.ScenarioInfo.Title}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}");
 
                 var artifactDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Screenshots");
 
