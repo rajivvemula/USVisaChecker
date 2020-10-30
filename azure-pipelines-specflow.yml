@@ -17,6 +17,8 @@ pool:
 variables:
 - name: BROWSER
   value: Chrome
+- name: BuildDir
+  value: '$(System.DefaultWorkingDirectory)'
 
 
 steps:
