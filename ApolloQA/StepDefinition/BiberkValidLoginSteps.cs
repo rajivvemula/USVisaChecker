@@ -28,7 +28,7 @@ namespace ApolloQA.Steps
         [Given(@"user landed biBerk page with valid URL")]
         public void GivenUserLandedBiBerkPageWithValidURL()
         {
-            Console.WriteLine("DEBUGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG: " + Environment.GetEnvironmentVariable("HOST"));
+            Console.WriteLine("Current Page" + Environment.GetEnvironmentVariable("HOST"));
 
             Pages.Login.navigate();
         }
@@ -39,7 +39,6 @@ namespace ApolloQA.Steps
             Log.Info("User enters username");
             Log.Critical("critical username");
 
-
             Pages.Login.usernameField.setText(username);
             Pages.Login.nextButton.Click();
             Pages.Login.passwordField.setText(password);
@@ -49,6 +48,8 @@ namespace ApolloQA.Steps
             Boolean? somebool = null;
             Console.WriteLine(Assert.IsNull(somebool));
 
+
+               
         }
 
         [When(@"user attempts to login")]

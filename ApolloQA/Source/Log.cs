@@ -35,9 +35,11 @@ namespace ApolloQA
             }
             else if (severity.Level <= currentSev)
             {
+              
                 Console.WriteLine($"[{severity.Name}] {text}");
             }
         }
+
 
 
 

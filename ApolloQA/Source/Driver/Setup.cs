@@ -25,7 +25,7 @@ namespace ApolloQA.Source.Driver
     {
         private static IObjectContainer _objectContainer;
         public static IWebDriver driver;
-        public static String buildDir = Environment.GetEnvironmentVariable("BuildDir");
+        public static String SourceDir = Environment.GetEnvironmentVariable("SourceDir") ?? "../" ;
         public Setup(IObjectContainer objectContainer)
         {
             _objectContainer = objectContainer;
@@ -80,19 +80,9 @@ namespace ApolloQA.Source.Driver
 
         private static void invokeEnvironmentVariables(string JsonEnvironmentFile_RelativePath )
         {
-            JObject environmentVariables;
 
-            if (buildDir != null)
-            {
-                string[] fileArray = Directory.GetFiles($"{buildDir}");
-
-                foreach(var str in fileArray)
-                {
-                    Console.WriteLine("FilesInDir: " + str);
-                }
-                
-            }
-            environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(buildDir == null ? $"../{JsonEnvironmentFile_RelativePath}" : buildDir +$"/{JsonEnvironmentFile_RelativePath}").ReadToEnd());
+            Console.WriteLine(Path.Combine(SourceDir, JsonEnvironmentFile_RelativePath));
+            JObject environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine(SourceDir, JsonEnvironmentFile_RelativePath)).ReadToEnd());
 
             
             foreach (var variable in environmentVariables)
