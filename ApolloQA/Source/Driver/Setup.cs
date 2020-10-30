@@ -81,6 +81,13 @@ namespace ApolloQA.Source.Driver
         {
             JObject environmentVariables;
 
+            if (buildDir != null)
+            {
+                string[] fileArray = Directory.GetFiles($"{buildDir}");
+
+                Console.WriteLine("FilesInDir: " + fileArray);
+            }
+
             environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(buildDir == null ? $"../{JsonEnvironmentFile_RelativePath}" : buildDir +$"/{JsonEnvironmentFile_RelativePath}").ReadToEnd());
 
 
