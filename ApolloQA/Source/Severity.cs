@@ -45,7 +45,7 @@ namespace ApolloQA
                 {
                     return new Severity(int_level);
                 }
-
+               
                 return new Severity(SEVERITIES.First(it => it.Value == level.ToUpper()).Key);
             }
             catch

@@ -63,7 +63,9 @@ namespace ApolloQA.Steps
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
             Pages.Home.ApolloIcon.assertElementIsVisible();
+            Log.Warn("this is a warning message");
             ScreenShot.Info();
+            ScreenShot.Debug();
 
         }
     }
