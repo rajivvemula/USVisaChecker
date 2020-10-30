@@ -16,6 +16,7 @@ using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace ApolloQA.Source.Driver
 {
@@ -85,12 +86,15 @@ namespace ApolloQA.Source.Driver
             {
                 string[] fileArray = Directory.GetFiles($"{buildDir}");
 
-                Console.WriteLine("FilesInDir: " + fileArray);
+                foreach(var str in fileArray)
+                {
+                    Console.WriteLine("FilesInDir: " + str);
+                }
+                
             }
-
             environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(buildDir == null ? $"../{JsonEnvironmentFile_RelativePath}" : buildDir +$"/{JsonEnvironmentFile_RelativePath}").ReadToEnd());
 
-
+            
             foreach (var variable in environmentVariables)
             {
                 if (Environment.GetEnvironmentVariable(variable.Key) == null)
