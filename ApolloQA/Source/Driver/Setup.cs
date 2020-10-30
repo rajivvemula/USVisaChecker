@@ -80,8 +80,10 @@ namespace ApolloQA.Source.Driver
         private static void invokeEnvironmentVariables(string JsonEnvironmentFile_RelativePath )
         {
             JObject environmentVariables;
-/*            try
-            {*/
+            /*            try
+                        {*/
+            Console.WriteLine("current Directory: "+Directory.GetCurrentDirectory());
+            Console.WriteLine("env directory: " + Environment.GetEnvironmentVariable("BuildDir"));
                 environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Directory.GetCurrentDirectory().Contains("TestResults")?$"../{JsonEnvironmentFile_RelativePath}": JsonEnvironmentFile_RelativePath).ReadToEnd());
  /*           }
             catch(FileNotFoundException)
