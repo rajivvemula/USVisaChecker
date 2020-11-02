@@ -71,3 +71,14 @@ Scenario: 3 Verify vehicle was added to Vehicle grid
 	| Estimated Current Value  | Input      | $ 14,000.00          |
 	| Additional Modifications | Input      | Test comment.        |
 	When User clicks buttonCancel button
+
+Scenario: 4 Add a vehicle using an invalid VIN
+	When User navigates to Vehicles SideTab
+	And User clicks orgVehicleAdd button
+	Then New Vehicle modal is visible
+	When User enters following values
+	| Field Name | Field Type | Value        |
+	| VIN        | Input      | VIN123458686 |
+	And User clicks orgVehicleVerifyVIN button
+	Then Verify correct toast Invalid VIN number is displayed
+	When User clicks buttonCancel button 
