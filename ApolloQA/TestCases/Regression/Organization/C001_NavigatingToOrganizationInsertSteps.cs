@@ -20,7 +20,7 @@ namespace ApolloQA.TestCases.Regression.Organization
             button = new Buttons(driver);
         }
         [When(@"User clicks (.*) button")]
-        public void WhenUsetClicksButton(string buttonName)
+        public void WhenUserClicksButton(string buttonName)
         {
             button.getElementFromFieldname(buttonName).Click();
 

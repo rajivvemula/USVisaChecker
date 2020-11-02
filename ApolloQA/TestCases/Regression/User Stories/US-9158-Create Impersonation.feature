@@ -14,8 +14,8 @@ Feature: US-9158-Create Impersonation
 
 Scenario: 0 Login as user with impersonation access and verify impersonation icon is available/clickable
 	Given User is on Apollo Homepage
-	When User logs in as ApolloTestUserG301@biberk.com with default password 1
-	Then current logged in user is ApolloTestUserG301@biberk.com
+	When User logs in as ApolloTestUserG302@biberk.com with default password 1
+	Then current logged in user is ApolloTestUserG302@biberk.com
 	And the Impersonate icon is visible
 
 
@@ -28,8 +28,8 @@ Scenario Outline: 1 Attempt to impersonate invalid user
 
 Examples: 
 | Username                      | Error Text                   |
-| ApolloTestUserG301@biberk.com | Cannot impersonate yourself. |
-| ApolloTestUserG302@biberk.com | User cannot be impersonated. |
+| ApolloTestUserG302@biberk.com | Cannot impersonate yourself. |
+| ApolloTestUserG301@biberk.com | User cannot be impersonated. |
 | fake_email123@address.com     | User cannot be impersonated. |
 
 

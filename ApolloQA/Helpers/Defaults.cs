@@ -9,22 +9,24 @@ namespace ApolloQA.Helpers
         public const string
             ADMIN_USERNAME = "ApolloTestUserG301@biberk.com",
             DEFAULT_PASSWORD = "HashTagApollo#24",
-            DEFAULT_PASSWORD2 = "ApolloTest12";
-        
+            DEFAULT_PASSWORD2 = "ApolloTest12",
+            BASE_URL = "https://biberk-apollo-qa2.azurewebsites.net";
+
+        public static bool highlightingOn = true;
+
         //QA URLs
         public static IDictionary<string, string> QA_URLS = new Dictionary<string, string>()
         {
-            {"Home", "https://biberk-apollo-qa2.azurewebsites.net/home" },
-            {"Policy", "https://biberk-apollo-qa2.azurewebsites.net/policy" },
-            {"Organization", "https://biberk-apollo-qa2.azurewebsites.net/organization" },
-            {"Organization Insert", "https://biberk-apollo-qa2.azurewebsites.net/organization/insert" },
-            {"Underwriting", "https://biberk-apollo-qa2.azurewebsites.net/underwriting/dashboard" },
-            {"Billing", "https://biberk-apollo-qa2.azurewebsites.net/billing-defaults" },
-            {"Administration", "https://biberk-apollo-qa2.azurewebsites.net/administration" },
-            {"Application", "https://biberk-apollo-qa2.azurewebsites.net/application" },
-            {"Collections", "https://biberk-apollo-qa2.azurewebsites.net/collections/dashboard" },
-            {"Claims", "https://biberk-apollo-qa2.azurewebsites.net/claims/fnol-dashboard" },
-            {"Quote", "https://biberk-apollo-qa2.azurewebsites.net/quote/" }
+            {"Home", BASE_URL + "/home" },
+            {"Policy", BASE_URL + "/policy" },
+            {"Organization", BASE_URL + "/organization" },
+            {"Organization Insert", BASE_URL + "/organization/insert" },
+            {"Underwriting", BASE_URL + "/underwriting/dashboard" },
+            {"Billing", BASE_URL + "/billing-defaults" },
+            {"Administration", BASE_URL + "/administration" },
+            {"Collections", BASE_URL + "/collections/dashboard" },
+            {"Claims", BASE_URL + "/claims/fnol-dashboard" },
+            {"Quote", BASE_URL + "/quote" }
         };
 
         public static IDictionary<string, List<string>> TabSets = new Dictionary<string, List<string>>()

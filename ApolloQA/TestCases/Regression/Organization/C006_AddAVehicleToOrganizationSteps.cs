@@ -7,6 +7,7 @@ using OpenQA.Selenium;
 using System;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using Bogus;
 
 namespace ApolloQA.TestCases.Regression.Organization
 {
@@ -22,6 +23,7 @@ namespace ApolloQA.TestCases.Regression.Organization
         AddVehicle addVehicle;
         Buttons button;
         Grid grid;
+        Functions functions;
 
 
         public C006_AddAVehicleToOrganizationSteps(IWebDriver driver, State state)
@@ -35,6 +37,7 @@ namespace ApolloQA.TestCases.Regression.Organization
             organizationVehicle = new OrganizationVehicle(driver);
             button = new Buttons(driver);
             grid = new Grid(driver);
+            functions = new Functions(driver);
         }
 
         [When(@"User adds vehicle to Organization")]
@@ -60,8 +63,10 @@ namespace ApolloQA.TestCases.Regression.Organization
                 string vinNumber;
                 if (detail.VIN == "Random")
                 {
-                    string vinRND = rnd.Next(100, 900).ToString();
-                    vinNumber = "1FAFP34N97W156" + vinRND;
+                    //string vinRND = rnd.Next(100, 900).ToString();
+                    //vinNumber = "1FAFP34N97W156" + vinRND;
+
+                    vinNumber = functions.GenerateValidVIN();
                 }
                 else { vinNumber = detail.VIN.ToString(); };
 

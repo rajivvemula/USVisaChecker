@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using TechTalk.SpecFlow;
+using Bogus;
+using Bogus.DataSets;
+using OpenQA.Selenium.Chrome;
 
 namespace ApolloQA.Helpers
 {
@@ -38,22 +41,28 @@ namespace ApolloQA.Helpers
             }
             catch(ElementClickInterceptedException clickintercepted)
             {
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
 
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
 
-            JavaScriptExecutor.highlight(driver, target);
-            Thread.Sleep(250);
-            try
+            //highlight
+            if(Defaults.highlightingOn)
             {
-                JavaScriptExecutor.highlight(driver, target, 0);
-            } 
-            catch
-            {
-                //do nothing
+                JavaScriptExecutor.highlight(driver, target);
+                Thread.Sleep(250);
+
+                try
+                {
+                    JavaScriptExecutor.highlight(driver, target, 0);
+                }
+                catch
+                {
+                    //do nothing
+                }
             }
+            
 
             return target;
         }
@@ -78,7 +87,7 @@ namespace ApolloQA.Helpers
             }
             catch (ElementClickInterceptedException clickintercepted)
             {
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
 
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
@@ -107,6 +116,32 @@ namespace ApolloQA.Helpers
                 dictionary.Add(row[0], row[1]);
             }
             return dictionary;
+        }
+
+        public string GenerateValidVIN()
+        {
+            /* Bogus library does not generate Valid VINs, need to seek another approach */
+            //Vehicle bogusVehicle = new Vehicle();
+            //return bogusVehicle.Vin();
+
+            //grabs random vin via randomvin.com
+            IWebDriver vinDriver = new ChromeDriver();
+            vinDriver.Navigate().GoToUrl("https://randomvin.com/");
+            Thread.Sleep(2000);
+            string randomVin = vinDriver.FindElement(By.XPath("//span[@id='Result']/h2")).Text;
+            Console.WriteLine("the random vin is: " + randomVin);
+            vinDriver.Quit();
+            return randomVin;
+
+        }
+
+        public dynamic GetRandom(string fieldName)
+        {
+            switch(fieldName)
+            {
+                case "VIN": return GenerateValidVIN();
+                default: return null;
+            }
         }
 
     }

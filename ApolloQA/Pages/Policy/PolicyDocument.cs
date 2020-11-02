@@ -1,5 +1,5 @@
 ﻿using ApolloQA.Helpers;
-using AutoIt;
+using AutoItX3Lib;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -19,7 +19,7 @@ namespace ApolloQA.Pages.Policy
         //Upload and download file methood using AutoIT
         public void autoITFileUpload()
         {
-            AutoItX autoIt = new AutoItX();
+            AutoItX3 autoIt = new AutoItX3();
             autoIt.WinActivate("Open");
             Thread.Sleep(2000);
             autoIt.Send(@"C:\Users\agencer\Desktop\TestPNG.png");

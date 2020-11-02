@@ -1,4 +1,5 @@
 ﻿using ApolloQA.Helpers;
+using ApolloQA.Pages.Organization;
 using ApolloQA.Pages.Shared;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -119,6 +120,8 @@ namespace ApolloQA.TestCases.Regression
         public void WhenIEnterOrganizationNameInTheSearchField(string orgName)
         {
             mainNavBar.SearchQuery(orgName);
+            //sleep to allow dropdown to catch up to typed query
+            Thread.Sleep(2000);
         }
 
         [When(@"I click the first search result")]
@@ -156,7 +159,10 @@ namespace ApolloQA.TestCases.Regression
         [Then(@"I should be directed to organization (.*)")]
         public void ThenIShouldBeDirectedToOrganization(string orgName)
         {
-            Assert.IsTrue(driver.Url.Contains(Defaults.QA_URLS["Organization"]));
+            OrganizationInformation orgInfo = new OrganizationInformation(driver);
+
+            Assert.That(() => driver.Title, Does.Contain("Organization Details").After(20).Seconds.PollEvery(250).MilliSeconds, "Unable to reach Organization Details page");
+            Assert.That(() => orgInfo.inputName.GetAttribute("value"), Does.Contain(orgName).After(5).Seconds.PollEvery(250).MilliSeconds, "Organization name does not match expected.");
         }
 
         [When(@"I impersonate impersonateable user (.*)")]
