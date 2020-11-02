@@ -1,4 +1,5 @@
 ﻿using ApolloQA.Source.Driver;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,6 @@ namespace ApolloQA.Pages
         public static Element administrationButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[3]");
         public static Element collectionsCenterButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[4]");
         public static Element printCenterButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[5]");
-        public static Element claimsButton => new Element("body > bh-app > mat-sidenav-container > mat-sidenav > div > bh-side-navbar > mat-nav-list > a:nth-child(6)");
+        public static Element claimsButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[6]");
     }
 }

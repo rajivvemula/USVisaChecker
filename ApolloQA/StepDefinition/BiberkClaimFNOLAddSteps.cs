@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Pages;
+using ApolloQA.Source.Driver;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -20,18 +22,9 @@ namespace ApolloQA.StepDefinition
         [Then(@"user verifies '(.*)' is not an option")]
         public void ThenUserVerifiesIsNotAnOption(string text)
         {
-            {
-                try
-                {
-                    SelectElement NoticeDropdown = new SelectElement(driver.FindElement(By.XPath("//*[@name='receivedTypeId']")));
-                    NoticeDropdown.SelectByValue(text);
-                }
-                catch
-                {
-                    NullReferenceException pigeonNotFound = new NullReferenceException();
-                    Assert.IsNotNull(pigeonNotFound);
-                }
-            }
+            UserActions.Click(By.XPath("//mat-select[@name='receivedTypeId']"));
+            UserActions.FindElementWaitUntilPresent(By.XPath("//mat-option[@value='2'] //*[contains(text(), '" + text + "')]"));
+            // Handle expected failure when option is removed
         }
     }
 }
