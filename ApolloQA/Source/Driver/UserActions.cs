@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using ApolloQA.Source.Helpers;
+using Newtonsoft.Json;
 
 namespace ApolloQA.Source.Driver
 {
@@ -192,7 +193,6 @@ namespace ApolloQA.Source.Driver
             textField.Clear();
         }
 
-
        
         //
         //  Javascript
@@ -210,9 +210,5 @@ namespace ApolloQA.Source.Driver
                 //do nothing
             }
         }
-
-
-        
-
     }
 }

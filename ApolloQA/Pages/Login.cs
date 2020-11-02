@@ -15,7 +15,6 @@ namespace ApolloQA.Pages
         public static Element passwordField => new Element("//input[@type='password' and @name='passwd']");
         public static Element nextButton => new Element(By.Id("idSIButton9"));
         public static Element noButton => new Element(By.Id("idBtn_Back"));
-
     }
 }
 

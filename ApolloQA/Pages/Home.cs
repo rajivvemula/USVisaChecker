@@ -13,11 +13,6 @@ namespace ApolloQA.Pages
         public static void navigate() => UserActions.Navigate(URL_PATH);
 
         public static Element ApolloIcon => new Element("//fa-icon[@routerlink='home']");
-
-
-
-
-
     }
 }
 
