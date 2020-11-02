@@ -32,7 +32,7 @@ namespace ApolloQA.StepDefinition
             {
                 try
                 {
-                    SelectElement NoticeDropdown = new SelectElement(driver.FindElement(By.Id("Search-box")));
+                    SelectElement NoticeDropdown = new SelectElement(driver.FindElement(By.XPath("//*[@name='receivedTypeId']")));
                     NoticeDropdown.SelectByValue(text);
                 }
                 catch

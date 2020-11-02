@@ -20,7 +20,7 @@ namespace ApolloQA.StepDefinition
         [Then(@"user verifies Email is required")]
         public void ThenUserVerifiesEmailIsRequired()
         {
-            IWebElement businessEmail = driver.FindElement(By.XPath("//*[@id='mat-input-27']"));
+            IWebElement businessEmail = driver.FindElement(By.XPath("//input[@name='orgEmailAddress']"));
             string EmailRequired = businessEmail.GetAttribute("required");
             Assert.AreEqual(EmailRequired, "true");
         }
