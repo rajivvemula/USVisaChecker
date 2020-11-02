@@ -7,6 +7,6 @@ namespace ApolloQA.Pages
 {
     class BusinessInformation
     {
-        public static Element businessEmailAddressField => new Element("//*[@id='mat-input-27']");
+        public static Element businessEmailAddressField => new Element("//input[@name='orgEmailAddress']");
     }
 }
