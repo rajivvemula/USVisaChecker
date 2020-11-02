@@ -16,7 +16,7 @@ namespace ApolloQA.Pages
         public static Element howWasNoticeReceivedDropdown => new Element("//mat-select[@name='receivedTypeId']");
         public static Element receivedByPhoneOption => new Element("//mat-option[@value='0']");
         public static Element receivedByEmailOption => new Element("//mat-option[@value='1']");
-        public static Element receivedByCarrierPigeonOption => new Element("//mat-option[@value='2']");
+        public static Element receivedByCarrierPigeonOption => new Element("//mat-option[@value='2'] //*[contains(text(), 'Carrier Pigeon')]");
         public static Element dateReportedField => new Element("//input[@name='dateReported']");
         public static Element timeReportedField => new Element("//input[@name='timeReported']");
         public static Element relatedToExistingClaimDropdown => new Element("//mat-select[@name='hasRelatedClaim']");

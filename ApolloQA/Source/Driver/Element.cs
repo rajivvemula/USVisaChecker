@@ -28,6 +28,11 @@ namespace ApolloQA.Source.Driver
             UserActions.Click(locator);
         }
 
+        public string GetAttribute(string attributeName)
+        {
+            return UserActions.GetAttribute(locator, attributeName);
+        }
+
         public string GetElementText()
         {
             return UserActions.getElementText(locator);

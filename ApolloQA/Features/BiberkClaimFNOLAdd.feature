@@ -2,10 +2,10 @@
 
 @background
 Scenario: Login biBerk home page with valid credentials
-  Given user landed biBerk page with valid URL 
+	Given user landed biBerk page with valid URL 
 	When user enters username: ApolloTestUserG311@biberk.com and password: ApolloTest12
 	And user attempts to login
-   Then user login successfully to biBerk page
+	Then user login successfully to biBerk page
 
 @biBerkClaimFNOLAdd @SmokeTest
 Scenario: Carrier Pigeon Is not a how notice was received option

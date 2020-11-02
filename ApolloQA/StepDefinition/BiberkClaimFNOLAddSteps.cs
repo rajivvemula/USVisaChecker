@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Security.Claims;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.StepDefinition
@@ -22,9 +23,9 @@ namespace ApolloQA.StepDefinition
         [Then(@"user verifies '(.*)' is not an option")]
         public void ThenUserVerifiesIsNotAnOption(string text)
         {
-            UserActions.Click(By.XPath("//mat-select[@name='receivedTypeId']"));
-            UserActions.FindElementWaitUntilPresent(By.XPath("//mat-option[@value='2'] //*[contains(text(), '" + text + "')]"));
-            // Handle expected failure when option is removed
+            Occurrence.howWasNoticeReceivedDropdown.Click();
+            Occurrence.receivedByCarrierPigeonOption.assertElementIsVisible();
+            //will need to be "assertElementNotVisible" when option is removed
         }
     }
 }

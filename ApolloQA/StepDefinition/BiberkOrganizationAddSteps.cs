@@ -1,4 +1,6 @@
-﻿using ApolloQA.Source.Driver;
+﻿using ApolloQA.Data.Entity;
+using ApolloQA.Pages;
+using ApolloQA.Source.Driver;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -22,7 +24,9 @@ namespace ApolloQA.StepDefinition
         [Then(@"user verifies Email is required")]
         public void ThenUserVerifiesEmailIsRequired()
         {
-            UserActions.FindElementWaitUntilVisible(By.XPath("//input[@name='orgEmailAddress' and @aria-required='false']"));
+            BusinessInformation.businessEmailAddressField.Click();
+           string isRequired = BusinessInformation.businessEmailAddressField.GetAttribute("aria-required");
+            Assert.AreEqual("false", isRequired);
             // Required tag will need to be set to 'true' once implemented. 
         }
     }

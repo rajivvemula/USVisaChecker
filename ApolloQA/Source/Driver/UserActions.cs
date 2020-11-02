@@ -6,6 +6,7 @@ using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using ApolloQA.Source.Helpers;
 using Newtonsoft.Json;
+using Utf8Json.Formatters;
 
 namespace ApolloQA.Source.Driver
 {
@@ -41,6 +42,12 @@ namespace ApolloQA.Source.Driver
         {
             FindElementWaitUntilClickable(ElementLocator).Click();
         }
+
+        public static string GetAttribute(By ElementLocator, string attributeName)
+        {
+          return FindElementWaitUntilClickable(ElementLocator).GetAttribute(attributeName);
+        }
+
         public static bool assertElementContainsText(By ElementLocator, string text, bool optional = false)
         {
             if (FindElementWaitUntilVisible(ElementLocator).Text.Contains(text))
@@ -51,8 +58,8 @@ namespace ApolloQA.Source.Driver
             Functions.handleFailure(new Exception($"Element {ElementLocator.ToString()} did not contain text: {text}"), optional);
 
             return false;
-           
         }
+
         public static bool assertElementTextEquals(By ElementLocator, string text, bool optional = false)
         {
             if (FindElementWaitUntilVisible(ElementLocator).Text == text)
@@ -62,8 +69,7 @@ namespace ApolloQA.Source.Driver
 
             Functions.handleFailure(new Exception($"Element {ElementLocator.ToString()} text did not equal text: {text}"), optional);
             
-            return false;
-            
+            return false;      
         }
 
         public static bool assert(By ElementLocator, string text)
