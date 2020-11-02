@@ -113,32 +113,32 @@ this.ScenarioInitialize(scenarioInfo);
 #line 10
  testRunner.Then("Tab navigates to Claims URL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table32.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "a",
                             "Date Reported"});
-                table32.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "b",
                             "FNOL Number"});
-                table32.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "c",
                             "Claimant"});
-                table32.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "d",
                             "Occurrence Number"});
-                table32.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "e",
                             "FNOL Status"});
-                table32.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "f",
                             "Policy Code"});
-                table32.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "g",
                             "Date of Loss"});
 #line 11
- testRunner.Then("Grid column label is displayed", ((string)(null)), table32, "Then ");
+ testRunner.Then("Grid column label is displayed", ((string)(null)), table39, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -171,32 +171,32 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table33.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "a",
                             "Adjuster"});
-                table33.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "b",
                             "Line of Business"});
-                table33.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "c",
                             "Prior Month"});
-                table33.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "d",
                             "Open"});
-                table33.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "e",
                             "Reopen"});
-                table33.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "f",
                             "Closed"});
-                table33.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "g",
                             "Current Pending"});
 #line 22
- testRunner.Then("Grid column label is displayed", ((string)(null)), table33, "Then ");
+ testRunner.Then("Grid column label is displayed", ((string)(null)), table40, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

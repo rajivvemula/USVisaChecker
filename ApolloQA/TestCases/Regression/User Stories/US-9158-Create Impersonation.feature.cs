@@ -112,10 +112,10 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("User is on Apollo Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 17
- testRunner.When("User logs in as ApolloTestUserG301@biberk.com with default password 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("User logs in as ApolloTestUserG302@biberk.com with default password 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 18
- testRunner.Then("current logged in user is ApolloTestUserG301@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("current logged in user is ApolloTestUserG302@biberk.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 19
  testRunner.And("the Impersonate icon is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -126,8 +126,8 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("1 Attempt to impersonate invalid user")]
-        [NUnit.Framework.TestCaseAttribute("ApolloTestUserG301@biberk.com", "Cannot impersonate yourself.", null)]
-        [NUnit.Framework.TestCaseAttribute("ApolloTestUserG302@biberk.com", "User cannot be impersonated.", null)]
+        [NUnit.Framework.TestCaseAttribute("ApolloTestUserG302@biberk.com", "Cannot impersonate yourself.", null)]
+        [NUnit.Framework.TestCaseAttribute("ApolloTestUserG301@biberk.com", "User cannot be impersonated.", null)]
         [NUnit.Framework.TestCaseAttribute("fake_email123@address.com", "User cannot be impersonated.", null)]
         public virtual void _1AttemptToImpersonateInvalidUser(string username, string errorText, string[] exampleTags)
         {

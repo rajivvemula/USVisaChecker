@@ -108,26 +108,26 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
  testRunner.When("User navigates to claim ID recent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table31.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "a",
                             "Occurence"});
-                table31.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "b",
                             "Loss Details"});
-                table31.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "c",
                             "Contacts"});
-                table31.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "d",
                             "Documents"});
-                table31.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "e",
                             "Supervisor Review"});
 #line 9
- testRunner.Then("Verify sidetab is present", ((string)(null)), table31, "Then ");
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table45, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

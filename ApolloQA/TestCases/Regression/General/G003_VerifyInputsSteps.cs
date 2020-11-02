@@ -52,14 +52,15 @@ namespace ApolloQA.TestCases.Regression.General
                 if (detail.Required == "False")
                 {
                     Assert.That(() => helper.CheckInputRequirement(detail.Value), Does.Contain("false").After(3).Seconds.PollEvery(250).MilliSeconds, value + " is required when it should be false");
-                } else
-                {
-                    Assert.That(() => helper.CheckInputRequirement(detail.Value), Does.Contain("true").After(3).Seconds.PollEvery(250).MilliSeconds, value +  " is not required but should be true");
                 }
-                
+                else
+                {
+                    Assert.That(() => helper.CheckInputRequirement(detail.Value), Does.Contain("true").After(3).Seconds.PollEvery(250).MilliSeconds, value + " is not required but should be true");
+                }
+
 
             }
 
-
+        }
     }
 }
