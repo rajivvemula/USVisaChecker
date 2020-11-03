@@ -127,6 +127,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
  testRunner.And("User should be redirected to the newly created Quote", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 15
+ testRunner.And("Quote header should contain correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

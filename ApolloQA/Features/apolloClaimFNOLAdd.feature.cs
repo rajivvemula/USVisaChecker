@@ -19,22 +19,22 @@ namespace ApolloQA.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("BiBerkLogin", Description="\tLogin biBerk home page", SourceFile="Features\\BiberkLogin.feature", SourceLine=0)]
-    public partial class BiBerkLoginFeature
+    [TechTalk.SpecRun.FeatureAttribute("apolloClaimFNOLAdd", SourceFile="Features\\apolloClaimFNOLAdd.feature", SourceLine=0)]
+    public partial class ApolloClaimFNOLAddFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "BiberkLogin.feature"
+#line 1 "apolloClaimFNOLAdd.feature"
 #line hidden
         
         [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "BiBerkLogin", "\tLogin biBerk home page", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "apolloClaimFNOLAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -71,16 +71,14 @@ namespace ApolloQA.Features
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Login biBerk home page with valid credentials", new string[] {
-                "biBerkLogin",
-                "SmokeTest"}, SourceLine=4)]
+                "background"}, SourceLine=3)]
         public virtual void LoginBiBerkHomePageWithValidCredentials()
         {
             string[] tagsOfScenario = new string[] {
-                    "biBerkLogin",
-                    "SmokeTest"};
+                    "background"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login biBerk home page with valid credentials", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -100,29 +98,33 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
-  testRunner.Given("user landed biBerk page with valid URL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 5
+ testRunner.Given("user landed biBerk page with valid URL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 7
+#line 6
  testRunner.When("user enters username: ApolloTestUserG311@biberk.com and password: ApolloTest12", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 8
+#line 7
  testRunner.And("user attempts to login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 9
-   testRunner.Then("user login successfully to biBerk page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 8
+ testRunner.Then("user login successfully to biBerk page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Make sure user is logged in", SourceLine=11)]
-        public virtual void MakeSureUserIsLoggedIn()
+        [TechTalk.SpecRun.ScenarioAttribute("Carrier Pigeon Is not a how notice was received option", new string[] {
+                "biBerkClaimFNOLAdd",
+                "SmokeTest"}, SourceLine=10)]
+        public virtual void CarrierPigeonIsNotAHowNoticeWasReceivedOption()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "biBerkClaimFNOLAdd",
+                    "SmokeTest"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Make sure user is logged in", null, tagsOfScenario, argumentsOfScenario);
-#line 12
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Carrier Pigeon Is not a how notice was received option", null, tagsOfScenario, argumentsOfScenario);
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -142,8 +144,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 12
+ testRunner.Given("user clicks on waffle menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 13
- testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("user clicks on Claims", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 14
+ testRunner.And("user clicks on addFNOL button to begin an FNOL report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 15
+ testRunner.Then("user verifies \'Carrier Pigeon\' is not an option", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

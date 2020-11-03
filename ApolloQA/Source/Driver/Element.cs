@@ -50,22 +50,62 @@ namespace ApolloQA.Source.Driver
         }
 
 
+        public string GetAttribute(string attributeName)
+        {
+            return UserActions.GetAttribute(locator, attributeName);
+        }
+
         public string GetElementText()
         {
             return UserActions.getElementText(locator);
         }
 
-        public string getElementsText()
+        public string GetInnerText()
         {
-            var elements = UserActions.FindElementsWaitUntilVisible(locator);
-            return string.Join("",elements.Select(it => it.Text).Distinct());
+            return string.Join("", this.GetInnerTexts());
         }
-        public List<String> getElementsTexts()
+        public List<String> GetInnerTexts()
         {
-            return UserActions.FindElementsWaitUntilVisible(locator).Select(it => it.Text).ToList();
+            return UserActions.FindElementsWaitUntilVisible(locator).Select(it => it.Text.Trim()).ToList();
             
         }
 
+
+        public bool assertElementContainsText(string text, bool optional = false)
+        {
+            string elementText = this.GetElementText();
+
+            if (Assert.TextContains(elementText, text, true))
+            {
+                return true;
+            }
+
+            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText}  did not contain expected \ntext: {text}"), optional);
+            return false;
+        }
+        public bool assertElementTextEquals(string text, bool optional = false)
+        {
+            string elementText = this.GetElementText();
+            if (Assert.AreEqual(elementText, text, true))
+            {
+                return true;
+            }
+
+            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {text}"), optional);
+            return false;
+        }
+
+        public bool assertElementInnerTextEquals(string text, bool optional = false)
+        {
+            string innerText = this.GetInnerText();
+            if (Assert.AreEqual(innerText, text, true))
+            {
+                return true;
+            }
+
+            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ninner text: {innerText} did not equal expected\ninner text: {text}"), optional);
+            return false;
+        }
 
 
 
@@ -102,14 +142,6 @@ namespace ApolloQA.Source.Driver
         }
 
 
-        public bool assertElementContainsText(string text, bool optional = false)
-        {
-           return UserActions.assertElementContainsText(locator, text, optional);
-        }
-        public bool assertElementTextEquals(string text, bool optional = false)
-        {
-            return UserActions.assertElementTextEquals(locator, text, optional);
-        }
 
         /// <summary>
         ///  Waits for the element to disappear <br/>

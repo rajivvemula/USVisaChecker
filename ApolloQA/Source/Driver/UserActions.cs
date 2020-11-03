@@ -6,6 +6,8 @@ using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using ApolloQA.Source.Helpers;
 using System.Linq;
+using Newtonsoft.Json;
+using Utf8Json.Formatters;
 
 namespace ApolloQA.Source.Driver
 {
@@ -14,25 +16,25 @@ namespace ApolloQA.Source.Driver
         public const int DEFAULT_WAIT_SECONDS = 60;
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
-            foreach (var param in parameters)
-            {
-                URL_OR_PATH = URL_OR_PATH.Replace("{" + param.key + "}", param.value);
-            }
-            string URL;
-            if (URL_OR_PATH.StartsWith("http"))
-            {
-                URL = URL_OR_PATH;
-            }
-            else
-            {
-                URL = Environment.GetEnvironmentVariable("HOST") + (URL_OR_PATH.StartsWith('/') ? URL_OR_PATH : "/"+URL_OR_PATH);
-            }
-             
+            var URL = Functions.ParseURL(URL_OR_PATH, parameters);
             Log.Info("Navigate to: " + URL);
             if (Setup.driver.Url != URL)
             {
                 Setup.driver.Navigate().GoToUrl(URL);
             }
+        }
+        public static void Navigate(string URL_OR_PATH)
+        {
+            var URL = Functions.ParseURL(URL_OR_PATH);
+            Log.Info("Navigate to: " + URL);
+            if (Setup.driver.Url != URL)
+            {
+                Setup.driver.Navigate().GoToUrl(URL);
+            }
+        }
+        public static string GetCurrentURL()
+        {
+            return Setup.driver.Url;
         }
 
         //
@@ -50,35 +52,12 @@ namespace ApolloQA.Source.Driver
         {
             FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
         }
-        public static bool assertElementContainsText(By ElementLocator, string text, bool optional = false)
+
+        public static string GetAttribute(By ElementLocator, string attributeName)
         {
-            if (FindElementWaitUntilVisible(ElementLocator).Text.Contains(text))
-            {
-                return true;
-            }
-
-            Functions.handleFailure(new Exception($"Element {ElementLocator.ToString()} did not contain text: {text}"), optional);
-
-            return false;
-           
-        }
-        public static bool assertElementTextEquals(By ElementLocator, string text, bool optional = false)
-        {
-            if (FindElementWaitUntilVisible(ElementLocator).Text == text)
-            {
-                return true;
-            }
-
-            Functions.handleFailure(new Exception($"Element {ElementLocator.ToString()} text did not equal text: {text}"), optional);
-            
-            return false;
-            
+          return FindElementWaitUntilClickable(ElementLocator).GetAttribute(attributeName);
         }
 
-        public static bool assert(By ElementLocator, string text)
-        {
-            return FindElementWaitUntilVisible(ElementLocator).Text.Contains(text);
-        }
 
         public static IWebElement FindElementWaitUntilVisible(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
@@ -285,9 +264,5 @@ namespace ApolloQA.Source.Driver
                 //do nothing
             }
         }
-
-
-        
-
     }
 }

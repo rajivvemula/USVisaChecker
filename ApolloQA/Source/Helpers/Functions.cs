@@ -12,8 +12,32 @@ namespace ApolloQA.Source.Helpers
 {
     class Functions
     {
+        public static string ParseURL(string URL_OR_PATH, params (string key, string value)[] parameters)
+        {
+            foreach (var param in parameters)
+            {
+                URL_OR_PATH = URL_OR_PATH.Replace("{" + param.key + "}", param.value);
+            }
+            return ParseURL(URL_OR_PATH);
+        }
+        public static string ParseURL(string URL_OR_PATH)
+        {
 
-
+            if (URL_OR_PATH.StartsWith("http"))
+            {
+                return URL_OR_PATH;
+            }
+            else
+            {
+                return ParseURL(Environment.GetEnvironmentVariable("HOST"), URL_OR_PATH);
+            }
+        }
+        public static string ParseURL(string Host, string Path)
+        {
+            
+            return Host + (Path.StartsWith('/') ? Path : "/" + Path);
+            
+        }
 
         //
         //  Failure Handling

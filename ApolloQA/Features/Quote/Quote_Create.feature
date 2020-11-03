@@ -12,4 +12,6 @@ Scenario: Create New Quote
 	And user Clicks the Next Button
 	Then A new Quote should successfully be created
 	And User should be redirected to the newly created Quote
+	And Quote header should contain correct values
+
 

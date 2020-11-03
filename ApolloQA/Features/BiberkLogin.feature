@@ -1,8 +1,6 @@
 ﻿Feature: BiBerkLogin
 	Login biBerk home page
 
-
-
 @biBerkLogin @SmokeTest
 Scenario: Login biBerk home page with valid credentials
   Given user landed biBerk page with valid URL 

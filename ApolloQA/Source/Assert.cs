@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using ApolloQA.Source.Helpers;
+using ApolloQA.Source.Driver;
+using NUnit.Framework;
+using NUnitAssert = NUnit.Framework.Assert;
 namespace ApolloQA
 {
     class Assert
     {
+
 
         public static bool TextContains(String text, String value, bool optional = false)
         {
@@ -123,9 +127,26 @@ namespace ApolloQA
             }
         }
 
+        public static bool CurrentURLEquals(string URL, bool optional=false)
+        {
+            try
+            {
+                NUnitAssert.That(() => UserActions.GetCurrentURL(), Is.EqualTo(URL).After(10).Seconds.PollEvery(250).MilliSeconds);
+                success($"URL {URL} is the current URL");
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Functions.handleFailure(ex, optional);
+                return false;
+            }
+        }
+
         private static void success(String message)
         {
+
             Log.Info("Success - Assert: " + message);
         }
+
     }
 }
