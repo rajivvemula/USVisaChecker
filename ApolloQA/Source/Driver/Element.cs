@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium;
 using ApolloQA.Source.Helpers;
+using System.Linq;
+
 namespace ApolloQA.Source.Driver
 {
     public class Element
@@ -25,13 +27,47 @@ namespace ApolloQA.Source.Driver
  
         public void Click()
         {
+           
             UserActions.Click(locator);
         }
+        public void Click(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
+        {
+
+            UserActions.Click(locator, wait_Seconds);
+        }
+
+        public bool TryClick(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
+        {
+            try
+            {
+                this.Click(wait_Seconds);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
         public string GetElementText()
         {
             return UserActions.getElementText(locator);
         }
+
+        public string getElementsText()
+        {
+            var elements = UserActions.FindElementsWaitUntilVisible(locator);
+            return string.Join("",elements.Select(it => it.Text).Distinct());
+        }
+        public List<String> getElementsTexts()
+        {
+            return UserActions.FindElementsWaitUntilVisible(locator).Select(it => it.Text).ToList();
+            
+        }
+
+
+
 
         /// <summary>
         ///  Waits for the element to be vissible in the page
@@ -80,7 +116,7 @@ namespace ApolloQA.Source.Driver
         ///  note: if element was not present at the exact moment this function was called, true will be returned.
         /// </summary>
         /// <param name="optional">if set to true failure will be contained and no exception will be thrown </param>
-        public bool assertElementNotVisible(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
+        public bool assertElementNotPresent(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
         {
             try { UserActions.WaitForElementToDisappear(locator, wait_Seconds);
                 return true;
@@ -99,6 +135,7 @@ namespace ApolloQA.Source.Driver
         //
         public void setText(String TextToEnter, int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
         {
+        
             UserActions.setText(locator, TextToEnter, wait_Seconds);
         }
         public string getTextFieldText(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
@@ -113,7 +150,25 @@ namespace ApolloQA.Source.Driver
 
 
 
-        
+        // 
+        // Dropdown actions 
+        // 
+        public void SelectMatDropdownOptionByText( string optionDisplayText)
+        {
+            UserActions.SelectMatDropdownOptionByText(locator, optionDisplayText);
+        }
+        public void SelectMatDropdownOptionByIndex(int LogicalIndex, out string selectionDisplayName)
+        {
+            UserActions.SelectMatDropdownOptionByIndex(locator, LogicalIndex, out selectionDisplayName);
+          
+        }
+        public void SelectMatDropdownOptionByIndex(int LogicalIndex)
+        {
+            UserActions.SelectMatDropdownOptionByIndex(locator, LogicalIndex);
+
+        }
+
+
 
     }
 }

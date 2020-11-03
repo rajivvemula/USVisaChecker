@@ -7,6 +7,22 @@ namespace ApolloQA
     class Assert
     {
 
+        public static bool TextContains(String text, String value, bool optional = false)
+        {
+            if(text== null || value == null)
+            {
+                Functions.handleFailure(new Exception($"Assert - text: [{text}] does not Contain  value: [{value}]"), optional);
+                return false;
+            }
+            if(text.Contains(value))
+            {
+                success($"text: {text} contains value: {value}");
+                return true;
+            }
+            Functions.handleFailure(new Exception($"Assert - text: [{text}] does not Contain  value: [{value}]"), optional);
+            return false;
+
+        }
         public static bool SoftAreEqual(object A, object B)
         {
             return AreEqual(A, B, true);

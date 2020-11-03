@@ -15,14 +15,35 @@ using ApolloQA.Source.Helpers;
 namespace ApolloQA.Steps
 {
     [Binding]
-    public sealed class BiberkValidLoginSteps
+    public sealed class BiberkLoginSteps
     {
         public IWebDriver driver;
 
 
-        BiberkValidLoginSteps(IWebDriver _driver)
+        public BiberkLoginSteps(IWebDriver _driver)
         {
             this.driver = _driver;
+
+        }
+
+
+        [Given(@"user is successfully logged into biberk")]
+        public void GivenUserIsSuccessfullyLoggedIntoBiberk()
+        {
+            if (driver.Url == "data:,")
+            {
+                GivenUserLandedBiBerkPageWithValidURL();
+                WhenUserEntersAnd("ApolloTestUserG311@biberk.com", "ApolloTest12");
+                WhenUserAttemptsToLogin();
+                ThenUserLoginSuccessfullyToBiBerkPage();
+
+                return;
+            }
+
+            GivenUserLandedBiBerkPageWithValidURL();
+
+            Pages.Home.ApolloIcon.assertElementIsVisible(10, optional: true);
+
         }
 
         [Given(@"user landed biBerk page with valid URL")]
@@ -36,20 +57,12 @@ namespace ApolloQA.Steps
         [When(@"user enters username: (.*) and password: (.*)")]
         public void WhenUserEntersAnd(string username, string password)
         {
-            Log.Info("User enters username");
-            Log.Critical("critical username");
-
+            Log.Info($"Login in with {username}");
             Pages.Login.usernameField.setText(username);
+            
             Pages.Login.nextButton.Click();
             Pages.Login.passwordField.setText(password);
-            var sev1 = new Severity(2);
-            var sev2 = new Severity(2);
-            Console.WriteLine(Assert.AreEqual(sev1, sev2,true));
-            Boolean? somebool = null;
-            Console.WriteLine(Assert.IsNull(somebool));
-
-
-               
+                           
         }
 
         [When(@"user attempts to login")]
@@ -64,10 +77,12 @@ namespace ApolloQA.Steps
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
             Pages.Home.ApolloIcon.assertElementIsVisible();
-            Log.Warn("this is a warning message");
             ScreenShot.Info();
-            ScreenShot.Debug();
+
 
         }
+
+        
+
     }
 }

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using TechTalk.SpecFlow;
+using ApolloQA.Source.Driver;
 
-
-namespace ApolloQA.Source.Driver
+namespace ApolloQA
 {
     public class ScreenShot
     {
