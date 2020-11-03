@@ -5,12 +5,12 @@ using ApolloQA.Pages;
 namespace ApolloQA.StepDefinition
 {
     [Binding]
-    public sealed class BiberkSharedSteps
+    public sealed class apolloSharedSteps
     {
         public IWebDriver driver;
 
 
-        BiberkSharedSteps(IWebDriver _driver)
+        apolloSharedSteps(IWebDriver _driver)
         {
             this.driver = _driver;
         }

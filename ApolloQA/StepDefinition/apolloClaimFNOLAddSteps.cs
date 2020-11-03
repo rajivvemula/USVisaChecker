@@ -1,21 +1,16 @@
 ﻿using ApolloQA.Pages;
-using ApolloQA.Source.Driver;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-using System;
-using System.Security.Claims;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.StepDefinition
 {
     [Binding]
-    public sealed class BiberkClaimFNOLAddSteps
+    public sealed class apolloClaimFNOLAddSteps
     {
         public IWebDriver driver;
 
 
-        BiberkClaimFNOLAddSteps(IWebDriver _driver)
+        apolloClaimFNOLAddSteps(IWebDriver _driver)
         {
             this.driver = _driver;
         }

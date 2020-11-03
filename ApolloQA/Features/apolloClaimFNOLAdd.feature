@@ -1,4 +1,4 @@
-﻿Feature: BiberkClaimFNOLAdd
+﻿Feature: apolloClaimFNOLAdd
 
 @background
 Scenario: Login biBerk home page with valid credentials

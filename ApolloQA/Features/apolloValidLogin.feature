@@ -1,4 +1,4 @@
-﻿Feature: BiBerkLogin
+﻿Feature: apolloLogin
 	Login biBerk home page with valid credentials
 
 @biBerkLogin @SmokeTest

@@ -19,22 +19,22 @@ namespace ApolloQA.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("BiBerkLogin", Description="\tLogin biBerk home page with valid credentials", SourceFile="Features\\BiberkValidLogin.feature", SourceLine=0)]
-    public partial class BiBerkLoginFeature
+    [TechTalk.SpecRun.FeatureAttribute("apolloLogin", Description="\tLogin biBerk home page with valid credentials", SourceFile="Features\\apolloValidLogin.feature", SourceLine=0)]
+    public partial class ApolloLoginFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "BiberkValidLogin.feature"
+#line 1 "apolloValidLogin.feature"
 #line hidden
         
         [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "BiBerkLogin", "\tLogin biBerk home page with valid credentials", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "apolloLogin", "\tLogin biBerk home page with valid credentials", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

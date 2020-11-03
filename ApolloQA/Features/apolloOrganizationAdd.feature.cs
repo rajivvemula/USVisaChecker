@@ -19,22 +19,22 @@ namespace ApolloQA.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("BiberkOrganizationAdd", SourceFile="Features\\BiberkOrganizationAdd.feature", SourceLine=0)]
-    public partial class BiberkOrganizationAddFeature
+    [TechTalk.SpecRun.FeatureAttribute("apolloOrganizationAdd", SourceFile="Features\\apolloOrganizationAdd.feature", SourceLine=0)]
+    public partial class ApolloOrganizationAddFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "BiberkOrganizationAdd.feature"
+#line 1 "apolloOrganizationAdd.feature"
 #line hidden
         
         [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "BiberkOrganizationAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "apolloOrganizationAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -145,6 +145,67 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 12
  testRunner.Then("user verifies Email is required", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Add business information and save as organization", SourceLine=13)]
+        public virtual void AddBusinessInformationAndSaveAsOrganization()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add business information and save as organization", null, tagsOfScenario, argumentsOfScenario);
+#line 14
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "BusinessName",
+                            "DBA",
+                            "OrganizationType",
+                            "TaxIdType",
+                            "TaxIdNumber",
+                            "DescriptionOfOperations",
+                            "BusinessPhoneNumber",
+                            "BusinessEamil",
+                            "BusinessWebsite",
+                            "Keyword",
+                            "ClassTaxonomy",
+                            "YearStarted",
+                            "YearOwned"});
+                table1.AddRow(new string[] {
+                            "TheTestOrg",
+                            "dba",
+                            "Non-Profit",
+                            "FEIN",
+                            "80-6541032",
+                            "DescriptionofOps",
+                            "8021585010",
+                            "testorg@me.com",
+                            "testorg.com",
+                            "Turkey Farm",
+                            "tax",
+                            "2000",
+                            "2005"});
+#line 15
+ testRunner.Given("user enters business information", ((string)(null)), table1, "Given ");
 #line hidden
             }
             this.ScenarioCleanup();

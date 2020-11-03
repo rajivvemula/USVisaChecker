@@ -19,22 +19,22 @@ namespace ApolloQA.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("BiberkClaimFNOLAdd", SourceFile="Features\\BiberkClaimFNOLAdd.feature", SourceLine=0)]
-    public partial class BiberkClaimFNOLAddFeature
+    [TechTalk.SpecRun.FeatureAttribute("apolloClaimFNOLAdd", SourceFile="Features\\apolloClaimFNOLAdd.feature", SourceLine=0)]
+    public partial class ApolloClaimFNOLAddFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "BiberkClaimFNOLAdd.feature"
+#line 1 "apolloClaimFNOLAdd.feature"
 #line hidden
         
         [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "BiberkClaimFNOLAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "apolloClaimFNOLAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

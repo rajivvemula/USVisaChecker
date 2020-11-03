@@ -7,12 +7,12 @@ using ApolloQA.Source.Driver;
 namespace ApolloQA.StepDefinition
 {
     [Binding]
-    public sealed class BiberkValidLoginSteps
+    public sealed class apolloValidLoginSteps
     {
         public IWebDriver driver;
 
 
-        BiberkValidLoginSteps(IWebDriver _driver)
+        apolloValidLoginSteps(IWebDriver _driver)
         {
             this.driver = _driver;
         }
