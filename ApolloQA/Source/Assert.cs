@@ -40,7 +40,7 @@ namespace ApolloQA
             }
             else
             {
-                Functions.handleFailure(new Exception($"Assert - type:[{A?.GetType()?.FullName}] value:[${A}]   does not Equal  type: [{A?.GetType()?.FullName}] value: [{B}]"), optional);
+                Functions.handleFailure(new Exception($"Assert - type:[{A?.GetType()?.FullName}] value:[{A}]   does not Equal  type: [{A?.GetType()?.FullName}] value: [{B}]"), optional);
                 return false;
             }
         }
@@ -53,7 +53,7 @@ namespace ApolloQA
             }
             else
             {
-                Functions.handleFailure(new Exception($"Assert - type:[{A?.GetType()?.FullName}] value:[${A}]   Equals  type: [{A?.GetType()?.FullName}] value: [{B}]"), optional);
+                Functions.handleFailure(new Exception($"Assert - type:[{A?.GetType()?.FullName}] value:[{A}]   Equals  type: [{A?.GetType()?.FullName}] value: [{B}]"), optional);
                 return false;
             }
         }
@@ -72,7 +72,7 @@ namespace ApolloQA
             }
             else
             {
-                Functions.handleFailure(new Exception($"Assert is True - for given condition: ${condition} was not true"), optional);
+                Functions.handleFailure(new Exception($"Assert is True - for given condition: {condition} was not true"), optional);
                 return false;
             }
         }
@@ -86,7 +86,7 @@ namespace ApolloQA
 
             if (condition.HasValue && condition.Value == true)
             {
-                Functions.handleFailure(new Exception($"Assert is False - the given condition: ${condition} was not false"), optional);
+                Functions.handleFailure(new Exception($"Assert is False - the given condition: {condition} was not false"), optional);
                 return false;
             }
             else
@@ -107,7 +107,7 @@ namespace ApolloQA
             else
             {
                 
-                Functions.handleFailure(new Exception($"Assert is Null - the given Object: ${_object} was not null"), optional);
+                Functions.handleFailure(new Exception($"Assert is Null - the given Object: {_object} was not null"), optional);
                 return false;
             }
         }
@@ -122,7 +122,7 @@ namespace ApolloQA
             else
             {
 
-                Functions.handleFailure(new Exception($"Assert is Not Null - the given Object: ${_object} was null"), optional);
+                Functions.handleFailure(new Exception($"Assert is Not Null - the given Object: {_object} was null"), optional);
                 return false;
             }
         }

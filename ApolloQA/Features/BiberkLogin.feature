@@ -2,7 +2,7 @@
 	Login biBerk home page
 
 @biBerkLogin @SmokeTest
-Scenario: Login biBerk home page with valid credentials
+Scenario: (1) Login biBerk home page with valid credentials
   Given user landed biBerk page with valid URL 
 	When user enters username: ApolloTestUserG311@biberk.com and password: ApolloTest12
 	And user attempts to login

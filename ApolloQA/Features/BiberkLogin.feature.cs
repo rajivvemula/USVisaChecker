@@ -70,16 +70,16 @@ namespace ApolloQA.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Login biBerk home page with valid credentials", new string[] {
+        [TechTalk.SpecRun.ScenarioAttribute("(1) Login biBerk home page with valid credentials", new string[] {
                 "biBerkLogin",
                 "SmokeTest"}, SourceLine=4)]
-        public virtual void LoginBiBerkHomePageWithValidCredentials()
+        public virtual void _1LoginBiBerkHomePageWithValidCredentials()
         {
             string[] tagsOfScenario = new string[] {
                     "biBerkLogin",
                     "SmokeTest"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login biBerk home page with valid credentials", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("(1) Login biBerk home page with valid credentials", null, tagsOfScenario, argumentsOfScenario);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
