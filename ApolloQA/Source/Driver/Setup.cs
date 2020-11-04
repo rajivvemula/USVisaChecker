@@ -25,6 +25,7 @@ namespace ApolloQA.Source.Driver
     {
         private static IObjectContainer _objectContainer;
         public static IWebDriver driver;
+        public static IWebDriver driverTemp;
         public static String SourceDir = Environment.GetEnvironmentVariable("SourceDir") ?? "../" ;
         public Setup(IObjectContainer objectContainer)
         {
@@ -34,8 +35,12 @@ namespace ApolloQA.Source.Driver
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            invokeEnvironmentVariables(Environment.GetEnvironmentVariable("ENVIRONMENT_FILE") ?? "default.env.json"); 
+            invokeEnvironmentVariables(Environment.GetEnvironmentVariable("ENVIRONMENT_FILE") ?? "default.env.json");
 
+            invokeNewDriver();
+        }
+        public static void invokeNewDriver()
+        {
             string browser = Environment.GetEnvironmentVariable("BROWSER", EnvironmentVariableTarget.Process);
             switch (browser?.ToLower())
             {
@@ -49,10 +54,20 @@ namespace ApolloQA.Source.Driver
                     throw new NotImplementedException($"Environment variable BROWSER value={browser} is not supported");
             }
             driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
         }
 
+        [BeforeScenario("newWindow",Order =1)]
+        public static void BeforeFeatureNewWindow()
+        {
+            driverTemp = driver;
+            invokeNewDriver();
+        }
+        [AfterScenario("newWindow")]
+        public static void AfterFeatureNewWindow()
+        {
+            driver.Quit();
+            driver = driverTemp;
+        }
 
         [BeforeScenario]
         public void BeforeScenario()

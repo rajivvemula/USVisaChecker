@@ -70,14 +70,12 @@ namespace ApolloQA.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Login biBerk home page with valid credentials", new string[] {
-                "background"}, SourceLine=3)]
-        public virtual void LoginBiBerkHomePageWithValidCredentials()
+        [TechTalk.SpecRun.ScenarioAttribute("Business Email field is required when adding an organization", SourceLine=3)]
+        public virtual void BusinessEmailFieldIsRequiredWhenAddingAnOrganization()
         {
-            string[] tagsOfScenario = new string[] {
-                    "background"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login biBerk home page with valid credentials", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Business Email field is required when adding an organization", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -99,64 +97,25 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 5
- testRunner.Given("user landed biBerk page with valid URL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 6
- testRunner.When("user enters username: ApolloTestUserG311@biberk.com and password: ApolloTest12", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 7
- testRunner.And("user attempts to login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 8
- testRunner.Then("user login successfully to biBerk page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [TechTalk.SpecRun.ScenarioAttribute("Business Email field is required when adding an organization", SourceLine=9)]
-        public virtual void BusinessEmailFieldIsRequiredWhenAddingAnOrganization()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Business Email field is required when adding an organization", null, tagsOfScenario, argumentsOfScenario);
-#line 10
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 11
  testRunner.Given("user clicks addNew button to add an organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 12
+#line 7
  testRunner.Then("user verifies Email is required", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Add business information and save as organization", SourceLine=13)]
+        [TechTalk.SpecRun.ScenarioAttribute("Add business information and save as organization", SourceLine=8)]
         public virtual void AddBusinessInformationAndSaveAsOrganization()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add business information and save as organization", null, tagsOfScenario, argumentsOfScenario);
-#line 14
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -204,7 +163,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "tax",
                             "2000",
                             "2005"});
-#line 15
+#line 10
  testRunner.Given("user enters business information", ((string)(null)), table1, "Given ");
 #line hidden
             }

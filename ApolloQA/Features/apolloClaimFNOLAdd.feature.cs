@@ -70,53 +70,9 @@ namespace ApolloQA.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Login biBerk home page with valid credentials", new string[] {
-                "background"}, SourceLine=3)]
-        public virtual void LoginBiBerkHomePageWithValidCredentials()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "background"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login biBerk home page with valid credentials", null, tagsOfScenario, argumentsOfScenario);
-#line 4
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 5
- testRunner.Given("user landed biBerk page with valid URL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 6
- testRunner.When("user enters username: ApolloTestUserG311@biberk.com and password: ApolloTest12", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 7
- testRunner.And("user attempts to login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 8
- testRunner.Then("user login successfully to biBerk page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
         [TechTalk.SpecRun.ScenarioAttribute("Carrier Pigeon Is not a how notice was received option", new string[] {
                 "biBerkClaimFNOLAdd",
-                "SmokeTest"}, SourceLine=10)]
+                "SmokeTest"}, SourceLine=4)]
         public virtual void CarrierPigeonIsNotAHowNoticeWasReceivedOption()
         {
             string[] tagsOfScenario = new string[] {
@@ -124,7 +80,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "SmokeTest"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Carrier Pigeon Is not a how notice was received option", null, tagsOfScenario, argumentsOfScenario);
-#line 11
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -144,16 +100,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 12
+#line 6
+ testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
  testRunner.Given("user clicks on waffle menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 13
+#line 8
  testRunner.When("user clicks on Claims", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 14
+#line 9
  testRunner.And("user clicks on addFNOL button to begin an FNOL report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
+#line 10
  testRunner.Then("user verifies \'Carrier Pigeon\' is not an option", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
