@@ -66,6 +66,20 @@ namespace ApolloQA.Data.Entity
             
         }
 
+        public String Name
+        {
+            get
+            {
+                return this["name"];
+            }
+        }
+        public String DBA
+        {
+            get
+            {
+                return this["dba"];
+            }
+        }
         public String TypeName
         {
             get
@@ -76,6 +90,93 @@ namespace ApolloQA.Data.Entity
                 return (String)list.Find(type => type.id == typeID).name;
             }
         }
+        public String TaxIdType
+        {
+            get
+            {
+                var taxTypeId = this["taxTypeId"];
+                return TaxIDTypeName[(int)taxTypeId.Value];
+            }
+        }
+        private static Dictionary<int, string> TaxIDTypeName = new Dictionary<int, string>()
+        {
+            {0, "FEIN" },
+            {1, "SSN" }
+        };
+        public String TaxId
+        {
+            get
+            {
+                return this["taxId"];
+            }
+        }
+        public String Description
+        {
+            get
+            {
+                return this["description"];
+            }
+        }
+        public String BusinessPhoneNumber
+        {
+            get
+            {
+                List<dynamic> phones = ((JArray)this["phones"]).ToObject<List<dynamic>>();
+                dynamic phone = phones.Find(it => it?["phoneType"]?["Code"] == "BUSINESS");
+                return phone?["number"];
+            }
+        }
+        public String BusinessEmailAddress
+        {
+            get
+            {
+                return this["primaryEmail"]?["address"];
+            }
+        }
+        public String BusinessWebsite
+        {
+            get
+            {
+                List<dynamic> sites = ((JArray)this["sites"]).ToObject<List<dynamic>>();
+                dynamic site = sites.Find(it => it?["internetType"]?["Code"] == "WEBSITE");
+                return site?["address"];
+            }
+        }
+
+        public String KeywordName
+        {
+            get
+            {
+                return this?["keyword"]?["name"];
+            }
+        }
+        public String ClassTaxonomyName
+        {
+            get
+            {
+                return this?["keyword"]?["industryClassTaxonomyClassName"];
+            }
+        }
+
+        public int? YearOwnershipStarted
+        {
+            get
+            {
+                return this?["yearOwnershipStarted"];
+            }
+        }
+        public int? YearBusinessStarted
+        {
+            get
+            {
+                return this?["yearBusinessStarted"];
+            }
+        }
+
+
+
+
+
         public String InsurranceScoreTier
         {
             get

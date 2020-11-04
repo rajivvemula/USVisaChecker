@@ -57,9 +57,9 @@ namespace ApolloQA.Data.Entity
 
 
         }
-        public Application GetApplication()
+        public Quote GetApplication()
         {
-            return new Application(GetProperties()["applicationId"].ToObject<int>());
+            return new Quote(GetProperties()["applicationId"].ToObject<int>());
         }
         public dynamic GetVehicleTypeRisk()
         {
@@ -103,7 +103,10 @@ namespace ApolloQA.Data.Entity
         }
 
 
-        public Organization Organization{ get
+        public Organization Organization
+        { 
+            
+            get
             {
                 try
                 {

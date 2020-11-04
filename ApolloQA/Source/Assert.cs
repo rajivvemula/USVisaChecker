@@ -33,7 +33,17 @@ namespace ApolloQA
         }
         public static bool AreEqual(object A, object B, bool optional = false)
         {
-            if (A.Equals(B))
+            if(    (A == null || A is string && (string)A == "")     &&      (B == null || B is string && (string)B=="")     )
+            {
+                success($"Object {A} equals {B}");
+                return true;
+            }
+            else if(A == null || B==null)
+            {
+                Functions.handleFailure(new Exception($"Assert - type:[{A?.GetType()?.FullName}] value:[{A}]   does not Equal  type: [{A?.GetType()?.FullName}] value: [{B}]"), optional);
+                return false;
+            }
+            else if (A.Equals(B))
             {
                 success($"Object {A} equals {B}");
                 return true;

@@ -62,16 +62,12 @@ namespace ApolloQA.StepDefinition
         {
             Pages.Login.nextButton.Click();
             Pages.Login.noButton.Click();
-            
         }
        
         [Then(@"user login successfully to biBerk page")]
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
             Pages.Home.ApolloIcon.assertElementIsVisible();
-            ScreenShot.Info();
-
-
         }
 
         

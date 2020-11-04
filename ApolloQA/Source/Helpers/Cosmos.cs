@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,11 +13,11 @@ namespace ApolloQA.Source.Helpers
 
 
 
-        public static async Task<bool> GetQuery(string containerA, string queryA)
+        public static async Task<List<dynamic>> GetQuery(string containerA, string queryA)
         {
             var database = client.GetDatabase("apollo");
-            bool returnValue = false;
             var container = database.GetContainer(containerA);
+            List<dynamic> result = new List<dynamic>();
             using (FeedIterator<dynamic> feedIterator = container.GetItemQueryIterator<dynamic>(queryA))
             {
                 while (feedIterator.HasMoreResults)
@@ -24,14 +25,13 @@ namespace ApolloQA.Source.Helpers
                     FeedResponse<dynamic> response = await feedIterator.ReadNextAsync();
                     foreach (var item in response)
                     {
-                        //simple check for right now
-                        Console.WriteLine(item);
-                        returnValue = true;
-                        
+
+                        result.Add(item);
+                      
                     }
                 }
             }
-            return returnValue;
+            return result;
 
         }
 

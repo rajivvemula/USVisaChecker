@@ -9,11 +9,11 @@ namespace ApolloQA
     public static class Log
     {
 
-        public static void Debug(string text) => Write(Severity.DEBUG, text);
-        public static void Info(string text) => Write(Severity.INFO, text);
-        public static void Warn(string text) => Write(Severity.WARN, text);
-        public static void Error(string text) => Write(Severity.ERROR, text);
-        public static void Critical(string text) => Write(Severity.CRITICAL, text);
+        public static void Debug(object text) => Write(Severity.DEBUG, text);
+        public static void Info(object text) => Write(Severity.INFO, text);
+        public static void Warn(object text) => Write(Severity.WARN, text);
+        public static void Error(object text) => Write(Severity.ERROR, text);
+        public static void Critical(object text) => Write(Severity.CRITICAL, text);
 
         /// <summary>
         /// Will log text to the the given severity
@@ -25,7 +25,7 @@ namespace ApolloQA
         /// Log.info("informational message") <br/>
         /// </remarks>
         /// 
-        public static void Write(Severity severity, string text)
+        public static void Write(Severity severity, object text)
         {
             var currentSev = Severity.parseLevel(Environment.GetEnvironmentVariable("CURRENT_SEVERITY_LEVEL")).Level;
 

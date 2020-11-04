@@ -7,11 +7,11 @@ using ApolloQA.Source.Helpers;
 
 namespace ApolloQA.Data.Entity
 {
-    public class Application
+    public class Quote
     {
         public readonly int Id;
 
-        public Application(int Id) {
+        public Quote(int Id) {
             this.Id = Id;
         }
         public dynamic this[String propertyName]
@@ -31,6 +31,10 @@ namespace ApolloQA.Data.Entity
                     return GetProperty(propertyName);
                 }
             }
+        }
+        public static Quote GetLatestQuote()
+        {
+            return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
         }
         public dynamic GetProperties()
         {
@@ -58,6 +62,21 @@ namespace ApolloQA.Data.Entity
 
             return RestAPI.GET($"/application/{this.Id}/risktype/{riskTypeId}");
         }
-        
+        public Organization Organization
+        {
+
+            get
+            {
+                try
+                {
+                    return new Organization("PartyId", this.GetProperties().insuredPartyId.Value.ToString());
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception($"error constructing Organization with the following params 1=PartyId 2={this.GetProperties()?.insuredPartyId?.Value?.ToString()}");
+                }
+            }
+        }
+
     }
 }
