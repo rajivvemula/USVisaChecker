@@ -16,3 +16,8 @@ Scenario: Create an Occurrence successfully
 	And user clicks on addFNOL button to begin an FNOL report
 	And user enters occurrence information for Policy
 	And user selects 'No' this occurrence related to an existing claim
+	And user enters Reported by contact information
+	And user enters catastrophe and claimant contact info
+	And user enters police involved info - 'Yes'
+	And user enters fire involved info - 'Yes'
+	And user clicks 'Cancel' button to save/cancel occurrence 

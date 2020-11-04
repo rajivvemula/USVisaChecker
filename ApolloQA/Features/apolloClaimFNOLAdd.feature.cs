@@ -163,6 +163,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 18
  testRunner.And("user selects \'No\' this occurrence related to an existing claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 19
+ testRunner.And("user enters Reported by contact information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 20
+ testRunner.And("user enters catastrophe and claimant contact info", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 21
+ testRunner.And("user enters police involved info - \'Yes\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
+ testRunner.And("user enters fire involved info - \'Yes\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+ testRunner.And("user clicks \'Cancel\' button to save/cancel occurrence", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
