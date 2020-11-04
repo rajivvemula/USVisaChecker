@@ -8,11 +8,11 @@ namespace ApolloQA.Pages
 {
     class WaffleMenu
     {
-        public static Element underwritingButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[1]");
-        public static Element billingButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[2]");
-        public static Element administrationButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[3]");
-        public static Element collectionsCenterButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[4]");
-        public static Element printCenterButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[5]");
-        public static Element claimsButton => new Element("/html/body/bh-app/mat-sidenav-container/mat-sidenav/div/bh-side-navbar/mat-nav-list/a[6]");
+        public static Element underwritingButton => new Element("//*[contains(text(), 'Underwriting')]");
+        public static Element billingButton => new Element("//*[contains(text(), 'Billing')]");
+        public static Element administrationButton => new Element("//*[contains(text(), 'Administration')]");
+        public static Element collectionsCenterButton => new Element("//*[contains(text(), 'Collections Center')]");
+        public static Element printCenterButton => new Element("//*[contains(text(), 'Print Center')]");
+        public static Element claimsButton => new Element("//*[contains(text(), 'Claim')]");
     }
 }

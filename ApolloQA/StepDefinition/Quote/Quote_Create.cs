@@ -33,8 +33,6 @@ namespace ApolloQA.StepDefinition.Quote
             Pages.Quote.Quote_Create.BusinessName.SelectMatDropdownOptionByIndex(0, out string selectionDisplayName);
             BusinessName = selectionDisplayName;
             Log.Info($"Expected: {nameof(BusinessName)}={BusinessName}");
-
-
         }
 
         [When(@"user Selects Line of Business as (.*)")]
