@@ -18,7 +18,7 @@ namespace ApolloQA.StepDefinition
         [Given(@"user clicks on waffle menu")]
         public void GivenUserClicksOnWaffleMenu()
         {
-            TopNavBar.WaffleGridButton.Click();
+            Home.WaffleGridButton.Click();
         }
 
         [When(@"user clicks on Claims")]
@@ -36,7 +36,7 @@ namespace ApolloQA.StepDefinition
         [Given(@"user clicks addNew button to add an organization")]
         public void GivenUserClicksAddNewButtonToAddAnOrganization()
         {
-            TopNavBar.OrganizationButton.Click();
+            Home.OrganizationButton.Click();
             OrganizationGrid.addNewButton.Click();
         }
     }

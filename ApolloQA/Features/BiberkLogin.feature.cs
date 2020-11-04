@@ -19,8 +19,8 @@ namespace ApolloQA.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("BiBerkLogin", Description="\tLogin biBerk home page", SourceFile="Features\\BiberkLogin.feature", SourceLine=0)]
-    public partial class BiBerkLoginFeature
+    [TechTalk.SpecRun.FeatureAttribute("apolloLogin", Description="\tLogin biBerk home page with valid credentials", SourceFile="Features\\BiberkLogin.feature", SourceLine=0)]
+    public partial class ApolloLoginFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -34,7 +34,7 @@ namespace ApolloQA.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "BiBerkLogin", "\tLogin biBerk home page", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "apolloLogin", "\tLogin biBerk home page with valid credentials", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -113,39 +113,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 9
    testRunner.Then("user login successfully to biBerk page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [TechTalk.SpecRun.ScenarioAttribute("Make sure user is logged in", SourceLine=11)]
-        public virtual void MakeSureUserIsLoggedIn()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Make sure user is logged in", null, tagsOfScenario, argumentsOfScenario);
-#line 12
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 13
- testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
