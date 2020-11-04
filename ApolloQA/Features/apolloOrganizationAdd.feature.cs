@@ -100,7 +100,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 6
- testRunner.Given("user clicks addNew button to add an organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("user clicks addNew button to add an organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
  testRunner.Then("user verifies Email is required", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -138,7 +138,6 @@ this.ScenarioInitialize(scenarioInfo);
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                             "BusinessName",
                             "DBA",
-                            "OrganizationType",
                             "TaxIdType",
                             "TaxIdNumber",
                             "DescriptionOfOperations",
@@ -146,25 +145,25 @@ this.ScenarioInitialize(scenarioInfo);
                             "BusinessEamil",
                             "BusinessWebsite",
                             "Keyword",
-                            "ClassTaxonomy",
                             "YearStarted",
                             "YearOwned"});
                 table1.AddRow(new string[] {
                             "TheTestOrg",
                             "dba",
-                            "Non-Profit",
                             "FEIN",
                             "80-6541032",
                             "DescriptionofOps",
                             "8021585010",
                             "testorg@me.com",
                             "testorg.com",
-                            "Turkey Farm",
-                            "tax",
+                            "S",
                             "2000",
                             "2005"});
 #line 10
- testRunner.Given("user enters business information", ((string)(null)), table1, "Given ");
+ testRunner.When("user enters business information", ((string)(null)), table1, "When ");
+#line hidden
+#line 13
+ testRunner.Then("user clicks \'Cancel\' button to save/cancel organization addition", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

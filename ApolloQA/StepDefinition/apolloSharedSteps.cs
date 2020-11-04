@@ -15,8 +15,8 @@ namespace ApolloQA.StepDefinition
             this.driver = _driver;
         }
 
-        [Given(@"user clicks on waffle menu")]
-        public void GivenUserClicksOnWaffleMenu()
+        [When(@"user clicks on waffle menu")]
+        public void WhenUserClicksOnWaffleMenu()
         {
             Home.WaffleGridButton.Click();
         }
@@ -27,14 +27,15 @@ namespace ApolloQA.StepDefinition
             WaffleMenu.claimsButton.Click();
         }
 
+
         [When(@"user clicks on addFNOL button to begin an FNOL report")]
         public void WhenUserClicksOnAddFNOLButtonToBeginAnFNOLReport()
         {
             ClaimsFNOLGrid.addNewFNOLButton.Click();
         }
 
-        [Given(@"user clicks addNew button to add an organization")]
-        public void GivenUserClicksAddNewButtonToAddAnOrganization()
+        [When(@"user clicks addNew button to add an organization")]
+        public void WhenUserClicksAddNewButtonToAddAnOrganization()
         {
             Home.OrganizationButton.Click();
             OrganizationGrid.addNewButton.Click();
