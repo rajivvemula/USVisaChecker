@@ -45,14 +45,14 @@ namespace ApolloQA.StepDefinition
             OrgType = selectionOrgType;
             Log.Info($"Expected : {nameof(OrgType)}={OrgType}");
             BusinessInformation.businessDBAField.setText(OrgTable.DBA);
-            BusinessInformation.taxIdTypeDropdown.SelectMatDropdownOptionByText(OrgTable.TaxIdType);
+            Pages.Shared.GetDropdownField("Tax ID Type").SelectMatDropdownOptionByText(OrgTable.TaxIdType);
             BusinessInformation.taxIdNumberField.setText(OrgTable.TaxIdNumber);
             BusinessInformation.descriptionOfOperationsField.setText(OrgTable.DescriptionOfOperations);
             BusinessInformation.businessphoneNumberField.setText(OrgTable.BusinessPhoneNumber);
             BusinessInformation.businessEmailAddressField.setText(OrgTable.BusinessEamil);
             BusinessInformation.businessWebsiteField.setText(OrgTable.BusinessWebsite);
-            BusinessInformation.businessKeywordField.setText(OrgTable.Keyword);
-            BusinessInformation.businessKeywordField.SelectMatDropdownOptionByIndex(0, out string selectionKeyWord);
+            Pages.Shared.GetInputField("Keyword").setText(OrgTable.Keyword);
+            Pages.Shared.GetInputField("Keyword").SelectMatDropdownOptionByIndex(0, out string selectionKeyWord);
             Keyword = selectionKeyWord;
             Log.Info($"Expected: {nameof(Keyword)}={Keyword}");
             BusinessInformation.businessYearStartedField.setText(OrgTable.YearStarted);
