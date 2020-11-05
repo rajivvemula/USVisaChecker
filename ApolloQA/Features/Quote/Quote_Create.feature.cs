@@ -176,7 +176,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 23
  testRunner.And("user clicks Create New Organization Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "BusinessName",
                             "DBA",
                             "TaxIdType",
@@ -188,7 +188,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Keyword",
                             "YearStarted",
                             "YearOwned"});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Create New Quote",
                             "dba test",
                             "FEIN",
@@ -201,7 +201,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2000",
                             "2005"});
 #line 24
- testRunner.And("user enters business information", ((string)(null)), table3, "And ");
+ testRunner.And("user enters business information", ((string)(null)), table4, "And ");
 #line hidden
 #line 27
  testRunner.And("user clicks Save Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
