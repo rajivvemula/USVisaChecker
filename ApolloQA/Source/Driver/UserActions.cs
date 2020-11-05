@@ -58,7 +58,6 @@ namespace ApolloQA.Source.Driver
           return FindElementWaitUntilClickable(ElementLocator).GetAttribute(attributeName);
         }
 
-
         public static IWebElement FindElementWaitUntilVisible(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
@@ -84,8 +83,6 @@ namespace ApolloQA.Source.Driver
             }
 
             highlight(target);
-
-
             return target;
         }
 
@@ -112,11 +109,9 @@ namespace ApolloQA.Source.Driver
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
-
             highlight(target);
 
             return Setup.driver.FindElements(by).ToList();
-
         }
 
         //Find Element - Wait until element is present (different from vissible)

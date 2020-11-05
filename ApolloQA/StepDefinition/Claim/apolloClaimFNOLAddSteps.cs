@@ -135,8 +135,8 @@ namespace ApolloQA.StepDefinition
             }
         }
 
-        [When(@"user clicks '(.*)' button to save/cancel occurrence")]
-        public void WhenUserClicksButtonToSaveCancelOccurrence(string action)
+        [Then(@"user clicks '(.*)' button to save/cancel occurrence")]
+        public void ThenUserClicksButtonToSaveCancelOccurrence(string action)
         {
             switch (action.ToUpper())
             {
@@ -156,6 +156,5 @@ namespace ApolloQA.StepDefinition
                     throw new Exception("Police involved question answer" + action + "not found.");
             }
         }
-
     }
 }

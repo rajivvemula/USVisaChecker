@@ -20,4 +20,4 @@ Scenario: Create an Occurrence successfully
 	And user enters catastrophe and claimant contact info
 	And user enters police involved info - 'Yes'
 	And user enters fire involved info - 'Yes'
-	And user clicks 'Cancel' button to save/cancel occurrence 
+	Then user clicks 'Cancel' button to save/cancel occurrence 
