@@ -70,16 +70,16 @@ namespace ApolloQA.Features.Quote
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Create New Quote", new string[] {
+        [TechTalk.SpecRun.ScenarioAttribute("Create New Quote Existing Organization", new string[] {
                 "SmokeTest",
                 "Quote"}, SourceLine=4)]
-        public virtual void CreateNewQuote()
+        public virtual void CreateNewQuoteExistingOrganization()
         {
             string[] tagsOfScenario = new string[] {
                     "SmokeTest",
                     "Quote"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Quote", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Quote Existing Organization", null, tagsOfScenario, argumentsOfScenario);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -107,10 +107,10 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("user navigates to Quote Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 8
- testRunner.And("user clicks the + New button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user clicks New Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 9
- testRunner.And("user Selects a random Business Name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user Selects Business Name as random", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 10
  testRunner.And("user Selects Line of Business as Commercial Auto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -119,7 +119,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("user Selects Policy Effective Date as Tomorrow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
- testRunner.And("user Clicks the Next Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user clicks Next Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 13
  testRunner.Then("A new Quote should successfully be created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -128,6 +128,103 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("User should be redirected to the newly created Quote", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
+ testRunner.And("Quote header should contain correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Create New Quote New Organization", new string[] {
+                "SmokeTest",
+                "Quote"}, SourceLine=18)]
+        public virtual void CreateNewQuoteNewOrganization()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "SmokeTest",
+                    "Quote"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Quote New Organization", null, tagsOfScenario, argumentsOfScenario);
+#line 19
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 20
+ testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 21
+ testRunner.When("user navigates to Quote Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 22
+ testRunner.And("user clicks New Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+ testRunner.And("user clicks Create New Organization Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                            "BusinessName",
+                            "DBA",
+                            "TaxIdType",
+                            "TaxIdNumber",
+                            "DescriptionOfOperations",
+                            "BusinessPhoneNumber",
+                            "BusinessEamil",
+                            "BusinessWebsite",
+                            "Keyword",
+                            "YearStarted",
+                            "YearOwned"});
+                table3.AddRow(new string[] {
+                            "Create New Quote",
+                            "dba test",
+                            "FEIN",
+                            "80-6541032",
+                            "DescriptionofOps",
+                            "8021585010",
+                            "testorg@me.com",
+                            "testorg.com",
+                            "a",
+                            "2000",
+                            "2005"});
+#line 24
+ testRunner.And("user enters business information", ((string)(null)), table3, "And ");
+#line hidden
+#line 27
+ testRunner.And("user clicks Save Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 28
+ testRunner.Then("user should be redirected to Quote Create Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 29
+ testRunner.When("user Selects Line of Business as Commercial Auto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 30
+ testRunner.And("user Selects Policy Effective Date as Tomorrow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 31
+ testRunner.And("user clicks Next Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 32
+ testRunner.Then("A new Quote should successfully be created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 33
+ testRunner.And("User should be redirected to the newly created Quote", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 34
  testRunner.And("Quote header should contain correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

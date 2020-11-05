@@ -30,7 +30,10 @@ namespace ApolloQA.Pages
                                $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::textarea |" +
                                $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::*/input");
         }
-
+        public static Element GetButton(string displayName)
+        {
+            return new Element($"//button[./*[normalize-space(text())='{displayName}']] | //button[normalize-space(text())='{displayName}']");
+        }
 
 
     }

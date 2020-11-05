@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using ApolloQA.Source.Driver;
-
+using ApolloQA.Source.Helpers;
 
 namespace ApolloQA.Pages.Quote
 {
-    class Quote_Create
+    class Quote_Create_Page
     {
         public static string URL_PATH = "/quote/create";
-        public static void navigate() => UserActions.Navigate(URL_PATH);
+        public static string GetURL() => Functions.ParseURL(URL_PATH);
+        public static void Navigate() => UserActions.Navigate(GetURL());
 
         public static Element BusinessName => new Element("//bh-input-autocomplete[@name='businessName']/..");
         public static Element LineOfBusiness => new Element("//mat-select[@name='lineOfBusiness']/..");

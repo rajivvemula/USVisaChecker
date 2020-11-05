@@ -19,27 +19,32 @@ namespace ApolloQA.StepDefinition.Quote
         {
             Quote_Home.navigate();
         }
-        
-        [When(@"user clicks the \+ New button")]
-        public void WhenUserClicksTheNewButton()
+
+        [When(@"user Selects Business Name as (.*)")]
+        public void WhenUserEntersARandomBusinessName(string business)
         {
-            Quote_Home.NewButton.Click();
-           
-        }
-        
-        [When(@"user Selects a random Business Name")]
-        public void WhenUserEntersARandomBusinessName()
-        {
-            Pages.Quote.Quote_Create.BusinessName.SelectMatDropdownOptionByIndex(0, out string selectionDisplayName);
-            BusinessName = selectionDisplayName;
-            Log.Info($"Expected: {nameof(BusinessName)}={BusinessName}");
+            if (business.ToLower() == "random")
+            {
+                Pages.Quote.Quote_Create_Page.BusinessName.SelectMatDropdownOptionByIndex(0, out string selectionDisplayName);
+                this.BusinessName = selectionDisplayName;
+            }
+            else if (int.TryParse(business, out int businessIndex))
+            {
+                Pages.Quote.Quote_Create_Page.BusinessName.SelectMatDropdownOptionByIndex(businessIndex, out string selectionDisplayName);
+                this.BusinessName = selectionDisplayName;
+            }
+            else
+            {
+                Pages.Quote.Quote_Create_Page.BusinessName.SelectMatDropdownOptionByText(business);
+                this.BusinessName = business;
+            }
         }
 
         [When(@"user Selects Line of Business as (.*)")]
         public void WhenUserSelectsLineOfBusinessAs(string LOB)
         {
             LineOfBusiness = LOB;
-            Pages.Quote.Quote_Create.LineOfBusiness.SelectMatDropdownOptionByText(LOB);
+            Pages.Quote.Quote_Create_Page.LineOfBusiness.SelectMatDropdownOptionByText(LOB);
         }
         
         [When(@"user Selects Policy Effective Date as (.*)")]
@@ -51,21 +56,21 @@ namespace ApolloQA.StepDefinition.Quote
                Date= DateTime.Now.AddDays(1).ToString("MM/dd/yyyy");
             }
             PolicyEffectiveDate = Date;
-            Pages.Quote.Quote_Create.PolicyEffectiveDate.setText(Date);
+            Pages.Quote.Quote_Create_Page.PolicyEffectiveDate.setText(Date);
 
         }
-        
-        [When(@"user Clicks the Next Button")]
-        public void WhenUserClicksTheNextButton()
+
+        [Then(@"user should be redirected to Quote Create Page")]
+        public void ThenUserShouldBeRedirectedToQuoteCreatePage()
         {
-            Pages.Quote.Quote_Create.SubmitButton.Click();
+            Assert.CurrentURLEquals(Quote_Create_Page.GetURL());
         }
-        
+
         [Then(@"A new Quote should successfully be created")]
         public void ThenANewQuoteShouldSuccessfullyBeCreated()
         {
 
-            var toastMessage = Pages.Quote.Quote_Create.toastMessage.GetInnerText();
+            var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "created");
 
             this.quoteID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));

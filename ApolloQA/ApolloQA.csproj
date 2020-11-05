@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\Quote_Create - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote_Create.feature.cs" />
   </ItemGroup>
 
 	<ItemGroup>
@@ -46,6 +47,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Features\Shared.feature.cs">
+	    <DependentUpon>Shared.feature</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Update="default.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -56,6 +63,10 @@
 
 	<ItemGroup>
 	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_BusinessInformation.feature">
+	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
+	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+	  </SpecFlowFeatureFiles>
+	  <SpecFlowFeatureFiles Update="Features\Shared.feature">
 	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
 	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
 	  </SpecFlowFeatureFiles>
