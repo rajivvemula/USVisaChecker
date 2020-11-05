@@ -28,7 +28,7 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"User Navigates to Business Infomration Section")]
         public void WhenUserNavigatesToBusinessInfomrationSection()
         {
-            Pages.Shared.GetSideTab("Business Information").Click();
+            Pages.Shared.GetLeftSideTab("Business Information").Click();
         }
 
         [Then(@"The following Organization Fields should be displayed")]

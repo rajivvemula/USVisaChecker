@@ -4,7 +4,7 @@
 @biBerkClaimFNOLAdd @SmokeTest
 Scenario: Carrier Pigeon Is not a how notice was received option
 	Given user is successfully logged into biberk
-	When user clicks  apps  Button
+	When user clicks  apps  icon Button
 	When user clicks  Claim  Button
 	When user clicks  New FNOL  Button
 	Then user verifies 'Carrier Pigeon' is not an option

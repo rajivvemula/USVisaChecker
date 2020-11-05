@@ -30,8 +30,7 @@ namespace ApolloQA.StepDefinition
         public void ThenUserVerifiesIsNotAnOption(string text)
         {
             Occurrence.howWasNoticeReceivedDropdown.SelectMatDropdownOptionByText(text);
-            Occurrence.receivedByCarrierPigeonOption.assertElementIsVisible();
-            //will need to be "assertElementNotVisible" when option is removed
+            Occurrence.receivedByCarrierPigeonOption.assertElementNotPresent();
         }
 
         [When(@"user enters occurrence information for Policy")]
