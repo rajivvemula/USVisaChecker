@@ -76,6 +76,7 @@ namespace ApolloQA.StepDefinition
                     Assert.IsTrue(URL.EndsWith("/organization"));
                     break;
                 default:
+                    Log.Info($"Action Button" + action + "not found");
                     throw new Exception("Action Button" + action + "not found");
             }
         }

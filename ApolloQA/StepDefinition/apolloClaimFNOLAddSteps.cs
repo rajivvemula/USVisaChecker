@@ -156,6 +156,5 @@ namespace ApolloQA.StepDefinition
                     throw new Exception("Police involved question answer" + action + "not found.");
             }
         }
-
     }
 }
