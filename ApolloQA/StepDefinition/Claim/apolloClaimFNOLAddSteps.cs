@@ -43,7 +43,7 @@ namespace ApolloQA.StepDefinition
             Log.Info($"Expected: {nameof(ReceivedNotice)}={ReceivedNotice}");
             Occurrence.dateReportedField.setText(Reported);
             Occurrence.timeReportedField.setText(Time);
-            Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
+            Occurrence.policyNumberField.setText("1008"); // generic Text to initiate the list to choose from
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
@@ -140,7 +140,7 @@ namespace ApolloQA.StepDefinition
         public void ThenUserAssertsForOccurenceSave()
         {
             var toastMessage = Occurrence.toastrMessage.GetInnerText();
-            Assert.TextContains(toastMessage, "created");
+            Assert.TextContains(toastMessage, "was successfully saved.");
             this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
             Log.Info($"Expected: Claim Saved. Result: " + toastMessage + "");
         }

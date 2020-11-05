@@ -22,7 +22,7 @@ namespace ApolloQA.Pages
 
         public static Element GetRightSideTab(string DisplayName)
         {
-            return new Element($"//mat-nav-list[@role='navigation'] //a[contains(text(), '{DisplayName}')]::* | //mat-nav-list[@role='navigation'] //a[contains(text(), '{DisplayName}')]::*");
+            return new Element($"//*[contains(text(), '{DisplayName}')]");
         }
 
         public static Element GetDropdownField(string DisplayName)
@@ -38,12 +38,14 @@ namespace ApolloQA.Pages
         }
         public static Element GetButton(string displayName)
         {
-            return new Element($"//button[./*[normalize-space(text())='{displayName}']] | //button[normalize-space(text())='{displayName}']");
+            return new Element($"//button[./*[normalize-space(text())='{displayName}']] |" +
+                               $"//button[normalize-space(text())='{displayName}'] |" +
+                               $"//button//*[contains(text(), '{displayName}')]");
         }
 
         public static Element GetIconButton(string iconText)
         {
-            return new Element($"//mat-icon[contains(text(), '{iconText}'] | //mat-icon[contains(text(), '{iconText}']");
+            return new Element($"//mat-icon[contains(text(), '{iconText}')]");
         }
     }
 }

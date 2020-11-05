@@ -12,10 +12,16 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton(buttonName).Click();
         }
 
-        [When(@"user clicks (.*) icon Button")]
+        [When(@"user clicks '(.*)' icon button")]
         public void WhenUserClicksIconButton(string iconButton)
         {
             Shared.GetIconButton(iconButton).Click();
+        }
+
+        [When(@"user clicks (.*) right menu button")]
+        public void WhenUserClicksRightMenuButton(string rightMenuButton)
+        {
+            Shared.GetRightSideTab(rightMenuButton).Click();
         }
     }
 }
