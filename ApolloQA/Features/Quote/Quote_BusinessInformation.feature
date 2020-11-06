@@ -5,7 +5,7 @@
 Scenario: Business Information Load
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest
-	And User Navigates to Business Infomration Section
+	And User Navigates to Business Information Section
 	Then The following Organization Fields should be displayed
 	| Display Name              | Field Type |
 	| Business Name             | Input      |
@@ -21,6 +21,26 @@ Scenario: Business Information Load
 	| Class Taxonomy            | Input      |
 	| Year Business Started     | Input      |
 	| Year Ownership Started    | Input      |
+	And Physical Address field should be blank
+	And National Credit Score should be displayed
 
 
+
+	@SmokeTest @Quote
+Scenario: Business Information Add Address
+	Given user is successfully logged into biberk
+	When User Navigates to Quote latest
+	And User Navigates to Business Information Section
+	And user clicks Physical Address Dropdown
+	And user clicks Add Address Button
+	And user enters the following address
+	| Field Display Name        | Field Type | Field Value      |
+	| Street Address Line 1     | Input      | 618 E. Laurel St |
+	| Street Address Line 2     | Input      |                  |
+	| City                      | Input      | Springfield      |
+	| State / Province / Region | Dropdown   | IL               |
+	| Zip / Postal Code         | Input      | 62703            |
+	| Country                   | Dropdown   | United States    |
+	And user saves the address
+	Then Dropdown should contain the previously entered address 
 

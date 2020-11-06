@@ -107,7 +107,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("User Navigates to Quote latest", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 8
- testRunner.And("User Navigates to Business Infomration Section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User Navigates to Business Information Section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "Display Name",
@@ -153,6 +153,98 @@ this.ScenarioInitialize(scenarioInfo);
                             "Input"});
 #line 9
  testRunner.Then("The following Organization Fields should be displayed", ((string)(null)), table3, "Then ");
+#line hidden
+#line 24
+ testRunner.And("Physical Address field should be blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 25
+ testRunner.And("National Credit Score should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Business Information Add Address", new string[] {
+                "SmokeTest",
+                "Quote"}, SourceLine=29)]
+        public virtual void BusinessInformationAddAddress()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "SmokeTest",
+                    "Quote"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Business Information Add Address", null, tagsOfScenario, argumentsOfScenario);
+#line 30
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 31
+ testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 32
+ testRunner.When("User Navigates to Quote latest", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 33
+ testRunner.And("User Navigates to Business Information Section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 34
+ testRunner.And("user clicks Physical Address Dropdown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 35
+ testRunner.And("user clicks Add Address Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Field Display Name",
+                            "Field Type",
+                            "Field Value"});
+                table3.AddRow(new string[] {
+                            "Street Address Line 1",
+                            "Input",
+                            "618 E. Laurel St"});
+                table3.AddRow(new string[] {
+                            "Street Address Line 2",
+                            "Input",
+                            ""});
+                table3.AddRow(new string[] {
+                            "City",
+                            "Input",
+                            "Springfield"});
+                table3.AddRow(new string[] {
+                            "State / Province / Region",
+                            "Dropdown",
+                            "IL"});
+                table3.AddRow(new string[] {
+                            "Zip / Postal Code",
+                            "Input",
+                            "62703"});
+                table3.AddRow(new string[] {
+                            "Country",
+                            "Dropdown",
+                            "United States"});
+#line 36
+ testRunner.And("user enters the following address", ((string)(null)), table3, "And ");
+#line hidden
+#line 44
+ testRunner.And("user saves the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 45
+ testRunner.Then("Dropdown should contain the previously entered address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

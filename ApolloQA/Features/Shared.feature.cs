@@ -133,19 +133,56 @@ this.ScenarioInitialize(scenarioInfo);
 #line 9
  testRunner.When("user clicks <DisplayName> Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+#line 10
+ testRunner.When("user clicks <DisplayName> Dropdown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Field Display Name",
+                            "Field Type",
+                            "Field Value"});
+                table5.AddRow(new string[] {
+                            "Street Address Line 1",
+                            "Input",
+                            "618 E. Laurel st"});
+                table5.AddRow(new string[] {
+                            "Street Address Line 2",
+                            "Input",
+                            ""});
+                table5.AddRow(new string[] {
+                            "City",
+                            "Input",
+                            "Springfield"});
+                table5.AddRow(new string[] {
+                            "State / Province / Region",
+                            "Dropdown",
+                            "IL"});
+                table5.AddRow(new string[] {
+                            "Zip / Postal Code",
+                            "Input",
+                            "62703"});
+                table5.AddRow(new string[] {
+                            "Country",
+                            "Dropdown",
+                            "United States"});
+#line 14
+ testRunner.When("user enters the following address", ((string)(null)), table5, "When ");
+#line hidden
+#line 22
+ testRunner.And("user saves the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Shared Then", new string[] {
-                "ignore"}, SourceLine=12)]
+                "ignore"}, SourceLine=24)]
         public virtual void SharedThen()
         {
             string[] tagsOfScenario = new string[] {
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Shared Then", null, tagsOfScenario, argumentsOfScenario);
-#line 13
+#line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);

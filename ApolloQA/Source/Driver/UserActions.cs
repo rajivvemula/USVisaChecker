@@ -13,7 +13,7 @@ namespace ApolloQA.Source.Driver
 {
     class UserActions
     {
-        public const int DEFAULT_WAIT_SECONDS = 60;
+        public const int DEFAULT_WAIT_SECONDS = 20;
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
             var URL = Functions.ParseURL(URL_OR_PATH, parameters);
@@ -43,14 +43,21 @@ namespace ApolloQA.Source.Driver
         public static string getElementText(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilVisible(ElementLocator, wait_Seconds);
-            return textField.Text;
+            return textField.Text.Trim();
 
         }
 
 
-        public static void Click(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public static void Click(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS, bool optional = false)
         {
-            FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+            try
+            {
+                FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+            }
+            catch(Exception ex)
+            {
+                Functions.handleFailure(ex, optional);
+            }
         }
 
         public static string GetAttribute(By ElementLocator, string attributeName)
@@ -169,6 +176,7 @@ namespace ApolloQA.Source.Driver
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
             }
+            
 
             highlight(target);
 
@@ -233,14 +241,27 @@ namespace ApolloQA.Source.Driver
         {
             var dropdown = FindElementWaitUntilClickable(DropdownLocator);
             dropdown.Click();
-            var option = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
-            selectionDisplayName = string.Join("", option[0].FindElements(By.XPath($"(//mat-option)[{LogicalIndex + 1}]/descendant::*")).Select(it => it.Text.Trim()).Distinct());
+            var options = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
+            selectionDisplayName = string.Join("", options[0].FindElements(By.XPath($"(//mat-option)[{LogicalIndex + 1}]/descendant::*")).Select(it => it.Text.Trim()).Distinct());
 
-            option[LogicalIndex].Click();
+            options[LogicalIndex].Click();
 
         }
-        
+        public static IEnumerable<String> GetAllMatDropdownOptions(By DropdownLocator)
+        {
+            var dropdown = FindElementWaitUntilClickable(DropdownLocator);
+            dropdown.Click();
+            var options = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
 
+            int currentOption = 1;
+            foreach(var option in options)
+            {
+                List<string> innerText = option.FindElements(By.XPath($"(//mat-option)[{currentOption}]/descendant::*")).Select(it => it.Text.Trim()).Distinct().ToList();
+                yield return string.Join("", innerText);
+            }
+
+
+        }
 
 
         //
