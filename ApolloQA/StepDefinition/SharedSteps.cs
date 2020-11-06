@@ -13,14 +13,11 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton(buttonName).Click();
         }
 
-<<<<<<< HEAD
         [When(@"user clicks (.*) Dropdown")]
         public void WhenUserClicksOnPhysicalAddressDropdown(string DropdownDisplayName)
         {
             Pages.Shared.GetDropdownField("Physical Address").Click();
         }
-
-
 
         public static Table previouslyEnteredAddress;
         [When(@"user enters the following address")]
@@ -39,6 +36,7 @@ namespace ApolloQA.StepDefinition
             previouslyEnteredAddress = table;
 
         }
+
         [When(@"user saves the address")]
         public void WhenUserSavesTheAddress()
         {
@@ -47,10 +45,6 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton("Use selected").Click(3, true);
         }
 
-
-        
-
-=======
         [When(@"user clicks '(.*)' icon button")]
         public void WhenUserClicksIconButton(string iconButton)
         {
@@ -62,6 +56,5 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetRightSideTab(rightMenuButton).Click();
         }
->>>>>>> a172805241a8ba82a8bf811611243509ebed7045
     }
 }

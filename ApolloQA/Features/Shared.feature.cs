@@ -136,36 +136,36 @@ this.ScenarioInitialize(scenarioInfo);
 #line 10
  testRunner.When("user clicks <DisplayName> Dropdown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field Display Name",
                             "Field Type",
                             "Field Value"});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "Street Address Line 1",
                             "Input",
                             "618 E. Laurel st"});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "Street Address Line 2",
                             "Input",
                             ""});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "City",
                             "Input",
                             "Springfield"});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "State / Province / Region",
                             "Dropdown",
                             "IL"});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "Zip / Postal Code",
                             "Input",
                             "62703"});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "Country",
                             "Dropdown",
                             "United States"});
 #line 14
- testRunner.When("user enters the following address", ((string)(null)), table5, "When ");
+ testRunner.When("user enters the following address", ((string)(null)), table6, "When ");
 #line hidden
 #line 22
  testRunner.And("user saves the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
