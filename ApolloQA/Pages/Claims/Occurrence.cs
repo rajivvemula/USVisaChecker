@@ -66,5 +66,6 @@ namespace ApolloQA.Pages
         public static Element cancelButton => new Element("//button[@type='button'] //*[contains(text(), ' Cancel ')]");
         public static Element lossDetailsButton => new Element("//button[@type='submit' and @aria-label='Loss Details']");
         public static Element ContinueAnywayButton => new Element("//button[@aria-label='Close'] //*[contains(text(), 'Continue anyway')]");
+        public static Element toastrMessage => new Element("//div[@class='toast-content']/descendant::*");
     }
 }

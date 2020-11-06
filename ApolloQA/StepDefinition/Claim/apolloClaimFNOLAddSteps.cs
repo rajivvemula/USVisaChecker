@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using System;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.StepDefinition
@@ -23,13 +24,13 @@ namespace ApolloQA.StepDefinition
         public string PolicyNumber = "";
         public string ReportedByPhoneType = "";
         public string ClaimantPhoneType = "";
+        public int ClaimID = 0;
 
         [Then(@"user verifies '(.*)' is not an option")]
         public void ThenUserVerifiesIsNotAnOption(string text)
         {
             Occurrence.howWasNoticeReceivedDropdown.SelectMatDropdownOptionByText(text);
-            Occurrence.receivedByCarrierPigeonOption.assertElementIsVisible();
-            //will need to be "assertElementNotVisible" when option is removed
+            Occurrence.receivedByCarrierPigeonOption.assertElementNotPresent();
         }
 
         [When(@"user enters occurrence information for Policy")]
@@ -42,7 +43,7 @@ namespace ApolloQA.StepDefinition
             Log.Info($"Expected: {nameof(ReceivedNotice)}={ReceivedNotice}");
             Occurrence.dateReportedField.setText(Reported);
             Occurrence.timeReportedField.setText(Time);
-            Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
+            Occurrence.policyNumberField.setText("1008"); // generic Text to initiate the list to choose from
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
@@ -135,26 +136,21 @@ namespace ApolloQA.StepDefinition
             }
         }
 
-        [Then(@"user clicks '(.*)' button to save/cancel occurrence")]
-        public void ThenUserClicksButtonToSaveCancelOccurrence(string action)
+        [Then(@"user asserts for Occurence save")]
+        public void ThenUserAssertsForOccurenceSave()
         {
-            switch (action.ToUpper())
-            {
-                case "CANCEL":
-                    Occurrence.cancelButton.Click();
-                    Occurrence.ContinueAnywayButton.Click();
-                    ClaimsFNOLGrid.managerDashboardButton.assertElementIsVisible();
-                    String URL = driver.Url;
-                    Assert.IsTrue(URL.EndsWith("/claims/fnol-dashboard"));
-                    break;
-                case "SAVE":
-                    Occurrence.saveButton.Click();
-                    // Assert for Save
-                    break;
-                default:
-                    Log.Info($"Police involved question answer" + action + "not found.");
-                    throw new Exception("Police involved question answer" + action + "not found.");
-            }
+            var toastMessage = Occurrence.toastrMessage.GetInnerText();
+            Assert.TextContains(toastMessage, "was successfully saved.");
+            this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            Log.Info($"Expected: Claim Saved. Result: " + toastMessage + "");
+        }
+
+        [Then(@"user asserts for Occurence cancel")]
+        public void ThenUserAssertsForOccurenceCancel()
+        {
+            ClaimsFNOLGrid.managerDashboardButton.assertElementIsVisible();
+            String URL = driver.Url;
+            Assert.IsTrue(URL.EndsWith("/claims/fnol-dashboard"));
         }
     }
 }

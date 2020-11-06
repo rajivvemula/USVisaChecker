@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
+using Microsoft.Identity.Client;
 
 namespace ApolloQA.Pages
 {
@@ -28,9 +29,14 @@ namespace ApolloQA.Pages
 
         }
 
-        public static Element GetSideTab(string DisplayName)
+        public static Element GetLeftSideTab(string DisplayName)
         {
             return new Element($"//bh-left-navbar //div[@class='mat-list-item-content' and normalize-space(text())='{DisplayName}']");
+        }
+
+        public static Element GetRightSideTab(string DisplayName)
+        {
+            return new Element($"//*[contains(text(), '{DisplayName}')]");
         }
 
         public static Element GetDropdownField(string DisplayName)
@@ -46,12 +52,15 @@ namespace ApolloQA.Pages
         }
         public static Element GetButton(string displayName)
         {
-            return new Element($"//button[./*[normalize-space(text())='{displayName}']] | //button[normalize-space(text())='{displayName}']");
+            return new Element($"//button[./*[normalize-space(text())='{displayName}']] |" +
+                               $"//button[normalize-space(text())='{displayName}'] |" +
+                               $"//button//*[contains(text(), '{displayName}')]");
         }
 
-
-
-
+        public static Element GetIconButton(string iconText)
+        {
+            return new Element($"//mat-icon[contains(text(), '{iconText}')]");
+        }
 
 
 
@@ -59,5 +68,6 @@ namespace ApolloQA.Pages
         // Specific Shared Elements
         //
         public static Element SuggestedAddressCTA => new Element("//bh-address-details/*");
+
     }
 }

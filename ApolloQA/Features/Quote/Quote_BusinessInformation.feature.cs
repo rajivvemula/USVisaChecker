@@ -109,50 +109,50 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
  testRunner.And("User Navigates to Business Information Section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "Display Name",
                             "Field Type"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Business Name",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "DBA",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Organization Type",
                             "Dropdown"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Tax ID Type",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Tax ID No",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Description of Operations",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Business Phone No",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Business Email Address",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Business Website",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Keyword",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Class Taxonomy",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Year Business Started",
                             "Input"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Year Ownership Started",
                             "Input"});
 #line 9
- testRunner.Then("The following Organization Fields should be displayed", ((string)(null)), table2, "Then ");
+ testRunner.Then("The following Organization Fields should be displayed", ((string)(null)), table3, "Then ");
 #line hidden
 #line 24
  testRunner.And("Physical Address field should be blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

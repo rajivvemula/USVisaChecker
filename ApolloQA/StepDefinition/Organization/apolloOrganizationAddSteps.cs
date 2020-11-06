@@ -59,26 +59,24 @@ namespace ApolloQA.StepDefinition
             BusinessInformation.businessYearOwnershipField.setText(OrgTable.YearOwned);
         }
 
-        [Then(@"user clicks '(.*)' button to save/cancel organization addition")]
-        public void ThenUserClicksButtonToSaveCancelOrganizationAddition(string action)
+        [Then(@"user asserts for saved organization")]
+        public void ThenUserAssertsForSavedOrganization()
         {
-            switch (action.ToUpper())
-            {
-                case "SAVE":
-                    BusinessInformation.businessSaveButton.Click();
-                    var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
-                    Assert.TextContains(toastMessage, "created");
-                    this.OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
-                    break;
-                case "CANCEL":
-                    BusinessInformation.businessCancelButton.Click();
-                    String URL = driver.Url;
-                    Assert.IsTrue(URL.EndsWith("/organization"));
-                    break;
-                default:
-                    Log.Info($"Action Button" + action + "not found");
-                    throw new Exception("Action Button" + action + "not found");
-            }
+            var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
+            Assert.TextContains(toastMessage, "created");
+            this.OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            Log.Info($"Expected: Application Saved. Result: " + toastMessage + "");
+        }
+
+        [Then(@"user asserts for canceled organization add")]
+        public void ThenUserAssertsForCanceledOrganizationAdd()
+        {
+            var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
+            Assert.TextContains(toastMessage, "deleted.");
+            this.OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            Log.Info($"Expected: Application add deleted. Result: " + toastMessage + "");
+            String URL = driver.Url;
+            Assert.IsTrue(URL.EndsWith("/organization"));
         }
     }
 }

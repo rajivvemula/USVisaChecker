@@ -13,6 +13,7 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton(buttonName).Click();
         }
 
+<<<<<<< HEAD
         [When(@"user clicks (.*) Dropdown")]
         public void WhenUserClicksOnPhysicalAddressDropdown(string DropdownDisplayName)
         {
@@ -49,5 +50,18 @@ namespace ApolloQA.StepDefinition
 
         
 
+=======
+        [When(@"user clicks '(.*)' icon button")]
+        public void WhenUserClicksIconButton(string iconButton)
+        {
+            Shared.GetIconButton(iconButton).Click();
+        }
+
+        [When(@"user clicks (.*) right menu button")]
+        public void WhenUserClicksRightMenuButton(string rightMenuButton)
+        {
+            Shared.GetRightSideTab(rightMenuButton).Click();
+        }
+>>>>>>> a172805241a8ba82a8bf811611243509ebed7045
     }
 }
