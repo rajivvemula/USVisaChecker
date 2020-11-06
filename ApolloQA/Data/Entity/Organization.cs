@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
@@ -64,6 +65,22 @@ namespace ApolloQA.Data.Entity
             return property == null ? "" : property;
 
             
+        }
+
+        public List<Address> Addresses
+        {
+            get
+            {
+                var AddressSearchBody = new JObject();
+
+                AddressSearchBody.Add("currentPage", 0);
+                AddressSearchBody.Add("filters", new JObject());
+                ((JObject)AddressSearchBody["filters"]).Add("OrganizationAddressFilter", "{\"PartyId\":" + this["partyId"] + "}");
+                AddressSearchBody.Add("loadChildren", true);
+                AddressSearchBody.Add("pageSize", 50);
+                return ((JArray)RestAPI.POST("/address/search", AddressSearchBody)?["results"]).Select(it => new Address(it)).ToList();
+
+            }
         }
 
         public String Name

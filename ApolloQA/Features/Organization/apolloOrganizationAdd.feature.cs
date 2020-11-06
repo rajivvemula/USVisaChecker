@@ -138,13 +138,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-<<<<<<< HEAD
-#line 10
- testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 11
- testRunner.When("user clicks addNew button to add an organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-=======
 #line 11
  testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -153,7 +146,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 13
  testRunner.When("user clicks  New  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
->>>>>>> a172805241a8ba82a8bf811611243509ebed7045
 #line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                             "BusinessName",
@@ -179,13 +171,6 @@ this.ScenarioInitialize(scenarioInfo);
                             "S",
                             "2000",
                             "2005"});
-<<<<<<< HEAD
-#line 12
- testRunner.When("user enters business information", ((string)(null)), table1, "When ");
-#line hidden
-#line 15
- testRunner.Then("user clicks \'Cancel\' button to save/cancel organization addition", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-=======
 #line 14
  testRunner.When("user enters business information", ((string)(null)), table1, "When ");
 #line hidden
@@ -260,7 +245,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 28
  testRunner.Then("user asserts for canceled organization add", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
->>>>>>> a172805241a8ba82a8bf811611243509ebed7045
 #line hidden
             }
             this.ScenarioCleanup();

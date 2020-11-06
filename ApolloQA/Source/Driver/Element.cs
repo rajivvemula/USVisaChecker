@@ -222,9 +222,9 @@ namespace ApolloQA.Source.Driver
 
             return Assert.Contains(dropdownOptions, optionText, optional);
         }
-        public bool AssertMatDropdownOptionsEqual(String[] optionsText, bool optional = false)
+        public bool AssertMatDropdownOptionsEqual(List<String> optionsText, bool optional = false)
         {
-            List<string> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
+            List<String> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
 
             return Assert.AreEqual(dropdownOptions, optionsText, optional);
 

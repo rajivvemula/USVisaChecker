@@ -2,6 +2,10 @@
 using TechTalk.SpecFlow;
 using ApolloQA.Pages;
 using ApolloQA.Source.Helpers;
+using ApolloQA.Data.Entity;
+using System.Collections.Generic;
+using System.Text;
+
 namespace ApolloQA.StepDefinition
 {
     [Binding]
@@ -13,7 +17,6 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton(buttonName).Click();
         }
 
-<<<<<<< HEAD
         [When(@"user clicks (.*) Dropdown")]
         public void WhenUserClicksOnPhysicalAddressDropdown(string DropdownDisplayName)
         {
@@ -22,7 +25,7 @@ namespace ApolloQA.StepDefinition
 
 
 
-        public static Table previouslyEnteredAddress;
+        public static Address previouslyEnteredAddress;
         [When(@"user enters the following address")]
         public void WhenUserEntersTheFollowingAddress(Table table)
         {
@@ -33,11 +36,23 @@ namespace ApolloQA.StepDefinition
                 var fieldValue = row["Field Value"];
 
                 Shared.GetField(fieldDisplayName, fieldType).setValue(fieldType, fieldValue);
-
-
             }
-            previouslyEnteredAddress = table;
 
+
+            IDictionary<String, String> fieldValues = new Dictionary<String, String>();
+
+            foreach (var row in table.Rows)
+            {
+                fieldValues.Add(row["Field Display Name"], row["Field Value"]);
+            }
+
+            previouslyEnteredAddress = new Address(fieldValues["Street Address Line 1"],
+                        fieldValues["Street Address Line 2"],
+                        fieldValues["City"],
+                        fieldValues["State / Province / Region"],
+                        fieldValues["Zip / Postal Code"]
+                        );
+            
         }
         [When(@"user saves the address")]
         public void WhenUserSavesTheAddress()
@@ -48,9 +63,6 @@ namespace ApolloQA.StepDefinition
         }
 
 
-        
-
-=======
         [When(@"user clicks '(.*)' icon button")]
         public void WhenUserClicksIconButton(string iconButton)
         {
@@ -62,6 +74,5 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetRightSideTab(rightMenuButton).Click();
         }
->>>>>>> a172805241a8ba82a8bf811611243509ebed7045
     }
 }

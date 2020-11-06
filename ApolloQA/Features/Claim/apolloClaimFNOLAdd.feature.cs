@@ -176,9 +176,6 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("user enters fire involved info - \'Yes\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 23
-<<<<<<< HEAD
- testRunner.Then("user clicks \'Cancel\' button to save/cancel occurrence", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-=======
  testRunner.When("user clicks  Save  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 24
@@ -252,7 +249,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 39
  testRunner.Then("user asserts for Occurence cancel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
->>>>>>> a172805241a8ba82a8bf811611243509ebed7045
 #line hidden
             }
             this.ScenarioCleanup();

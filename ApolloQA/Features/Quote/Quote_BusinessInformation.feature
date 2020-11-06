@@ -33,14 +33,15 @@ Scenario: Business Information Add Address
 	And User Navigates to Business Information Section
 	And user clicks Physical Address Dropdown
 	And user clicks Add Address Button
+	And user saves current Business Addresses
 	And user enters the following address
-	| Field Display Name        | Field Type | Field Value      |
-	| Street Address Line 1     | Input      | 618 E. Laurel St |
-	| Street Address Line 2     | Input      |                  |
-	| City                      | Input      | Springfield      |
-	| State / Province / Region | Dropdown   | IL               |
-	| Zip / Postal Code         | Input      | 62703            |
-	| Country                   | Dropdown   | United States    |
+	| Field Display Name        | Field Type | Field Value     |
+	| Street Address Line 1     | Input      | 720 E Laurel St |
+	| Street Address Line 2     | Input      |                 |
+	| City                      | Input      | Springfield     |
+	| State / Province / Region | Dropdown   | IL              |
+	| Zip / Postal Code         | Input      | 62703           |
+	| Country                   | Dropdown   | United States   |
 	And user saves the address
 	Then Dropdown should contain the previously entered address 
 

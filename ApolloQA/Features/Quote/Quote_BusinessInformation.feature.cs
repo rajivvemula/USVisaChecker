@@ -209,41 +209,44 @@ this.ScenarioInitialize(scenarioInfo);
 #line 35
  testRunner.And("user clicks Add Address Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+#line 36
+ testRunner.And("user saves current Business Addresses", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field Display Name",
                             "Field Type",
                             "Field Value"});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Street Address Line 1",
                             "Input",
-                            "618 E. Laurel St"});
-                table3.AddRow(new string[] {
+                            "720 E Laurel St"});
+                table4.AddRow(new string[] {
                             "Street Address Line 2",
                             "Input",
                             ""});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "City",
                             "Input",
                             "Springfield"});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "State / Province / Region",
                             "Dropdown",
                             "IL"});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Zip / Postal Code",
                             "Input",
                             "62703"});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Country",
                             "Dropdown",
                             "United States"});
-#line 36
- testRunner.And("user enters the following address", ((string)(null)), table3, "And ");
-#line hidden
-#line 44
- testRunner.And("user saves the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+ testRunner.And("user enters the following address", ((string)(null)), table4, "And ");
 #line hidden
 #line 45
+ testRunner.And("user saves the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 46
  testRunner.Then("Dropdown should contain the previously entered address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
