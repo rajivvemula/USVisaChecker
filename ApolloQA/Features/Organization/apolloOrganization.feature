@@ -1,4 +1,4 @@
-﻿Feature: apolloOrganizationAdd
+﻿Feature: apolloOrganization
 
 
 Scenario: Business Email field is required when adding an organization

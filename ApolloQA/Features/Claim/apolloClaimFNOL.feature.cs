@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.Features.Organization
+namespace ApolloQA.Features.Claim
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,22 +19,22 @@ namespace ApolloQA.Features.Organization
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("apolloOrganizationAdd", SourceFile="Features\\Organization\\apolloOrganizationAdd.feature", SourceLine=0)]
-    public partial class ApolloOrganizationAddFeature
+    [TechTalk.SpecRun.FeatureAttribute("apolloClaimFNOL", SourceFile="Features\\Claim\\apolloClaimFNOL.feature", SourceLine=0)]
+    public partial class ApolloClaimFNOLFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "apolloOrganizationAdd.feature"
+#line 1 "apolloClaimFNOL.feature"
 #line hidden
         
         [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Organization", "apolloOrganizationAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Claim", "apolloClaimFNOL", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,13 +70,17 @@ namespace ApolloQA.Features.Organization
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Business Email field is required when adding an organization", SourceLine=3)]
-        public virtual void BusinessEmailFieldIsRequiredWhenAddingAnOrganization()
+        [TechTalk.SpecRun.ScenarioAttribute("Carrier Pigeon Is not a how notice was received option", new string[] {
+                "biBerkClaimFNOLAdd",
+                "SmokeTest"}, SourceLine=4)]
+        public virtual void CarrierPigeonIsNotAHowNoticeWasReceivedOption()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "biBerkClaimFNOLAdd",
+                    "SmokeTest"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Business Email field is required when adding an organization", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Carrier Pigeon Is not a how notice was received option", null, tagsOfScenario, argumentsOfScenario);
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -96,29 +100,32 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
- testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 6
- testRunner.When("user clicks Organization Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 7
- testRunner.When("user clicks  New  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("user clicks \' apps \' icon button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 8
- testRunner.Then("user verifies Email is required", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("user clicks Claim right menu button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 9
+ testRunner.When("user clicks New FNOL Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 10
+ testRunner.Then("user verifies \'Carrier Pigeon\' is not an option", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Add business information and save as organization", SourceLine=9)]
-        public virtual void AddBusinessInformationAndSaveAsOrganization()
+        [TechTalk.SpecRun.ScenarioAttribute("Create an Occurrence successfully", SourceLine=11)]
+        public virtual void CreateAnOccurrenceSuccessfully()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add business information and save as organization", null, tagsOfScenario, argumentsOfScenario);
-#line 10
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create an Occurrence successfully", null, tagsOfScenario, argumentsOfScenario);
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -138,62 +145,53 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 11
+#line 13
  testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 12
- testRunner.When("user clicks Organization Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 13
- testRunner.When("user clicks  New  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                            "BusinessName",
-                            "DBA",
-                            "TaxIdType",
-                            "TaxIdNumber",
-                            "DescriptionOfOperations",
-                            "BusinessPhoneNumber",
-                            "BusinessEamil",
-                            "BusinessWebsite",
-                            "Keyword",
-                            "YearStarted",
-                            "YearOwned"});
-                table1.AddRow(new string[] {
-                            "TheTestOrg",
-                            "dba",
-                            "FEIN",
-                            "81-6541000",
-                            "DescriptionofOps",
-                            "8021585010",
-                            "testorg@me.com",
-                            "testorg.com",
-                            "S",
-                            "2000",
-                            "2005"});
 #line 14
- testRunner.When("user enters business information", ((string)(null)), table1, "When ");
+ testRunner.When("user clicks \' apps \' icon button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 15
+ testRunner.When("user clicks Claim right menu button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 16
+ testRunner.When("user clicks New FNOL Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
- testRunner.And("user clicks  Save  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user enters occurrence information for Policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 18
+ testRunner.And("user selects \'No\' this occurrence related to an existing claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 19
- testRunner.When("user clicks Organization Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("user enters Reported by contact information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 20
- testRunner.Then("user deletes created test organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("user enters catastrophe and claimant contact info", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 21
+ testRunner.And("user enters police involved info - \'Yes\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
+ testRunner.And("user enters fire involved info - \'Yes\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+ testRunner.When("user clicks  Save  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 24
+ testRunner.Then("user asserts for Occurence save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Add business information and cancel submit", SourceLine=21)]
-        public virtual void AddBusinessInformationAndCancelSubmit()
+        [TechTalk.SpecRun.ScenarioAttribute("User cancels an Occurrence addition", SourceLine=25)]
+        public virtual void UserCancelsAnOccurrenceAddition()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add business information and cancel submit", null, tagsOfScenario, argumentsOfScenario);
-#line 22
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User cancels an Occurrence addition", null, tagsOfScenario, argumentsOfScenario);
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -213,50 +211,44 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 23
+#line 27
  testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 24
- testRunner.When("user clicks Organization Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 25
- testRunner.When("user clicks  New  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                            "BusinessName",
-                            "DBA",
-                            "TaxIdType",
-                            "TaxIdNumber",
-                            "DescriptionOfOperations",
-                            "BusinessPhoneNumber",
-                            "BusinessEamil",
-                            "BusinessWebsite",
-                            "Keyword",
-                            "YearStarted",
-                            "YearOwned"});
-                table2.AddRow(new string[] {
-                            "TheTestOrg",
-                            "dba",
-                            "FEIN",
-                            "81-6541000",
-                            "DescriptionofOps",
-                            "8021585010",
-                            "testorg@me.com",
-                            "testorg.com",
-                            "S",
-                            "2000",
-                            "2005"});
-#line 26
- testRunner.When("user enters business information", ((string)(null)), table2, "When ");
+#line 28
+ testRunner.When("user clicks \' apps \' icon button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
- testRunner.And("user clicks  Cancel  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("user clicks Claim right menu button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 30
- testRunner.When("user clicks Continue anyway Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("user clicks New FNOL Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 31
- testRunner.Then("user asserts for canceled organization add", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("user enters occurrence information for Policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 32
+ testRunner.And("user selects \'No\' this occurrence related to an existing claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 33
+ testRunner.And("user enters Reported by contact information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 34
+ testRunner.And("user enters catastrophe and claimant contact info", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 35
+ testRunner.And("user enters police involved info - \'Yes\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 36
+ testRunner.And("user enters fire involved info - \'Yes\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 37
+ testRunner.When("user clicks Cancel Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 38
+ testRunner.When("user clicks Continue anyway Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 39
+ testRunner.Then("user asserts for Occurence cancel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

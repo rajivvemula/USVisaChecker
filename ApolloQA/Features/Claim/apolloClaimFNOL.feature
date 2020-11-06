@@ -1,4 +1,4 @@
-﻿Feature: apolloClaimFNOLAdd
+﻿Feature: apolloClaimFNOL
 
 
 @biBerkClaimFNOLAdd @SmokeTest
@@ -23,6 +23,8 @@ Scenario: Create an Occurrence successfully
 	When user clicks  Save  Button
 	Then user asserts for Occurence save
 
+Scenario: 
+
 Scenario: User cancels an Occurrence addition
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -37,3 +39,5 @@ Scenario: User cancels an Occurrence addition
 	When user clicks Cancel Button
 	When user clicks Continue anyway Button
 	Then user asserts for Occurence cancel
+
+

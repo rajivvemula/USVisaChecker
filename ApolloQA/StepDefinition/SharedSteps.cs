@@ -62,5 +62,10 @@ namespace ApolloQA.StepDefinition
             Shared.GetError(ErrorText);
         }
 
+        [When(@"user enters '(.*)' into '(.*)' field")]
+        public void WhenUserEnterIntoField(string username, string fieldName)
+        {
+            Shared.GetField(fieldName, "input").setText(username);
+        }
     }
 }
