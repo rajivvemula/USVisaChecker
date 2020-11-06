@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.Features
+namespace ApolloQA.Features.Claim
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace ApolloQA.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("apolloClaimFNOLAdd", SourceFile="Features\\apolloClaimFNOLAdd.feature", SourceLine=0)]
+    [TechTalk.SpecRun.FeatureAttribute("apolloClaimFNOLAdd", SourceFile="Features\\Claim\\apolloClaimFNOLAdd.feature", SourceLine=0)]
     public partial class ApolloClaimFNOLAddFeature
     {
         
@@ -34,7 +34,7 @@ namespace ApolloQA.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "apolloClaimFNOLAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Claim", "apolloClaimFNOLAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -176,7 +176,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("user enters fire involved info - \'Yes\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 23
- testRunner.And("user clicks \'Cancel\' button to save/cancel occurrence", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("user clicks \'Cancel\' button to save/cancel occurrence", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

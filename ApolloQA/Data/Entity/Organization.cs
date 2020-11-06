@@ -174,36 +174,35 @@ namespace ApolloQA.Data.Entity
         }
 
 
+        public int? InsurranceScore
+        {
+            get
+            {
+                var response = Cosmos.GetQuery("NcfResponse", "SELECT * FROM c where c.PartyId = 10247 ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result;
 
+                return response.Count > 0 ? response[0]["RawScore"] : null;
+                
+            }
+        }
 
 
         public String InsurranceScoreTier
         {
             get
             {
-                var partyID = this["partyId"];
-                var nfcSearchBody = new JObject();
-                nfcSearchBody.Add("pageSize", 1);
-                nfcSearchBody.Add("orderBy", "ScoreDate");
-                nfcSearchBody.Add("sortOrder", 1);
-
-                dynamic nfcResponse = RestAPI.POST($"/party/{partyID}/ncf/search", nfcSearchBody);
-
-                if(nfcResponse.info.totalRecords ==0)
-                {
-                    return null;
-                }
-                else
-                {
+                    int? score = this.InsurranceScore;
+                    if(score == null)
+                    {
+                        return null;
+                    }
                     var VehicleSearchBody = new JObject();
 
                     VehicleSearchBody.Add("currentPage", 0);
-                    VehicleSearchBody.Add("filters", new JObject("CurrentVehiclesRisksPartyFilter", "\"{\"PartyId\":"+partyID+"}\""));
+                    VehicleSearchBody.Add("filters", new JObject("CurrentVehiclesRisksPartyFilter", "\"{\"PartyId\":"+ this["partyId"] + "}\""));
                     VehicleSearchBody.Add("loadChildren", true);
 
 
                     int fleetSize = RestAPI.POST("/vehicle/search", VehicleSearchBody).info.totalRecords;
-                    int score = int.Parse(nfcResponse.results[0].rawScore);
                     String type = this.TypeName;
 
 
@@ -222,7 +221,7 @@ namespace ApolloQA.Data.Entity
                     }
                     return null;
 
-                }
+                
             }
         }
 

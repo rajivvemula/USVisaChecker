@@ -9,9 +9,23 @@ namespace ApolloQA.Pages
     class Shared
     {
 
+        public static Element GetField(string fieldDisplayName, string fieldType)
+        {
+            switch(fieldType.ToLower())
+            {
+                case "input":
+                    return GetInputField(fieldDisplayName);
+                case "dropdown":
+                    return GetDropdownField(fieldDisplayName);
+                default:
+                    Functions.handleFailure(new NotImplementedException($"Field type: {fieldType} is not implemented"));
+                    return null;
+            }
+        }
         public static Element GetHeaderField(string DisplayName)
         {
             return new Element($"//bh-quote-header//*[contains(text(), '{DisplayName}')]//preceding-sibling::div/descendant::*");
+
         }
 
         public static Element GetSideTab(string DisplayName)
@@ -36,5 +50,14 @@ namespace ApolloQA.Pages
         }
 
 
+
+
+
+
+
+        //
+        // Specific Shared Elements
+        //
+        public static Element SuggestedAddressCTA => new Element("//bh-address-details/*");
     }
 }

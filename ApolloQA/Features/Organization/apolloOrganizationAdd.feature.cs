@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.Features
+namespace ApolloQA.Features.Organization
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace ApolloQA.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("apolloOrganizationAdd", SourceFile="Features\\apolloOrganizationAdd.feature", SourceLine=0)]
+    [TechTalk.SpecRun.FeatureAttribute("apolloOrganizationAdd", SourceFile="Features\\Organization\\apolloOrganizationAdd.feature", SourceLine=0)]
     public partial class ApolloOrganizationAddFeature
     {
         
@@ -34,7 +34,7 @@ namespace ApolloQA.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "apolloOrganizationAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Organization", "apolloOrganizationAdd", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -135,6 +135,12 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 10
+ testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 11
+ testRunner.When("user clicks addNew button to add an organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                             "BusinessName",
                             "DBA",
@@ -159,10 +165,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "S",
                             "2000",
                             "2005"});
-#line 10
+#line 12
  testRunner.When("user enters business information", ((string)(null)), table1, "When ");
 #line hidden
-#line 13
+#line 15
  testRunner.Then("user clicks \'Cancel\' button to save/cancel organization addition", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

@@ -30,10 +30,11 @@ namespace ApolloQA.Source.Driver
            
             UserActions.Click(locator);
         }
-        public void Click(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
+
+        public void Click(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional =false)
         {
 
-            UserActions.Click(locator, wait_Seconds);
+            UserActions.Click(locator, wait_Seconds, optional);
         }
 
         public bool TryClick(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
@@ -67,7 +68,6 @@ namespace ApolloQA.Source.Driver
         public List<String> GetInnerTexts()
         {
             return UserActions.FindElementsWaitUntilVisible(locator).Select(it => it.Text.Trim()).ToList();
-            
         }
 
 
@@ -162,6 +162,23 @@ namespace ApolloQA.Source.Driver
 
 
 
+        public void setValue(string fieldType, string value)
+        {
+            switch (fieldType.ToLower())
+            {
+                case "input":
+                    this.setText(value);
+                    break;
+                case "dropdown":
+                    this.SelectMatDropdownOptionByText(value);
+                    break;
+                default:
+                    Functions.handleFailure(new NotImplementedException($"Field type: {fieldType} is not implemented"));
+                    break;
+                  
+            }
+        }
+
         //
         //  Text Fields Actions
         //
@@ -197,6 +214,19 @@ namespace ApolloQA.Source.Driver
         public void SelectMatDropdownOptionByIndex(int LogicalIndex)
         {
             UserActions.SelectMatDropdownOptionByIndex(locator, LogicalIndex);
+
+        }
+        public bool AssertMatDropdownOptionsContain(string optionText, bool optional = false)
+        {
+            List<string> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
+
+            return Assert.Contains(dropdownOptions, optionText, optional);
+        }
+        public bool AssertMatDropdownOptionsEqual(String[] optionsText, bool optional = false)
+        {
+            List<string> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
+
+            return Assert.AreEqual(dropdownOptions, optionsText, optional);
 
         }
 

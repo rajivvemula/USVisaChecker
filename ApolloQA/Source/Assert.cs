@@ -4,13 +4,35 @@ using System.Text;
 using ApolloQA.Source.Helpers;
 using ApolloQA.Source.Driver;
 using NUnit.Framework;
+using System.Linq;
 using NUnitAssert = NUnit.Framework.Assert;
 namespace ApolloQA
 {
     class Assert
     {
 
+        public static bool Contains(List<String> _object, string value, bool optional = false)
+        {
 
+            if(_object.Contains(value))
+            {
+                success($"List [{_object.ToString()}] Contains [{value}]");
+                return true;
+            }
+            else
+            {
+                var list = new StringBuilder();
+                list.Append("[\n");
+                foreach (var item in _object)
+                {
+                    list.Append(item).Append(", \n");
+                }
+                list.Append("]");
+
+                Functions.handleFailure(new Exception($"List { list.ToString() } does not Contain\n[{ value}]"));
+                return false;
+            }
+        }
         public static bool TextContains(String text, String value, bool optional = false)
         {
             if(text== null || value == null)
