@@ -54,6 +54,7 @@ namespace ApolloQA.StepDefinition
                         );
             
         }
+
         [When(@"user saves the address")]
         public void WhenUserSavesTheAddress()
         {
@@ -61,7 +62,6 @@ namespace ApolloQA.StepDefinition
             Shared.SuggestedAddressCTA.Click(optional: true);
             Shared.GetButton("Use selected").Click(3, true);
         }
-
 
         [When(@"user clicks '(.*)' icon button")]
         public void WhenUserClicksIconButton(string iconButton)
