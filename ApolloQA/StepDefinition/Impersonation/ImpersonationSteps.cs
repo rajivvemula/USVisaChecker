@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Pages;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +17,12 @@ namespace ApolloQA.StepDefinition.Impersonation
         {
             this.driver = _driver;
         }
+
+        [When(@"user enters (.*) username into (.*) field")]
+        public void WhenUserEnterUsernameIntoField(string username, string fieldName)
+        {
+            Shared.GetField(fieldName, "input").setText(username);
+        }
+
     }
-
-
 }

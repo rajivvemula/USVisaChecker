@@ -48,7 +48,8 @@ namespace ApolloQA.Pages
         {
             return new Element($"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::input | " +
                                $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::textarea |" +
-                               $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::*/input");
+                               $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::*/input |" +
+                               $"//input[@name='{DisplayName}']");
         }
         public static Element GetButton(string displayName)
         {
@@ -57,11 +58,15 @@ namespace ApolloQA.Pages
                                $"//button//*[contains(text(), '{displayName}')]");
         }
 
+        public static Element GetError(string ErrorText)
+        {
+            return new Element($"//mat-error[@role='alert' and contains(text(), '{ErrorText}')]");
+        }
+
         public static Element GetIconButton(string iconText)
         {
             return new Element($"//mat-icon[contains(text(), '{iconText}')]");
         }
-
 
 
         //

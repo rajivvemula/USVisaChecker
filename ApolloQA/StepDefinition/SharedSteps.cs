@@ -34,7 +34,6 @@ namespace ApolloQA.StepDefinition
 
             }
             previouslyEnteredAddress = table;
-
         }
 
         [When(@"user saves the address")]
@@ -56,5 +55,12 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetRightSideTab(rightMenuButton).Click();
         }
+
+        [Then(@"user asserts for error - '(.*)'")]
+        public void ThenUserAssertsForError_(string ErrorText)
+        {
+            Shared.GetError(ErrorText);
+        }
+
     }
 }
