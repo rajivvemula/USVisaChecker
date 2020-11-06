@@ -13,9 +13,11 @@ Scenario: Add business information and save as organization
 	When user clicks  New  Button
 	When user enters business information
 	| BusinessName | DBA | TaxIdType | TaxIdNumber | DescriptionOfOperations | BusinessPhoneNumber | BusinessEamil  | BusinessWebsite | Keyword	| YearStarted | YearOwned |
-	| TheTestOrg   | dba | FEIN      | 80-6541032  | DescriptionofOps        | 8021585010          | testorg@me.com | testorg.com     | S       | 2000        | 2005      |
-#	And user clicks  Save  Button
-#	Then user asserts for saved organization # cannot save more than one application with given information
+	| TheTestOrg   | dba | FEIN      | 81-6541000  | DescriptionofOps        | 8021585010          | testorg@me.com | testorg.com     | S       | 2000        | 2005      |
+	And user clicks  Save  Button
+#	When user asserts for saved organization - issue with toastr : returning blank
+	When user clicks Organization Button
+	Then user deletes created test organization
 
 Scenario: Add business information and cancel submit
 	Given user is successfully logged into biberk
@@ -23,6 +25,7 @@ Scenario: Add business information and cancel submit
 	When user clicks  New  Button
 	When user enters business information
 	| BusinessName | DBA | TaxIdType | TaxIdNumber | DescriptionOfOperations | BusinessPhoneNumber | BusinessEamil  | BusinessWebsite | Keyword	| YearStarted | YearOwned |
-	| TheTestOrg   | dba | FEIN      | 80-6541032  | DescriptionofOps        | 8021585010          | testorg@me.com | testorg.com     | S       | 2000        | 2005      |
+	| TheTestOrg   | dba | FEIN      | 81-6541000  | DescriptionofOps        | 8021585010          | testorg@me.com | testorg.com     | S       | 2000        | 2005      |
 	And user clicks  Cancel  Button
+	When user clicks Continue anyway Button
 	Then user asserts for canceled organization add

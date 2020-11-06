@@ -59,8 +59,8 @@ namespace ApolloQA.StepDefinition
             BusinessInformation.businessYearOwnershipField.setText(OrgTable.YearOwned);
         }
 
-        [Then(@"user asserts for saved organization")]
-        public void ThenUserAssertsForSavedOrganization()
+        [When(@"user asserts for saved organization")]
+        public void WhenUserAssertsForSavedOrganization()
         {
             var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
             Assert.TextContains(toastMessage, "created");
@@ -71,12 +71,24 @@ namespace ApolloQA.StepDefinition
         [Then(@"user asserts for canceled organization add")]
         public void ThenUserAssertsForCanceledOrganizationAdd()
         {
-            var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
-            Assert.TextContains(toastMessage, "deleted.");
-            this.OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
-            Log.Info($"Expected: Application add deleted. Result: " + toastMessage + "");
             String URL = driver.Url;
             Assert.IsTrue(URL.EndsWith("/organization"));
+        }
+
+        [Then(@"user deletes created test organization")]
+        public void ThenUserDeletesCreatedTestOrganization()
+        {
+            OrganizationGrid.skipToLastButton.assertElementIsVisible();
+            OrganizationGrid.skipToLastButton.Click();
+            OrganizationGrid.theTestOrg.assertElementIsVisible();
+            OrganizationGrid.theTestOrgId.Click();
+            BusinessInformation.blueEllipsesButton.Click();
+            BusinessInformation.deleteOrgButton.Click();
+            BusinessInformation.confirmDeleteOrg.Click();
+            var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
+            Assert.TextContains(toastMessage, "was deleted.");
+            this.OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            Log.Info($"Expected: Org Deleted. Result: " + toastMessage + "");
         }
     }
 }

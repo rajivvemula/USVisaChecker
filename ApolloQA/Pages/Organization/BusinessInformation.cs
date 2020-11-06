@@ -23,6 +23,9 @@ namespace ApolloQA.Pages
         public static Element businessYearOwnershipField => new Element("//input[@name='yearOwnershipStarted']");
         public static Element businessSaveButton => new Element("//button[@aria-label='Save']");
         public static Element businessCancelButton => new Element("//button[@aria-label='Cancel']");
+        public static Element blueEllipsesButton => new Element("//button//*[contains(text(), 'more_vert')]");
+        public static Element deleteOrgButton => new Element("//button[contains(text(), ' Delete Organization ')]");
+        public static Element confirmDeleteOrg => new Element("//button//span[contains(text(), 'Delete')]");
         public static Element toastrMessage => new Element("//div[@class='toast-content']/descendant::*");
     }
 }
