@@ -3,10 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApolloQA.Features.Claim
+namespace ApolloQA.Pages
 {
     class LossDetails
     {
-        public static Element ClaimantFirstParty => new Element("");
     }
 }

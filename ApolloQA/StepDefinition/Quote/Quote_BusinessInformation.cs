@@ -31,6 +31,7 @@ namespace ApolloQA.StepDefinition.Quote
             }
             Quote_Page.Navigate(Quote.Id);
         }
+
         [When(@"User Navigates to Business Information Section")]
         public void WhenUserNavigatesToBusinessInfomrationSection()
         {
