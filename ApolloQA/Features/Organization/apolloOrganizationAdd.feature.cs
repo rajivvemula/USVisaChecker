@@ -147,7 +147,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 13
  testRunner.When("user clicks  New  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "BusinessName",
                             "DBA",
                             "TaxIdType",
@@ -159,7 +159,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Keyword",
                             "YearStarted",
                             "YearOwned"});
-                table1.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "TheTestOrg",
                             "dba",
                             "FEIN",
@@ -172,7 +172,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2000",
                             "2005"});
 #line 14
- testRunner.When("user enters business information", ((string)(null)), table1, "When ");
+ testRunner.When("user enters business information", ((string)(null)), table2, "When ");
 #line hidden
 #line 17
  testRunner.And("user clicks  Save  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -222,7 +222,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 25
  testRunner.When("user clicks  New  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "BusinessName",
                             "DBA",
                             "TaxIdType",
@@ -234,7 +234,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Keyword",
                             "YearStarted",
                             "YearOwned"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "TheTestOrg",
                             "dba",
                             "FEIN",
@@ -247,7 +247,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2000",
                             "2005"});
 #line 26
- testRunner.When("user enters business information", ((string)(null)), table2, "When ");
+ testRunner.When("user enters business information", ((string)(null)), table3, "When ");
 #line hidden
 #line 29
  testRunner.And("user clicks  Cancel  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
