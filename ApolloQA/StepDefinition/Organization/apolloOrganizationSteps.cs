@@ -12,12 +12,12 @@ using static ApolloQA.Source.Helpers.SpecflowTables;
 namespace ApolloQA.StepDefinition
 {
     [Binding]
-    public sealed class apolloOrganizationAddSteps
+    public sealed class apolloOrganizationSteps
     {
         public IWebDriver driver;
 
 
-        apolloOrganizationAddSteps(IWebDriver _driver)
+        apolloOrganizationSteps(IWebDriver _driver)
         {
             this.driver = _driver;
         }

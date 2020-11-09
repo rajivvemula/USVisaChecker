@@ -8,11 +8,11 @@ using TechTalk.SpecFlow;
 namespace ApolloQA.StepDefinition
 {
     [Binding]
-    public sealed class apolloClaimFNOLAddSteps
+    public sealed class apolloClaimFNOLSteps
     {
         public IWebDriver driver;
 
-        apolloClaimFNOLAddSteps(IWebDriver _driver)
+        apolloClaimFNOLSteps(IWebDriver _driver)
         {
             this.driver = _driver;
         }

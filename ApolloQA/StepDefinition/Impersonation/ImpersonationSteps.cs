@@ -12,17 +12,9 @@ namespace ApolloQA.StepDefinition.Impersonation
     {
         public IWebDriver driver;
 
-
         apolloOrganizationAddSteps(IWebDriver _driver)
         {
             this.driver = _driver;
         }
-
-        [When(@"user enters (.*) username into (.*) field")]
-        public void WhenUserEnterUsernameIntoField(string username, string fieldName)
-        {
-            Shared.GetField(fieldName, "input").setText(username);
-        }
-
     }
 }

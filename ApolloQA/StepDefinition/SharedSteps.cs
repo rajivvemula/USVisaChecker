@@ -23,20 +23,18 @@ namespace ApolloQA.StepDefinition
             Pages.Shared.GetDropdownField("Physical Address").Click();
         }
 
-
-
         public static Address previouslyEnteredAddress;
         [When(@"user enters the following address")]
         public void WhenUserEntersTheFollowingAddress(Table table)
         {
            foreach(var row in table.Rows)
-            {
+           {
                 var fieldDisplayName = row["Field Display Name"];
                 var fieldType = row["Field Type"];
                 var fieldValue = row["Field Value"];
 
                 Shared.GetField(fieldDisplayName, fieldType).setValue(fieldType, fieldValue);
-            }
+           }
 
 
             IDictionary<String, String> fieldValues = new Dictionary<String, String>();
@@ -51,8 +49,7 @@ namespace ApolloQA.StepDefinition
                         fieldValues["City"],
                         fieldValues["State / Province / Region"],
                         fieldValues["Zip / Postal Code"]
-                        );
-            
+                        );            
         }
 
         [When(@"user saves the address")]
@@ -73,6 +70,18 @@ namespace ApolloQA.StepDefinition
         public void WhenUserClicksRightMenuButton(string rightMenuButton)
         {
             Shared.GetRightSideTab(rightMenuButton).Click();
+        }
+
+        [Then(@"user asserts for error - '(.*)'")]
+        public void ThenUserAssertsForError_(string ErrorText)
+        {
+            Shared.GetError(ErrorText);
+        }
+
+        [When(@"user enters '(.*)' into '(.*)' field")]
+        public void WhenUserEnterIntoField(string username, string fieldName)
+        {
+            Shared.GetField(fieldName, "input").setText(username);
         }
     }
 }

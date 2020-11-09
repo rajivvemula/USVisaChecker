@@ -9,7 +9,6 @@ namespace ApolloQA.Pages
 {
     class Shared
     {
-
         public static Element GetField(string fieldDisplayName, string fieldType)
         {
             switch(fieldType.ToLower())
@@ -58,16 +57,19 @@ namespace ApolloQA.Pages
                                $"//button//*[contains(text(), '{displayName}')]");
         }
 
-        public static Element GetError(string ErrorText)
-        {
-            return new Element($"//mat-error[@role='alert' and contains(text(), '{ErrorText}')]");
-        }
-
         public static Element GetIconButton(string iconText)
         {
             return new Element($"//mat-icon[contains(text(), '{iconText}')]");
         }
 
+        //
+        // Errors
+        //
+
+        public static Element GetError(string ErrorText)
+        {
+            return new Element($"//mat-error[@role='alert' and contains(text(), '{ErrorText}')]");
+        }
 
         //
         // Specific Shared Elements

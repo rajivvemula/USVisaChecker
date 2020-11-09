@@ -1,4 +1,4 @@
-﻿Feature: apolloClaimFNOLAdd
+﻿Feature: apolloClaimFNOL
 
 
 @biBerkClaimFNOLAdd @SmokeTest
@@ -37,3 +37,5 @@ Scenario: User cancels an Occurrence addition
 	When user clicks Cancel Button
 	When user clicks Continue anyway Button
 	Then user asserts for Occurence cancel
+
+
