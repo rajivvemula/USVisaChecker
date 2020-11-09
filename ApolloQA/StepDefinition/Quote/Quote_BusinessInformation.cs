@@ -2,9 +2,13 @@
 using TechTalk.SpecFlow;
 using ApolloQA.Pages.Quote;
 using ApolloQA.Source.Driver;
+
+using ApolloQA.Source.Helpers;
 using EntityQuote = ApolloQA.Data.Entity.Quote;
+using ApolloQA.Data.Entity;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace ApolloQA.StepDefinition.Quote
 {
@@ -12,6 +16,7 @@ namespace ApolloQA.StepDefinition.Quote
     public class Quote_BusinessInformation
     {
         public static EntityQuote Quote;
+        public List<Address> addresses;
 
         [When(@"User Navigates to Quote (.*)")]
         public void GivenUserNavigatesToQuote(string quote)
@@ -32,7 +37,13 @@ namespace ApolloQA.StepDefinition.Quote
             Pages.Shared.GetLeftSideTab("Business Information").Click();
         }
 
-        
+        [When(@"user saves current Business Addresses")]
+        public void WhenUserSavesCurrentBusinessAddresses()
+        {
+            this.addresses = Quote.Organization.Addresses;
+        }
+
+
 
 
 
@@ -88,25 +99,24 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"Dropdown should contain the previously entered address")]
         public void ThenDropdownShouldContainThePreviouslyEnteredAddress()
         {
-            IDictionary<String, String> fieldValues = new Dictionary<String, String>();
+            var currentAddresses = Quote.Organization.Addresses;
 
+            var oldAddressIDs = this.addresses.Select(item => item.Id).ToList();
 
-            foreach(var row in SharedSteps.previouslyEnteredAddress.Rows)
+            var actualNewAddresses = currentAddresses.FindAll(it =>  !oldAddressIDs.Contains(it.Id));
+            if(actualNewAddresses.Count >1)
             {
-                fieldValues.Add(row["Field Display Name"], row["Field Value"]);
+                Functions.handleFailure(new Exception($"More than one new address was added to the organization\n {String.Join("", actualNewAddresses.Select(it => $"\n{it.ToString()}"))}"));
             }
-            StringBuilder address = new StringBuilder();
-            address.Append(fieldValues["Street Address Line 1"])
-                   .Append(fieldValues["Street Address Line 2"])
-                   .Append(", ")
-                   .Append(fieldValues["City"])
-                   .Append(", ")
-                   .Append(fieldValues["State / Province / Region"])
-                   .Append(", ")
-                   .Append(fieldValues["Zip / Postal Code"])
-                   ;
+            if (actualNewAddresses.Count < 1)
+            {
+                Functions.handleFailure(new Exception($"No new addresses were added to the organization current Addresses: {String.Join("", currentAddresses.Select(it => $"\n{it.ToString()}"))}"));
+            }
 
-            Pages.Shared.GetDropdownField("Physical Address").AssertMatDropdownOptionsContain(address.ToString());
+            var currentAddressesString = currentAddresses.Select(it => it.ToString()).ToList();
+
+            currentAddressesString.Add("add Add Addressadd");
+            Pages.Shared.GetDropdownField("Physical Address").AssertMatDropdownOptionsEqual(currentAddressesString);
         }
 
         

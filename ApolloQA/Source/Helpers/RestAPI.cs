@@ -19,6 +19,7 @@ namespace ApolloQA.Source.Helpers
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getAuthToken());
             HttpResponseMessage response  = client.GetAsync(processURL(URL)).Result;
+            client.Dispose();
             return ConsumeResponse(response);
 
         }
@@ -43,6 +44,7 @@ namespace ApolloQA.Source.Helpers
             HttpContent content = new StringContent(bodyString, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = client.PostAsync(processURL(URL), content).Result;
+            client.Dispose();
             return ConsumeResponse(response);
         }
         private static String processURL(String URL)
@@ -63,6 +65,7 @@ namespace ApolloQA.Source.Helpers
         {
             response.EnsureSuccessStatusCode();
             String dataObjects = response.Content.ReadAsStringAsync().Result;
+            response.Dispose();
             return JsonConvert.DeserializeObject<dynamic>(dataObjects);
         }
 

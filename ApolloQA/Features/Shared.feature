@@ -13,7 +13,7 @@ Scenario: Shared When
 
 	When user enters the following address
 	| Field Display Name        | Field Type | Field Value      |
-	| Street Address Line 1     | Input      | 618 E. Laurel st |
+	| Street Address Line 1     | Input      | 618 E Laurel st |
 	| Street Address Line 2     | Input      |                  |
 	| City                      | Input      | Springfield      |
 	| State / Province / Region | Dropdown   | IL               |

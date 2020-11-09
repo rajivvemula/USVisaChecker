@@ -209,6 +209,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 35
  testRunner.And("user clicks Add Address Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 36
+ testRunner.And("user saves current Business Addresses", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
                 TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field Display Name",
                             "Field Type",
@@ -216,7 +219,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table4.AddRow(new string[] {
                             "Street Address Line 1",
                             "Input",
-                            "618 E. Laurel St"});
+                            "720 E Laurel St"});
                 table4.AddRow(new string[] {
                             "Street Address Line 2",
                             "Input",
@@ -237,13 +240,13 @@ this.ScenarioInitialize(scenarioInfo);
                             "Country",
                             "Dropdown",
                             "United States"});
-#line 36
+#line 37
  testRunner.And("user enters the following address", ((string)(null)), table4, "And ");
 #line hidden
-#line 44
+#line 45
  testRunner.And("user saves the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 45
+#line 46
  testRunner.Then("Dropdown should contain the previously entered address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

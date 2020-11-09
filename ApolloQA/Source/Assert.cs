@@ -14,20 +14,22 @@ namespace ApolloQA
         public static bool Contains(List<String> _object, string value, bool optional = false)
         {
 
-            if(_object.Contains(value))
+            var list = new StringBuilder();
+            list.Append("[\n");
+            foreach (var item in _object)
             {
-                success($"List [{_object.ToString()}] Contains [{value}]");
+                list.Append(item).Append(", \n");
+            }
+            list.Append("]");
+
+            if (_object.Contains(value))
+            {
+                success($"List [{list.ToString()}] Contains [{value}]");
                 return true;
             }
             else
             {
-                var list = new StringBuilder();
-                list.Append("[\n");
-                foreach (var item in _object)
-                {
-                    list.Append(item).Append(", \n");
-                }
-                list.Append("]");
+                
 
                 Functions.handleFailure(new Exception($"List { list.ToString() } does not Contain\n[{ value}]"));
                 return false;
@@ -59,6 +61,25 @@ namespace ApolloQA
             {
                 success($"Object {A} equals {B}");
                 return true;
+            }
+            else if(A is IEnumerable<String> && B is IEnumerable <String>)
+            {
+                try
+                {
+                    CollectionAssert.AreEqual((IEnumerable<String>)A, (IEnumerable<String>)B);
+                    return true;
+                }
+                catch(Exception ex)
+                {
+
+                    String listA = "[" + string.Join("\n, ", (IEnumerable<String>)A) + "]";
+                    String listB = "[" + string.Join("\n, ", (IEnumerable<String>)B) + "]";
+
+                    String message = $"List ${listA} does not equal ${listB}";
+
+                    Functions.handleFailure(message, ex, optional);
+                    return false;
+                }
             }
             else if(A == null || B==null)
             {

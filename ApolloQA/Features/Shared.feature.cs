@@ -143,7 +143,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table6.AddRow(new string[] {
                             "Street Address Line 1",
                             "Input",
-                            "618 E. Laurel st"});
+                            "618 E Laurel st"});
                 table6.AddRow(new string[] {
                             "Street Address Line 2",
                             "Input",
