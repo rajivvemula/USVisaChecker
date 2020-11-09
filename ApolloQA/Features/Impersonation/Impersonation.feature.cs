@@ -103,7 +103,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("user clicks  assignment_ind  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
- testRunner.And("user enters ApolloTestUserG201@biberk.com username into email field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user enters \'ApolloTestUserG201@biberk.com\' into \'email\' field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 8
  testRunner.When("user clicks  Submit  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

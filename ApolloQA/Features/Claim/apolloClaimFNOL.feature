@@ -23,8 +23,6 @@ Scenario: Create an Occurrence successfully
 	When user clicks  Save  Button
 	Then user asserts for Occurence save
 
-Scenario: 
-
 Scenario: User cancels an Occurrence addition
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
