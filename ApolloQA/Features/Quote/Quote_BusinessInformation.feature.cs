@@ -19,8 +19,8 @@ namespace ApolloQA.Features.Quote
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("Business Infomration Section", Description="\tAs a user I want to make sure Business Information section is working correctly", SourceFile="Features\\Quote\\Quote_BusinessInformation.feature", SourceLine=0)]
-    public partial class BusinessInfomrationSectionFeature
+    [TechTalk.SpecRun.FeatureAttribute("Quote Business Infomration Section", Description="\tAs a user I want to make sure Business Information section is working correctly", SourceFile="Features\\Quote\\Quote_BusinessInformation.feature", SourceLine=0)]
+    public partial class QuoteBusinessInfomrationSectionFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -34,7 +34,7 @@ namespace ApolloQA.Features.Quote
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Quote", "Business Infomration Section", "\tAs a user I want to make sure Business Information section is working correctly", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Quote", "Quote Business Infomration Section", "\tAs a user I want to make sure Business Information section is working correctly", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

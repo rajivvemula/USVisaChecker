@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Collections;
 
 namespace ApolloQA.Source.Helpers
 {
@@ -16,7 +17,27 @@ namespace ApolloQA.Source.Helpers
         }
         public static List<Dictionary<String, dynamic>> executeQuery(String query, params (string key, dynamic value)[] parameters)
         {
+            IEnumerable<(string key, dynamic value)> listParams = parameters.ToList().FindAll(param => param.value is IEnumerable);
+            if (listParams.Any())
+            {
+                foreach(var listParam in listParams)
+                {
+                    var str = new StringBuilder();
+                    int i = 0;
+ 
+                    foreach(var item in listParam.value)
+                    {
+                        str.Append(listParam.key + i + ", ");
+                        parameters = parameters.Append((listParam.key + i, item)).ToArray();
+                        i++;
+                    }
 
+                    var paramKeys = str.ToString().Trim().Trim(',');
+                    query = query.Replace(listParam.key, paramKeys);
+
+                }
+            }
+            
             using (SqlConnection connection = new SqlConnection(Environment.GetEnvironmentVariable("SQL_CONNECTIONSTRING")))
             {
                 SqlCommand command = new SqlCommand(query, connection);
@@ -24,7 +45,10 @@ namespace ApolloQA.Source.Helpers
 
                 foreach (var parameter in parameters)
                 {
-                    command.Parameters.AddWithValue(parameter.key, parameter.value);
+                    if (!(parameter.value is IEnumerable<int>))
+                    {
+                        command.Parameters.AddWithValue(parameter.key, parameter.value);
+                    }
                 }
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();

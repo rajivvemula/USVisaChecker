@@ -19,8 +19,8 @@ namespace ApolloQA.Features.Quote
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("Create a new Quote", Description="\tAs a user I want to be able to create a new quote", SourceFile="Features\\Quote\\Quote_Create.feature", SourceLine=0)]
-    public partial class CreateANewQuoteFeature
+    [TechTalk.SpecRun.FeatureAttribute("Quote Create a new", Description="\tAs a user I want to be able to create a new quote", SourceFile="Features\\Quote\\Quote_Create.feature", SourceLine=0)]
+    public partial class QuoteCreateANewFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -34,7 +34,7 @@ namespace ApolloQA.Features.Quote
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Quote", "Create a new Quote", "\tAs a user I want to be able to create a new quote", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Quote", "Quote Create a new", "\tAs a user I want to be able to create a new quote", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -125,7 +125,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("A new Quote should successfully be created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 14
- testRunner.And("User should be redirected to the newly created Quote", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User should be redirected to the newly created Quote Business Information Section" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
  testRunner.And("Quote header should contain correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -222,7 +223,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("A new Quote should successfully be created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 33
- testRunner.And("User should be redirected to the newly created Quote", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User should be redirected to the newly created Quote Business Information Section" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 34
  testRunner.And("Quote header should contain correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

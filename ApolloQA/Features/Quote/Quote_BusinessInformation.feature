@@ -1,4 +1,4 @@
-﻿Feature: Business Infomration Section
+﻿Feature: Quote Business Infomration Section
 	As a user I want to make sure Business Information section is working correctly
 
 @SmokeTest @Quote

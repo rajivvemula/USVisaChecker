@@ -13,24 +13,12 @@ using System.Linq;
 namespace ApolloQA.StepDefinition.Quote
 {
     [Binding]
-    public class Quote_BusinessInformation
+    public class Quote_BusinessInformationSteps
     {
         public static EntityQuote Quote;
         public List<Address> addresses;
 
-        [When(@"User Navigates to Quote (.*)")]
-        public void GivenUserNavigatesToQuote(string quote)
-        {
-            if (quote?.ToLower() == "recent" || quote?.ToLower() == "latest")
-            {
-                Quote = EntityQuote.GetLatestQuote();
-            }
-            else
-            {
-                Quote = new EntityQuote(int.Parse(quote));
-            }
-            Quote_Page.Navigate(Quote.Id);
-        }
+        
         [When(@"User Navigates to Business Information Section")]
         public void WhenUserNavigatesToBusinessInfomrationSection()
         {
@@ -69,7 +57,6 @@ namespace ApolloQA.StepDefinition.Quote
                 {
                     var field = Pages.Shared.GetDropdownField(displayName);
                     actualValue = field.GetInnerText();
-
                 }
                 Log.Info($"Display Name: {displayName} Expected: {expectedValue} Actual: {actualValue}");
 
@@ -90,7 +77,7 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenNationalCreditScoreShouldBeDisplayed()
         {
             int? insurranceScore = Quote.Organization.InsurranceScore;
-            String actual = Pages.Quote.Quote_BusinessInformation.Score.GetElementText();
+            String actual = Pages.Quote.Quote_BusinessInformation_Page.Score.GetElementText();
 
             String expected = insurranceScore == null ? "Score:" : $"Score: {insurranceScore}";
             Assert.AreEqual(expected, actual.Substring(0, actual.IndexOf("\nLast Checked")-1));

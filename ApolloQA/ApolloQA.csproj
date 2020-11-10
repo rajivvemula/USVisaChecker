@@ -5,6 +5,10 @@
 	<PublishChromeDriver>true</PublishChromeDriver>
   </PropertyGroup>
 
+  <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\Quote_Create - Copy.feature.cs" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Azure.Core" Version="1.6.0" />
 		<PackageReference Include="Azure.Extensions.Configuration.Secrets" Version="1.0.0-preview.1" />
@@ -41,12 +45,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Features\Quote\Quote_LeftNavBar.feature.cs">
+	    <DependentUpon>Quote_LeftNavBar.feature</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Update="default.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="qa1.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_LeftNavBar.feature">
+	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
+	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+	  </SpecFlowFeatureFiles>
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

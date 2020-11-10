@@ -212,7 +212,8 @@ namespace ApolloQA.Source.Driver
         public static void clearTextField(By TextFieldLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
-            textField.Clear();
+            textField.SendKeys(Keys.Control + "a");
+            textField.SendKeys(Keys.Delete);
         }
 
 

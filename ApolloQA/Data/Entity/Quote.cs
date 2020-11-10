@@ -4,7 +4,7 @@ using System.Text;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using ApolloQA.Source.Helpers;
-
+using ApolloQA.Data.Entity.Storyboard;
 namespace ApolloQA.Data.Entity
 {
     public class Quote
@@ -18,8 +18,6 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-
-
                 var method = this.GetType().GetProperty(propertyName);
                 if (method != null)
                 {
@@ -75,6 +73,15 @@ namespace ApolloQA.Data.Entity
                 {
                     throw new Exception($"error constructing Organization with the following params 1=PartyId 2={this.GetProperties()?.insuredPartyId?.Value?.ToString()}");
                 }
+            }
+        }
+
+        public Storyboard.Storyboard Storyboard
+        {
+            get
+            {
+                int storyBoardId = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id}").Result[0]["StoryboardId"];
+                return new Storyboard.Storyboard(storyBoardId);
             }
         }
 

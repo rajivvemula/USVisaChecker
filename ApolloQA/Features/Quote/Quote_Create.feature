@@ -1,4 +1,4 @@
-﻿Feature: Create a new Quote
+﻿Feature: Quote Create a new
 	As a user I want to be able to create a new quote
 
 @SmokeTest @Quote
@@ -11,7 +11,7 @@ Scenario: Create New Quote Existing Organization
 	And user Selects Policy Effective Date as Tomorrow
 	And user clicks Next Button
 	Then A new Quote should successfully be created
-	And User should be redirected to the newly created Quote
+	And User should be redirected to the newly created Quote Business Information Section
 	And Quote header should contain correct values
 
 
@@ -30,6 +30,9 @@ Scenario: Create New Quote New Organization
 	And user Selects Policy Effective Date as Tomorrow
 	And user clicks Next Button
 	Then A new Quote should successfully be created
-	And User should be redirected to the newly created Quote
+	And User should be redirected to the newly created Quote Business Information Section
 	And Quote header should contain correct values
+
+
+
 	
