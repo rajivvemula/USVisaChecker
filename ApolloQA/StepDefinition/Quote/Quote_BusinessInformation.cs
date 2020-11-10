@@ -9,6 +9,7 @@ using ApolloQA.Data.Entity;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using ApolloQA.Pages;
 
 namespace ApolloQA.StepDefinition.Quote
 {
@@ -35,7 +36,7 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"User Navigates to Business Information Section")]
         public void WhenUserNavigatesToBusinessInfomrationSection()
         {
-            Pages.Shared.GetLeftSideTab("Business Information").Click();
+            Shared.GetLeftSideTab("Business Information").Click();
         }
 
         [When(@"user saves current Business Addresses")]
@@ -43,10 +44,6 @@ namespace ApolloQA.StepDefinition.Quote
         {
             this.addresses = Quote.Organization.Addresses;
         }
-
-
-
-
 
         [Then(@"The following Organization Fields should be displayed")]
         public void ThenTheFollowingOrganizationFieldsShouldBeDisplayed(Table table)

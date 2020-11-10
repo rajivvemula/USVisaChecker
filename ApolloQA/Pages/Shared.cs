@@ -31,6 +31,7 @@ namespace ApolloQA.Pages
         public static Element GetLeftSideTab(string DisplayName)
         {
             return new Element($"//bh-left-navbar //div[@class='mat-list-item-content' and normalize-space(text())='{DisplayName}'] |" +
+                               $"//bh-left-navbar/mat-sidenav/div/mat-nav-list/*/a/*[contains(text(), '{DisplayName}')]] |" +
                                $"//bh-left-navbar //mat-nav-list//a//*[contains(text(), '{DisplayName}')]");
         }
 
@@ -56,7 +57,7 @@ namespace ApolloQA.Pages
             return new Element($"//button[./*[normalize-space(text())='{displayName}']] |" +
                                $"//button[normalize-space(text())='{displayName}'] |" +
                                $"//button//*[contains(text(), '{displayName}')] |" +
-                               $"//*[@class='mat-list-item mat-focus-indicator ng-star-inserted'] //*[contains(text(), '{displayName}')]");
+                               $"//mat-radio-button //*[contains(text(), '{displayName}')]");
         }
 
         public static Element GetIconButton(string iconText)
