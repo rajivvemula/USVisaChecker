@@ -6,7 +6,7 @@ using ApolloQA.Source.Helpers;
 
 namespace ApolloQA.Pages.Quote
 {
-    class Quote_BusinessInformation
+    class Quote_BusinessInformation_Page
     {
         public static string URL_PATH = "/quote/{quoteID}/section/{sectionID}";
 

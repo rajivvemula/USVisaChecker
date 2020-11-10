@@ -199,6 +199,17 @@ namespace ApolloQA.Source.Driver
         {
             UserActions.clearTextField(locator);
         }
+        public bool assertTextFieldTextEquals(string expected, bool optional=false)
+        {
+            string elementText = this.getTextFieldText();
+            if (Assert.AreEqual(elementText, expected, true))
+            {
+                return true;
+            }
+
+            Functions.handleFailure(new Exception($"Text Field {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {expected}"), optional);
+            return false;
+        }
 
 
 

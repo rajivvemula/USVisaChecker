@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\Quote_Create - Copy.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote_Create.feature.cs" />
   </ItemGroup>
 
 	<ItemGroup>
@@ -16,7 +15,6 @@
 		<PackageReference Include="Azure.Identity" Version="1.2.3" />
 		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.1.0" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
-		<PackageReference Include="AutoItX.Dotnet" Version="3.3.14.5" />
 		<PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
 		<PackageReference Include="DynamicExpresso.Core" Version="2.3.1" />
 		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
@@ -47,8 +45,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Features\Shared.feature.cs">
-	    <DependentUpon>Shared.feature</DependentUpon>
+	  <Compile Update="Features\Quote\Quote_LeftNavBar.feature.cs">
+	    <DependentUpon>Quote_LeftNavBar.feature</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -62,13 +60,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_BusinessInformation.feature">
-	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
-	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-	  </SpecFlowFeatureFiles>
-	  <SpecFlowFeatureFiles Update="Features\Shared.feature">
+	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_LeftNavBar.feature">
 	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
 	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
 	  </SpecFlowFeatureFiles>
 	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="taskkill /f /fi &quot;pid gt 0&quot; /im dotnet.exe" />
+	</Target>
 </Project>

@@ -60,6 +60,24 @@ namespace ApolloQA.Source.Helpers
             }
 
         }
+        public static void handleFailure(string message, Exception ex = null, bool optional = false, params (string key, dynamic value)[] parameters)
+        {
+            if (optional)
+            { Log.Info(message); }
+            else
+            {
+                Log.Error(message);
+                if (ex != null)
+                {
+                    handleFailure(ex, optional);
+                }
+                else
+                {
+                    throw new Exception(message);
+                }
+            }
+
+        }
         public static void handleFailure(Exception ex, bool optional = false)
         {
             if (optional)
