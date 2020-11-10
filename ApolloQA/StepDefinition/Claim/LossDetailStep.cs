@@ -28,7 +28,7 @@ namespace ApolloQA.StepDefinition.Claim
             Shared.GetButton(" First Party ").Click();
             Shared.GetButton(" Property Damage ").Click();
             LossDetails.FaultIndicatorDropdown.SelectMatDropdownOptionByText(" No Fault ");
-            LossDetails.ClaimsAdjusterDropdown.SelectMatDropdownOptionByText("ApolloTestUserG102");
+            LossDetails.ClaimsAdjusterDropdown.SelectMatDropdownOptionByText("Unassigned");
             LossDetails.ComplexityDropdown.SelectMatDropdownOptionByText(" Fastrack ");
             LossDetails.SupervisorNotesInput.setText("Notes of Supervisor : TEST TEST!");
         }
