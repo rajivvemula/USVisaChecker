@@ -13,7 +13,7 @@ namespace ApolloQA.Source.Driver
 {
     class UserActions
     {
-        public const int DEFAULT_WAIT_SECONDS = 20;
+        public const int DEFAULT_WAIT_SECONDS = 60;
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
             var URL = Functions.ParseURL(URL_OR_PATH, parameters);

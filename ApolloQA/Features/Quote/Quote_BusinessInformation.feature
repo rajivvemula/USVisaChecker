@@ -2,7 +2,7 @@
 	As a user I want to make sure Business Information section is working correctly
 
 @SmokeTest @Quote
-Scenario: Business Information Load
+Scenario: Business Information Section Loads successfully
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest
 	And User Navigates to Business Information Section
@@ -27,7 +27,7 @@ Scenario: Business Information Load
 
 
 	@SmokeTest @Quote
-Scenario: Business Information Add Address
+Scenario: Business Information Add Address Functionality
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest
 	And User Navigates to Business Information Section

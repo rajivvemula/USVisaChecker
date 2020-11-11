@@ -16,6 +16,7 @@ namespace ApolloQA.StepDefinition
     {
         public IWebDriver driver;
 
+        
 
         apolloOrganizationSteps(IWebDriver _driver)
         {
@@ -26,14 +27,6 @@ namespace ApolloQA.StepDefinition
         public string OrgType = "";
         public string Keyword = "";
 
-        [Then(@"user verifies Email is required")]
-        public void ThenUserVerifiesEmailIsRequired()
-        {
-            BusinessInformation.businessEmailAddressField.assertElementIsPresent(30);
-            BusinessInformation.businessEmailAddressField.Click();
-            string isRequired = BusinessInformation.businessEmailAddressField.GetAttribute("aria-required");
-            Assert.AreEqual("true", isRequired);
-        }
 
         [When(@"user enters business information")]
         public void WhenUserEntersBusinessInformation(Table table)
@@ -58,6 +51,17 @@ namespace ApolloQA.StepDefinition
             BusinessInformation.businessYearStartedField.setText(OrgTable.YearStarted);
             BusinessInformation.businessYearOwnershipField.setText(OrgTable.YearOwned);
         }
+
+
+        [Then(@"user verifies Email is required")]
+        public void ThenUserVerifiesEmailIsRequired()
+        {
+            BusinessInformation.businessEmailAddressField.assertElementIsPresent(30);
+            BusinessInformation.businessEmailAddressField.Click();
+            string isRequired = BusinessInformation.businessEmailAddressField.GetAttribute("aria-required");
+            Assert.AreEqual("true", isRequired);
+        }
+
 
         [When(@"user asserts for saved organization")]
         public void WhenUserAssertsForSavedOrganization()
