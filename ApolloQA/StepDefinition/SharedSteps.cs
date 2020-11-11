@@ -83,5 +83,6 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetField(fieldName, "input").setText(username);
         }
+
     }
 }

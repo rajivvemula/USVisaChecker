@@ -4,6 +4,10 @@ using System.Text;
 using OpenQA.Selenium;
 using ApolloQA.Source.Helpers;
 using System.Linq;
+using System.Xml.Serialization;
+using OpenQA.Selenium.Support.UI;
+using System.Threading;
+using NUnit.Framework.Constraints;
 
 namespace ApolloQA.Source.Driver
 {
@@ -107,8 +111,6 @@ namespace ApolloQA.Source.Driver
             return false;
         }
 
-
-
         /// <summary>
         ///  Waits for the element to be vissible in the page
         /// </summary>
@@ -141,8 +143,6 @@ namespace ApolloQA.Source.Driver
             return false;
         }
 
-
-
         /// <summary>
         ///  Waits for the element to disappear <br/>
         ///  note: if element was not present at the exact moment this function was called, true will be returned.
@@ -160,7 +160,10 @@ namespace ApolloQA.Source.Driver
             return false;
         }
 
-
+        public IWebElement WaitUntilClickable(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
+        {
+            return UserActions.FindElementWaitUntilClickable(locator, wait_Seconds);
+        }
 
         public void setValue(string fieldType, string value)
         {
