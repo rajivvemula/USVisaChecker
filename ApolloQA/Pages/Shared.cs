@@ -30,7 +30,7 @@ namespace ApolloQA.Pages
 
         public static Element GetLeftSideTab(string DisplayName)
         {
-            return new Element($"//bh-left-navbar //div[@class='mat-list-item-content' and normalize-space(text())='{DisplayName}'] |");
+            return new Element($"//bh-left-navbar //div[@class='mat-list-item-content' and normalize-space(text())='{DisplayName}']");
         }
 
         public static Element GetRightSideTab(string DisplayName)
