@@ -84,5 +84,11 @@ namespace ApolloQA.StepDefinition
             Shared.GetField(fieldName, "input").setText(username);
         }
 
+        [When(@"user waits for spinner to load")]
+        public void WhenUserWaitsForSpinnerToLoad()
+        {
+            Shared.SpinnerLoad.assertElementIsVisible(5, true);
+            Shared.SpinnerLoad.assertElementNotPresent();
+        }
     }
 }

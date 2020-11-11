@@ -4,6 +4,7 @@ using System.Text;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 using Microsoft.Identity.Client;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApolloQA.Pages
 {
@@ -78,6 +79,7 @@ namespace ApolloQA.Pages
         // Specific Shared Elements
         //
         public static Element SuggestedAddressCTA => new Element("//bh-address-details/*");
+        public static Element SpinnerLoad => new Element("//bh-mat-spinner-overlay");
 
     }
 }

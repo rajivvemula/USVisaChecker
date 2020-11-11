@@ -26,15 +26,6 @@ namespace ApolloQA.StepDefinition
         public string OrgType = "";
         public string Keyword = "";
 
-        [Then(@"user verifies Email is required")]
-        public void ThenUserVerifiesEmailIsRequired()
-        {
-            BusinessInformation.businessEmailAddressField.assertElementIsPresent(30);
-            BusinessInformation.businessEmailAddressField.Click();
-            string isRequired = BusinessInformation.businessEmailAddressField.GetAttribute("aria-required");
-            Assert.AreEqual("true", isRequired);
-        }
-
         [When(@"user enters business information")]
         public void WhenUserEntersBusinessInformation(Table table)
         {
@@ -50,6 +41,8 @@ namespace ApolloQA.StepDefinition
             BusinessInformation.descriptionOfOperationsField.setText(OrgTable.DescriptionOfOperations);
             BusinessInformation.businessphoneNumberField.setText(OrgTable.BusinessPhoneNumber);
             BusinessInformation.businessEmailAddressField.setText(OrgTable.BusinessEamil);
+            string isRequired = BusinessInformation.businessEmailAddressField.GetAttribute("aria-required");
+            Assert.AreEqual("true", isRequired);
             BusinessInformation.businessWebsiteField.setText(OrgTable.BusinessWebsite);
             Pages.Shared.GetInputField("Keyword").setText(OrgTable.Keyword);
             Pages.Shared.GetInputField("Keyword").SelectMatDropdownOptionByIndex(0, out string selectionKeyWord);
@@ -78,10 +71,7 @@ namespace ApolloQA.StepDefinition
         [Then(@"user deletes created test organization")]
         public void ThenUserDeletesCreatedTestOrganization()
         {
-            OrganizationGrid.skipToLastButton.assertElementIsVisible();
-            OrganizationGrid.skipToLastButton.Click();
-            OrganizationGrid.theTestOrg.assertElementIsVisible();
-            OrganizationGrid.theTestOrgId.Click();
+            BusinessInformation.toastrMessage.assertElementNotPresent();
             BusinessInformation.blueEllipsesButton.Click();
             BusinessInformation.deleteOrgButton.Click();
             BusinessInformation.confirmDeleteOrg.Click();
