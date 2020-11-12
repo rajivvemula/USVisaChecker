@@ -221,7 +221,9 @@ namespace ApolloQA.Source.Driver
         {
             var dropdown = FindElementWaitUntilClickable(DropdownLocator);
             dropdown.Click();
-            var option = FindElementWaitUntilClickable(By.XPath($"//mat-option[normalize-space(*//text())='{optionDisplayText}'] |" + $"//*[contains(text(), '{optionDisplayText}')]"));
+            var option = FindElementWaitUntilClickable(By.XPath($"//mat-option[normalize-space(*//text())='{optionDisplayText}'] |" + 
+                $"//*[contains(text(), '{optionDisplayText}')] |" + 
+                $"//*[@class='mat-option-text' and contains(text(), '{optionDisplayText}')]"));
             option.Click();
         }
 

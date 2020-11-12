@@ -29,8 +29,8 @@ namespace ApolloQA.StepDefinition
         [Then(@"user verifies '(.*)' is not an option")]
         public void ThenUserVerifiesIsNotAnOption(string text)
         {
-            Occurrence.howWasNoticeReceivedDropdown.Click();
-            Occurrence.receivedByCarrierPigeonOption.assertElementContainsText(text, false);
+            bool IsNotVisible = Occurrence.receivedByCarrierPigeonOption.assertElementNotPresent();
+            Assert.AreEqual(true, IsNotVisible);
         }
 
         [When(@"user enters occurrence information for Policy")]
@@ -43,7 +43,7 @@ namespace ApolloQA.StepDefinition
             Log.Info($"Expected: {nameof(ReceivedNotice)}={ReceivedNotice}");
             Occurrence.dateReportedField.setText(Reported);
             Occurrence.timeReportedField.setText(Time);
-            Occurrence.policyNumberField.setText("1008"); // generic Text to initiate the list to choose from
+            Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");

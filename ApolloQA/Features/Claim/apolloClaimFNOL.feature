@@ -7,6 +7,7 @@ Scenario: Carrier Pigeon Is not a how notice was received option
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
 	When user clicks New FNOL Button
+	And user waits for spinner to load
 	Then user verifies 'Carrier Pigeon' is not an option
 
 Scenario: Create an Occurrence successfully
@@ -14,6 +15,7 @@ Scenario: Create an Occurrence successfully
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
 	When user clicks New FNOL Button
+	And user waits for spinner to load
 	And user enters occurrence information for Policy
 	And user selects 'No' this occurrence related to an existing claim
 	And user enters Reported by contact information
@@ -21,6 +23,7 @@ Scenario: Create an Occurrence successfully
 	And user enters police involved info - 'Yes'
 	And user enters fire involved info - 'Yes'
 	When user clicks  Save  Button
+	And user waits for spinner to load
 	Then user asserts for Occurence save
 
 Scenario: User cancels an Occurrence addition
