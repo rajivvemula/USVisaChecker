@@ -18,7 +18,12 @@ namespace ApolloQA.StepDefinition.Quote
         public static EntityQuote Quote;
         public List<Address> addresses;
 
-        
+
+        public Quote_BusinessInformationSteps()
+        {
+            Quote = Quote_SharedSteps.Quote;
+        }
+
         [When(@"User Navigates to Business Information Section")]
         public void WhenUserNavigatesToBusinessInfomrationSection()
         {
@@ -30,11 +35,6 @@ namespace ApolloQA.StepDefinition.Quote
         {
             this.addresses = Quote.Organization.Addresses;
         }
-
-
-
-
-
         [Then(@"The following Organization Fields should be displayed")]
         public void ThenTheFollowingOrganizationFieldsShouldBeDisplayed(Table table)
         {

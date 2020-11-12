@@ -14,7 +14,7 @@ Scenario: Add business information and save as organization
 	Then user deletes created test organization
 
 Scenario: Add business information and cancel submit
-	Given user is successfully logged into biberk
+	Given user is successfully logged into biberk 
 	When user clicks Organization Button
 	When user clicks  New  Button
 	And user waits for spinner to load
