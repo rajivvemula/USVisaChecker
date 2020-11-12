@@ -18,36 +18,13 @@ namespace ApolloQA.StepDefinition
         }
 
         private string Loss = DateTime.Today.AddDays(-1).ToShortDateString();
-        private string Reported = DateTime.Today.ToShortDateString();
         private string Time = "02:04PM";
         public string ReceivedNotice = "";
         public string PolicyNumber = "";
         public string ReportedByPhoneType = "";
         public string ClaimantPhoneType = "";
+        public string StreetAddress = "";
         public int ClaimID = 0;
-
-        [Then(@"user verifies '(.*)' is not an option")]
-        public void ThenUserVerifiesIsNotAnOption(string text)
-        {
-            bool IsNotVisible = Occurrence.receivedByCarrierPigeonOption.assertElementNotPresent();
-            Assert.AreEqual(true, IsNotVisible);
-        }
-
-        [When(@"user enters occurrence information for Policy")]
-        public void WhenUserEntersOccurrenceInformationForPolicy()
-        {
-            Occurrence.dateOfLossField.setText(Loss);
-            Occurrence.timeOFLossField.setText(Time);
-            Occurrence.howWasNoticeReceivedDropdown.SelectMatDropdownOptionByIndex(1, out string selectionNoticeReceived);
-            ReceivedNotice = selectionNoticeReceived;
-            Log.Info($"Expected: {nameof(ReceivedNotice)}={ReceivedNotice}");
-            Occurrence.dateReportedField.setText(Reported);
-            Occurrence.timeReportedField.setText(Time);
-            Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
-            Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
-            PolicyNumber = selectionPolicyNumber;
-            Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
-        }
 
         [When(@"user selects '(.*)' this occurrence related to an existing claim")]
         public void WhenUserSelectsThisOccurrenceRelatedToAnExistingClaim(string answer)
@@ -66,36 +43,39 @@ namespace ApolloQA.StepDefinition
             }
         }
 
-        [When(@"user enters Reported by contact information")]
-        public void WhenUserEntersReportedByContactInformation()
+        [When(@"user enters occurrence information for Policy")]
+        public void WhenUserEntersOccurrenceInformationForPolicy()
         {
-            Occurrence.reportedFirstNameField.setText("Reported");
-            Occurrence.reportedMiddleNameField.setText("M");
-            Occurrence.reportedLastNameField.setText("Test");
-            Occurrence.reportedSuffixField.setText("111");
-            Occurrence.reportedEmailField.setText("ReportedMTest@testemail.com");
-            Occurrence.ReportedPhoneTypeDropdown.SelectMatDropdownOptionByIndex(1, out string ReportedByTypePhone);
-            ReportedByPhoneType = ReportedByTypePhone;
-            Log.Info($"Expected: {nameof(ReportedByPhoneType)}={ReportedByPhoneType}");
-            Occurrence.reportedPhonenumberField.setText("4843020219");
-            Occurrence.reportedPhoneExtensionField.setText("33");
+            Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
+            Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
+            PolicyNumber = selectionPolicyNumber;
+            Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
+            Occurrence.dateOfLossField.setText(Loss);
+            Occurrence.timeOFLossField.setText(Time);
         }
 
-        [When(@"user enters catastrophe and claimant contact info")]
-        public void WhenUserEntersCatastropheAndClaimantContactInfo()
+        [When(@"user enters Location information")]
+        public void WhenUserEntersLocationInformation()
         {
-            Occurrence.casastropheDropdown.SelectMatDropdownOptionByText("Option 1");
-            Occurrence.descriptionofLossField.setText("DescriptionOfLoss");
-            Occurrence.claimantFirstNameField.setText("Reported2");
-            Occurrence.claimantMiddleNameField.setText("T");
-            Occurrence.claimantLastNameField.setText("Testing");
-            Occurrence.claimantSuffixField.setText("2nd");
-            Occurrence.claimantEmailField.setText("Reported2@Testing.com");
-            Occurrence.claimantPhoneTypeDropdown.SelectMatDropdownOptionByIndex(1, out string claimantPhoneType);
-            ClaimantPhoneType = claimantPhoneType;
-            Log.Info($"Expected: {nameof(ClaimantPhoneType)}={claimantPhoneType}");
-            Occurrence.claimantPhoneNumberField.setText("8790654050");
-            Occurrence.claimantPhoneExtensionField.setText("891");
+            Occurrence.LocationDescriptionInput.setText("Description of Location - Test!");
+            Occurrence.AddressDropdown.SelectMatDropdownOptionByIndex(0, out string streetAddress);
+            StreetAddress = streetAddress;
+            Log.Info($"Expected: {nameof(StreetAddress)}={StreetAddress}");
+            Occurrence.DescriptionOfLossInput.setText("Loss Description - Test!");
+            Occurrence.CatastropheTypeDropdown.SelectMatDropdownOptionByText("None");
+        }
+
+        [When(@"user selects Location Information from dropdown")]
+        public void WhenUserSelectsLocationInformationFromDropdown()
+        {
+            Occurrence.LocationDescriptionInput.setText("Description of Location - Test!");
+            Occurrence.StreetAddressOneInput.setText("1900 W Field CT");
+            Occurrence.StreetAddressTwoInput.setText("Apt 2");
+            Occurrence.CityInput.setText("Lake Forrest");
+            Occurrence.StateDropdown.SelectMatDropdownOptionByText(" IL ");
+            Occurrence.ZipCodeInput.setText("60045");
+            Occurrence.DescriptionOfLossInput.setText("Loss Description - Test!");
+            Occurrence.CatastropheTypeDropdown.SelectMatDropdownOptionByText("None");
         }
 
         [When(@"user enters police involved info - '(.*)'")]
