@@ -24,6 +24,9 @@ namespace ApolloQA.StepDefinition
         public string ReportedByPhoneType = "";
         public string ClaimantPhoneType = "";
         public string StreetAddress = "";
+        public string RelatedExistingClaim = "";
+        public string PoliceInvolved = "";
+        public string FireInvolved = "";
         public int ClaimID = 0;
 
         [When(@"user selects '(.*)' this occurrence related to an existing claim")]
@@ -32,10 +35,14 @@ namespace ApolloQA.StepDefinition
             switch (answer.ToUpper())
             {
                 case "YES":
-                    Occurrence.relatedToExistingClaimDropdown.SelectMatDropdownOptionByText("Yes");
+                    Occurrence.relatedToExistingClaimDropdown.SelectMatDropdownOptionByIndex(0, out string relatedtoExistingClaim);
+                    RelatedExistingClaim = relatedtoExistingClaim;
+                    Log.Info($"Expected: {nameof(RelatedExistingClaim)}={RelatedExistingClaim}");
                     break;
                 case "NO":
-                    Occurrence.relatedToExistingClaimDropdown.SelectMatDropdownOptionByText("No");
+                    Occurrence.relatedToExistingClaimDropdown.SelectMatDropdownOptionByIndex(1, out string NOTrelatedtoExistingClaim);
+                    RelatedExistingClaim = NOTrelatedtoExistingClaim;
+                    Log.Info($"Expected: {nameof(RelatedExistingClaim)}={RelatedExistingClaim}");
                     break;
                 default:
                     Log.Info($"Related to an existing claim answer" + answer + "not found.");
@@ -50,9 +57,15 @@ namespace ApolloQA.StepDefinition
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
+        }
+
+        [When(@"user enters loss date and time")]
+        public void WhenUserEntersLossDateAndTime()
+        {
             Occurrence.dateOfLossField.setText(Loss);
             Occurrence.timeOFLossField.setText(Time);
         }
+
 
         [When(@"user enters Location information")]
         public void WhenUserEntersLocationInformation()
@@ -70,6 +83,7 @@ namespace ApolloQA.StepDefinition
         {
             Occurrence.LocationDescriptionInput.setText("Description of Location - Test!");
             Occurrence.StreetAddressOneInput.setText("1900 W Field CT");
+            Shared.ScrollIntoView("Cancel");
             Occurrence.StreetAddressTwoInput.setText("Apt 2");
             Occurrence.CityInput.setText("Lake Forrest");
             Occurrence.StateDropdown.SelectMatDropdownOptionByText(" IL ");
@@ -83,17 +97,21 @@ namespace ApolloQA.StepDefinition
         {
             switch (policeInvolved.ToUpper())
             {
-                case "NO":
-                    Occurrence.policeInvolvedDropdown.SelectMatDropdownOptionByText("No");
-                    break;
                 case "YES":
-                    Occurrence.policeInvolvedDropdown.SelectMatDropdownOptionByText("Yes");
-                    Occurrence.policeDepartmentNameField.setText("TestPolice");
-                    Occurrence.policeReportNumberField.setText("123");
+                    Occurrence.policeInvolvedDropdown.SelectMatDropdownOptionByIndex(0, out string WerepoliceInvolved);
+                    Occurrence.policeDepartmentNameField.setText("Test Police Department");
+                    Occurrence.policeReportNumberField.setText("987");
+                    PoliceInvolved = WerepoliceInvolved;
+                    Log.Info($"Expected: {nameof(PoliceInvolved)}={PoliceInvolved}");
+                    break;
+                case "NO":
+                    Occurrence.policeInvolvedDropdown.SelectMatDropdownOptionByIndex(1, out string policeNOTInvolved);
+                    PoliceInvolved = policeNOTInvolved;
+                    Log.Info($"Expected: {nameof(PoliceInvolved)}={PoliceInvolved}");
                     break;
                 default:
-                    Log.Info($"Police involved question answer" + policeInvolved + "not found.");
-                    throw new Exception("Police involved question answer" + policeInvolved + "not found.");
+                    Log.Info($"Related to an existing claim answer" + policeInvolved + "not found.");
+                    throw new Exception("Related to an existing claim answer" + policeInvolved + "not found.");
             }
         }
 
@@ -102,17 +120,21 @@ namespace ApolloQA.StepDefinition
         {
             switch (fireInvolved.ToUpper())
             {
-                case "NO":
-                    Occurrence.fireInvolvedDropdown.SelectMatDropdownOptionByText("No");
-                    break;
                 case "YES":
-                    Occurrence.fireInvolvedDropdown.SelectMatDropdownOptionByText("Yes");
-                    Occurrence.fireDepartmentNameField.setText("TestFire");
+                    Occurrence.fireInvolvedDropdown.SelectMatDropdownOptionByIndex(0, out string wereFireInvolved);
+                    Occurrence.fireDepartmentNameField.setText("Test Fire Department");
                     Occurrence.fireReportNumberField.setText("123");
+                    FireInvolved = wereFireInvolved;
+                    Log.Info($"Expected: {nameof(FireInvolved)}={FireInvolved}");
+                    break;
+                case "NO":
+                    Occurrence.fireInvolvedDropdown.SelectMatDropdownOptionByIndex(1, out string fireNOTInvolved);
+                    FireInvolved = fireNOTInvolved;
+                    Log.Info($"Expected: {nameof(FireInvolved)}={FireInvolved}");
                     break;
                 default:
-                    Log.Info($"Police involved question answer" + fireInvolved + "not found.");
-                    throw new Exception("Police involved question answer" + fireInvolved + "not found.");
+                    Log.Info($"Related to an existing claim answer" + fireInvolved + "not found.");
+                    throw new Exception("Related to an existing claim answer" + fireInvolved + "not found.");
             }
         }
 
@@ -120,7 +142,7 @@ namespace ApolloQA.StepDefinition
         public void ThenUserAssertsForOccurenceSave()
         {
             var toastMessage = Occurrence.toastrMessage.GetInnerText();
-            //Assert.TextContains(toastMessage, "was successfully saved.");
+            Assert.TextContains(toastMessage, "was successfully saved.");
             this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
             Log.Info($"Expected: Claim Saved. Result: " + toastMessage + "");
         }

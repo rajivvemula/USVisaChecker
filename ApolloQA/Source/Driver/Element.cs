@@ -244,7 +244,12 @@ namespace ApolloQA.Source.Driver
 
         }
 
+        // Scroll Into View
 
+        public static void ScrollElementIntoView(string elementText)
+        {
+           UserActions.ScrollIntoView(elementText);
+        }
 
     }
 }

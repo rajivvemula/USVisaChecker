@@ -5,6 +5,7 @@ using ApolloQA.Source.Helpers;
 using ApolloQA.Data.Entity;
 using System.Collections.Generic;
 using System.Text;
+using ApolloQA.Source.Driver;
 
 namespace ApolloQA.StepDefinition
 {
@@ -20,7 +21,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user clicks (.*) Dropdown")]
         public void WhenUserClicksOnPhysicalAddressDropdown(string DropdownDisplayName)
         {
-            Pages.Shared.GetDropdownField("Physical Address").Click();
+            Shared.GetDropdownField("Physical Address").Click();
         }
 
         public static Address previouslyEnteredAddress;

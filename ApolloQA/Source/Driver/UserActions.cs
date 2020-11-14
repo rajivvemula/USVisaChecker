@@ -8,6 +8,7 @@ using ApolloQA.Source.Helpers;
 using System.Linq;
 using Newtonsoft.Json;
 using Utf8Json.Formatters;
+using OpenQA.Selenium.Interactions;
 
 namespace ApolloQA.Source.Driver
 {
@@ -259,6 +260,16 @@ namespace ApolloQA.Source.Driver
                 currentOption++;
                 yield return string.Join("", innerText);
             }
+        }
+
+        // Scroll
+
+        public static void ScrollIntoView(string elementText)
+        {
+            IWebElement element = Setup.driver.FindElement(By.XPath($"//*[contains(text(), '{elementText}')]"));
+            Actions actions = new Actions(Setup.driver);
+            actions.MoveToElement(element);
+            actions.Perform();
         }
 
 

@@ -10,6 +10,8 @@ Scenario: Create an Occurrence successfully
 	And user waits for spinner to load
 	And user selects 'No' this occurrence related to an existing claim
 	And user enters occurrence information for Policy
+	And user waits for spinner to load
+	And user enters loss date and time
 	And user enters Location information
 	And user enters police involved info - 'Yes'
 	And user enters fire involved info - 'Yes'
@@ -25,9 +27,11 @@ Scenario: User cancels an Occurrence addition
 	And user waits for spinner to load
 	And user selects 'Yes' this occurrence related to an existing claim
 	And user enters occurrence information for Policy
+	And user waits for spinner to load
+	And user enters loss date and time
 	And user selects Location Information from dropdown
-	And user enters police involved info - 'Yes'
-	And user enters fire involved info - 'Yes'
+	And user enters police involved info - 'No'
+	And user enters fire involved info - 'No'
 	When user clicks Cancel Button
 	When user clicks Continue anyway Button
 	Then user asserts for Occurence cancel
