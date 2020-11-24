@@ -8,6 +8,8 @@ namespace ApolloQA.Components
 {
     class LeftSidetab
     {
+        // Note: This class is sloppy and needs re-working
+
         By locator;
 
         public LeftSidetab(string fieldLabel)
@@ -49,6 +51,15 @@ namespace ApolloQA.Components
                 //if sideTab.Click() throws an exception
                 return false;
             }
+        }
+
+        public string GetActiveSidetab()
+        {
+            string active = "//div[@class='mat-list-item-content']/parent::a[contains(@class, 'active-link')]";
+
+            IWebElement activeSidetab = UserActions.FindElementWaitUntilVisible(By.XPath(active), UserActions.DEFAULT_WAIT_SECONDS);
+
+            return activeSidetab.Text;
         }
 
     }

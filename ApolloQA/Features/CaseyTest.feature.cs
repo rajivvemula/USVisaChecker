@@ -70,12 +70,12 @@ namespace ApolloQA.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("1 First test example", SourceLine=2)]
-        public virtual void _1FirstTestExample()
+        [TechTalk.SpecRun.ScenarioAttribute("1 Test Create Org", SourceLine=2)]
+        public virtual void _1TestCreateOrg()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 First test example", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Test Create Org", null, tagsOfScenario, argumentsOfScenario);
 #line 3
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -105,6 +105,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  testRunner.And("user clicks New button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 7
+ testRunner.Then("URL contains organization/insert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                             "Display Name",
                             "Field Type",
@@ -126,11 +129,11 @@ this.ScenarioInitialize(scenarioInfo);
                             "Input",
                             "12-3123111"});
                 table1.AddRow(new string[] {
-                            "Description of Operations",
+                            "Description Of Operations",
                             "Input",
                             "Sample text."});
                 table1.AddRow(new string[] {
-                            "Business Phone No",
+                            "Business Phone No.",
                             "Input",
                             "249-213-1518"});
                 table1.AddRow(new string[] {
@@ -153,8 +156,197 @@ this.ScenarioInitialize(scenarioInfo);
                             "Year Ownership Started",
                             "Input",
                             "2018"});
-#line 7
- testRunner.And("user enters following values", ((string)(null)), table1, "And ");
+#line 8
+ testRunner.When("user enters following values", ((string)(null)), table1, "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Display Name",
+                            "Field Type",
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "Class Taxonomy",
+                            "Input",
+                            "Any"});
+#line 21
+ testRunner.Then("the following fields have values", ((string)(null)), table2, "Then ");
+#line hidden
+#line 24
+ testRunner.And("Save button is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 25
+ testRunner.When("user clicks Save button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 26
+ testRunner.Then("URL contains /organization/", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Display Name",
+                            "Field Type",
+                            "Value"});
+                table3.AddRow(new string[] {
+                            "Business Name",
+                            "Input",
+                            "Casey Test Org 1109-1"});
+                table3.AddRow(new string[] {
+                            "Organization Type",
+                            "Dropdown",
+                            "Corporation"});
+                table3.AddRow(new string[] {
+                            "Tax ID Type",
+                            "Dropdown",
+                            "FEIN"});
+                table3.AddRow(new string[] {
+                            "Tax ID No",
+                            "Input",
+                            "12-3123111"});
+                table3.AddRow(new string[] {
+                            "Description Of Operations",
+                            "Input",
+                            "Sample text."});
+                table3.AddRow(new string[] {
+                            "Business Phone No.",
+                            "Input",
+                            "249-213-1518"});
+                table3.AddRow(new string[] {
+                            "Business Email Address",
+                            "Input",
+                            "business@email.com"});
+                table3.AddRow(new string[] {
+                            "Business Website",
+                            "Input",
+                            "business.com"});
+                table3.AddRow(new string[] {
+                            "Keyword",
+                            "Autocomplete",
+                            "Pizza - Restaurant - no deep frying - no table service"});
+                table3.AddRow(new string[] {
+                            "Class Taxonomy",
+                            "Input",
+                            "Hospitality\\Restaurants\\All Other"});
+                table3.AddRow(new string[] {
+                            "Year Business Started",
+                            "Input",
+                            "2017"});
+                table3.AddRow(new string[] {
+                            "Year Ownership Started",
+                            "Input",
+                            "2018"});
+#line 27
+ testRunner.Then("the following fields have values", ((string)(null)), table3, "Then ");
+#line hidden
+#line 41
+ testRunner.When("user clicks Vehicles sidetab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 42
+ testRunner.Then("Vehicles sidetab is active", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 43
+ testRunner.When("user clicks Vehicle button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 44
+ testRunner.Then("New Vehicle modal is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Display Name",
+                            "Field Type",
+                            "Value"});
+                table4.AddRow(new string[] {
+                            "VIN",
+                            "Input",
+                            "1FDWR80U5HVA06629"});
+#line 45
+ testRunner.When("user enters following values", ((string)(null)), table4, "When ");
+#line hidden
+#line 48
+ testRunner.And("user clicks Verify VIN button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Display Name",
+                            "Field Type",
+                            "Value"});
+                table5.AddRow(new string[] {
+                            "Year",
+                            "Input",
+                            "Any"});
+                table5.AddRow(new string[] {
+                            "Make",
+                            "Input",
+                            "Any"});
+                table5.AddRow(new string[] {
+                            "Model",
+                            "Input",
+                            "Any"});
+#line 49
+ testRunner.Then("the following fields have values", ((string)(null)), table5, "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Display Name",
+                            "Field Type",
+                            "Value"});
+                table6.AddRow(new string[] {
+                            "Vehicle Trim",
+                            "Input",
+                            "Sport"});
+                table6.AddRow(new string[] {
+                            "Body Category",
+                            "Dropdown",
+                            "Cars, Pickup, or SUV"});
+                table6.AddRow(new string[] {
+                            "Body Subcategory",
+                            "Dropdown",
+                            "Random"});
+                table6.AddRow(new string[] {
+                            "Seating Capacity",
+                            "Dropdown",
+                            "Random"});
+                table6.AddRow(new string[] {
+                            "Gross Vehicle Weight",
+                            "Dropdown",
+                            "Random"});
+                table6.AddRow(new string[] {
+                            "Cost New",
+                            "Input",
+                            "$ 22,000.00"});
+                table6.AddRow(new string[] {
+                            "Estimated Current Value",
+                            "Input",
+                            "$ 14,000.00"});
+                table6.AddRow(new string[] {
+                            "Additional Modifications",
+                            "Input",
+                            "Test comment."});
+                table6.AddRow(new string[] {
+                            "Stated Amount",
+                            "Input",
+                            "$ 12,000.00"});
+#line 54
+ testRunner.When("user enters following values", ((string)(null)), table6, "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Display Name",
+                            "Field Type",
+                            "Value"});
+                table7.AddRow(new string[] {
+                            "Vehicle Trim",
+                            "Input",
+                            "Sport"});
+                table7.AddRow(new string[] {
+                            "Body Category",
+                            "Dropdown",
+                            "Any"});
+                table7.AddRow(new string[] {
+                            "Additional Modifications",
+                            "Input",
+                            "Test comment."});
+                table7.AddRow(new string[] {
+                            "Stated Amount",
+                            "Input",
+                            "$ 12,000.00"});
+#line 65
+ testRunner.Then("the following fields have values", ((string)(null)), table7, "Then ");
+#line hidden
+#line 71
+ testRunner.When("user clicks Save button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();

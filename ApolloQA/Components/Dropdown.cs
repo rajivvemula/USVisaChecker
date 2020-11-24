@@ -50,6 +50,23 @@ namespace ApolloQA.Components
 
         }
 
+        public bool SetRandom()
+        {
+            if (dropdownField.GetAttribute("aria-disabled") == "true")
+                return false;
+
+            dropdownField.Click();
+
+            IList<IWebElement> options = UserActions.FindElementsWaitUntilVisible(By.XPath("//mat-option"), 5);
+            //get random
+            Random r = new Random();
+            int rInt = r.Next(0, options.Count);
+            IWebElement theSelection = options[rInt];
+
+            theSelection.Click();
+            return true;
+        }
+
         public bool IsDisabled()
         {
             return dropdownField.GetAttribute("aria-disabled") == "true";

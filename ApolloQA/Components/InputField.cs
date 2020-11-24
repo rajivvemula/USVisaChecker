@@ -25,7 +25,7 @@ namespace ApolloQA.Components
            this.locator = locator;
         }
 
-        IWebElement inputField => UserActions.FindElementWaitUntilVisible(locator, UserActions.DEFAULT_WAIT_SECONDS);
+        IWebElement inputField => UserActions.FindElementWaitUntilClickable(locator, UserActions.DEFAULT_WAIT_SECONDS);
 
         public string GetValue()
         {

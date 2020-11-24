@@ -158,12 +158,15 @@ namespace ApolloQA.Source.Driver
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
             IWebElement target;
 
+
             try
             {
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
             }
             catch (StaleElementReferenceException)
             {
+                Console.WriteLine("caught StaleElementReferenceException");
+
                 Thread.Sleep(2000);
 
                 //retry finding the element
@@ -171,7 +174,9 @@ namespace ApolloQA.Source.Driver
             }
             catch (ElementClickInterceptedException)
             {
-                Thread.Sleep(2000);
+                Console.WriteLine("caught ElementClickInterceptedException");
+
+                Thread.Sleep(5000);
 
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
@@ -196,7 +201,7 @@ namespace ApolloQA.Source.Driver
         //
         public static void setText(By TextFieldLocator, String TextToEnter, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
-            var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
+            var textField = FindElementWaitUntilClickable(TextFieldLocator, wait_Seconds);
             textField.Click();
             textField.SendKeys(Keys.Control + "a");
             textField.SendKeys(Keys.Delete);
@@ -279,6 +284,26 @@ namespace ApolloQA.Source.Driver
             {
                 //do nothing
             }
+        }
+
+        //spinner
+        public static void WaitForSpinnerToDisappear()
+        {
+            WebDriverWait waitAppear = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(5));
+            WebDriverWait waitDisappear = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(DEFAULT_WAIT_SECONDS));
+
+            By spinnerBy = By.XPath("//bh-mat-spinner-overlay");
+
+            //wait until visible, need try in case spinner doesn't appear
+            try
+            {
+                waitAppear.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(spinnerBy));
+            }
+            catch { return; }
+
+            //at this point, spinner appeared, wait until invisible
+            waitDisappear.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(spinnerBy));
+
         }
     }
 }

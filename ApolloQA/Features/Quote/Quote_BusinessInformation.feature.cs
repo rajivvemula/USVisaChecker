@@ -109,50 +109,50 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
  testRunner.And("User Navigates to Business Information Section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                             "Display Name",
                             "Field Type"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Business Name",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "DBA",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Organization Type",
                             "Dropdown"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Tax ID Type",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Tax ID No",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Description of Operations",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Business Phone No",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Business Email Address",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Business Website",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Keyword",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Class Taxonomy",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Year Business Started",
                             "Input"});
-                table4.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Year Ownership Started",
                             "Input"});
 #line 9
- testRunner.Then("The following Organization Fields should be displayed", ((string)(null)), table4, "Then ");
+ testRunner.Then("The following Organization Fields should be displayed", ((string)(null)), table10, "Then ");
 #line hidden
 #line 24
  testRunner.And("Physical Address field should be blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -209,36 +209,36 @@ this.ScenarioInitialize(scenarioInfo);
 #line 35
  testRunner.And("user clicks Add Address Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field Display Name",
                             "Field Type",
                             "Field Value"});
-                table5.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Street Address Line 1",
                             "Input",
                             "618 E. Laurel St"});
-                table5.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Street Address Line 2",
                             "Input",
                             ""});
-                table5.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "City",
                             "Input",
                             "Springfield"});
-                table5.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "State / Province / Region",
                             "Dropdown",
                             "IL"});
-                table5.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Zip / Postal Code",
                             "Input",
                             "62703"});
-                table5.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Country",
                             "Dropdown",
                             "United States"});
 #line 36
- testRunner.And("user enters the following address", ((string)(null)), table5, "And ");
+ testRunner.And("user enters the following address", ((string)(null)), table11, "And ");
 #line hidden
 #line 44
  testRunner.And("user saves the address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
