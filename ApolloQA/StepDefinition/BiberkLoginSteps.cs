@@ -18,7 +18,6 @@ namespace ApolloQA.StepDefinition
 
         }
 
-
         [Given(@"user is successfully logged into biberk")]
         public void GivenUserIsSuccessfullyLoggedIntoBiberk()
         {
@@ -69,8 +68,5 @@ namespace ApolloQA.StepDefinition
         {
             Pages.Home.ApolloIcon.assertElementIsVisible(40);
         }
-
-        
-
     }
 }

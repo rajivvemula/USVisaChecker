@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApolloQA.Pages;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,12 +12,9 @@ namespace ApolloQA.StepDefinition.Impersonation
     {
         public IWebDriver driver;
 
-
         apolloOrganizationAddSteps(IWebDriver _driver)
         {
             this.driver = _driver;
         }
     }
-
-
 }

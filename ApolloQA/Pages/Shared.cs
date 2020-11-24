@@ -4,12 +4,12 @@ using System.Text;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 using Microsoft.Identity.Client;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApolloQA.Pages
 {
     class Shared
     {
-
         public static Element GetField(string fieldDisplayName, string fieldType)
         {
             switch(fieldType.ToLower())
@@ -48,13 +48,15 @@ namespace ApolloQA.Pages
         {
             return new Element($"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::input | " +
                                $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::textarea |" +
-                               $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::*/input");
+                               $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::*/input |" +
+                               $"//input[@name='{DisplayName}']");
         }
         public static Element GetButton(string displayName)
         {
             return new Element($"//button[./*[normalize-space(text())='{displayName}']] |" +
                                $"//button[normalize-space(text())='{displayName}'] |" +
-                               $"//button//*[contains(text(), '{displayName}')]");
+                               $"//button//*[contains(text(), '{displayName}')] |" +
+                               $"//mat-radio-button //*[contains(text(), '{displayName}')]");
         }
 
         public static Element GetIconButton(string iconText)
@@ -62,12 +64,29 @@ namespace ApolloQA.Pages
             return new Element($"//mat-icon[contains(text(), '{iconText}')]");
         }
 
+        //
+        // Errors
+        //
 
+        public static Element GetError(string ErrorText)
+        {
+            return new Element($"//mat-error[@role='alert' and contains(text(), '{ErrorText}')]");
+        }
+
+        //
+        // Scroll Into View
+        //
+
+        public static void ScrollIntoView(string elementText)
+        {
+            Element.ScrollElementIntoView(elementText);
+        }
 
         //
         // Specific Shared Elements
         //
         public static Element SuggestedAddressCTA => new Element("//bh-address-details/*");
+        public static Element SpinnerLoad => new Element("//bh-mat-spinner-overlay");
 
     }
 }

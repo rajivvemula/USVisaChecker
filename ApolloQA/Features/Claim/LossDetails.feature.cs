@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.Features
+namespace ApolloQA.Features.Claim
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,22 +19,22 @@ namespace ApolloQA.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("apolloLogin", Description="\tLogin biBerk home page with valid credentials", SourceFile="Features\\BiberkLogin.feature", SourceLine=0)]
-    public partial class ApolloLoginFeature
+    [TechTalk.SpecRun.FeatureAttribute("LossDetails", SourceFile="Features\\Claim\\LossDetails.feature", SourceLine=0)]
+    public partial class LossDetailsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "BiberkLogin.feature"
+#line 1 "LossDetails.feature"
 #line hidden
         
         [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "apolloLogin", "\tLogin biBerk home page with valid credentials", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Claim", "LossDetails", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,19 +70,13 @@ namespace ApolloQA.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Login biBerk home page with valid credentials", new string[] {
-                "biBerkLogin",
-                "SmokeTest",
-                "newWindow"}, SourceLine=4)]
-        public virtual void LoginBiBerkHomePageWithValidCredentials()
+        [TechTalk.SpecRun.ScenarioAttribute("User able to complete loss details on Pending FNOL", SourceLine=2)]
+        public virtual void UserAbleToCompleteLossDetailsOnPendingFNOL()
         {
-            string[] tagsOfScenario = new string[] {
-                    "biBerkLogin",
-                    "SmokeTest",
-                    "newWindow"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login biBerk home page with valid credentials", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User able to complete loss details on Pending FNOL", null, tagsOfScenario, argumentsOfScenario);
+#line 3
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -102,17 +96,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 4
+testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 5
+ testRunner.When("user clicks \' apps \' icon button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 6
-  testRunner.Given("user landed biBerk page with valid URL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("user clicks Claim right menu button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
- testRunner.When("user enters username: ApolloTestUserG311@biberk.com and password: ApolloTest12", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("user selects pending FNOL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 8
- testRunner.And("user attempts to login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 9
-   testRunner.Then("user login successfully to biBerk page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("user navigates to Loss Details", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

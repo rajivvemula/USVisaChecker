@@ -14,20 +14,22 @@ namespace ApolloQA
         public static bool Contains(List<String> _object, string value, bool optional = false)
         {
 
-            if(_object.Contains(value))
+            var list = new StringBuilder();
+            list.Append("[\n");
+            foreach (var item in _object)
             {
-                success($"List [{_object.ToString()}] Contains [{value}]");
+                list.Append(item).Append(", \n");
+            }
+            list.Append("]");
+
+            if (_object.Contains(value))
+            {
+                success($"List [{list.ToString()}] Contains [{value}]");
                 return true;
             }
             else
             {
-                var list = new StringBuilder();
-                list.Append("[\n");
-                foreach (var item in _object)
-                {
-                    list.Append(item).Append(", \n");
-                }
-                list.Append("]");
+                
 
                 Functions.handleFailure(new Exception($"List { list.ToString() } does not Contain\n[{ value}]"));
                 return false;
@@ -74,6 +76,43 @@ namespace ApolloQA
             {
                 Functions.handleFailure(new Exception($"Assert - type:[{A?.GetType()?.FullName}] value:[{A}]   does not Equal  type: [{A?.GetType()?.FullName}] value: [{B}]"), optional);
                 return false;
+            }
+        }
+
+        public static bool SoftAreEqual(IEnumerable<String> expected, IEnumerable<String> actual)
+        {
+            return AreEqual(expected, actual, true);
+        }
+
+        public static bool AreEqual(IEnumerable<String> expected, IEnumerable<String> actual, bool optional = false)
+        {
+            (string key, dynamic value)[] parameters = new (string key, dynamic value)[] { ("@expected", expected), ("@actual", actual) };
+
+            if (expected == null && actual == null)
+            {
+                success("Are Equal - Expected and Actual equal null");
+                return true;
+            }
+            else if (expected == null || actual == null)
+            {
+                Functions.handleFailure(new Exception($"Assert - type:[{actual?.GetType()?.FullName}] value:[{(expected == null ? "null" : $"{expected}")}]   does not Equal  type: [{actual?.GetType()?.FullName}] value: [{(actual == null ? "null" : $"{actual}")}]"), optional);
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    CollectionAssert.AreEqual(expected, actual);
+                    success("Are Equal - @expected & @actual", parameters);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+
+
+                    Functions.handleFailure("List @expected does not equal @actual", ex, optional, parameters);
+                    return false;
+                }
             }
         }
         public static bool AreNotEqual(object A, object B, bool optional = false)
@@ -174,10 +213,10 @@ namespace ApolloQA
             }
         }
 
-        private static void success(String message)
+        private static void success(String message, params (string key, dynamic value)[] parameters)
         {
 
-            Log.Info("Success - Assert: " + message);
+            Log.Info("Success - Assert: " + message, parameters);
         }
 
     }

@@ -56,14 +56,14 @@ namespace ApolloQA.Source.Driver
             driver.Manage().Window.Maximize();
         }
 
-        [BeforeScenario("newWindow",Order =1)]
-        public static void BeforeFeatureNewWindow()
+        [BeforeScenario("newWindow", Order =1)]
+        public static void pre_NewWindow()
         {
             driverTemp = driver;
             invokeNewDriver();
         }
-        [AfterScenario("newWindow")]
-        public static void AfterFeatureNewWindow()
+        [AfterScenario("newWindow", Order=1)]
+        public static void post_NewWindow()
         {
             driver.Quit();
             driver = driverTemp;

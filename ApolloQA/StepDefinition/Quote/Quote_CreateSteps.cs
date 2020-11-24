@@ -3,21 +3,21 @@ using TechTalk.SpecFlow;
 using ApolloQA.Pages.Quote;
 using ApolloQA.Source.Driver;
 using System.Linq;
-
+using Entity_Quote = ApolloQA.Data.Entity.Quote;
 namespace ApolloQA.StepDefinition.Quote
 {
     [Binding]
-    public class Quote_Create
+    public class Quote_CreateSteps
     {
         public string BusinessName = "";
         public string LineOfBusiness = "";
         public string PolicyEffectiveDate = "";
-        public int quoteID;
+        public Entity_Quote quote;
 
         [When(@"user navigates to Quote Page")]
         public void WhenUserNavigatesToQuotePage()
         {
-            Quote_Home.navigate();
+            Quote_Home_Page.navigate();
         }
 
         [When(@"user Selects Business Name as (.*)")]
@@ -44,7 +44,7 @@ namespace ApolloQA.StepDefinition.Quote
         public void WhenUserSelectsLineOfBusinessAs(string LOB)
         {
             LineOfBusiness = LOB;
-            Pages.Quote.Quote_Create_Page.LineOfBusiness.SelectMatDropdownOptionByText(LOB);
+            Quote_Create_Page.LineOfBusiness.SelectMatDropdownOptionByText(LOB);
         }
         
         [When(@"user Selects Policy Effective Date as (.*)")]
@@ -56,7 +56,7 @@ namespace ApolloQA.StepDefinition.Quote
                Date= DateTime.Now.AddDays(1).ToString("MM/dd/yyyy");
             }
             PolicyEffectiveDate = Date;
-            Pages.Quote.Quote_Create_Page.PolicyEffectiveDate.setText(Date);
+            Quote_Create_Page.PolicyEffectiveDate.setText(Date);
 
         }
 
@@ -73,21 +73,21 @@ namespace ApolloQA.StepDefinition.Quote
             var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "created");
 
-            this.quoteID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            this.quote = new Entity_Quote(int.Parse(string.Join("", toastMessage.Where(Char.IsDigit))));
         }
         
-        [Then(@"User should be redirected to the newly created Quote")]
+        [Then(@"User should be redirected to the newly created Quote Business Information Section")]
         public void ThenUserShouldBeRedirectedToTheNewlyCreatedQuote()
         {
-
-            Assert.CurrentURLEquals(Quote_Page.GetURL(quoteID));
+            
+            Assert.CurrentURLEquals(Quote_BusinessInformation_Page.GetURL(quote.Id, quote.Storyboard.Sections.Find(it=> ((string)it["SectionName"]) == "Business Information").Id));
 
         }
 
         [Then(@"Quote header should contain correct values")]
         public void ThenQuoteHeaderShouldContainCorrectValues()
         {
-            Quote_Page.GetHeaderField("Quote Number").assertElementInnerTextEquals(this.quoteID.ToString());
+            Quote_Page.GetHeaderField("Quote Number").assertElementInnerTextEquals(this.quote.Id.ToString());
             Quote_Page.GetHeaderField("Business Name").assertElementInnerTextEquals(this.BusinessName);
             Quote_Page.GetHeaderField("Status").assertElementInnerTextEquals("Pre-Submission");
             Quote_Page.GetHeaderField("Effective Date").assertElementInnerTextEquals(this.PolicyEffectiveDate);

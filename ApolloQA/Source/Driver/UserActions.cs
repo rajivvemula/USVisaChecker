@@ -8,12 +8,13 @@ using ApolloQA.Source.Helpers;
 using System.Linq;
 using Newtonsoft.Json;
 using Utf8Json.Formatters;
+using OpenQA.Selenium.Interactions;
 
 namespace ApolloQA.Source.Driver
 {
     class UserActions
     {
-        public const int DEFAULT_WAIT_SECONDS = 20;
+        public const int DEFAULT_WAIT_SECONDS = 60;
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
             var URL = Functions.ParseURL(URL_OR_PATH, parameters);
@@ -23,6 +24,7 @@ namespace ApolloQA.Source.Driver
                 Setup.driver.Navigate().GoToUrl(URL);
             }
         }
+        
         public static void Navigate(string URL_OR_PATH)
         {
             var URL = Functions.ParseURL(URL_OR_PATH);
@@ -32,6 +34,7 @@ namespace ApolloQA.Source.Driver
                 Setup.driver.Navigate().GoToUrl(URL);
             }
         }
+
         public static string GetCurrentURL()
         {
             return Setup.driver.Url;
@@ -44,7 +47,6 @@ namespace ApolloQA.Source.Driver
         {
             var textField = FindElementWaitUntilVisible(ElementLocator, wait_Seconds);
             return textField.Text.Trim();
-
         }
 
 
@@ -147,8 +149,6 @@ namespace ApolloQA.Source.Driver
             }
 
             highlight(target);
-
-
             return target;
         }
 
@@ -180,8 +180,7 @@ namespace ApolloQA.Source.Driver
 
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
-            }
-            
+            } 
 
             highlight(target);
 
@@ -191,8 +190,7 @@ namespace ApolloQA.Source.Driver
         {
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
 
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(by));
-
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(by));            
         }
 
 
@@ -206,18 +204,19 @@ namespace ApolloQA.Source.Driver
             textField.SendKeys(Keys.Control + "a");
             textField.SendKeys(Keys.Delete);
             textField.SendKeys(TextToEnter);
-
         }
+
         public static string getTextFieldText(By TextFieldLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
             return textField.GetAttribute("value"); 
-
         }
+
         public static void clearTextField(By TextFieldLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
-            textField.Clear();
+            textField.SendKeys(Keys.Control + "a");
+            textField.SendKeys(Keys.Delete);
         }
 
 
@@ -228,11 +227,11 @@ namespace ApolloQA.Source.Driver
         {
             var dropdown = FindElementWaitUntilClickable(DropdownLocator);
             dropdown.Click();
-            var option = FindElementWaitUntilClickable(By.XPath($"//mat-option[normalize-space(*//text())='{optionDisplayText}']"));
+            var option = FindElementWaitUntilClickable(By.XPath($"//mat-option[normalize-space(*//text())='{optionDisplayText}'] |" + 
+                                                                $"//*[contains(text(), '{optionDisplayText}')] |" +
+                                                                $"//*[@class='mat-option-text' and contains(text(), '{optionDisplayText}')]"));
             option.Click();
-
         }
-
 
         public static void SelectMatDropdownOptionByIndex(By DropdownLocator, int LogicalIndex)
         {
@@ -240,8 +239,8 @@ namespace ApolloQA.Source.Driver
             dropdown.Click();
             var option = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
             option[LogicalIndex].Click();
-
         }
+
         public static void SelectMatDropdownOptionByIndex(By DropdownLocator, int LogicalIndex, out string selectionDisplayName)
         {
             var dropdown = FindElementWaitUntilClickable(DropdownLocator);
@@ -250,22 +249,32 @@ namespace ApolloQA.Source.Driver
             selectionDisplayName = string.Join("", options[0].FindElements(By.XPath($"(//mat-option)[{LogicalIndex + 1}]/descendant::*")).Select(it => it.Text.Trim()).Distinct());
 
             options[LogicalIndex].Click();
-
         }
+
         public static IEnumerable<String> GetAllMatDropdownOptions(By DropdownLocator)
         {
             var dropdown = FindElementWaitUntilClickable(DropdownLocator);
             dropdown.Click();
             var options = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
 
+
             int currentOption = 1;
             foreach(var option in options)
             {
                 List<string> innerText = option.FindElements(By.XPath($"(//mat-option)[{currentOption}]/descendant::*")).Select(it => it.Text.Trim()).Distinct().ToList();
+                currentOption++;
                 yield return string.Join("", innerText);
             }
+        }
 
+        // Scroll
 
+        public static void ScrollIntoView(string elementText)
+        {
+            IWebElement element = Setup.driver.FindElement(By.XPath($"//*[contains(text(), '{elementText}')]"));
+            Actions actions = new Actions(Setup.driver);
+            actions.MoveToElement(element);
+            actions.Perform();
         }
 
 

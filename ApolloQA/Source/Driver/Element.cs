@@ -4,6 +4,10 @@ using System.Text;
 using OpenQA.Selenium;
 using ApolloQA.Source.Helpers;
 using System.Linq;
+using System.Xml.Serialization;
+using OpenQA.Selenium.Support.UI;
+using System.Threading;
+using NUnit.Framework.Constraints;
 
 namespace ApolloQA.Source.Driver
 {
@@ -107,8 +111,6 @@ namespace ApolloQA.Source.Driver
             return false;
         }
 
-
-
         /// <summary>
         ///  Waits for the element to be vissible in the page
         /// </summary>
@@ -141,8 +143,6 @@ namespace ApolloQA.Source.Driver
             return false;
         }
 
-
-
         /// <summary>
         ///  Waits for the element to disappear <br/>
         ///  note: if element was not present at the exact moment this function was called, true will be returned.
@@ -160,7 +160,10 @@ namespace ApolloQA.Source.Driver
             return false;
         }
 
-
+        public IWebElement WaitUntilClickable(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
+        {
+            return UserActions.FindElementWaitUntilClickable(locator, wait_Seconds);
+        }
 
         public void setValue(string fieldType, string value)
         {
@@ -196,6 +199,17 @@ namespace ApolloQA.Source.Driver
         {
             UserActions.clearTextField(locator);
         }
+        public bool assertTextFieldTextEquals(string expected, bool optional=false)
+        {
+            string elementText = this.getTextFieldText();
+            if (Assert.AreEqual(elementText, expected, true))
+            {
+                return true;
+            }
+
+            Functions.handleFailure(new Exception($"Text Field {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {expected}"), optional);
+            return false;
+        }
 
 
 
@@ -222,15 +236,20 @@ namespace ApolloQA.Source.Driver
 
             return Assert.Contains(dropdownOptions, optionText, optional);
         }
-        public bool AssertMatDropdownOptionsEqual(String[] optionsText, bool optional = false)
+        public bool AssertMatDropdownOptionsEqual(List<String> optionsText, bool optional = false)
         {
-            List<string> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
+            List<String> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
 
             return Assert.AreEqual(dropdownOptions, optionsText, optional);
 
         }
 
+        // Scroll Into View
 
+        public static void ScrollElementIntoView(string elementText)
+        {
+           UserActions.ScrollIntoView(elementText);
+        }
 
     }
 }
