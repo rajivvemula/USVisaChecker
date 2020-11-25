@@ -43,12 +43,12 @@ namespace ApolloQA.Source.Driver
         //
         // General Element Actions
         //
+
         public static string getElementText(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilVisible(ElementLocator, wait_Seconds);
             return textField.Text.Trim();
         }
-
 
         public static void Click(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS, bool optional = false)
         {
@@ -193,10 +193,10 @@ namespace ApolloQA.Source.Driver
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(by));            
         }
 
-
         //
         //  Text Fields Actions
         //
+
         public static void setText(By TextFieldLocator, String TextToEnter, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             var textField = FindElementWaitUntilClickable(TextFieldLocator, wait_Seconds);
@@ -219,10 +219,10 @@ namespace ApolloQA.Source.Driver
             textField.SendKeys(Keys.Delete);
         }
 
-
         // 
         // Dropdown actions 
         // 
+
         public static void SelectMatDropdownOptionByText(By DropdownLocator, string optionDisplayText)
         {
             var dropdown = FindElementWaitUntilClickable(DropdownLocator);
@@ -277,10 +277,10 @@ namespace ApolloQA.Source.Driver
             actions.Perform();
         }
 
-
         //
         //  Javascript
         //
+
         private static void highlight(IWebElement target)
         {
             JSExecutor.highlight(target);

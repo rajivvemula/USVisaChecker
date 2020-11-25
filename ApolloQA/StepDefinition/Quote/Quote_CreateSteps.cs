@@ -40,7 +40,7 @@ namespace ApolloQA.StepDefinition.Quote
             }
         }
 
-        [When(@"user Selects Line of Business as (.*)")]
+        [When(@"user Selects Line of Business as '(.*)'")]
         public void WhenUserSelectsLineOfBusinessAs(string LOB)
         {
             LineOfBusiness = LOB;
@@ -50,7 +50,6 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"user Selects Policy Effective Date as (.*)")]
         public void WhenUserSelectsPolicyEffectiveDateAs(string Date)
         {
-            
             if(Date == "Tomorrow")
             {
                Date= DateTime.Now.AddDays(1).ToString("MM/dd/yyyy");
@@ -69,7 +68,6 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"A new Quote should successfully be created")]
         public void ThenANewQuoteShouldSuccessfullyBeCreated()
         {
-
             var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "created");
 
@@ -79,9 +77,7 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"User should be redirected to the newly created Quote Business Information Section")]
         public void ThenUserShouldBeRedirectedToTheNewlyCreatedQuote()
         {
-            
             Assert.CurrentURLEquals(Quote_BusinessInformation_Page.GetURL(quote.Id, quote.Storyboard.Sections.Find(it=> ((string)it["SectionName"]) == "Business Information").Id));
-
         }
 
         [Then(@"Quote header should contain correct values")]
@@ -96,12 +92,10 @@ namespace ApolloQA.StepDefinition.Quote
             Quote_Page.GetHeaderField("Agency");
             Quote_Page.GetHeaderField("Underwriter").assertElementInnerTextEquals("Unassigned");
 
-
             Log.Info($"Expected: {nameof(BusinessName)}={BusinessName}");
             Log.Info($"Expected: {nameof(LineOfBusiness)}={LineOfBusiness}");
             Log.Info($"Expected: {nameof(PolicyEffectiveDate)}={PolicyEffectiveDate}");
             Log.Warn("Lastly created quote page test to be implemented");
         }
-
     }
 }

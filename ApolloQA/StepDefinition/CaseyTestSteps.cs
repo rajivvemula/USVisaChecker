@@ -94,7 +94,6 @@ namespace ApolloQA.Features
             }
         }
 
-
         [When(@"user clicks (.*) sidetab")]
         public void WhenUserClicksSidetab(string tabName)
         {
@@ -132,13 +131,6 @@ namespace ApolloQA.Features
         //public void ThenToastMessageIsDisplayed(string message)
         //{
         //    IWebElement toast = UserActions.FindElementWaitUntilVisible(By.ClassName("toast-title"), 20);
-
-
         //}
-
-
-
-
-
     }
 }

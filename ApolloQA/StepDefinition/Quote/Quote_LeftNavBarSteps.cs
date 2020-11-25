@@ -8,9 +8,7 @@ namespace ApolloQA.StepDefinition.Quote
     [Binding]
     public class Quote_LeftNavBarSteps
     {
-
         List<String> sortedSectionNames;
-
 
         [Then(@"Left Nav Sections should be displayed successfully")]
         public void ThenLeftNavSectionsShouldBeDisplayedAccordingToTheCurrentStoryboard()
@@ -24,6 +22,5 @@ namespace ApolloQA.StepDefinition.Quote
         {
             
         }
-
     }
 }

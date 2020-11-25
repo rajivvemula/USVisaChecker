@@ -13,7 +13,6 @@ namespace ApolloQA.StepDefinition.Quote
     {
         public static EntityQuote Quote;
 
-
         [When(@"User Navigates to Quote (.*)")]
         public void GivenUserNavigatesToQuote(string quote)
         {
@@ -27,6 +26,5 @@ namespace ApolloQA.StepDefinition.Quote
             }
             Quote_Page.Navigate(Quote.Id);
         }
-
     }
 }
