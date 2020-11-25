@@ -1,7 +1,7 @@
 ﻿Feature: Quote Business Infomration Section
 	As a user I want to make sure Business Information section is working correctly
 
-@SmokeTest @Quote
+@SmokeTest @Quote @ignore
 Scenario: Business Information Section Loads successfully
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest
@@ -26,7 +26,7 @@ Scenario: Business Information Section Loads successfully
 
 
 
-	@SmokeTest @Quote
+	@SmokeTest @Quote @ignore
 Scenario: Business Information Add Address Functionality
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest

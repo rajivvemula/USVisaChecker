@@ -70,13 +70,15 @@ namespace ApolloQA.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("1 Test Create Org", SourceLine=2)]
+        [TechTalk.SpecRun.ScenarioAttribute("1 Test Create Org", new string[] {
+                "ignore"}, SourceLine=3)]
         public virtual void _1TestCreateOrg()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1 Test Create Org", null, tagsOfScenario, argumentsOfScenario);
-#line 3
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -96,16 +98,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 5
  testRunner.Given("user is successfully logged into biberk", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 5
+#line 6
  testRunner.When("user clicks Organization tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 6
+#line 7
  testRunner.And("user clicks New button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 7
+#line 8
  testRunner.Then("URL contains organization/insert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -156,7 +158,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Year Ownership Started",
                             "Input",
                             "2018"});
-#line 8
+#line 9
  testRunner.When("user enters following values", ((string)(null)), table1, "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -167,16 +169,16 @@ this.ScenarioInitialize(scenarioInfo);
                             "Class Taxonomy",
                             "Input",
                             "Any"});
-#line 21
+#line 22
  testRunner.Then("the following fields have values", ((string)(null)), table2, "Then ");
 #line hidden
-#line 24
+#line 25
  testRunner.And("Save button is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 26
  testRunner.When("user clicks Save button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 26
+#line 27
  testRunner.Then("URL contains /organization/", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -231,19 +233,19 @@ this.ScenarioInitialize(scenarioInfo);
                             "Year Ownership Started",
                             "Input",
                             "2018"});
-#line 27
+#line 28
  testRunner.Then("the following fields have values", ((string)(null)), table3, "Then ");
 #line hidden
-#line 41
+#line 42
  testRunner.When("user clicks Vehicles sidetab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 42
+#line 43
  testRunner.Then("Vehicles sidetab is active", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 43
+#line 44
  testRunner.When("user clicks Vehicle button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 44
+#line 45
  testRunner.Then("New Vehicle modal is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -254,10 +256,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "VIN",
                             "Input",
                             "1FDWR80U5HVA06629"});
-#line 45
+#line 46
  testRunner.When("user enters following values", ((string)(null)), table4, "When ");
 #line hidden
-#line 48
+#line 49
  testRunner.And("user clicks Verify VIN button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -276,7 +278,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Model",
                             "Input",
                             "Any"});
-#line 49
+#line 50
  testRunner.Then("the following fields have values", ((string)(null)), table5, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -319,7 +321,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Stated Amount",
                             "Input",
                             "$ 12,000.00"});
-#line 54
+#line 55
  testRunner.When("user enters following values", ((string)(null)), table6, "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -342,10 +344,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "Stated Amount",
                             "Input",
                             "$ 12,000.00"});
-#line 65
+#line 66
  testRunner.Then("the following fields have values", ((string)(null)), table7, "Then ");
 #line hidden
-#line 71
+#line 72
  testRunner.When("user clicks Save button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
