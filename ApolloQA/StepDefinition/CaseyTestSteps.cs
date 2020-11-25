@@ -17,13 +17,6 @@ namespace ApolloQA.Features
             NavigationBar navBar = new NavigationBar();
             navBar.ClickTab(tabName);
         }
-        
-        [When(@"user clicks (.*) button")]
-        public void WhenUserClicksButton(string buttonText)
-        {
-            Button button = new Button(buttonText);
-            button.Click();
-        }
 
         [When(@"user enters following values")]
         public void WhenUserEntersFollowingValues(Table table)
