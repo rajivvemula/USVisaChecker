@@ -66,7 +66,7 @@ namespace ApolloQA.StepDefinition
         [Then(@"user login successfully to biBerk page")]
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
-            Pages.Home.ApolloIcon.assertElementIsVisible();
+            Pages.Home.ApolloIcon.assertElementIsVisible(40);
         }
     }
 }
