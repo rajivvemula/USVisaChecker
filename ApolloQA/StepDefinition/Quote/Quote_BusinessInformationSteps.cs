@@ -2,7 +2,6 @@
 using TechTalk.SpecFlow;
 using ApolloQA.Pages.Quote;
 using ApolloQA.Source.Driver;
-
 using ApolloQA.Source.Helpers;
 using EntityQuote = ApolloQA.Data.Entity.Quote;
 using ApolloQA.Data.Entity;
@@ -17,7 +16,6 @@ namespace ApolloQA.StepDefinition.Quote
     {
         public static EntityQuote Quote;
         public List<Address> addresses;
-
 
         public Quote_BusinessInformationSteps()
         {
@@ -35,6 +33,7 @@ namespace ApolloQA.StepDefinition.Quote
         {
             this.addresses = Quote.Organization.Addresses;
         }
+
         [Then(@"The following Organization Fields should be displayed")]
         public void ThenTheFollowingOrganizationFieldsShouldBeDisplayed(Table table)
         {
@@ -51,7 +50,6 @@ namespace ApolloQA.StepDefinition.Quote
                 {
                     var field = Pages.Shared.GetInputField(displayName);
                     actualValue = field.getTextFieldText();
-
                 }
                 else
                 {
@@ -61,10 +59,7 @@ namespace ApolloQA.StepDefinition.Quote
                 Log.Info($"Display Name: {displayName} Expected: {expectedValue} Actual: {actualValue}");
 
                 Assert.AreEqual(actualValue!, expectedValue! is string ? expectedValue! : expectedValue?.ToString());
-
-
             }
-            
         }
 
         [Then(@"Physical Address field should be blank")]
@@ -106,7 +101,6 @@ namespace ApolloQA.StepDefinition.Quote
             Pages.Shared.GetDropdownField("Physical Address").AssertMatDropdownOptionsEqual(currentAddressesString);
         }
 
-        
         public static Dictionary<String, String> Display_PropsNames = new Dictionary<String, String>()
         {
 
@@ -125,7 +119,5 @@ namespace ApolloQA.StepDefinition.Quote
             { "Year Ownership Started",     "YearOwnershipStarted" } ,
 
         };
-
-
     }
 }

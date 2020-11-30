@@ -64,6 +64,23 @@ namespace ApolloQA.Pages
             return new Element($"//mat-icon[contains(text(), '{iconText}')]");
         }
 
+        // Grid Titles Verify
+        public static Element GetColumnTitle(string gridTitle)
+        {
+            return new Element($"//datatable-header-cell[@title='{gridTitle}']");
+        }
+
+        public static Element GetGridValue(string gridValue)
+        {
+            return new Element($"//span[@title='{gridValue}']");
+        }
+
+        //Toast 
+        public static Element GetToast()
+        {
+            return new Element($"//*[@class='toast-title']");
+        }
+
         //
         // Errors
         //

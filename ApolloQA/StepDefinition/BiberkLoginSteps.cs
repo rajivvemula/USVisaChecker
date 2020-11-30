@@ -15,7 +15,6 @@ namespace ApolloQA.StepDefinition
         public BiberkLoginSteps(IWebDriver _driver)
         {
             this.driver = _driver;
-
         }
 
         [Given(@"user is successfully logged into biberk")]
@@ -34,7 +33,6 @@ namespace ApolloQA.StepDefinition
             GivenUserLandedBiBerkPageWithValidURL();
 
             Pages.Home.ApolloIcon.assertElementIsVisible(10, optional: true);
-
         }
 
         [Given(@"user landed biBerk page with valid URL")]
@@ -52,8 +50,7 @@ namespace ApolloQA.StepDefinition
             Pages.Login.usernameField.setText(username);
             
             Pages.Login.nextButton.Click();
-            Pages.Login.passwordField.setText(password);
-                           
+            Pages.Login.passwordField.setText(password);            
         }
 
         [When(@"user attempts to login")]
@@ -66,7 +63,7 @@ namespace ApolloQA.StepDefinition
         [Then(@"user login successfully to biBerk page")]
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
-            Pages.Home.ApolloIcon.assertElementIsVisible();
+            Pages.Home.ApolloIcon.assertElementIsVisible(40);
         }
     }
 }

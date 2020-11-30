@@ -66,7 +66,7 @@ namespace ApolloQA.StepDefinition.Claim
         [Then(@"user assert for Loss Details save")]
         public void ThenUserAssertForLossDetailsSave()
         {
-            ScenarioContext.Current.Pending();
+            //TODO
         }
 
     }

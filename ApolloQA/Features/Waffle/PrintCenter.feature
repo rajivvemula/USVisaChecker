@@ -1,7 +1,7 @@
 ﻿Feature: Print Center
 	As a user I want to be able to verify print center queue and its associated job
 
-@SmokeTest @PrintCenterUI
+@SmokeTest @PrintCenterUI @ignore
 Scenario: Verify PrintCenter Jobs
 	Given user is successfully logged into biberk
 	When user navigates to Printcenter Page by accessing Waffle 

@@ -14,10 +14,9 @@ namespace ApolloQA.Features.Waffle
         {
            // System.Threading.Thread.Sleep(1000);
             Pages.Home.WaffleGridButton.Click();
+        }
 
-    }
-
-    [When(@"User Clicks Print Center Link")]
+        [When(@"User Clicks Print Center Link")]
         public void WhenUserClicksPrintCenterLink()
         {
             Pages.PrintCenter.WaffleMenuOptionPrintCenter.Click();

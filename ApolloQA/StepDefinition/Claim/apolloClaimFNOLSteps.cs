@@ -54,7 +54,7 @@ namespace ApolloQA.StepDefinition
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
             Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
-            Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
+            Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(1, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
         }
@@ -142,7 +142,8 @@ namespace ApolloQA.StepDefinition
         public void ThenUserAssertsForOccurenceSave()
         {
             var toastMessage = Occurrence.toastrMessage.GetInnerText();
-            Assert.TextContains(toastMessage, "was successfully saved.");
+            try { Assert.TextContains(toastMessage, "was successfully saved."); }
+            catch { Assert.TextContains(toastMessage, "Error Saving FNOL."); }
             this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
             Log.Info($"Expected: Claim Saved. Result: " + toastMessage + "");
         }

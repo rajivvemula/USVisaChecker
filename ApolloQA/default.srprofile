@@ -7,7 +7,7 @@
 	testSchedulingMode="Sequential" 
 	retryFor="None"
     />
-	<Filter>!@ignore</Filter>
+	<!--<Filter>!@ignore</Filter>-->
    <!--<Filter>@SmokeTest &amp; @Quote</Filter>
    -->
 

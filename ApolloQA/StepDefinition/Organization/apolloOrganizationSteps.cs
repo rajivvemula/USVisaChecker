@@ -16,7 +16,6 @@ namespace ApolloQA.StepDefinition
     {
         public IWebDriver driver;
 
-
         apolloOrganizationSteps(IWebDriver _driver)
         {
             this.driver = _driver;
