@@ -8,7 +8,7 @@ Scenario: Shared Given
 Scenario: Shared When
 	When user clicks <DisplayName> Button
 	When user clicks <DisplayName> Dropdown
-
+	When user clicks <DIsplayName> Sidetab
 
 
 	When user enters the following address
@@ -21,7 +21,16 @@ Scenario: Shared When
 	| Country                   | Dropdown   | United States   |
 	And user saves the address
 
+
+
 @ignore
 Scenario: Shared Then
+
+	Then Grid column label is displayed
+	| Key | Value |
+	| a   | label |
+	Then Grid contains: <Value>
 	
+	Then Toast with a message: <Message> is visible 
+
 	

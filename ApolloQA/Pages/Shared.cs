@@ -4,6 +4,7 @@ using System.Text;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 using Microsoft.Identity.Client;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApolloQA.Pages
 {
@@ -63,6 +64,23 @@ namespace ApolloQA.Pages
             return new Element($"//mat-icon[contains(text(), '{iconText}')]");
         }
 
+        // Grid Titles Verify
+        public static Element GetColumnTitle(string gridTitle)
+        {
+            return new Element($"//datatable-header-cell[@title='{gridTitle}']");
+        }
+
+        public static Element GetGridValue(string gridValue)
+        {
+            return new Element($"//span[@title='{gridValue}']");
+        }
+
+        //Toast 
+        public static Element GetToast()
+        {
+            return new Element($"//*[@class='toast-title']");
+        }
+
         //
         // Errors
         //
@@ -73,9 +91,19 @@ namespace ApolloQA.Pages
         }
 
         //
+        // Scroll Into View
+        //
+
+        public static void ScrollIntoView(string elementText)
+        {
+            Element.ScrollElementIntoView(elementText);
+        }
+
+        //
         // Specific Shared Elements
         //
         public static Element SuggestedAddressCTA => new Element("//bh-address-details/*");
+        public static Element SpinnerLoad => new Element("//bh-mat-spinner-overlay");
 
     }
 }

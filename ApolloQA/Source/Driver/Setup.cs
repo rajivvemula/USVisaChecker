@@ -75,6 +75,7 @@ namespace ApolloQA.Source.Driver
             _objectContainer.RegisterInstanceAs(driver);
 
         }
+
         [AfterScenario]
         public void AfterScenario(ScenarioContext _scenarioContext)
         {
@@ -84,14 +85,12 @@ namespace ApolloQA.Source.Driver
             }
         }
 
-
         [AfterTestRun]
         public static void AfterTestRun()
         {
             driver.Quit();
             Cosmos.client.Dispose();
         }
-
 
         private static void invokeEnvironmentVariables(string JsonEnvironmentFile_RelativePath )
         {

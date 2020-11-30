@@ -2,25 +2,21 @@
 
 
 @biBerkClaimFNOLAdd @SmokeTest
-Scenario: Carrier Pigeon Is not a how notice was received option
-	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon button
-	When user clicks Claim right menu button
-	When user clicks New FNOL Button
-	Then user verifies 'Carrier Pigeon' is not an option
-
 Scenario: Create an Occurrence successfully
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
 	When user clicks New FNOL Button
-	And user enters occurrence information for Policy
+	And user waits for spinner to load
 	And user selects 'No' this occurrence related to an existing claim
-	And user enters Reported by contact information
-	And user enters catastrophe and claimant contact info
+	And user enters occurrence information for Policy
+	And user waits for spinner to load
+	And user enters loss date and time
+	And user enters Location information
 	And user enters police involved info - 'Yes'
 	And user enters fire involved info - 'Yes'
 	When user clicks  Save  Button
+	And user waits for spinner to load
 	Then user asserts for Occurence save
 
 Scenario: User cancels an Occurrence addition
@@ -28,12 +24,14 @@ Scenario: User cancels an Occurrence addition
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
 	When user clicks New FNOL Button
+	And user waits for spinner to load
+	And user selects 'Yes' this occurrence related to an existing claim
 	And user enters occurrence information for Policy
-	And user selects 'No' this occurrence related to an existing claim
-	And user enters Reported by contact information
-	And user enters catastrophe and claimant contact info
-	And user enters police involved info - 'Yes'
-	And user enters fire involved info - 'Yes'
+	And user waits for spinner to load
+	And user enters loss date and time
+	And user selects Location Information from dropdown
+	And user enters police involved info - 'No'
+	And user enters fire involved info - 'No'
 	When user clicks Cancel Button
 	When user clicks Continue anyway Button
 	Then user asserts for Occurence cancel

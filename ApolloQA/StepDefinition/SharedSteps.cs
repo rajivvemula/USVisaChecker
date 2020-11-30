@@ -5,6 +5,8 @@ using ApolloQA.Source.Helpers;
 using ApolloQA.Data.Entity;
 using System.Collections.Generic;
 using System.Text;
+using ApolloQA.Source.Driver;
+using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.StepDefinition
 {
@@ -20,7 +22,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user clicks (.*) Dropdown")]
         public void WhenUserClicksOnPhysicalAddressDropdown(string DropdownDisplayName)
         {
-            Pages.Shared.GetDropdownField("Physical Address").Click();
+            Shared.GetDropdownField("Physical Address").Click();
         }
 
         public static Address previouslyEnteredAddress;
@@ -83,6 +85,45 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetField(fieldName, "input").setText(username);
         }
+
+        [When(@"user waits for spinner to load")]
+        public void WhenUserWaitsForSpinnerToLoad()
+        {
+            Shared.SpinnerLoad.assertElementIsVisible(10, true);
+            Shared.SpinnerLoad.assertElementNotPresent();
+        }
+
+        [When(@"user clicks (.*) Sidetab")]
+        public void WhenUserClicksSidetab(string sidetab)
+        {
+            Shared.GetLeftSideTab(sidetab).Click();
+        }
+
+        [Then(@"Grid column label is displayed")]
+        public void ThenGridColumnLabelIsDisplayed(Table table)
+        {
+            var details = table.CreateDynamicSet();
+
+            foreach (var detail in details)
+            {
+                Shared.GetColumnTitle(detail.Value).assertElementIsVisible();
+            }
+
+        }
+
+        [Then(@"Toast with a message: (.*) is visible")]
+        public void ThenToastWithAMessageIsVisible(string toastValue)
+        {
+            Shared.GetToast().assertElementTextEquals(toastValue);
+        }
+
+        [Then(@"Grid contains: (.*)")]
+        public void ThenGridContains(string gridValue)
+        {
+            Shared.GetGridValue(gridValue).assertElementIsVisible();
+        }
+
+
 
     }
 }

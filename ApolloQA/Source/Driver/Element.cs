@@ -24,20 +24,17 @@ namespace ApolloQA.Source.Driver
             this.locator = locator;
         }
 
-
         //
         //  General Element Actions
         //
  
         public void Click()
         {
-           
             UserActions.Click(locator);
         }
 
         public void Click(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional =false)
         {
-
             UserActions.Click(locator, wait_Seconds, optional);
         }
 
@@ -53,7 +50,6 @@ namespace ApolloQA.Source.Driver
                 return false;
             }
         }
-
 
         public string GetAttribute(string attributeName)
         {
@@ -73,7 +69,6 @@ namespace ApolloQA.Source.Driver
         {
             return UserActions.FindElementsWaitUntilVisible(locator).Select(it => it.Text.Trim()).ToList();
         }
-
 
         public bool assertElementContainsText(string text, bool optional = false)
         {
@@ -131,6 +126,7 @@ namespace ApolloQA.Source.Driver
         ///  Waits for the element to be present in the page (an elements could be present and not visible)
         /// </summary>
         /// <param name="optional">if set to true failure will be contained and no exception will be thrown </param>
+
         public bool assertElementIsPresent(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
         {
             try { UserActions.FindElementWaitUntilPresent(locator, wait_Seconds);
@@ -148,6 +144,7 @@ namespace ApolloQA.Source.Driver
         ///  note: if element was not present at the exact moment this function was called, true will be returned.
         /// </summary>
         /// <param name="optional">if set to true failure will be contained and no exception will be thrown </param>
+
         public bool assertElementNotPresent(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
         {
             try { UserActions.WaitForElementToDisappear(locator, wait_Seconds);
@@ -187,18 +184,19 @@ namespace ApolloQA.Source.Driver
         //
         public void setText(String TextToEnter, int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
         {
-        
             UserActions.setText(locator, TextToEnter, wait_Seconds);
         }
+
         public string getTextFieldText(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
         {
            return  UserActions.getTextFieldText(locator, wait_Seconds);
-
         }
+
         public void clearTextField(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
         {
             UserActions.clearTextField(locator);
         }
+
         public bool assertTextFieldTextEquals(string expected, bool optional=false)
         {
             string elementText = this.getTextFieldText();
@@ -211,40 +209,44 @@ namespace ApolloQA.Source.Driver
             return false;
         }
 
-
-
         // 
         // Dropdown actions 
         // 
+
         public void SelectMatDropdownOptionByText( string optionDisplayText)
         {
             UserActions.SelectMatDropdownOptionByText(locator, optionDisplayText);
         }
+
         public void SelectMatDropdownOptionByIndex(int LogicalIndex, out string selectionDisplayName)
         {
             UserActions.SelectMatDropdownOptionByIndex(locator, LogicalIndex, out selectionDisplayName);
-          
         }
+
         public void SelectMatDropdownOptionByIndex(int LogicalIndex)
         {
             UserActions.SelectMatDropdownOptionByIndex(locator, LogicalIndex);
-
         }
+
         public bool AssertMatDropdownOptionsContain(string optionText, bool optional = false)
         {
             List<string> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
 
             return Assert.Contains(dropdownOptions, optionText, optional);
         }
+
         public bool AssertMatDropdownOptionsEqual(List<String> optionsText, bool optional = false)
         {
             List<String> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
 
             return Assert.AreEqual(dropdownOptions, optionsText, optional);
-
         }
 
+        // Scroll Into View
 
-
+        public static void ScrollElementIntoView(string elementText)
+        {
+           UserActions.ScrollIntoView(elementText);
+        }
     }
 }
