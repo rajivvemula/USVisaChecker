@@ -54,7 +54,7 @@ namespace ApolloQA.StepDefinition
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
             Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
-            Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
+            Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(1, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
         }
