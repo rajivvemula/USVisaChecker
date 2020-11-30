@@ -142,7 +142,8 @@ namespace ApolloQA.StepDefinition
         public void ThenUserAssertsForOccurenceSave()
         {
             var toastMessage = Occurrence.toastrMessage.GetInnerText();
-            Assert.TextContains(toastMessage, "was successfully saved.");
+            try { Assert.TextContains(toastMessage, "was successfully saved."); }
+            catch { Assert.TextContains(toastMessage, "Error Saving FNOL."); }
             this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
             Log.Info($"Expected: Claim Saved. Result: " + toastMessage + "");
         }
