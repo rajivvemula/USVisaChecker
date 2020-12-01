@@ -33,4 +33,8 @@ Scenario: Shared Then
 	
 	Then Toast with a message: <Message> is visible 
 
+	Then Verify sidetab is present
+	| Key | Value                |
+	| a   | Business Information |
+
 	

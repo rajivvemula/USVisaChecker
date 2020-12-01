@@ -1,8 +1,10 @@
-﻿Feature: US-13121-Add vehicle screen to Organization
+﻿@demo
+Feature: US-13121-Add vehicle screen to Organization
 	As an underwriter, 
 	I want to be able to add vehicles to an organization 
 	and show them in a grid, so that I can associate them in a policy coverage.
 
+# End to End TestCase
 Scenario:TC01 Verify Grid Titles in Vehicle Organization
 	Given user is successfully logged into biberk
 	When user clicks Organization Button
@@ -26,16 +28,7 @@ Scenario:TC01 Verify Grid Titles in Vehicle Organization
 
 	#TC02 and TC03 Combined, the last statement is TC03 and shared scenario context 
 Scenario: TC02 Add a vehicle to Organization
-	Given user is successfully logged into biberk
-	When user clicks Organization Button
-	When user clicks  New  Button
-	And user waits for spinner to load
-	When user enters business information
-	| BusinessName | DBA | TaxIdType | TaxIdNumber | DescriptionOfOperations | BusinessPhoneNumber | BusinessEamil  | BusinessWebsite | Keyword	| YearStarted | YearOwned |
-	| TheTestOrg   | dba | FEIN      | 81-6541000  | DescriptionofOps        | 8021585010          | testorg@me.com | testorg.com     | S       | 2000        | 2005      |
-	And user clicks  Save  Button
-	And user waits for spinner to load
-	When user clicks Vehicles Sidetab
+	When user clicks  Vehicle  Button
 	When user enters following values
 	| Display Name             | Field Type | Value                |
 	| VIN                      | Input      | 1FDWR80U5HVB06629    |
@@ -53,5 +46,9 @@ Scenario: TC02 Add a vehicle to Organization
 	| Stated Amount            | Input      | $ 12,000.00          |
 	When user clicks Save Button
 	Then Toast with a message: Vehicle saved is visible 
+
+Scenario: TC03 
 	Then Grid contains: 1FDWR80U5HVB06629
+
+
 

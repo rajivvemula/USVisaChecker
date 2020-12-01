@@ -1,11 +1,8 @@
 ﻿using System;
 using TechTalk.SpecFlow;
 using ApolloQA.Pages;
-using ApolloQA.Source.Helpers;
 using ApolloQA.Data.Entity;
 using System.Collections.Generic;
-using System.Text;
-using ApolloQA.Source.Driver;
 using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.StepDefinition
@@ -123,7 +120,15 @@ namespace ApolloQA.StepDefinition
             Shared.GetGridValue(gridValue).assertElementIsVisible();
         }
 
+        [Then(@"Verify sidetab is present")]
+        public void ThenVerifySidetabIsPresent(Table table)
+        {
+            var details = table.CreateDynamicSet();
 
-
+            foreach (var detail in details)
+            {
+                Shared.GetLeftSideTab(detail.Value).assertElementIsVisible();
+            }
+        }
     }
 }
