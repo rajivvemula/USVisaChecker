@@ -73,10 +73,10 @@ namespace ApolloQA.Source.Helpers
         public static void handleFailure(string message, Exception ex = null, bool optional = false, params (string key, dynamic value)[] parameters)
         {
             if (optional)
-            { Log.Info(message); }
+            { Log.Info(message, parameters); }
             else
             {
-                Log.Error(message);
+                Log.Error(message, parameters);
                 if (ex != null)
                 {
                     handleFailure(ex, optional);

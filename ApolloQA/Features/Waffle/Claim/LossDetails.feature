@@ -1,6 +1,5 @@
 ﻿Feature: LossDetails
 
-@ignore
 Scenario: User able to complete loss details on Pending FNOL
 Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
