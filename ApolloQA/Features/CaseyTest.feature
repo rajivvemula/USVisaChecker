@@ -1,6 +1,5 @@
 ﻿Feature: CaseyTest
 
-@ignore
 Scenario: 1 Test Create Org
 	Given user is successfully logged into biberk
 	When user clicks Organization tab

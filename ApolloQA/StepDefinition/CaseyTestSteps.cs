@@ -49,6 +49,14 @@ namespace ApolloQA.Features
             }
         }
 
+        [When(@"user clicks (.*) button")]
+        public void WhenUserClicksNewButton(string buttonText)
+        {
+            Button button = new Button(buttonText);
+            button.Click();
+        }
+
+
         [Then(@"(.*) button is enabled")]
         public void ThenSaveButtonIsEnabled(string buttonText)
         {
