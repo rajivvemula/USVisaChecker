@@ -41,11 +41,13 @@ namespace ApolloQA.Source.Driver
         }
         public static void invokeNewDriver()
         {
+            var options = new ChromeOptions();
+            options.AddArgument("--window-size=1280,1920");
             string browser = Environment.GetEnvironmentVariable("BROWSER", EnvironmentVariableTarget.Process);
             switch (browser?.ToLower())
             {
                 case "chrome":
-                    driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                    driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), options);
                     break;
                 case "firefox":
                     driver = new FirefoxDriver();
