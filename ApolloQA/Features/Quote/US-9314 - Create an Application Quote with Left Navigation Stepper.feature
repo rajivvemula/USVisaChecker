@@ -18,6 +18,7 @@ Scenario:TC01 Create new application
 	And user waits for spinner to load
 	Then URL contains /section/9000
 
+@ignore
 Scenario Outline: TC02 Check Application tabs are present and clickable
 	When user clicks <Tab Name> sidetab
 	Then <Tab Name> sidetab is active
