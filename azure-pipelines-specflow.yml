@@ -41,7 +41,7 @@ steps:
 - task: VSTest@2
   displayName: 'Running a Smoke Test'
   continueOnError: true
-  timeoutInMinutes: 10
+  timeoutInMinutes: 30
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
