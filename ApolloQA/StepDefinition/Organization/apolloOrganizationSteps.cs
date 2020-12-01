@@ -21,7 +21,7 @@ namespace ApolloQA.StepDefinition
             this.driver = _driver;
         }
 
-        public int OrgID;
+        public static int OrgID;
         public string OrgType = "";
         public string Keyword = "";
 
@@ -56,8 +56,8 @@ namespace ApolloQA.StepDefinition
         {
             var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
             Assert.TextContains(toastMessage, "created");
-            this.OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
-            Log.Info($"Expected: Application Saved. Result: " + toastMessage + "");
+            OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            Log.Info($"Expected: Quote Saved. Result: " + toastMessage + "");
         }
 
         [Then(@"user asserts for canceled organization add")]
@@ -76,7 +76,7 @@ namespace ApolloQA.StepDefinition
             BusinessInformation.confirmDeleteOrg.Click();
             var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
             Assert.TextContains(toastMessage, "was deleted.");
-            this.OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
             Log.Info($"Expected: Org Deleted. Result: " + toastMessage + "");
         }
     }

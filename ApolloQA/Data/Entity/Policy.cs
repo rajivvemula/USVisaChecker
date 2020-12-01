@@ -57,17 +57,17 @@ namespace ApolloQA.Data.Entity
 
 
         }
-        public Quote GetApplication()
+        public Quote GetQuote()
         {
-            return new Quote(GetProperties()["applicationId"].ToObject<int>());
+            return new Quote(GetProperties()["quoteId"].ToObject<int>());
         }
         public dynamic GetVehicleTypeRisk()
         {
-            return this.GetApplication().GetVehicleTypeRisk();
+            return this.GetQuote().GetVehicleTypeRisk();
         }
         public List<Vehicle> GetVehicles()
         {
-            return this.GetApplication().GetVehicles();
+            return this.GetQuote().GetVehicles();
         }
         public JArray getCoverages()
         {

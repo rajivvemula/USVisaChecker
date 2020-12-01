@@ -4,6 +4,10 @@ using ApolloQA.Pages.Quote;
 using ApolloQA.Source.Driver;
 using System.Linq;
 using Entity_Quote = ApolloQA.Data.Entity.Quote;
+using Entity_Organization = ApolloQA.Data.Entity.Organization;
+
+using ApolloQA.Source.Helpers;
+
 namespace ApolloQA.StepDefinition.Quote
 {
     [Binding]
@@ -13,6 +17,7 @@ namespace ApolloQA.StepDefinition.Quote
         public string LineOfBusiness = "";
         public string PolicyEffectiveDate = "";
         public Entity_Quote quote;
+        public Entity_Organization organization;
 
         [When(@"user navigates to Quote Page")]
         public void WhenUserNavigatesToQuotePage()
@@ -21,26 +26,26 @@ namespace ApolloQA.StepDefinition.Quote
         }
 
         [When(@"user Selects Business Name as (.*)")]
-        public void WhenUserEntersARandomBusinessName(string business)
+        public void WhenUserSelectsBusinessNameAs(string business)
         {
             if (business.ToLower() == "random")
             {
-                Pages.Quote.Quote_Create_Page.BusinessName.SelectMatDropdownOptionByIndex(0, out string selectionDisplayName);
+                Quote_Create_Page.BusinessName.SelectMatDropdownOptionByIndex(0, out string selectionDisplayName);
                 this.BusinessName = selectionDisplayName;
             }
             else if (int.TryParse(business, out int businessIndex))
             {
-                Pages.Quote.Quote_Create_Page.BusinessName.SelectMatDropdownOptionByIndex(businessIndex, out string selectionDisplayName);
+                Quote_Create_Page.BusinessName.SelectMatDropdownOptionByIndex(businessIndex, out string selectionDisplayName);
                 this.BusinessName = selectionDisplayName;
             }
             else
             {
-                Pages.Quote.Quote_Create_Page.BusinessName.SelectMatDropdownOptionByText(business);
+                Quote_Create_Page.BusinessName.SelectMatDropdownOptionByText(business);
                 this.BusinessName = business;
             }
         }
 
-        [When(@"user Selects Line of Business as '(.*)'")]
+        [When(@"user Selects Line of Business as (.*)")]
         public void WhenUserSelectsLineOfBusinessAs(string LOB)
         {
             LineOfBusiness = LOB;
@@ -59,16 +64,26 @@ namespace ApolloQA.StepDefinition.Quote
 
         }
 
-        [Then(@"user should be redirected to Quote Create Page")]
-        public void ThenUserShouldBeRedirectedToQuoteCreatePage()
+        [Then(@"user should be redirected to the newly created organization")]
+        public void WhenUserShouldBeRedirectedToTheNewlyCreatedOrganization()
         {
-            Assert.CurrentURLEquals(Quote_Create_Page.GetURL());
+            Assert.CurrentURLContains("organization");
+            this.organization = new Entity_Organization(int.Parse(string.Join("", Functions.GetCurrentURLPath().Where(char.IsDigit))));
         }
+
+        [Then(@"previously created organization should be part of the Business Name Dropdown")]
+        public void ThenPreviouslyCreatedOrganizationShouldBePartOfTheBusinessNameDropdown()
+        {
+            string orgName = this.organization.Name;
+            Quote_Create_Page.BusinessName.AssertMatDropdownOptionsContain(orgName);
+            WhenUserSelectsBusinessNameAs(orgName);
+        }
+
 
         [Then(@"A new Quote should successfully be created")]
         public void ThenANewQuoteShouldSuccessfullyBeCreated()
         {
-            var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "created");
 
             this.quote = new Entity_Quote(int.Parse(string.Join("", toastMessage.Where(Char.IsDigit))));
@@ -83,6 +98,7 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"Quote header should contain correct values")]
         public void ThenQuoteHeaderShouldContainCorrectValues()
         {
+            Quote_Page.GetHeaderField("Quote Number").assertElementIsVisible(120);
             Quote_Page.GetHeaderField("Quote Number").assertElementInnerTextEquals(this.quote.Id.ToString());
             Quote_Page.GetHeaderField("Business Name").assertElementInnerTextEquals(this.BusinessName);
             Quote_Page.GetHeaderField("Status").assertElementInnerTextEquals("Pre-Submission");
@@ -90,7 +106,7 @@ namespace ApolloQA.StepDefinition.Quote
             Quote_Page.GetHeaderField("Line of Business").assertElementInnerTextEquals(this.LineOfBusiness);
             Quote_Page.GetHeaderField("Carrier");
             Quote_Page.GetHeaderField("Agency");
-            Quote_Page.GetHeaderField("Underwriter").assertElementInnerTextEquals("Unassigned");
+            Quote_Page.GetHeaderField("Producer").assertElementInnerTextEquals("Unassigned");
 
             Log.Info($"Expected: {nameof(BusinessName)}={BusinessName}");
             Log.Info($"Expected: {nameof(LineOfBusiness)}={LineOfBusiness}");

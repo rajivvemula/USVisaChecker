@@ -1,7 +1,7 @@
 ﻿Feature: Quote Business Infomration Section
 	As a user I want to make sure Business Information section is working correctly
 
-@SmokeTest @Quote @ignore
+@SmokeTest @Quote
 Scenario: Business Information Section Loads successfully
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest
@@ -26,6 +26,10 @@ Scenario: Business Information Section Loads successfully
 
 
 
+	#to be fixed once BUG 26076 is resolved
+	#
+	#To Address: What happens once an already existing address is reentered
+	#Do we need a multiple iterations for already existing addresses being added and as well as new addresses?
 	@SmokeTest @Quote @ignore
 Scenario: Business Information Add Address Functionality
 	Given user is successfully logged into biberk

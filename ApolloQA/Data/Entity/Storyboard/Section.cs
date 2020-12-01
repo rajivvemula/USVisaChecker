@@ -39,5 +39,13 @@ namespace ApolloQA.Data.Entity.Storyboard
             return property == null ? "" : property;
         }
 
+        public string Name
+        {
+            get
+            {
+                return this["SectionName"];
+            }
+        }
+
     }
 }

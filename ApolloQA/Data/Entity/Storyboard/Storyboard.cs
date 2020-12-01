@@ -44,15 +44,15 @@ namespace ApolloQA.Data.Entity.Storyboard
 
         public List<String> GetSortedSectionNames()
         {
-            int[] qslcIds = ((JArray)this["questionSectionLineClassificationIds"]).ToObject<int[]>();
 
             var result = SQL.executeQuery(@"
-            select QS.SectionName
-            from [question].[QuestionSectionLineClassification] qslc
-            LEFT JOIN question.QuestionSection QS ON QS.Id = qslc.QuestionSectionId
-            WHERE qslc.Id IN ( @QSLC_Id ) 
-            ORDER BY qslc.SortOrder
-            ;", ("@QSLC_Id", qslcIds));
+            SELECT 
+            SectionName
+            FROM [question].[StoryboardSection]  SS
+            LEFT JOIN Question.QuestionSection QS on QS.Id = SS.SectionId
+            where SS.StoryboardId = @StoryboardId 
+            Order By SS.SortOrder
+            ;", ("@StoryboardId", this.Id));
 
             return result.Select(it => (String)it["SectionName"]).ToList();
         }
@@ -63,15 +63,15 @@ namespace ApolloQA.Data.Entity.Storyboard
             get
             {
 
-                int[] qslcIds = ((JArray)this["questionSectionLineClassificationIds"]).ToObject<int[]>();
-
                 var result = SQL.executeQuery(@"
-                select QS.Id
-                from [question].[QuestionSectionLineClassification] qslc
-                LEFT JOIN question.QuestionSection QS ON QS.Id = qslc.QuestionSectionId
-                WHERE qslc.Id IN ( @QSLC_Id ) 
-                ORDER BY qslc.SortOrder
-                ;", ("@QSLC_Id", qslcIds));
+                SELECT 
+                QS.Id
+                FROM [question].[StoryboardSection]  SS
+                LEFT JOIN Question.QuestionSection QS on QS.Id = SS.SectionId
+                where SS.StoryboardId = @StoryboardId 
+                Order By SS.SortOrder
+                ;", ("@StoryboardId", this.Id));
+
 
                 return result.Select(it => new Section((int)it["Id"])).ToList();
             }

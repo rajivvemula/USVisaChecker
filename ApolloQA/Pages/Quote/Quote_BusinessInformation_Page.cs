@@ -10,8 +10,8 @@ namespace ApolloQA.Pages.Quote
     {
         public static string URL_PATH = "/quote/{quoteID}/section/{sectionID}";
 
-        public static string GetURL(int quoteID, int sectionID) => Functions.ParseURL(URL_PATH, ("quoteID", quoteID.ToString()), ("sectionID", sectionID.ToString())  );
-        public static void Navigate(int quoteID, int sectionID) => UserActions.Navigate(GetURL(quoteID, sectionID));
+        public static string GetURL(int quoteID, int sectionID) => Quote_Page.GetURL(quoteID, sectionID);
+        public static void Navigate(int quoteID, int sectionID) => Quote_Page.Navigate(quoteID, sectionID);
 
         public static Element Score => new Element("//mat-card-title[text()='National Credit File']/following-sibling::mat-card-content[contains(text(), 'Score:')]");
 

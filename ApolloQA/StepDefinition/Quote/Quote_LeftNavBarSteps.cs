@@ -1,6 +1,7 @@
 ﻿using System;
 using TechTalk.SpecFlow;
 using ApolloQA.Pages.Quote;
+using ApolloQA.Pages;
 using System.Collections.Generic;
 
 namespace ApolloQA.StepDefinition.Quote
@@ -21,6 +22,13 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenUserShouldBeAbleToNavigateToEachSectionSuccessfully()
         {
             
+            foreach(var section in Quote_SharedSteps.Quote.Storyboard.Sections)
+            {
+                var sectionCTA = Shared.GetLeftSideTab(section.Name);
+                sectionCTA.Click();
+                Assert.CurrentURLEquals(Quote_Page.GetURL(Quote_SharedSteps.Quote.Id, section.Id));
+
+            }
         }
     }
 }

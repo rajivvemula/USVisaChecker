@@ -36,7 +36,7 @@ namespace ApolloQA.Data.Entity
         }
         public dynamic GetProperties()
         {
-            return RestAPI.GET($"/application/{this.Id}");
+            return RestAPI.GET($"/quote/{this.Id}");
         }
         public dynamic GetProperty(String propertyName)
         {
@@ -48,7 +48,7 @@ namespace ApolloQA.Data.Entity
         {
             int riskTypeId = 1;
 
-            return RestAPI.GET($"/application/{this.Id}/risktype/{riskTypeId}");
+            return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
         }
         public List<Vehicle> GetVehicles()
         {
@@ -58,7 +58,7 @@ namespace ApolloQA.Data.Entity
         {
             int riskTypeId = 2;
 
-            return RestAPI.GET($"/application/{this.Id}/risktype/{riskTypeId}");
+            return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
         }
         public Organization Organization
         {
@@ -80,6 +80,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
+                Log.Debug($"Get Storyboard for Quote ID: {this.Id}");
                 int storyBoardId = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id}").Result[0]["StoryboardId"];
                 return new Storyboard.Storyboard(storyBoardId);
             }
