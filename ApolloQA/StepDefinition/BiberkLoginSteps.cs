@@ -47,7 +47,7 @@ namespace ApolloQA.StepDefinition
         public void WhenUserEntersAnd(string username, string password)
         {
             Log.Info($"Login in with {username}");
-            Pages.Login.usernameField.setText(username);
+            Pages.Login.usernameField.setText(username, 120);
             
             Pages.Login.nextButton.Click();
             Pages.Login.passwordField.setText(password);            
@@ -63,7 +63,7 @@ namespace ApolloQA.StepDefinition
         [Then(@"user login successfully to biBerk page")]
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
-            Pages.Home.ApolloIcon.assertElementIsVisible(40);
+            Pages.Home.ApolloIcon.assertElementIsVisible(120);
         }
     }
 }

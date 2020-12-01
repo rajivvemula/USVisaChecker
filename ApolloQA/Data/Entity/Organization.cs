@@ -56,7 +56,15 @@ namespace ApolloQA.Data.Entity
 
         public dynamic GetProperties()
         {
-            return RestAPI.GET($"/organization/{Id}");
+            try
+            {
+                return RestAPI.GET($"/organization/{Id}");
+            }
+            catch(Exception ex)
+            {
+                Log.Warn($"GET /organization/{Id} threw Exception");
+                throw ex;
+            }
         }
 
         public dynamic GetProperty(String propertyName)

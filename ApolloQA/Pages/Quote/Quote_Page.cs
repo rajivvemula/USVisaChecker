@@ -20,7 +20,7 @@ namespace ApolloQA.Pages.Quote
 
         public static Element GetHeaderField(string DisplayName)
         {
-            return new Element($"//bh-quote-header//*[contains(text(), '{DisplayName}')]//preceding-sibling::div/descendant::*");
+            return new Element($"//bh-header//*[contains(text(), '{DisplayName}')]//preceding-sibling::div/descendant::*");
         }
 
         public static Element LeftSiveNavBar => new Element("//bh-left-navbar //mat-sidenav //mat-nav-list //*/a");

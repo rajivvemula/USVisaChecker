@@ -7,11 +7,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TechTalk.SpecFlow.Assist;
-
+using ApolloQA.Source.Driver;
 namespace ApolloQA.Source.Helpers
 {
     class Functions
     {
+
+        public static string GetCurrentURL()
+        {
+            return UserActions.GetCurrentURL();
+        }
+        public static string GetCurrentURLPath()
+        {
+            return new Uri(UserActions.GetCurrentURL()).PathAndQuery;
+        }
+
         public static string ParseURL(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
             foreach (var param in parameters)
