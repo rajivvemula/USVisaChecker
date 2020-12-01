@@ -120,8 +120,6 @@ namespace ApolloQA.Source.Driver
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
 
-            ScrollIntoView(target);
-            highlight(target);
             return Setup.driver.FindElements(by).ToList();
         }
 

@@ -109,7 +109,7 @@ namespace ApolloQA.StepDefinition.Quote
             { "Organization Type",          "TypeName"},
             { "Tax ID Type",                "TaxIdType" },
             { "Tax ID No" ,                 "TaxId"},
-            { "Description of Operations",  "DescriptionOfOperations"},
+            { "Description of Operations",  "Description"},
             { "Business Phone No" ,         "BusinessPhoneNumber"},
             { "Business Email Address",     "BusinessEmailAddress" },
             { "Business Website",           "BusinessWebsite" },
