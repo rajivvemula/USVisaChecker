@@ -123,6 +123,16 @@ namespace ApolloQA.StepDefinition
             Shared.GetGridValue(gridValue).assertElementIsVisible();
         }
 
+        [Then(@"Verify sidetab is present")]
+        public void ThenVerifySidetabIsPresent(Table table)
+        {
+            var details = table.CreateDynamicSet();
+
+            foreach (var detail in details)
+            {
+                Shared.GetLeftSideTab(detail.Value).assertElementIsVisible();
+            }
+        }
 
 
     }
