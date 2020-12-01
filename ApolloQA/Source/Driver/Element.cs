@@ -241,12 +241,5 @@ namespace ApolloQA.Source.Driver
 
             return Assert.AreEqual(dropdownOptions, optionsText, optional);
         }
-
-        // Scroll Into View
-
-        public static void ScrollElementIntoView(string elementText)
-        {
-           UserActions.ScrollIntoView(elementText);
-        }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using ApolloQA.Pages;
-using ApolloQA.Source.Driver;
-using Microsoft.AspNetCore.Builder;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
-using System.Security.Policy;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using static ApolloQA.Source.Helpers.SpecflowTables;

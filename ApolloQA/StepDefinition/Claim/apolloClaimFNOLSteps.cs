@@ -1,6 +1,5 @@
 ﻿using ApolloQA.Pages;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.Extensions;
 using System;
 using System.Linq;
 using TechTalk.SpecFlow;
@@ -54,7 +53,7 @@ namespace ApolloQA.StepDefinition
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
             Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
-            Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(1, out string selectionPolicyNumber);
+            Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
         }
@@ -83,7 +82,6 @@ namespace ApolloQA.StepDefinition
         {
             Occurrence.LocationDescriptionInput.setText("Description of Location - Test!");
             Occurrence.StreetAddressOneInput.setText("1900 W Field CT");
-            Shared.ScrollIntoView("Cancel");
             Occurrence.StreetAddressTwoInput.setText("Apt 2");
             Occurrence.CityInput.setText("Lake Forrest");
             Occurrence.StateDropdown.SelectMatDropdownOptionByText(" IL ");
@@ -142,9 +140,10 @@ namespace ApolloQA.StepDefinition
         public void ThenUserAssertsForOccurenceSave()
         {
             var toastMessage = Occurrence.toastrMessage.GetInnerText();
-            try { Assert.TextContains(toastMessage, "was successfully saved."); }
+            try { Assert.TextContains(toastMessage, "was successfully saved.");
+                this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            }
             catch { Assert.TextContains(toastMessage, "Error Saving FNOL."); }
-            this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
             Log.Info($"Expected: Claim Saved. Result: " + toastMessage + "");
         }
 

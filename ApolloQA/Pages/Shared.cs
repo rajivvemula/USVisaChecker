@@ -91,15 +91,6 @@ namespace ApolloQA.Pages
         }
 
         //
-        // Scroll Into View
-        //
-
-        public static void ScrollIntoView(string elementText)
-        {
-            Element.ScrollElementIntoView(elementText);
-        }
-
-        //
         // Specific Shared Elements
         //
         public static Element SuggestedAddressCTA => new Element("//bh-address-details/*");

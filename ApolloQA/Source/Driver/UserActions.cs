@@ -91,6 +91,7 @@ namespace ApolloQA.Source.Driver
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
 
+            ScrollIntoView(target);
             highlight(target);
             return target;
         }
@@ -118,8 +119,9 @@ namespace ApolloQA.Source.Driver
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
-            highlight(target);
 
+            ScrollIntoView(target);
+            highlight(target);
             return Setup.driver.FindElements(by).ToList();
         }
 
@@ -148,6 +150,7 @@ namespace ApolloQA.Source.Driver
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(by));
             }
 
+            ScrollIntoView(target);
             highlight(target);
             return target;
         }
@@ -180,8 +183,8 @@ namespace ApolloQA.Source.Driver
 
                 //retry finding the element
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
-            } 
-
+            }
+            ScrollIntoView(target);
             highlight(target);
 
             return target;
@@ -268,9 +271,8 @@ namespace ApolloQA.Source.Driver
 
         // Scroll
 
-        public static void ScrollIntoView(string elementText)
+        public static void ScrollIntoView(IWebElement element)
         {
-            IWebElement element = Setup.driver.FindElement(By.XPath($"//*[contains(text(), '{elementText}')]"));
             Actions actions = new Actions(Setup.driver);
             actions.MoveToElement(element);
             actions.Perform();

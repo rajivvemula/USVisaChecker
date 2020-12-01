@@ -39,6 +39,10 @@ Scenario: Create New Quote New Organization
 	And User should be redirected to the newly created Quote Business Information Section
 	And Quote header should contain correct values
 
+Scenario: TC 26736: Show All / Collapse All on Quote -> Drivers tab
+	Given user is successfully logged into biberk
+	When user navigates to Quote Page
+
 
 
 	
