@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ApolloQA.Source.Helpers;
 using ApolloQA.Source.Driver;
+using NUnit.Framework.Constraints;
 using NUnit.Framework;
 using System.Linq;
 using NUnitAssert = NUnit.Framework.Assert;
@@ -207,6 +208,20 @@ namespace ApolloQA
                 return true;
             }
             catch(Exception ex)
+            {
+                Functions.handleFailure(ex, optional);
+                return false;
+            }
+        }
+        public static bool CurrentURLContains(string URL, bool optional = false)
+        {
+            try
+            {
+                NUnitAssert.That(() => UserActions.GetCurrentURL(), Does.Contain(URL).After(10).Seconds.PollEvery(250).MilliSeconds);
+                success($"URL {URL} is the current URL");
+                return true;
+            }
+            catch (Exception ex)
             {
                 Functions.handleFailure(ex, optional);
                 return false;

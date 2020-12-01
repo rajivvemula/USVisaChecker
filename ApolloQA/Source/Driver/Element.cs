@@ -102,7 +102,7 @@ namespace ApolloQA.Source.Driver
                 return true;
             }
 
-            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ninner text: {innerText} did not equal expected\ninner text: {text}"), optional);
+            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ninner text: {innerText} did not equal expected\n      text: {text}"), optional);
             return false;
         }
 

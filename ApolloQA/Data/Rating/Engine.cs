@@ -30,7 +30,7 @@ namespace ApolloQA.Data
 
         /// <summary>
         /// Rating Engine to calculate premium using Known Field's values and mapping them to the Rating Manuals. <br/><br/>
-        /// constructed with a root object which in the future could be a Policy or Application. <br/><br/>
+        /// constructed with a root object which in the future could be a Policy or Quote. <br/><br/>
         /// <param name="CoverageCode"> To be removed in the future, (iteration through all policy coverages need to be implemented)</param>
         /// </summary>
         public Engine(Entity.Policy root)
@@ -48,13 +48,13 @@ namespace ApolloQA.Data
         /// </summary>
         public IEnumerable<JObject> Run()
         {
-            //for each vehicle in the Policy/Application find it's algorithm factors
+            //for each vehicle in the Policy/Quote find it's algorithm factors
             var selectedCoverages = (JArray)root.GetVehicleTypeRisk()["selectedCoverages"];
             
             foreach (var vehicle in root.GetVehicles())
             {
                 /*
-                 * This foreach finds coverage code depending on the coverages selected at the Application before generating a policy
+                 * This foreach finds coverage code depending on the coverages selected at the Quote before generating a policy
                  * 
                 foreach (var coverageCode in selectedCoverages.Select(coverage => getAlgorithmCode((int)coverage["coverageTypeId"], vehicle.ClassCode)))
                 */
@@ -418,7 +418,7 @@ namespace ApolloQA.Data
             {
                 var riskId = ((Entity.Vehicle)this.interpreter.Eval("Vehicle"))["RiskId"];
 
-                var risk = ((JArray)this.root.GetApplication()["risks"]).ToObject<List<dynamic>>().Find(risk => risk["riskId"] == riskId);
+                var risk = ((JArray)this.root.GetQuote()["risks"]).ToObject<List<dynamic>>().Find(risk => risk["riskId"] == riskId);
 
                 var locationID = risk["VehicleDriverLocation"]?["locationId"];
                 if(locationID == null)

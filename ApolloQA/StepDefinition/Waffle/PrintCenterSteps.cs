@@ -7,6 +7,8 @@ namespace ApolloQA.Features.Waffle
     [Binding]
     public class PrintCenterSteps
     {
+        public string Header = "Print Center";
+
         [When(@"user navigates to Printcenter Page by accessing Waffle")]
         public void WhenUserNavigatesToPrintcenterPageByAccessingWaffle()
         {
@@ -18,22 +20,22 @@ namespace ApolloQA.Features.Waffle
         public void WhenUserClicksPrintCenterLink()
         {
             Pages.PrintCenter.WaffleMenuOptionPrintCenter.Click();
-            Pages.PrintCenter.PrintCenterGridLastItem.Click();
         }
         
-        /*[Then(@"User should be redirected to Print Center Page")]
+        [Then(@"User should be redirected to Print Center Page")]
         public void ThenUserShouldBeRedirectedToPrintCenterPage()
         {
-            ScenarioContext.Current.Pending();
+            Pages.PrintCenter.PrintCenterHeader.assertElementInnerTextEquals(Header);
         }
         
         [Then(@"User Clicks on the Last Queue name in Print Center table")]
         public void ThenUserClicksOnTheLastQueueNameInPrintCenterTable()
         {
-            ScenarioContext.Current.Pending();
+            Pages.PrintCenter.PrintCenterGridLastItem.Click();
+            Pages.PrintCenter.PrintCenterDashboard.Click();
         }
-        
-        [Then(@"User should see all the job associated to this Queue")]
+
+        /*[Then(@"User should see all the job associated to this Queue")]
         public void ThenUserShouldSeeAllTheJobAssociatedToThisQueue()
         {
             ScenarioContext.Current.Pending();

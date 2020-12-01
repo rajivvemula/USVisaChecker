@@ -6,6 +6,7 @@ using ApolloQA.Data.Entity;
 using System.Collections.Generic;
 using System.Text;
 using ApolloQA.Source.Driver;
+using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.StepDefinition
 {
@@ -91,5 +92,48 @@ namespace ApolloQA.StepDefinition
             Shared.SpinnerLoad.assertElementIsVisible(10, true);
             Shared.SpinnerLoad.assertElementNotPresent();
         }
+
+        [When(@"user clicks (.*) Sidetab")]
+        public void WhenUserClicksSidetab(string sidetab)
+        {
+            Shared.GetLeftSideTab(sidetab).Click();
+        }
+
+        [Then(@"Grid column label is displayed")]
+        public void ThenGridColumnLabelIsDisplayed(Table table)
+        {
+            var details = table.CreateDynamicSet();
+
+            foreach (var detail in details)
+            {
+                Shared.GetColumnTitle(detail.Value).assertElementIsVisible();
+            }
+
+        }
+
+        [Then(@"Toast with a message: (.*) is visible")]
+        public void ThenToastWithAMessageIsVisible(string toastValue)
+        {
+            Shared.GetToast().assertElementTextEquals(toastValue);
+        }
+
+        [Then(@"Grid contains: (.*)")]
+        public void ThenGridContains(string gridValue)
+        {
+            Shared.GetGridValue(gridValue).assertElementIsVisible();
+        }
+
+        [Then(@"Verify sidetab is present")]
+        public void ThenVerifySidetabIsPresent(Table table)
+        {
+            var details = table.CreateDynamicSet();
+
+            foreach (var detail in details)
+            {
+                Shared.GetLeftSideTab(detail.Value).assertElementIsVisible();
+            }
+        }
+
+
     }
 }
