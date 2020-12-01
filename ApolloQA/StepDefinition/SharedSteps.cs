@@ -130,7 +130,5 @@ namespace ApolloQA.StepDefinition
                 Shared.GetLeftSideTab(detail.Value).assertElementIsVisible();
             }
         }
-
-
     }
 }

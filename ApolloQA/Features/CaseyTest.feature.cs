@@ -103,7 +103,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("user clicks Organization tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 6
- testRunner.And("user clicks New button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("user clicks  New  Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
  testRunner.Then("URL contains organization/insert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -174,7 +174,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Save button is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 25
- testRunner.When("user clicks Save button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("user clicks Save Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 26
  testRunner.Then("URL contains /organization/", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -241,7 +241,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("Vehicles sidetab is active", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 43
- testRunner.When("user clicks Vehicle button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("user clicks Vehicle Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 44
  testRunner.Then("New Vehicle modal is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -258,7 +258,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("user enters following values", ((string)(null)), table4, "When ");
 #line hidden
 #line 48
- testRunner.And("user clicks Verify VIN button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user clicks Verify VIN Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                             "Display Name",
@@ -346,7 +346,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("the following fields have values", ((string)(null)), table7, "Then ");
 #line hidden
 #line 71
- testRunner.When("user clicks Save button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("user clicks Save Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
