@@ -20,6 +20,5 @@ namespace ApolloQA.Pages.Quote
 
         public static Element loadingSpinner => new Element("//bh-mat-spinner-overlay/*");
         public static Element toastMessage => new Element("//div[@class='toast-content']/descendant::*");
-
     }
 }

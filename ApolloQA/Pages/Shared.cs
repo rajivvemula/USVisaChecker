@@ -31,7 +31,8 @@ namespace ApolloQA.Pages
 
         public static Element GetLeftSideTab(string DisplayName)
         {
-            return new Element($"//bh-left-navbar //div[@class='mat-list-item-content' and normalize-space(text())='{DisplayName}']");
+            return new Element($"//bh-left-navbar //div[@class='mat-list-item-content' and normalize-space(text())='{DisplayName}'] |" +
+                               $"//a[@routerlinkactive='active-link']//*[contains(text(), '{DisplayName}')]");
         }
 
         public static Element GetRightSideTab(string DisplayName)
@@ -95,6 +96,8 @@ namespace ApolloQA.Pages
         //
         public static Element SuggestedAddressCTA => new Element("//bh-address-details/*");
         public static Element SpinnerLoad => new Element("//bh-mat-spinner-overlay");
+        public static Element GridskipToLastButton => new Element("//a[@role='button' and @aria-label='go to last page']");
+        public static Element LastGridItem => new Element("(//a[@class='nav-link'])[last()]");
 
     }
 }
