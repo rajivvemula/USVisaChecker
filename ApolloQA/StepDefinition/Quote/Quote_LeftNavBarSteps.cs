@@ -24,6 +24,7 @@ namespace ApolloQA.StepDefinition.Quote
             
             foreach(var section in Quote_SharedSteps.Quote.Storyboard.Sections)
             {
+                new SharedSteps().WhenUserWaitsForSpinnerToLoad();
                 var sectionCTA = Shared.GetLeftSideTab(section.Name);
                 sectionCTA.Click();
                 Assert.CurrentURLEquals(Quote_Page.GetURL(Quote_SharedSteps.Quote.Id, section.Id));
