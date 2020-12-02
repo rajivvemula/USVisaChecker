@@ -19,20 +19,18 @@ namespace ApolloQA.Source.Driver
         {
             var URL = Functions.ParseURL(URL_OR_PATH, parameters);
             Log.Info("Navigate to: " + URL);
-            if (Setup.driver.Url != URL)
-            {
-                Setup.driver.Navigate().GoToUrl(URL);
-            }
+
+            Navigate(URL);
+            
         }
         
         public static void Navigate(string URL_OR_PATH)
         {
             var URL = Functions.ParseURL(URL_OR_PATH);
             Log.Info("Navigate to: " + URL);
-            if (Setup.driver.Url != URL)
-            {
-                Setup.driver.Navigate().GoToUrl(URL);
-            }
+           
+            Setup.driver.Navigate().GoToUrl(URL);
+            
         }
 
         public static string GetCurrentURL()
