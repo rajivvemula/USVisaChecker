@@ -40,7 +40,10 @@ steps:
       Write-Host "Current Browser Value is $env:BROWSER"
       Set-DisplayResolution -Width 1920 -Height 1080 -Force
       az login
-
+- task: AzureKeyVault@1
+  inputs:
+    azureSubscription: 'Apollo - Dev'
+    KeyVaultName: 'XBIBAOAZCKV2-QA2'
 
 - task: VSTest@2
   displayName: 'Running a Smoke Test'
