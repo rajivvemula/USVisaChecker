@@ -86,7 +86,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user waits for spinner to load")]
         public void WhenUserWaitsForSpinnerToLoad()
         {
-            Shared.SpinnerLoad.assertElementIsVisible(10, true);
+            Shared.SpinnerLoad.assertElementIsVisible(5, true);
             Shared.SpinnerLoad.assertElementNotPresent();
         }
 

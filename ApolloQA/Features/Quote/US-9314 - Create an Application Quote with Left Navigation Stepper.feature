@@ -7,17 +7,18 @@ Feature: US-9314 - Create an Application Quote with Left Navigation Stepper
 Scenario:TC01 Create new application
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
-	When user clicks  New  Button
+	When user clicks New Button
 	And user waits for spinner to load
 	When user enters following values
-	| Display Name     | Field Type   | Value             |
-	| Business Name    | Autocomplete | Organization Test |
-	| Line of Business | Dropdown     | Commercial Auto   |
-	| Agent            | Dropdown     | Thurston Howell   |
-	When user clicks  Next  Button
+	| Display Name     | Field Type   | Value                    |
+	| Business Name    | Autocomplete | Casey Auto Test Org 1202 |
+	| Line of Business | Dropdown     | Commercial Auto          |
+	| Agent            | Dropdown     | Thurston Howell          |
+	When user clicks Next Button
 	And user waits for spinner to load
 	Then URL contains /section/9000
 
+@ignore
 Scenario Outline: TC02 Check Application tabs are present and clickable
 	When user clicks <Tab Name> sidetab
 	Then <Tab Name> sidetab is active
