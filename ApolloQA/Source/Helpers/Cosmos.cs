@@ -9,8 +9,10 @@ namespace ApolloQA.Source.Helpers
 {
     public class Cosmos
     {
-        public static CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("COSMOS_TARGETURL"), Environment.GetEnvironmentVariable("COSMOS_APIKEY"));
+        
+        public static CosmosClient clientOLD = new CosmosClient(KeyVault.GetSecret("CosmosDB-EndpointUrl"), KeyVault.GetSecret("CosmosDB-AuthorizationKey"));
 
+        public static CosmosClient client = new CosmosClient(KeyVault.GetSecret(Environment.GetEnvironmentVariable("COSMOS_TARGETURL_SECRETNAME")), KeyVault.GetSecret(Environment.GetEnvironmentVariable("COSMOS_APIKEY_SECRETNAME")));
 
 
         public static async Task<List<dynamic>> GetQuery(string containerA, string queryA)

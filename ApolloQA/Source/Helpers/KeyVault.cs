@@ -4,33 +4,32 @@ using System.Text;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Azure.Core;
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Azure.KeyVault;
 
 namespace ApolloQA.Source.Helpers
 {
     public class KeyVault
     {
-
-        public static string GetSecret()
+        public static String GetSecret(string secretName)
         {
-            SecretClientOptions options = new SecretClientOptions()
+            AzureServiceTokenProvider azureServiceTokenProvider = new AzureServiceTokenProvider();
+            String secret = null;
+
+            using (var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback)))
             {
-                Retry =
-                        {
-                            Delay= TimeSpan.FromSeconds(2),
-                            MaxDelay = TimeSpan.FromSeconds(16),
-                            MaxRetries = 5,
-                            Mode = RetryMode.Exponential
-                         }
-            };
-            Environment.GetEnvironmentVariable("ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT", EnvironmentVariableTarget.User);
-            Log.Critical("env variable: "+Environment.GetEnvironmentVariable("ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT"));
+                try
+                {
+                    var secretBundle = keyVaultClient.GetSecretAsync("https://xbibaoazckv2-qa2.vault.azure.net/", secretName).Result;
+                    secret = secretBundle.Value;
+                }
+                catch(Exception ex)
+                {
+                    Functions.handleFailure("Error while retrieving secrets from azure KeyVault", ex);
+                }
+            }
 
-
-            var client = new SecretClient(new Uri("https://xbibaoazckv-qa.vault.azure.net/"), new DefaultAzureCredential(), options);
-
-            KeyVaultSecret secret = client.GetSecret("ApolloSQL");
-
-            return secret.Value;
+            return secret ?? throw new Exception("Keyvault.GetSecret returned null");
         }
     }
 }

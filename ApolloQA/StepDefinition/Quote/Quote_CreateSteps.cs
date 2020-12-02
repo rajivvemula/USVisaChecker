@@ -7,6 +7,7 @@ using Entity_Quote = ApolloQA.Data.Entity.Quote;
 using Entity_Organization = ApolloQA.Data.Entity.Organization;
 
 using ApolloQA.Source.Helpers;
+using ApolloQA.Pages;
 
 namespace ApolloQA.StepDefinition.Quote
 {
@@ -22,6 +23,9 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"user navigates to Quote Page")]
         public void WhenUserNavigatesToQuotePage()
         {
+            Log.Debug("Latest quote ID" + Data.Entity.Quote.GetLatestQuote().Id);
+
+            Log.Debug(Source.Helpers.KeyVault.GetSecret("ApolloSQL"));
             Quote_Home_Page.navigate();
         }
 
@@ -112,6 +116,24 @@ namespace ApolloQA.StepDefinition.Quote
             Log.Info($"Expected: {nameof(LineOfBusiness)}={LineOfBusiness}");
             Log.Info($"Expected: {nameof(PolicyEffectiveDate)}={PolicyEffectiveDate}");
             Log.Warn("Lastly created quote page test to be implemented");
+        }
+
+        [When(@"user selects last Quote on grid")]
+        public void WhenUserSelectsLastQuoteOnGrid()
+        {
+            Shared.GridskipToLastButton.WaitUntilClickable();
+            Shared.GridskipToLastButton.Click();
+            Shared.LastGridItem.WaitUntilClickable();
+            Shared.LastGridItem.Click();
+        }
+
+        [Then(@"User verifies collapse all and expand all")]
+        public void ThenUserVerifiesCollapseAllAndExpandAll()
+        {
+            Quote_Drivers.ExpandAllButton.Click();
+            Quote_Drivers.ExpandedInfo.assertElementIsVisible();
+            Quote_Drivers.CollapseAllButton.Click();
+            Quote_Drivers.ExpandedInfo.assertElementNotPresent();
         }
     }
 }

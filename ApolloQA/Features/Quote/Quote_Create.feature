@@ -41,7 +41,13 @@ Scenario: Create New Quote New Organization
 
 Scenario: TC 26736: Show All / Collapse All on Quote -> Drivers tab
 	Given user is successfully logged into biberk
-	When user navigates to Quote Page
+	When user clicks Quote Button
+	And user selects last Quote on grid
+	And user waits for spinner to load
+	When user clicks  Drivers  Sidetab
+	Then User verifies collapse all and expand all
+
+
 
 
 
