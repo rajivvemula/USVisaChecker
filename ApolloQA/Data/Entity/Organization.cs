@@ -203,7 +203,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                var response = Cosmos.GetQuery("NcfResponse", "SELECT * FROM c where c.PartyId = 10247 ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result;
+                var response = Cosmos.GetQuery("NcfResponse", $"SELECT * FROM c where c.PartyId = {this.Id} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result;
 
                 return response.Count > 0 ? response[0]["RawScore"] : null;
                 

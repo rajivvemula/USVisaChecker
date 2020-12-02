@@ -22,6 +22,9 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"user navigates to Quote Page")]
         public void WhenUserNavigatesToQuotePage()
         {
+            Log.Debug("Latest quote ID" + Data.Entity.Quote.GetLatestQuote().Id);
+
+            Log.Debug(Source.Helpers.KeyVault.GetSecret("ApolloSQL"));
             Quote_Home_Page.navigate();
         }
 

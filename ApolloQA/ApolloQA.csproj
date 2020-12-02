@@ -3,6 +3,7 @@
   <PropertyGroup>
 	<TargetFramework>netcoreapp3.1</TargetFramework>
 	<PublishChromeDriver>true</PublishChromeDriver>
+	<UserSecretsId>1f2a3f51-b841-4600-b502-0e1c7709bb0d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,8 @@
 		<PackageReference Include="DynamicExpresso.Core" Version="2.3.3" />
 		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
+		<PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
+		<PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
 	    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	    <PackageReference Include="NUnit" Version="3.12.0" />
     	<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
