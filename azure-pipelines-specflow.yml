@@ -40,12 +40,13 @@ steps:
       Write-Host "Current Browser Value is $env:BROWSER"
       Set-DisplayResolution -Width 1920 -Height 1080 -Force
 
+
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Apollo - Dev'
-    scriptType: 'ps'
+    scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az devops login'
+    inlineScript: 'az login'
 
 - task: VSTest@2
   displayName: 'Running a Smoke Test'
