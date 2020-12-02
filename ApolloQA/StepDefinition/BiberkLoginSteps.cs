@@ -38,8 +38,6 @@ namespace ApolloQA.StepDefinition
         [Given(@"user landed biBerk page with valid URL")]
         public void GivenUserLandedBiBerkPageWithValidURL()
         {
-            Console.WriteLine("Current Page" + Environment.GetEnvironmentVariable("HOST"));
-
             Pages.Login.navigate();
         }
 

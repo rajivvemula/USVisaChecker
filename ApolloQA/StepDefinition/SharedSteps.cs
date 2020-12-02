@@ -1,11 +1,8 @@
 ﻿using System;
 using TechTalk.SpecFlow;
 using ApolloQA.Pages;
-using ApolloQA.Source.Helpers;
 using ApolloQA.Data.Entity;
 using System.Collections.Generic;
-using System.Text;
-using ApolloQA.Source.Driver;
 using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.StepDefinition
@@ -89,7 +86,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user waits for spinner to load")]
         public void WhenUserWaitsForSpinnerToLoad()
         {
-            Shared.SpinnerLoad.assertElementIsVisible(10, true);
+            Shared.SpinnerLoad.assertElementIsVisible(5, true);
             Shared.SpinnerLoad.assertElementNotPresent();
         }
 
@@ -133,7 +130,5 @@ namespace ApolloQA.StepDefinition
                 Shared.GetLeftSideTab(detail.Value).assertElementIsVisible();
             }
         }
-
-
     }
 }

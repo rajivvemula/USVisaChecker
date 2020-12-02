@@ -3,7 +3,7 @@
 Scenario: 1 Test Create Org
 	Given user is successfully logged into biberk
 	When user clicks Organization tab
-	And user clicks New button
+	When user clicks  New  Button
 	Then URL contains organization/insert
 	When user enters following values
 	| Display Name              | Field Type   | Value                                                  |
@@ -22,7 +22,7 @@ Scenario: 1 Test Create Org
 	| Display Name   | Field Type | Value |
 	| Class Taxonomy | Input      | Any   |
 	And Save button is enabled
-	When user clicks Save button
+	When user clicks Save Button
 	Then URL contains /organization/
 	Then the following fields have values
 	| Display Name              | Field Type   | Value                                                  |
@@ -40,12 +40,12 @@ Scenario: 1 Test Create Org
 	| Year Ownership Started    | Input        | 2018                                                   |
 	When user clicks Vehicles sidetab
 	Then Vehicles sidetab is active
-	When user clicks Vehicle button
+	When user clicks Vehicle Button
 	Then New Vehicle modal is visible
 	When user enters following values
 	| Display Name | Field Type | Value             |
 	| VIN          | Input      | 1FDWR80U5HVA06629 |
-	And user clicks Verify VIN button
+	And user clicks Verify VIN Button
 	Then the following fields have values
 	| Display Name | Field Type | Value |
 	| Year         | Input      | Any   |
@@ -68,7 +68,7 @@ Scenario: 1 Test Create Org
 	| Body Category            | Dropdown   | Any           |
 	| Additional Modifications | Input      | Test comment. |
 	| Stated Amount            | Input      | $ 12,000.00   |
-	When user clicks Save button
+	When user clicks Save Button
 	#Then toast message Vehicle saved is displayed
 
 

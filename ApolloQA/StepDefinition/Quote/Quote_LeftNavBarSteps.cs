@@ -15,7 +15,7 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenLeftNavSectionsShouldBeDisplayedAccordingToTheCurrentStoryboard()
         {
             this.sortedSectionNames = Quote_SharedSteps.Quote.Storyboard.GetSortedSectionNames();
-            Assert.AreEqual(this.sortedSectionNames, Quote_Page.LeftSiveNavBar.GetInnerTexts());           
+            Assert.AreEqual(this.sortedSectionNames, Quote_Page.LeftSiveNavBar.GetInnerTexts().FindAll(it=>it!= "Underwriting Results"));           
         }
 
         [Then(@"User should be able to navigate to each section successfully")]
@@ -24,6 +24,7 @@ namespace ApolloQA.StepDefinition.Quote
             
             foreach(var section in Quote_SharedSteps.Quote.Storyboard.Sections)
             {
+                new SharedSteps().WhenUserWaitsForSpinnerToLoad();
                 var sectionCTA = Shared.GetLeftSideTab(section.Name);
                 sectionCTA.Click();
                 Assert.CurrentURLEquals(Quote_Page.GetURL(Quote_SharedSteps.Quote.Id, section.Id));

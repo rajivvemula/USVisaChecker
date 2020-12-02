@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ApolloQA.Pages;
-using ApolloQA.Source.Driver;
+﻿using ApolloQA.Pages;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.StepDefinition.Claim
