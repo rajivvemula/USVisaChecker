@@ -40,7 +40,7 @@ steps:
       Write-Host "Current Browser Value is $env:BROWSER"
       Set-DisplayResolution -Width 1920 -Height 1080 -Force
 
-- script: echo $(AccessToken) | az devops login
+- script: echo $(AccessToken) | az login
   env:
     AccessToken: $(System.AccessToken)
 
