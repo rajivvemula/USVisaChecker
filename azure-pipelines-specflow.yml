@@ -46,7 +46,7 @@ steps:
     azureSubscription: 'Apollo - Dev'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az login'
+    inlineScript: 'az devops login'
 
 - task: VSTest@2
   displayName: 'Running a Smoke Test'
