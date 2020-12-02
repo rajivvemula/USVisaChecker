@@ -147,7 +147,7 @@ namespace ApolloQA.Data.Entity
             get
             {
                 List<dynamic> phones = ((JArray)this["phones"]).ToObject<List<dynamic>>();
-                dynamic phone = phones.Find(it => it?["phoneType"]?["Code"] == "BUSINESS");
+                dynamic phone = phones.Find(it => it?["phoneType"]?["code"] == "BUSINESS");
                 return phone?["number"];
             }
         }
