@@ -19,6 +19,12 @@ pool:
 variables:
 - name: BROWSER
   value: Chrome
+- name: ApolloSQL
+  value: $(ApolloSQL)
+- name: CosmosDB-EndpointUrl
+  value: $(CosmosDB-EndpointUrl)
+- name: CosmosDB-AuthorizationKey
+  value: $(CosmosDB-AuthorizationKey)
 - name: SourceDir
   value: '$(Build.SourcesDirectory)/ApolloQA'
 
@@ -34,11 +40,18 @@ steps:
   inputs:
     solution: '**\ApolloQA.sln'
     restoreNugetPackages: true
+
+- task: AzureKeyVault@1
+  inputs:
+    azureSubscription: 'Apollo - Dev'
+    KeyVaultName: 'XBIBAOAZCKV2-QA2'
+    SecretsFilter: '*'
+    RunAsPreJob: true
+
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
-      $env:BROWSER = "chrome"
       Write-Host "Current Browser Value is $env:BROWSER"
       Set-DisplayResolution -Width 1920 -Height 1080 -Force
 
