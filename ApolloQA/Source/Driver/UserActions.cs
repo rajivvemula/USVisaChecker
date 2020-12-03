@@ -15,6 +15,8 @@ namespace ApolloQA.Source.Driver
     class UserActions
     {
         public const int DEFAULT_WAIT_SECONDS = 30;
+        private static bool HIGHLIGHT_ON = false;
+
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
             var URL = Functions.ParseURL(URL_OR_PATH, parameters);
@@ -90,7 +92,8 @@ namespace ApolloQA.Source.Driver
             }
 
             ScrollIntoView(target);
-            highlight(target);
+            if(HIGHLIGHT_ON)
+                highlight(target);
             return target;
         }
 
@@ -147,7 +150,8 @@ namespace ApolloQA.Source.Driver
             }
 
             ScrollIntoView(target);
-            highlight(target);
+            if (HIGHLIGHT_ON)
+                highlight(target);
             return target;
         }
 
@@ -181,7 +185,8 @@ namespace ApolloQA.Source.Driver
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
             }
             ScrollIntoView(target);
-            highlight(target);
+            if (HIGHLIGHT_ON)
+                highlight(target);
 
             return target;
         }
