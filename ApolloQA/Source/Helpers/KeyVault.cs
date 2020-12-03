@@ -14,7 +14,9 @@ namespace ApolloQA.Source.Helpers
         public static String GetSecret(string secretName)
         {
             AzureServiceTokenProvider azureServiceTokenProvider = new AzureServiceTokenProvider();
+
             String secret = null;
+
 
             using (var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback)))
             {

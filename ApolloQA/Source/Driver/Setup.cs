@@ -104,6 +104,14 @@ namespace ApolloQA.Source.Driver
             
             foreach (var variable in environmentVariables)
             {
+                //if the variable is a secret name we will load the secret as an environment variable if it does not already exist
+                if(variable.Key.Contains("SECRETNAME"))
+                {
+                    if (Environment.GetEnvironmentVariable(variable.Value.ToString()) == null)
+                    {
+                        Environment.SetEnvironmentVariable(variable.Value.ToString(), KeyVault.GetSecret(variable.Value.ToString()));
+                    }
+                }
                 if (Environment.GetEnvironmentVariable(variable.Key) == null)
                 {
                     Environment.SetEnvironmentVariable(variable.Key, variable.Value.ToString());
@@ -113,6 +121,8 @@ namespace ApolloQA.Source.Driver
                     Log.Info($"Using {variable.Key} = {variable.Value}");
                 }
             }
+
+
         }
     }
 }
