@@ -17,8 +17,6 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-- name: BROWSER
-  value: Chrome
 - name: SourceDir
   value: '$(Build.SourcesDirectory)/ApolloQA'
 
@@ -45,13 +43,7 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: |
-      env:
-      ApolloSQL: $(ApolloSQL)
-      CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
-      CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
-      Write-Host "Current Browser Value is $env:BROWSER"
-      Set-DisplayResolution -Width 1920 -Height 1080 -Force
+    script: Set-DisplayResolution -Width 1920 -Height 1080 -Force
 
 - task: PowerShell@2
   inputs:
@@ -67,6 +59,11 @@ steps:
   displayName: 'Running a Smoke Test'
   continueOnError: true
   timeoutInMinutes: 120
+  env:
+      ApolloSQL: $(ApolloSQL)
+      CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
+      CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
+      Browser: "Chrome"
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
