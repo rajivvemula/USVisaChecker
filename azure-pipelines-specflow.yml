@@ -1,4 +1,6 @@
 # Starter pipeline
+
+
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
@@ -40,7 +42,14 @@ steps:
       Write-Host "Current Browser Value is $env:BROWSER"
       Set-DisplayResolution -Width 1920 -Height 1080 -Force
 
-
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $url = "https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe"
+      $output = "C:\Users\Saeed.Malik\Documents\autoit-v3-setup.exe"
+      Invoke-WebRequest -Uri $url -OutFile $output
+      Start-Process -Wait  -FilePath 'C:\Users\Saeed.Malik\Documents\autoit-v3-setup.exe' -ArgumentList '/S','/v','/qn' -passthru
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Apollo - Dev'
