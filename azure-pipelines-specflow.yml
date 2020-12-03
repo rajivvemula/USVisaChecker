@@ -19,12 +19,6 @@ pool:
 variables:
 - name: BROWSER
   value: Chrome
-- name: ApolloSQL
-  value: $(ApolloSQL)
-- name: CosmosDB-EndpointUrl
-  value: $(CosmosDB-EndpointUrl)
-- name: CosmosDB-AuthorizationKey
-  value: $(CosmosDB-AuthorizationKey)
 - name: SourceDir
   value: '$(Build.SourcesDirectory)/ApolloQA'
 
@@ -52,6 +46,10 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      env:
+      ApolloSQL: $(ApolloSQL)
+      CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
+      CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
       Write-Host "Current Browser Value is $env:BROWSER"
       Set-DisplayResolution -Width 1920 -Height 1080 -Force
 
