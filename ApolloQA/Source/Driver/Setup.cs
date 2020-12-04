@@ -101,25 +101,35 @@ namespace ApolloQA.Source.Driver
             Console.WriteLine(Path.Combine(SourceDir, JsonEnvironmentFile_RelativePath));
             JObject environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine(SourceDir, JsonEnvironmentFile_RelativePath)).ReadToEnd());
 
-            
+            var keyVault = new KeyVault(environmentVariables?["KEY_VAULT_URI"]?.ToString());
+
+            //
+            //Loop through each variable, 
+            //checks if the variable has already been set 
+            //Only sets variables if they have not already been set
+            //
+            //sets Secret and it's value as Environment Variables if provided SECRETNAME
             foreach (var variable in environmentVariables)
             {
-                //if the variable is a secret name we will load the secret as an environment variable if it does not already exist
-                if(variable.Key.Contains("SECRETNAME"))
-                {
-                    if (Environment.GetEnvironmentVariable(variable.Value.ToString()) == null)
-                    {
-                        Environment.SetEnvironmentVariable(variable.Value.ToString(), KeyVault.GetSecret(variable.Value.ToString()));
-                    }
-                }
+                Console.WriteLine("Env Variable: "+Environment.GetEnvironmentVariable(variable.Key));
                 if (Environment.GetEnvironmentVariable(variable.Key) == null)
                 {
+                    Log.Info($"Setting {variable.Key} = {variable.Value}");
                     Environment.SetEnvironmentVariable(variable.Key, variable.Value.ToString());
+
                 }
                 else
                 {
-                    Log.Info($"Using {variable.Key} = {variable.Value}");
+                    Log.Info($"Using {variable.Key} = {Environment.GetEnvironmentVariable(variable.Key)}");
                 }
+
+                //if the variable is a secret name we will load the secret as an environment variable if it does not already exist
+                if (variable.Key.Contains("SECRETNAME") && Environment.GetEnvironmentVariable(variable.Value.ToString()) == null)
+                {
+                    Log.Info($"Setting {variable.Value.ToString()} = SECRET VALUE");
+                    Environment.SetEnvironmentVariable(variable.Value.ToString(), keyVault.GetSecret(variable.Value.ToString()));
+                }
+                
             }
 
 
