@@ -15,7 +15,7 @@ namespace ApolloQA.Source.Driver
     class UserActions
     {
         public const int DEFAULT_WAIT_SECONDS = 30;
-        private static bool HIGHLIGHT_ON = Boolean.Parse(Environment.GetEnvironmentVariable("HIGHTLIGHT_ON"));
+        private static bool HIGHLIGHT_ON = Boolean.Parse(Environment.GetEnvironmentVariable("HIGHLIGHT_ON"));
 
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {

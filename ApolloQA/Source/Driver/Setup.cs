@@ -98,7 +98,6 @@ namespace ApolloQA.Source.Driver
         private static void invokeEnvironmentVariables(string JsonEnvironmentFile_RelativePath )
         {
 
-            Console.WriteLine(Path.Combine(SourceDir, JsonEnvironmentFile_RelativePath));
             JObject environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine(SourceDir, JsonEnvironmentFile_RelativePath)).ReadToEnd());
 
             var keyVault = new KeyVault(environmentVariables?["KEY_VAULT_URI"]?.ToString());
