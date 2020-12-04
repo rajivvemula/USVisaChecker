@@ -40,6 +40,11 @@ namespace ApolloQA.Source.Driver
             return Setup.driver.Url;
         }
 
+        public static void Refresh()
+        {
+            Setup.driver.Navigate().Refresh();
+        }
+
         //
         // General Element Actions
         //

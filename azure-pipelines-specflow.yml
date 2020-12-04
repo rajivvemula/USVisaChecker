@@ -64,6 +64,7 @@ steps:
       CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
       CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
       Browser: "Chrome"
+      HIGHLIGHT_ON: "false"
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
