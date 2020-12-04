@@ -15,7 +15,7 @@ namespace ApolloQA.Source.Driver
     class UserActions
     {
         public const int DEFAULT_WAIT_SECONDS = 40;
-        private static bool HIGHLIGHT_ON = false;
+        private static bool HIGHLIGHT_ON = true;
 
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {

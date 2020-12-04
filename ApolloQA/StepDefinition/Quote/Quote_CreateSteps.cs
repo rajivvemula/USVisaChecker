@@ -5,9 +5,9 @@ using ApolloQA.Source.Driver;
 using System.Linq;
 using Entity_Quote = ApolloQA.Data.Entity.Quote;
 using Entity_Organization = ApolloQA.Data.Entity.Organization;
-
 using ApolloQA.Source.Helpers;
 using ApolloQA.Pages;
+using ApolloQA.Components;
 
 namespace ApolloQA.StepDefinition.Quote
 {
@@ -17,6 +17,7 @@ namespace ApolloQA.StepDefinition.Quote
         public string BusinessName = "";
         public string LineOfBusiness = "";
         public string PolicyEffectiveDate = "";
+        public string DriverSelected = "";
         public Entity_Quote quote;
         public Entity_Organization organization;
 
@@ -116,14 +117,43 @@ namespace ApolloQA.StepDefinition.Quote
             Log.Warn("Lastly created quote page test to be implemented");
         }
 
-        [When(@"user selects last Quote on grid")]
-        public void WhenUserSelectsLastQuoteOnGrid()
+        [When(@"user checks for existing driver")]
+        public void WhenUserChecksForExistingDriver()
         {
-            Shared.GridskipToLastButton.WaitUntilClickable();
-            Shared.GridskipToLastButton.Click();
-            Shared.LastGridItem.WaitUntilClickable();
-            Shared.LastGridItem.Click();
+            bool driverRecord = Quote_Drivers.DriverRecord.assertElementNotPresent();
+            bool ExistingDriver = Quote_Drivers.ExistingDriver.assertElementNotPresent();
+            bool StateExceptions = Quote_Drivers.DLStateExceptionsNo.assertElementNotPresent();
+            if (driverRecord == true)
+            {
+                Quote_Drivers.NewDriverButton.Click();
+                Quote_Drivers.ExistingDriverDropdown.Click();
+                if(ExistingDriver == true)
+                {
+                    UserActions.Refresh();
+                    Quote_Drivers.FirstNameInput.setText("Tester");
+                    Quote_Drivers.LastName.setText("driver");
+                    Quote_Drivers.DateOfBirth.setText("04/04/1989");
+                    Quote_Drivers.DriverLicenseDropdown.SelectMatDropdownOptionByText(" IL ");
+                    Quote_Drivers.DriverLicenseNumberInput.setText("E09809854099");
+                    Quote_Drivers.DLExpirationDate.setText("04/04/2029");
+                    Quote_Drivers.CdlDropdown.SelectMatDropdownOptionByText(" No ");
+                }
+                else
+                {
+                    Quote_Drivers.ExistingDriverDropdown.SelectMatDropdownOptionByIndex(0, out string driverSelected);
+                    DriverSelected = driverSelected;
+                    Log.Info($"Expected: {nameof(DriverSelected)}={DriverSelected}");
+                }
+                if (StateExceptions == false)
+                {
+                    Quote_Drivers.DLStateExceptionsNo.Click();
+                }
+                Quote_Drivers.ActiveLicenseStatusButton.Click();
+                Quote_Drivers.InspectionCountInput.setText("10");
+                Quote_Drivers.ExcludeDriverNo.Click();
+            }
         }
+
 
         [Then(@"User verifies collapse all and expand all")]
         public void ThenUserVerifiesCollapseAllAndExpandAll()
