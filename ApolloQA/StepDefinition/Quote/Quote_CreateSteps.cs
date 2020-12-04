@@ -17,7 +17,6 @@ namespace ApolloQA.StepDefinition.Quote
         public string BusinessName = "";
         public string LineOfBusiness = "";
         public string PolicyEffectiveDate = "";
-        public string DriverSelected = "";
         public Entity_Quote quote;
         public Entity_Organization organization;
 
@@ -89,7 +88,7 @@ namespace ApolloQA.StepDefinition.Quote
             var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "created");
 
-            this.quote = new Entity_Quote(int.Parse(string.Join("", toastMessage.Where(Char.IsDigit))));
+            quote = new Entity_Quote(int.Parse(string.Join("", toastMessage.Where(Char.IsDigit))));
         }
         
         [Then(@"User should be redirected to the newly created Quote Business Information Section")]
@@ -102,7 +101,7 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenQuoteHeaderShouldContainCorrectValues()
         {
             Quote_Page.GetHeaderField("Quote Number").assertElementIsVisible(120);
-            Quote_Page.GetHeaderField("Quote Number").assertElementInnerTextEquals(this.quote.Id.ToString());
+            Quote_Page.GetHeaderField("Quote Number").assertElementInnerTextEquals(quote.Id.ToString());
             Quote_Page.GetHeaderField("Business Name").assertElementInnerTextEquals(this.BusinessName);
             Quote_Page.GetHeaderField("Status").assertElementInnerTextEquals("Pre-Submission");
             Quote_Page.GetHeaderField("Effective Date").assertElementInnerTextEquals(this.PolicyEffectiveDate);

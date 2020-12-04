@@ -11,8 +11,17 @@ namespace ApolloQA.Source.Helpers
 {
     public class KeyVault
     {
-        public static String GetSecret(string secretName)
+        private readonly String KEY_VAULT_URI;
+        public KeyVault(String KEY_VAULT_URI)
         {
+            this.KEY_VAULT_URI = KEY_VAULT_URI;
+        }
+        public String GetSecret(string secretName)
+        {
+            if(String.IsNullOrWhiteSpace(KEY_VAULT_URI))
+            {
+                Functions.handleFailure(new ArgumentNullException("Helpers.KeyVault - KEY_VAULT_URI was not set properly"));
+            }
             AzureServiceTokenProvider azureServiceTokenProvider = new AzureServiceTokenProvider();
 
             String secret = null;
@@ -22,7 +31,7 @@ namespace ApolloQA.Source.Helpers
             {
                 try
                 {
-                    var secretBundle = keyVaultClient.GetSecretAsync("https://xbibaoazckv2-qa2.vault.azure.net/", secretName).Result;
+                    var secretBundle = keyVaultClient.GetSecretAsync(this.KEY_VAULT_URI, secretName).Result;
                     secret = secretBundle.Value;
                 }
                 catch(Exception ex)

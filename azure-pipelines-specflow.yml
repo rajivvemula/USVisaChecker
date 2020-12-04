@@ -63,7 +63,8 @@ steps:
       ApolloSQL: $(ApolloSQL)
       CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
       CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
-      Browser: "Chrome"
+      BROWSER: "Chrome"
+      HIGHLIGHT_ON: "false"
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
