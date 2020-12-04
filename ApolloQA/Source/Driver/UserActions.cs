@@ -14,8 +14,8 @@ namespace ApolloQA.Source.Driver
 {
     class UserActions
     {
-        public const int DEFAULT_WAIT_SECONDS = 30;
-        private static bool HIGHLIGHT_ON = false;
+        public const int DEFAULT_WAIT_SECONDS = 40;
+        private static bool HIGHLIGHT_ON = true;
 
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
@@ -38,6 +38,11 @@ namespace ApolloQA.Source.Driver
         public static string GetCurrentURL()
         {
             return Setup.driver.Url;
+        }
+
+        public static void Refresh()
+        {
+            Setup.driver.Navigate().Refresh();
         }
 
         //
