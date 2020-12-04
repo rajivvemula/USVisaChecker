@@ -17,6 +17,7 @@ namespace ApolloQA.StepDefinition.Quote
         public string BusinessName = "";
         public string LineOfBusiness = "";
         public string PolicyEffectiveDate = "";
+        public string DriverSelected = "";
         public Entity_Quote quote;
         public Entity_Organization organization;
 
