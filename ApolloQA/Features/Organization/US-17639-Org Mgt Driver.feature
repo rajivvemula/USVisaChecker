@@ -16,7 +16,9 @@ Scenario:TC01 Verify Grid Titles in Driver
 	| TheTestOrg   | dba | FEIN      | 81-6541000  | DescriptionofOps        | 8021585010          | testorg@me.com | testorg.com     | S       | 2000        | 2005      |
 	And user clicks  Save  Button
 	And user waits for spinner to load
+	#Then statement asserting the org was created
 	When user clicks Drivers Sidetab
+	When user clicks Continue anyway Button
 	Then Grid column label is displayed
 	| Key | Value      |
 	| a   | Driver #   |

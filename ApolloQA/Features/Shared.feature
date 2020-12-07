@@ -23,6 +23,7 @@ Scenario: Shared When
 
 
 
+
 @ignore
 Scenario: Shared Then
 
@@ -37,4 +38,3 @@ Scenario: Shared Then
 	| Key | Value                |
 	| a   | Business Information |
 
-	
