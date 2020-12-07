@@ -22,10 +22,11 @@ namespace ApolloQA.Pages
         public static Element DriverLicenseDropdown => new Element("//mat-select[@name='stateProvinceId']");
         public static Element DriverLicenseNumberInput => new Element("//input[@name='licenseNo']");
         public static Element DLExpirationDate => new Element("//input[@name='licenseExpirationDate']");
-        public static Element DLStateExceptionsNo => new Element("//mat-radio-button[@id='mat-radio-11']");
+        public static Element DLStateExceptionsNo => new Element("(//mat-radio-button //*[@class='mat-radio-label-content' and contains(text(), 'No')])[1]");
         public static Element CdlDropdown => new Element("//mat-select[@name='cdl']");
-        public static Element ActiveLicenseStatusButton => new Element("//mat-radio-button[@id='mat-radio-2']");
+        public static Element ActiveLicenseStatusButton => new Element("//mat-radio-button //*[@class='mat-radio-label-content' and contains(text(), ' Active ')]");
         public static Element InspectionCountInput => new Element("//input[@type='number']");
-        public static Element ExcludeDriverNo => new Element("//mat-radio-button[@id='mat-radio-8']");
+        public static Element ExcludeDriverNo => new Element($"(//mat-radio-button //*[@class='mat-radio-label-content' and contains(text(), 'No')])");
+        public static Element SaveDriverButton => new Element("//button[*[contains(text(), 'Save Driver')]]");
     }
 }

@@ -10,8 +10,7 @@ Scenario: TC 25558 : Add business information and save as organization
 	| TheTestOrg   | dba | FEIN      | 81-6541000  | DescriptionofOps        | 8021585010          | testorg@me.com | testorg.com     | S       | 2000        | 2005      |
 	And user clicks  Save  Button
 	And user waits for spinner to load
-#	When user asserts for saved organization - issue with toastr : returning blank
-	Then user deletes created test organization
+	When user asserts for saved organization
 
 Scenario: Add business information and cancel submit
 	Given user is successfully logged into biberk 

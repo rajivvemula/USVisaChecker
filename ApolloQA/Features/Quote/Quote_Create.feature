@@ -45,8 +45,8 @@ Scenario: TC 26736: Show All / Collapse All on Quote -> Drivers tab
 	When User Navigates to Quote latest
 	And user waits for spinner to load
 	When user clicks  Drivers  Sidetab
+	And user waits for spinner to load
 	And user checks for existing driver
-	When user clicks Save Button
 	And user waits for spinner to load
 	Then User verifies collapse all and expand all
 
