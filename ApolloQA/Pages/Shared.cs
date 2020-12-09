@@ -98,6 +98,6 @@ namespace ApolloQA.Pages
         public static Element SpinnerLoad => new Element("//bh-mat-spinner-overlay");
         public static Element GridskipToLastButton => new Element("//a[@role='button' and @aria-label='go to last page']");
         public static Element LastGridItem => new Element("(//a[@class='nav-link'])[last()]");
-
+        public static Element toastrMessage => new Element("//div[@class='toast-content']/descendant::*");
     }
 }

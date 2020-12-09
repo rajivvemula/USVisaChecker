@@ -8,7 +8,14 @@ namespace ApolloQA.StepDefinition.Claim
         [When(@"user selects pending FNOL")]
         public void WhenUserSelectsPendingFNOL()
         {
-            ClaimsFNOLGrid.PendingFNOL.Click();
+            try { ClaimsFNOLGrid.PendingFNOL.Click(); }
+            catch
+            {
+                GlobalSearch.SearchInput.setText("FNOL");
+                GlobalSearch.SearchResult.assertElementIsVisible();
+                GlobalSearch.SearchResultDescription.assertElementContainsText("Pending");
+                GlobalSearch.SearchResult.Click();
+            }
         }
 
         [When(@"user navigates to Loss Details")]
@@ -37,7 +44,7 @@ namespace ApolloQA.StepDefinition.Claim
             LossDetails.InsurerClaimNumInput.setText("987");
             LossDetails.OtherInsurerAdjusterInput.setText("Test Test");
             LossDetails.SuitFiledDropdown.SelectMatDropdownOptionByText(" Yes ");
-            //LossDetails.AttorneyAuthRepDropdown.SelectMatDropdownOptionByText(" No ");
+            LossDetails.AttorneyAuthRepDropdown.SelectMatDropdownOptionByText(" No ");
             LossDetails.ReportOnlyDropdown.SelectMatDropdownOptionByText(" Yes ");
         }
 
@@ -55,14 +62,23 @@ namespace ApolloQA.StepDefinition.Claim
         {
             LossDetails.InsuredButton.Click();
             LossDetails.VehicleNotOnPolicyButton.Click();
-            
-            LossDetails.RelationshipToInsuredDropdown.SelectMatDropdownOptionByText("");
+            LossDetails.NoDriverButton.Click();
+            LossDetails.RelationshipToInsuredDropdown.SelectMatDropdownOptionByText(" Not Related ");
         }
 
         [Then(@"user assert for Loss Details save")]
         public void ThenUserAssertForLossDetailsSave()
         {
-            //TODO
+            LossDetails.SaveButton.Click();
+            Shared.SpinnerLoad.assertElementIsVisible(5, true);
+            Shared.SpinnerLoad.assertElementNotPresent();
+            var toastMessage = Shared.toastrMessage.GetInnerText();
+            try
+            {
+                Assert.TextContains(toastMessage, "Loss Details were saved.");
+            }
+            catch { Assert.TextContains(toastMessage, "Error Saving Loss Details."); }
+            Log.Info($"Expected: Loss Details Saved. Result: " + toastMessage + "");
         }
 
     }

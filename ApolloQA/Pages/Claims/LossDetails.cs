@@ -16,7 +16,7 @@ namespace ApolloQA.Pages
         public static Element BodilyInjuryButton = new Element("//mat-radio-button//*[contains(text(), ' Bodily Injury ')]");
         public static Element PropertyDamageButton = new Element("//mat-radio-button//*[contains(text(), ' Property Damage ')]");
         public static Element FaultIndicatorDropdown = new Element("//mat-select[@name='faultIndicatorTypeId']");
-        public static Element ClaimsAdjusterDropdown = new Element("//mat-select[@id='mat-select-48']");
+        public static Element ClaimsAdjusterDropdown = new Element("//mat-select[@class='mat-select ng-tns-c179-79 ng-tns-c107-78 mat-select-empty ng-star-inserted']");
         public static Element ComplexityDropdown = new Element("//mat-select[@formcontrolname='complexityId']");
         public static Element SupervisorNotesInput = new Element("//textarea[@formcontrolname='supervisoryNotes']");
 
@@ -33,13 +33,13 @@ namespace ApolloQA.Pages
         public static Element PointOfImpactDropdown = new Element("//mat-select[@name='pointOfImpactTypeId']");
         public static Element VehicleDrivabletDropdown = new Element("//mat-select[@formcontrolname='vehicleDrivableId']");
         public static Element VehicleDispositionDropdown = new Element("//mat-select[@name='vehicleDispositionId']");
-        public static Element DamageSeenInput = new Element("//textarea[@name='damageLocated']");
+        public static Element DamageSeenInput = new Element("(//textarea[@name='damageLocated'])[2]");
         public static Element EstimateOfLossInput = new Element("//input[@name='estimateOfLoss']");
         public static Element SubrogationReferralDropdown = new Element("//mat-select[@formcontrolname='subrogationReferralId']");
         public static Element UsedWithPermissionDropdown = new Element("//mat-select[@formcontrolname='usedWithPermissionId']");
 
         // Vehicle Owner
-        public static Element InsuredButton = new Element("//mat-radio-button//*[contains(text(), ' Insured ')]");
+        public static Element InsuredButton = new Element("(//mat-radio-button//*[contains(text(), ' Insured ')])[1]");
         public static Element NotInsuredIndividualButton = new Element("//mat-radio-button//*[contains(text(), ' Not Insured - Individual ')]");
         public static Element NotInsuredBusinessButton = new Element("//mat-radio-button//*[contains(text(), ' Not Insured - Business ')]");
         public static Element NotInsuredFirstNameInput = new Element("//input[@name='firstName']");
@@ -74,7 +74,7 @@ namespace ApolloQA.Pages
         public static Element DriverLicenseNumberInput = new Element("//input[@formcontrolname='driverLicenseNo']");
         public static Element NoDriverButton = new Element("//mat-radio-button//*[contains(text(), ' No Driver ')]");
         public static Element UnknownDriverButton = new Element("//mat-radio-button//*[contains(text(), ' Unknown ')]");
-        public static Element RelationshipToInsuredDropdown = new Element("//mat-select[@name='pointOfImpactTypeId']");
+        public static Element RelationshipToInsuredDropdown = new Element("//mat-select[@formcontrolname='relationshipTypeId']");
 
         //Action buttons
         public static Element SaveButton = new Element("//button//*[contains(text(), ' Save ')]");
