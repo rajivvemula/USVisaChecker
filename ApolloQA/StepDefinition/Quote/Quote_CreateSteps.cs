@@ -18,8 +18,10 @@ namespace ApolloQA.StepDefinition.Quote
         public string LineOfBusiness = "";
         public string PolicyEffectiveDate = "";
         public string DriverSelected = "";
+        public string Checked = "cdk-mouse focused mat-radio checked";
         public Entity_Quote quote;
         public Entity_Organization organization;
+
 
         [When(@"user navigates to Quote Page")]
         public void WhenUserNavigatesToQuotePage()
@@ -120,53 +122,37 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"user checks for existing driver")]
         public void WhenUserChecksForExistingDriver()
         {
-            bool ExistingDriver = Quote_Drivers.ExistingDriver.assertElementNotPresent();
-            bool StateExceptions = Quote_Drivers.DLStateExceptionsNo.assertElementNotPresent();
-            try { Quote_Drivers.DriverRecord.assertElementNotPresent(5, false);
-                if (Quote_Drivers.DriverRecord.assertElementNotPresent() == true)
-                {
-                    Quote_Drivers.NewDriverButton.Click();
-                    Quote_Drivers.ExistingDriverDropdown.Click();
-                    if (ExistingDriver == true)
-                    {
-                        UserActions.Refresh();
-                        Quote_Drivers.FirstNameInput.setText("Tester");
-                        Quote_Drivers.LastName.setText("driver");
-                        Quote_Drivers.DateOfBirth.setText("04/04/1989");
-                        Quote_Drivers.DriverLicenseDropdown.SelectMatDropdownOptionByText(" IL ");
-                        Quote_Drivers.DriverLicenseNumberInput.setText("E09809854022");
-                        Quote_Drivers.DLExpirationDate.setText("04/04/2029");
-                        Quote_Drivers.CdlDropdown.SelectMatDropdownOptionByText(" No ");
-                    }
-                    else
-                    {
-                        Quote_Drivers.ExistingDriverDropdown.SelectMatDropdownOptionByIndex(0, out string driverSelected);
-                        DriverSelected = driverSelected;
-                        Log.Info($"Expected: {nameof(DriverSelected)}={DriverSelected}");
-                    }
-                    if (StateExceptions == false)
-                    {
-                        Quote_Drivers.DLStateExceptionsNo.Click();
-                    }
-                    Quote_Drivers.ActiveLicenseStatusButton.Click();
-                    Quote_Drivers.InspectionCountInput.setText("10");
-                    Quote_Drivers.ExcludeDriverNo.Click();
-                }
-                else {
-                    Log.Info("Driver already exists");
-                }
-                var select = Quote_Drivers.ActiveLicenseStatusButton.GetAttribute("class");
-                for (var i = 0; i < 50; i++)
-                {
-                    Quote_Drivers.ActiveLicenseStatusButton.Click();
-                    while (select.EndsWith("ng-star-inserted")) ;
-                }
-                Quote_Drivers.SaveDriverButton.Click();
-            }
+            try { Quote_Drivers.DriverRecord.assertElementIsVisible(5); }
             catch
             {
-                new Exception("Element located By.XPath: (//*[@class='datatable-row-center datatable-row-group ng-star-inserted'])[1] was still vissible in the UI after 5 seconds");
-                new Exception("Timed out after 5 seconds");
+                Quote_Drivers.NewDriverButton.Click();
+                Quote_Drivers.FirstNameInput.setText("Tester");
+                Quote_Drivers.LastName.setText("driver");
+                Quote_Drivers.DateOfBirth.setText("04/04/1989");
+                Quote_Drivers.DriverLicenseDropdown.SelectMatDropdownOptionByText(" IL ");
+                Quote_Drivers.DriverLicenseNumberInput.setText("E11509853027");
+                Quote_Drivers.DLExpirationDate.setText("04/04/2029");
+                Quote_Drivers.CdlDropdown.SelectMatDropdownOptionByText(" No ");
+                //if (Quote_Drivers.DLStateExceptionsNo.assertElementNotPresent() == false)
+                //{
+                //    Quote_Drivers.DLStateExceptionsNo.Click();
+                //}
+                Quote_Drivers.ActiveLicenseStatusButton.Click();
+                Quote_Drivers.InspectionCountInput.setText("10");
+                Quote_Drivers.ExcludeDriverNo.Click();
+                var required = Quote_Drivers.ActiveLicenseStatusButton.GetAttribute("class");
+                for (var i = 0; i < 8; i++)
+                {
+                    do
+                    {
+                        if (required.EndsWith(Checked) == false)
+                        {
+                            Quote_Drivers.ActiveLicenseStatusButton.Click();
+                        }
+                    }
+                    while (required.EndsWith("ng-star-inserted"));
+                }
+                Quote_Drivers.SaveDriverButton.Click();
             }
         }
 

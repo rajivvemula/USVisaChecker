@@ -105,7 +105,6 @@ namespace ApolloQA.StepDefinition
             {
                 Shared.GetColumnTitle(detail.Value).assertElementIsVisible();
             }
-
         }
 
         [Then(@"Toast with a message: (.*) is visible")]

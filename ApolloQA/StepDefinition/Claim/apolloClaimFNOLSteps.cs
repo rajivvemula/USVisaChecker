@@ -52,7 +52,8 @@ namespace ApolloQA.StepDefinition
         [When(@"user enters occurrence information for Policy")]
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
-            Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
+            Occurrence.policyNumberField.setText("142"); // policy number 
+            GlobalSearch.SearchResultLabel.assertElementContainsText("Policy 10080-142");
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
@@ -154,5 +155,24 @@ namespace ApolloQA.StepDefinition
             String URL = driver.Url;
             Assert.IsTrue(URL.EndsWith("/claims/fnol-dashboard"));
         }
+
+        [When(@"user enters 255 characters in Location description field")]
+        public void WhenUser255EntersCharactersInLocationDescriptionField()
+        {
+            Occurrence.LocationDescriptionInput.setText("Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Te255");
+            var charCount = Occurrence.LocationDescriptionInput.getTextFieldText().Length;
+            Assert.SoftAreEqual(charCount, "255");
+        }
+
+        [Then(@"user verifies 256 characters in field is not accepted")]
+        public void ThenUserVerifiesCharactersInFieldIsNotAccepted()
+        {
+            Occurrence.LocationDescriptionInput.clearTextField();
+            Occurrence.LocationDescriptionInput.setText("Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Tes256");
+            var charCount = Occurrence.LocationDescriptionInput.getTextFieldText().Length;
+            Assert.SoftAreEqual(charCount, "255");
+        }
+
+
     }
 }

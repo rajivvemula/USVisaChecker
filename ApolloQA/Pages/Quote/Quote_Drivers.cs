@@ -11,7 +11,7 @@ namespace ApolloQA.Pages
         public static Element ExpandAllButton => new Element("//button//*[contains(text(), ' Expand All ')]");
         public static Element ExpandedInfo => new Element("//*[@style='padding-left: 35px; flex-direction: row; box-sizing: border-box; display: flex;']");
         public static Element CollapseAllButton => new Element("//button//*[contains(text(), ' Collapse All ')]");
-        public static Element DriverRecord => new Element("(//*[@class='datatable-row-center datatable-row-group ng-star-inserted'])[1]");
+        public static Element DriverRecord => new Element("(//*[@class='datatable-row-center datatable-row-group ng-star-inserted'])");
         public static Element NewDriverButton => new Element("//button//*[contains(text(), ' Driver ')]");
 
         public static Element ExistingDriverDropdown => new Element("//mat-select[@name='resourceSelect']");
@@ -28,5 +28,6 @@ namespace ApolloQA.Pages
         public static Element InspectionCountInput => new Element("//input[@type='number']");
         public static Element ExcludeDriverNo => new Element($"(//mat-radio-button //*[@class='mat-radio-label-content' and contains(text(), 'No')])");
         public static Element SaveDriverButton => new Element("//button[*[contains(text(), 'Save Driver')]]");
+        public static Element ToolTipError => new Element("(//mat-error[contains(text(), 'Required')])[1]");
     }
 }

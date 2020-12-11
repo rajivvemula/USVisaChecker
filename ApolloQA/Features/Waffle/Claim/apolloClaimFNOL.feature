@@ -19,7 +19,7 @@ Scenario: Create an Occurrence successfully
 	And user waits for spinner to load
 	Then user asserts for Occurence save
 
-Scenario: User cancels an Occurrence addition
+Scenario: TC 25518 : User able to search by policy number
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
@@ -36,4 +36,11 @@ Scenario: User cancels an Occurrence addition
 	When user clicks Continue anyway Button
 	Then user asserts for Occurence cancel
 
-
+Scenario: TC 25541 : Location field accepts 255 characters
+	Given user is successfully logged into biberk
+	When user clicks ' apps ' icon button
+	When user clicks Claim right menu button
+	When user clicks New FNOL Button
+	And user waits for spinner to load
+	And user enters 255 characters in Location description field
+	Then user verifies 256 characters in field is not accepted
