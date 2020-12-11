@@ -21,6 +21,7 @@ namespace ApolloQA.Pages
 
         public static Element LocationDescriptionInput => new Element("//textarea[@formcontrolname='locationDescription']");
         public static Element AddressDropdown => new Element("(//mat-select[@role='combobox'])[3]");
+        public static Element AddressOption => new Element("//mat-card-content[@class='mat-card-content']");
         public static Element StreetAddressOneInput => new Element("//input[@name='line1']");
         public static Element StreetAddressTwoInput => new Element("//input[@name='line2']");
         public static Element CityInput => new Element("//input[@name='city']");

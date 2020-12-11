@@ -173,6 +173,28 @@ namespace ApolloQA.StepDefinition
             Assert.SoftAreEqual(charCount, "255");
         }
 
+        [When(@"user verifies '(.*)' button")]
+        public void WhenUserVerifiesButton(string addReceipt)
+        {
+            Shared.GetButton(addReceipt).assertElementContainsText(" Add Receipt Information ");
+        }
 
+        [When(@"user validates address dropdwon")]
+        public void WhenUserValidatesAddressDropdwon()
+        {
+            Occurrence.AddressDropdown.assertElementIsVisible();
+            Occurrence.AddressDropdown.Click();
+            Occurrence.AddressOption.assertElementIsVisible();            
+        }
+
+        [Then(@"user validates Address fields")]
+        public void ThenUserValidatesAddressFields()
+        {
+            Occurrence.StreetAddressOneInput.assertElementIsVisible();
+            Occurrence.StreetAddressTwoInput.assertElementIsVisible();
+            Occurrence.CityInput.assertElementIsVisible();
+            Occurrence.StateDropdown.assertElementIsVisible();
+            Occurrence.ZipCodeInput.assertElementIsVisible();
+        }
     }
 }
