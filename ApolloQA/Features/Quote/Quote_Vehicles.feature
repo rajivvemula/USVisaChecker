@@ -9,9 +9,9 @@ Scenario: TC 26825 : Quote - vehicle section : vehicle owned
 	When user clicks  Vehicles  Sidetab
 	When user clicks  Vehicle  Button
 	And user waits for spinner to load
-	When user clicks  Owned  Button
+	When user selects Owned Button
 	When user clicks  The Business  Button
-	And user verifies owner input is not visible
+	And user verifies owner input is visible
 	When user clicks  One or more of the Business Owner(s)  Button
 	And user verifies owner input is visible
 	When user clicks  Someone else  Button
@@ -26,10 +26,9 @@ Scenario: TC 26826 : Quote - vehicle section : vehicle financed
 	When user clicks  Vehicles  Sidetab
 	When user clicks  Vehicle  Button
 	And user waits for spinner to load
-	When user clicks  Financed  Button
-	And user enters  Lienholder info
+	When user selects Financed Button
+	And user enters Lienholder info
 	Then user adds Address
-
 
 Scenario: TC 26827 : Quote - vehicle section : vehicle leased
 	Given user is successfully logged into biberk
@@ -39,6 +38,6 @@ Scenario: TC 26827 : Quote - vehicle section : vehicle leased
 	When user clicks  Vehicles  Sidetab
 	When user clicks  Vehicle  Button
 	And user waits for spinner to load
-	When user clicks  Leased  Button
+	When user selects Leased Button
 	And user enters Lessor info
 	Then user adds Address

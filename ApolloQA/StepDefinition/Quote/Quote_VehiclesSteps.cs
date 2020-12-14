@@ -10,11 +10,26 @@ namespace ApolloQA.StepDefinition.Quote
     [Binding]
     public class Quote_VehiclesSteps
     {
-        [When(@"user verifies owner input is not visible")]
-        public void WhenUserVerifiesOwnerInputIsNotVisible()
+        [When(@"user selects (.*) Button")]
+        public void WhenUserSelectsButton(string button)
         {
-            Quote_Vehicles_Page.NameOfOwnerFirstInput.assertElementNotPresent();
-            Quote_Vehicles_Page.NameOfOwnerSecondInput.assertElementNotPresent();
+            for (var i = 0; i < 5; i++)
+            {
+                switch (button.ToLower())
+                {
+                    case "owned":
+                        Quote_Vehicles_Page.OwnedButton.Click();
+                        break;
+                    case "financed":
+                        Quote_Vehicles_Page.FinancedButton.Click();
+                        break;
+                    case "leased":
+                        Quote_Vehicles_Page.LeasedButton.Click();
+                        break;
+                    default:
+                        throw new Exception($"Button option {button} not found");
+                }
+            }
         }
 
         [When(@"user verifies owner input is visible")]
@@ -48,11 +63,11 @@ namespace ApolloQA.StepDefinition.Quote
         {
             Quote_Vehicles_Page.AddAddressButton.Click();
             Quote_Vehicles_Page.AddressTypeDropdown.SelectMatDropdownOptionByText(" Location ");
-            Quote_Vehicles_Page.StreetAddressOneInput.setText("");
-            Quote_Vehicles_Page.StreetAddressTwoInput.setText("");
-            Quote_Vehicles_Page.CityInput.setText("");
+            Quote_Vehicles_Page.StreetAddressOneInput.setText("14662 La Grange Road");
+            Quote_Vehicles_Page.StreetAddressTwoInput.setText("Unit B-1");
+            Quote_Vehicles_Page.CityInput.setText("Orland Park");
             Quote_Vehicles_Page.StateDropdown.SelectMatDropdownOptionByText(" IL ");
-            Quote_Vehicles_Page.ZipInput.setText("");
+            Quote_Vehicles_Page.ZipInput.setText("60462");
             Quote_Vehicles_Page.CountryDropdown.SelectMatDropdownOptionByText(" United States ");
         }
     }
