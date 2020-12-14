@@ -17,8 +17,6 @@ namespace ApolloQA.StepDefinition.Quote
         public string BusinessName = "";
         public string LineOfBusiness = "";
         public string PolicyEffectiveDate = "";
-        public string DriverSelected = "";
-        public string Checked = "cdk-mouse focused mat-radio checked";
         public Entity_Quote quote;
         public Entity_Organization organization;
 
@@ -117,52 +115,6 @@ namespace ApolloQA.StepDefinition.Quote
             Log.Info($"Expected: {nameof(LineOfBusiness)}={LineOfBusiness}");
             Log.Info($"Expected: {nameof(PolicyEffectiveDate)}={PolicyEffectiveDate}");
             Log.Warn("Lastly created quote page test to be implemented");
-        }
-
-        [When(@"user checks for existing driver")]
-        public void WhenUserChecksForExistingDriver()
-        {
-            try { Quote_Drivers.DriverRecord.assertElementIsVisible(5); }
-            catch
-            {
-                Quote_Drivers.NewDriverButton.Click();
-                Quote_Drivers.FirstNameInput.setText("Tester");
-                Quote_Drivers.LastName.setText("driver");
-                Quote_Drivers.DateOfBirth.setText("04/04/1989");
-                Quote_Drivers.DriverLicenseDropdown.SelectMatDropdownOptionByText(" IL ");
-                Quote_Drivers.DriverLicenseNumberInput.setText("E11509853027");
-                Quote_Drivers.DLExpirationDate.setText("04/04/2029");
-                Quote_Drivers.CdlDropdown.SelectMatDropdownOptionByText(" No ");
-                //if (Quote_Drivers.DLStateExceptionsNo.assertElementNotPresent() == false)
-                //{
-                //    Quote_Drivers.DLStateExceptionsNo.Click();
-                //}
-                Quote_Drivers.ActiveLicenseStatusButton.Click();
-                Quote_Drivers.InspectionCountInput.setText("10");
-                Quote_Drivers.ExcludeDriverNo.Click();
-                var required = Quote_Drivers.ActiveLicenseStatusButton.GetAttribute("class");
-                for (var i = 0; i < 8; i++)
-                {
-                    do
-                    {
-                        if (required.EndsWith(Checked) == false)
-                        {
-                            Quote_Drivers.ActiveLicenseStatusButton.Click();
-                        }
-                    }
-                    while (required.EndsWith("ng-star-inserted"));
-                }
-                Quote_Drivers.SaveDriverButton.Click();
-            }
-        }
-
-        [Then(@"User verifies collapse all and expand all")]
-        public void ThenUserVerifiesCollapseAllAndExpandAll()
-        {
-            Quote_Drivers.ExpandAllButton.Click();
-            Quote_Drivers.ExpandedInfo.assertElementIsVisible();
-            Quote_Drivers.CollapseAllButton.Click();
-            Quote_Drivers.ExpandedInfo.assertElementNotPresent();
         }
     }
 }

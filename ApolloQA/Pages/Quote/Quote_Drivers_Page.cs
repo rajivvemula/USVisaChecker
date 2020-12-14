@@ -6,7 +6,7 @@ using ApolloQA.Source.Helpers;
 
 namespace ApolloQA.Pages
 {
-    class Quote_Drivers
+    class Quote_Drivers_Page
     {
         public static Element ExpandAllButton => new Element("//button//*[contains(text(), ' Expand All ')]");
         public static Element ExpandedInfo => new Element("//*[@style='padding-left: 35px; flex-direction: row; box-sizing: border-box; display: flex;']");
