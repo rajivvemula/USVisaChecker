@@ -7,7 +7,7 @@ using TechTalk.SpecFlow;
 namespace ApolloQA.StepDefinition.Quote
 {
     [Binding]
-    class Quote_DriversSteps
+    public class Quote_DriversSteps
     {
 
         public string DriverSelected = "";
@@ -19,9 +19,9 @@ namespace ApolloQA.StepDefinition.Quote
             try { Quote_Drivers_Page.DriverRecord.assertElementIsVisible(5); }
             catch
             {
+                Quote_Drivers_Page.NewDriverButton.Click();
                 try
                 {
-                    Quote_Drivers_Page.NewDriverButton.Click();
                     Quote_Drivers_Page.ExistingDriverDropdown.SelectMatDropdownOptionByIndex(0, out string existingDriver);
                     DriverSelected = existingDriver;
                     Log.Info($"Expected Selected Driver: {nameof(DriverSelected)}={DriverSelected}");
