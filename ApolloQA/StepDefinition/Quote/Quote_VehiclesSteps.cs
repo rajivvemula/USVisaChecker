@@ -13,6 +13,7 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"user selects (.*) Button")]
         public void WhenUserSelectsButton(string button)
         {
+            // TODO : Temporary fix until scroll to Element is working again.
             for (var i = 0; i < 5; i++)
             {
                 switch (button.ToLower())

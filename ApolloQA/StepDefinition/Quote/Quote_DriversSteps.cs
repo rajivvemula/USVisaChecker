@@ -44,6 +44,7 @@ namespace ApolloQA.StepDefinition.Quote
                 Quote_Drivers_Page.InspectionCountInput.setText("10");
                 Quote_Drivers_Page.ExcludeDriverNo.Click();
                 var required = Quote_Drivers_Page.ActiveLicenseStatusButton.GetAttribute("class");
+                // TODO : Temporary fix until scroll to Element is working again.
                 for (var i = 0; i < 5; i++)
                 {
                     do
