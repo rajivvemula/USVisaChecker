@@ -54,7 +54,8 @@ namespace ApolloQA.Pages
             return new Element($"//button[./*[normalize-space(text())='{displayName}']] |" +
                                $"//button[normalize-space(text())='{displayName}'] |" +
                                $"//button//*[contains(text(), '{displayName}')] |" +
-                               $"//mat-radio-button //*[contains(text(), '{displayName}')]");
+                               $"//mat-radio-button //*[contains(text(), '{displayName}')] |" +
+                               $"//a[@role='button' and @class='nav-link' and contains(text(), '{displayName}')]");
         }
 
         public static Element GetIconButton(string iconText)

@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using System;
 using System.Linq;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.StepDefinition
 {
@@ -176,7 +177,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user verifies '(.*)' button")]
         public void WhenUserVerifiesButton(string addReceipt)
         {
-            Shared.GetButton(addReceipt).assertElementContainsText(" Add Receipt Information ");
+            Shared.GetButton(addReceipt).assertElementContainsText("Add Receipt Information");
         }
 
         [When(@"user validates address dropdwon")]
@@ -196,5 +197,32 @@ namespace ApolloQA.StepDefinition
             Occurrence.StateDropdown.assertElementIsVisible();
             Occurrence.ZipCodeInput.assertElementIsVisible();
         }
+
+        [When(@"user selects open claim")]
+        public void WhenUserSelectsOpenClaim()
+        {
+            ClaimsFNOLGrid.OpenClaim.Click();
+        }
+
+        [Then(@"claim header is visible on '(.*)'")]
+        public void ThenClaimHeaderIsVisibleOnFor(string page)
+        {
+            Shared.GetLeftSideTab(page).Click();
+            try { Shared.GetButton(" Continue Anyway").Click();
+                ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible();
+            }
+            catch { ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible(); }
+
+        }
+
+        [Then(@"user asserts of claims header")]
+        public void ThenUserAssertsOfClaimsHeader()
+        {
+            ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible();
+        }
+
+
+
+
     }
 }

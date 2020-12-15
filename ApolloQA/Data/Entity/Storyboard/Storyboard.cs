@@ -59,10 +59,8 @@ namespace ApolloQA.Data.Entity.Storyboard
 
         public List<Section> Sections
         {
-
             get
             {
-
                 var result = SQL.executeQuery(@"
                 SELECT 
                 QS.Id
@@ -71,8 +69,6 @@ namespace ApolloQA.Data.Entity.Storyboard
                 where SS.StoryboardId = @StoryboardId 
                 Order By SS.SortOrder
                 ;", ("@StoryboardId", this.Id));
-
-
                 return result.Select(it => new Section((int)it["Id"])).ToList();
             }
         }

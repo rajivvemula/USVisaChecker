@@ -28,12 +28,18 @@ namespace ApolloQA.StepDefinition.Claim
         [When(@"user completes loss details section")]
         public void WhenUserCompletesLossDetailsSection()
         {
-            Shared.GetButton(" First Party ").Click();
-            Shared.GetButton(" Property Damage ").Click();
-            LossDetails.FaultIndicatorDropdown.SelectMatDropdownOptionByText(" No Fault ");
-            LossDetails.ClaimsAdjusterDropdown.SelectMatDropdownOptionByText("Unassigned");
-            LossDetails.ComplexityDropdown.SelectMatDropdownOptionByText(" Fastrack ");
-            LossDetails.SupervisorNotesInput.setText("Notes of Supervisor : TEST TEST!");
+            try
+            {
+                Shared.GetButton(" First Party ").Click();
+                Shared.GetButton(" Property Damage ").Click();
+            }
+            catch
+            {
+                LossDetails.FaultIndicatorDropdown.SelectMatDropdownOptionByText(" No Fault ");
+                LossDetails.ClaimsAdjusterDropdown.SelectMatDropdownOptionByText("Unassigned");
+                LossDetails.ComplexityDropdown.SelectMatDropdownOptionByText(" Fastrack ");
+                LossDetails.SupervisorNotesInput.setText("Notes of Supervisor : TEST TEST!");
+            }
         }
 
         [When(@"user completes Other Insurer Info")]

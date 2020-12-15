@@ -50,13 +50,51 @@ Scenario: TC 25541 : Location field accepts 255 characters
 
 	@SmokeTest
 Scenario: TC 25541 : Address dropdown provided and include correct Address fields
-Given user is successfully logged into biberk
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
 	When user clicks New FNOL Button
 	And user waits for spinner to load
 	And user selects 'Yes' this occurrence related to an existing claim
+	And user enters occurrence information for Policy
 	When user validates address dropdwon
 	Then user validates Address fields 
+
+Scenario Outline: TC 25638  Claim headers visible
+	Given user is successfully logged into biberk
+	When user clicks ' apps ' icon button
+	When user clicks Claim right menu button
+	When user clicks  Adjuster Dashboard  Button
+	And user waits for spinner to load
+	When user selects open claim
+	Then claim header is visible on '<Page>'
+	Examples: 
+		| Page                |
+		| Occurence           |
+		| Receipt Information |
+		| Loss Details        |
+		| Reserves            |
+		| Payment             |
+		| Recovery            |
+		| Medicare            |
+		| Contacts            |
+		| Documents           |
+		| Activities          |
+
+Scenario: TC 25656, 25657 Claim headers visible
+Given user is successfully logged into biberk
+	When user clicks ' apps ' icon button
+	When user clicks Claim right menu button
+	When user clicks  Adjuster Dashboard  Button
+	And user waits for spinner to load
+	When user selects open claim
+	When user clicks  Recovery  Button
+	When user clicks  Salvage  Button
+	Then user asserts of claims header
+	When user clicks  Recovery  Button
+	When user clicks  Subrogation  Button
+	Then user asserts of claims header
+
+
+
 

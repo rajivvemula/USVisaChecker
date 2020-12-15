@@ -45,6 +45,11 @@ namespace ApolloQA.Source.Driver
             Setup.driver.Navigate().Refresh();
         }
 
+        public static void Back()
+        {
+            Setup.driver.Navigate().Back();
+        }
+
         //
         // General Element Actions
         //

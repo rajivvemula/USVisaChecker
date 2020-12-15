@@ -1,4 +1,5 @@
 ﻿using ApolloQA.Components;
+using ApolloQA.Pages;
 using ApolloQA.Source.Driver;
 using OpenQA.Selenium;
 using System;
@@ -47,6 +48,12 @@ namespace ApolloQA.Features
                 }
 
             }
+        }
+
+        [When(@"user selects Organization")]
+        public void WhenUserSelectsOrganization()
+        {
+            Shared.GetButton(" Smoke Test698 ").Click();
         }
 
 

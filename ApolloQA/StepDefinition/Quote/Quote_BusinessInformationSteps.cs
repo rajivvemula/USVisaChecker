@@ -82,9 +82,7 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenDropdownShouldContainThePreviouslyEnteredAddress()
         {
             var currentAddresses = Quote.Organization.Addresses;
-
             var oldAddressIDs = this.addresses.Select(item => item.Id).ToList();
-
             var actualNewAddresses = currentAddresses.FindAll(it =>  !oldAddressIDs.Contains(it.Id));
             if(actualNewAddresses.Count >1)
             {
@@ -98,7 +96,7 @@ namespace ApolloQA.StepDefinition.Quote
             var currentAddressesString = currentAddresses.Select(it => it.ToString()).ToList();
 
             currentAddressesString.Add("add Add Addressadd");
-            Pages.Shared.GetDropdownField("Physical Address").AssertMatDropdownOptionsEqual(currentAddressesString);
+            Shared.GetDropdownField("Physical Address").AssertMatDropdownOptionsEqual(currentAddressesString);
         }
 
         public static Dictionary<String, String> Display_PropsNames = new Dictionary<String, String>()
