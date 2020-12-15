@@ -1,6 +1,6 @@
 ﻿using ApolloQA.Source.Driver;
 
-namespace ApolloQA.Pages.Quote
+namespace ApolloQA.Pages
 {
     class Quote_Vehicles_Page
     {

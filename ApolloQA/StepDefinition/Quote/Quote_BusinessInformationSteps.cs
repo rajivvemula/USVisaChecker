@@ -1,6 +1,6 @@
 ﻿using System;
 using TechTalk.SpecFlow;
-using ApolloQA.Pages.Quote;
+using ApolloQA.Pages;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 using EntityQuote = ApolloQA.Data.Entity.Quote;
@@ -72,7 +72,7 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenNationalCreditScoreShouldBeDisplayed()
         {
             int? insurranceScore = Quote.Organization.InsurranceScore;
-            String actual = Pages.Quote.Quote_BusinessInformation_Page.Score.GetElementText();
+            String actual = Pages.Quote_BusinessInformation_Page.Score.GetElementText();
 
             String expected = insurranceScore == null ? "Score:" : $"Score: {insurranceScore}";
             Assert.AreEqual(expected, actual.Substring(0, actual.IndexOf("\nLast Checked")-1));

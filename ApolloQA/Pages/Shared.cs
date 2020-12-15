@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
-using Microsoft.Identity.Client;
-using OpenQA.Selenium.Support.UI;
 
 namespace ApolloQA.Pages
 {
@@ -42,7 +38,8 @@ namespace ApolloQA.Pages
 
         public static Element GetDropdownField(string DisplayName)
         {
-            return new Element($"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::mat-select");
+            return new Element($"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::mat-select |" +
+                               $"//*[@class='mat-option-text']//*[contains(text(), '{DisplayName}')]");
 
         }
         public static Element GetInputField(string DisplayName)

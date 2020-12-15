@@ -1,6 +1,5 @@
 ﻿using System;
 using TechTalk.SpecFlow;
-using ApolloQA.Pages.Quote;
 using ApolloQA.Pages;
 using System.Collections.Generic;
 

@@ -1,12 +1,11 @@
 ﻿using System;
 using TechTalk.SpecFlow;
-using ApolloQA.Pages.Quote;
+using ApolloQA.Pages;
 using ApolloQA.Source.Driver;
 using System.Linq;
 using Entity_Quote = ApolloQA.Data.Entity.Quote;
 using Entity_Organization = ApolloQA.Data.Entity.Organization;
 using ApolloQA.Source.Helpers;
-using ApolloQA.Pages;
 using ApolloQA.Components;
 
 namespace ApolloQA.StepDefinition.Quote

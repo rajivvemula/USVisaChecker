@@ -1,5 +1,4 @@
 ﻿using ApolloQA.Pages;
-using ApolloQA.Pages.Quote;
 using System;
 using System.Collections.Generic;
 using System.Text;

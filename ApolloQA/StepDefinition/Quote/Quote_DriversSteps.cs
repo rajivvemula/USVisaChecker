@@ -1,7 +1,4 @@
 ﻿using ApolloQA.Pages;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.StepDefinition.Quote
@@ -67,6 +64,26 @@ namespace ApolloQA.StepDefinition.Quote
             Quote_Drivers_Page.ExpandedInfo.assertElementIsVisible();
             Quote_Drivers_Page.CollapseAllButton.Click();
             Quote_Drivers_Page.ExpandedInfo.assertElementNotPresent();
+        }
+
+        [When(@"user checks Quote info page buttons")]
+        public void WhenUserChecksQuoteInfoPageButtons()
+        {
+            Quote_Create_Page.BusinessName.setText("A&M");
+            Quote_Create_Page.BusinessName.SelectMatDropdownOptionByText("A&M Organization Test");
+            var primary = Quote_Create_Page.SubmitButton.GetAttribute("class");
+            Assert.IsTrue(primary.Contains("mat-primary"));
+            var color = Quote_Create_Page.SubmitButton.GetAttribute("color");
+            Assert.AreEqual(color, "primary");
+        }
+
+        [Then(@"user checks Drivers grid page buttons")]
+        public void ThenUserChecksDriversGridPageButtons()
+        {
+            var gridbutton = Quote_Drivers_Page.GridNextButton.GetAttribute("color");
+            Assert.AreEqual(gridbutton, "primary");
+            var primary = Quote_Drivers_Page.GridNextButton.GetAttribute("class");
+            Assert.IsTrue(primary.Contains("mat-primary"));
         }
     }
 }

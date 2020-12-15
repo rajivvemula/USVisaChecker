@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ApolloQA.Source.Driver;
+﻿using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 
-namespace ApolloQA.Pages.Quote
+namespace ApolloQA.Pages
 {
     class Quote_Page
     {

@@ -1,9 +1,4 @@
 ﻿using ApolloQA.Source.Driver;
-using DocumentFormat.OpenXml.Office.CoverPageProps;
-using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ApolloQA.Pages
 {
