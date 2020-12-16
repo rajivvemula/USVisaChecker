@@ -10,5 +10,7 @@ namespace ApolloQA.Pages
         public static Element PendingFNOL => new Element("(//*[@class='datatable-row-center datatable-row-group ng-star-inserted' and //*[contains(text(), 'Pending')]])[1] //*[2]//*//span//a[@role='button']");
         public static Element ClaimHeader => new Element("//bh-claim-header");
         public static Element OpenClaim => new Element("(//a[@role='button' and @class='nav-link'])[1]");
+        public static Element SalvageButton => new Element("//button[@aria-label='Salvage']");
+        public static Element SubrogationButton => new Element("//button[@aria-label='Subrogation']");
     }
 }

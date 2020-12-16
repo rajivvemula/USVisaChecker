@@ -60,6 +60,7 @@ Scenario: TC 25541 : Address dropdown provided and include correct Address field
 	When user validates address dropdwon
 	Then user validates Address fields 
 
+		# This currently works in QA1, but not in QA2 - waiting for latest build in QA2
 Scenario Outline: TC 25638  Claim headers visible
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -67,10 +68,11 @@ Scenario Outline: TC 25638  Claim headers visible
 	When user clicks  Adjuster Dashboard  Button
 	And user waits for spinner to load
 	When user selects open claim
+	And user waits for spinner to load
 	Then claim header is visible on '<Page>'
 	Examples: 
 		| Page                |
-		| Occurence           |
+		| Occurrence          |
 		| Receipt Information |
 		| Loss Details        |
 		| Reserves            |
@@ -81,6 +83,7 @@ Scenario Outline: TC 25638  Claim headers visible
 		| Documents           |
 		| Activities          |
 
+	# This currently works in QA1, but not in QA2 - waiting for latest build in QA2
 Scenario: TC 25656, 25657 Claim headers visible
 Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -88,11 +91,12 @@ Given user is successfully logged into biberk
 	When user clicks  Adjuster Dashboard  Button
 	And user waits for spinner to load
 	When user selects open claim
-	When user clicks  Recovery  Button
-	When user clicks  Salvage  Button
+	When user selects Recovery button
 	Then user asserts of claims header
-	When user clicks  Recovery  Button
-	When user clicks  Subrogation  Button
+	When user selects Salvage button
+	Then user asserts of claims header
+	When user selects Recovery button
+	When user selects Subrogation button
 	Then user asserts of claims header
 
 

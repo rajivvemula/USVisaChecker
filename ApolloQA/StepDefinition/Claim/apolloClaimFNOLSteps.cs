@@ -201,18 +201,44 @@ namespace ApolloQA.StepDefinition
         [When(@"user selects open claim")]
         public void WhenUserSelectsOpenClaim()
         {
+            ClaimsFNOLGrid.OpenClaim.assertElementIsVisible(60);
             ClaimsFNOLGrid.OpenClaim.Click();
+        }
+
+        [When(@"user selects (.*) button")]
+        public void WhenUserSelectsButton(string button)
+        {
+            switch (button.ToLower())
+            {
+                case "recovery":
+                    try { Shared.GetButton("Continue anyway").Click();
+                        Shared.GetLeftSideTab(" Recovery ").Click();
+                    }
+                    catch { Shared.GetLeftSideTab(" Recovery ").Click(); }
+                    break;
+                case "salvage":
+                    try { Shared.GetButton("Continue anyway").Click();
+                        ClaimsFNOLGrid.SalvageButton.Click();
+                    }
+                    catch { ClaimsFNOLGrid.SalvageButton.Click(); }
+                    break;
+                case "subrogation":
+                    try { Shared.GetButton("Continue anyway").Click();
+                        ClaimsFNOLGrid.SubrogationButton.Click();
+                    }
+                    catch { ClaimsFNOLGrid.SubrogationButton.Click(); }
+                    break;
+            }
         }
 
         [Then(@"claim header is visible on '(.*)'")]
         public void ThenClaimHeaderIsVisibleOnFor(string page)
         {
-            Shared.GetLeftSideTab(page).Click();
-            try { Shared.GetButton(" Continue Anyway").Click();
+            Shared.GetLeftSideTab( page ).Click();
+            try { Shared.GetButton("Continue anyway").Click();
                 ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible();
             }
             catch { ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible(); }
-
         }
 
         [Then(@"user asserts of claims header")]
