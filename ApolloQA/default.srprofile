@@ -3,7 +3,7 @@
   <Settings projectName="ApolloQA" />
   <Execution 
 	stopAfterFailures="-1" 
-	testThreadCount="3"
+	testThreadCount="5"
 	testSchedulingMode="Sequential" 
 	retryFor="None"
     />
