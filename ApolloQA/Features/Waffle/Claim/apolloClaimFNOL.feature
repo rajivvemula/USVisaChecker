@@ -1,7 +1,7 @@
 ﻿Feature: apolloClaimFNOL
 
 
-@biBerkClaimFNOLAdd @SmokeTest
+@biBerkClaimFNOLAdd @SmokeTest @ignore
 Scenario: TC 25557 : Create an Occurrence successfully
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
