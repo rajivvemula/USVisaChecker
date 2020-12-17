@@ -8,7 +8,6 @@ Scenario:TC01 Create new application
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
 	When user clicks New Button
-	And user waits for spinner to load
 	When user enters following values
 	| Display Name     | Field Type   | Value                    |
 	| Business Name    | Autocomplete | Casey Auto Test Org 1202 |

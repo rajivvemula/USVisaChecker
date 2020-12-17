@@ -22,6 +22,8 @@ namespace ApolloQA.Features
         [When(@"user enters following values")]
         public void WhenUserEntersFollowingValues(Table table)
         {
+            UserActions.WaitForSpinnerToDisappear();
+
             foreach (var row in table.Rows)
             {
                 string displayName = row["Display Name"];
@@ -126,7 +128,7 @@ namespace ApolloQA.Features
         }
 
         [Then(@"(.*) modal is visible")]
-        public void ThenNewVehicleModalIsVisible(string title)
+        public void ThenModalIsVisible(string title)
         {
             // This can be split out into another file
 
