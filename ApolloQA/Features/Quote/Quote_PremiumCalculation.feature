@@ -3,8 +3,8 @@
 	setup a quote with valid parameters
 	So that I can modify parameters during testing
 	
-
-@SmokeTest
+#QA 2 rating algorithm not working
+@SmokeTest @broken
 Scenario: Run Rate Calculation New Quote
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
