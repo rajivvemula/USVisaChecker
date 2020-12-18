@@ -40,6 +40,10 @@ Generated\ Files/
 *.VisualState.xml
 TestResult.xml
 
+# Specflow
+*.feature.cs
+*.temp
+
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/

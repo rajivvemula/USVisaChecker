@@ -1,112 +1,91 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	<TargetFramework>netcoreapp3.1</TargetFramework>
+	<PublishChromeDriver>true</PublishChromeDriver>
+	<UserSecretsId>1f2a3f51-b841-4600-b502-0e1c7709bb0d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\Grid\**" />
-    <Compile Remove="Pages\Organization\OrganizationGrid\**" />
-    <Compile Remove="Pages\Organization\OrganizationInsert\**" />
-    <Compile Remove="Pages\Organization\OrganizationView\**" />
-    <EmbeddedResource Remove="Pages\Grid\**" />
-    <EmbeddedResource Remove="Pages\Organization\OrganizationGrid\**" />
-    <EmbeddedResource Remove="Pages\Organization\OrganizationInsert\**" />
-    <EmbeddedResource Remove="Pages\Organization\OrganizationView\**" />
-    <None Remove="Pages\Grid\**" />
-    <None Remove="Pages\Organization\OrganizationGrid\**" />
-    <None Remove="Pages\Organization\OrganizationInsert\**" />
-    <None Remove="Pages\Organization\OrganizationView\**" />
-    <SpecFlowFeatureFiles Remove="Pages\Grid\**" />
-    <SpecFlowFeatureFiles Remove="Pages\Organization\OrganizationGrid\**" />
-    <SpecFlowFeatureFiles Remove="Pages\Organization\OrganizationInsert\**" />
-    <SpecFlowFeatureFiles Remove="Pages\Organization\OrganizationView\**" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Grid\**" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Organization\OrganizationGrid\**" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Organization\OrganizationInsert\**" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Pages\Organization\OrganizationView\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\Quote_Create - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\Quote_PremiumCalculation - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\Quote_Section_Driver - Copy.feature.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <SpecFlowObsoleteCodeBehindFiles Remove="TestCases\Regression\FNOL\N000-LogInAsAdmin.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="TestCases\Regression\Rating\N000-LogInAsAdmin.feature.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Azure.Core" Version="1.7.0" />
+		<PackageReference Include="Azure.Extensions.Configuration.Secrets" Version="1.0.0-preview.1" />
+		<PackageReference Include="Azure.Identity" Version="1.3.0" />
+		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.1.0" />
+		<PackageReference Include="DocumentFormat.OpenXml" Version="2.12.0" />
+		<PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
+		<PackageReference Include="DynamicExpresso.Core" Version="2.3.3" />
+		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
+		<PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
+		<PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
+	    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	    <PackageReference Include="NUnit" Version="3.12.0" />
+    	<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
 
-  <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.35" />
-    <COMReference Include="AutoItX3Lib.dll">
-      <Guid>f8937e53-d444-4e71-9275-35b64210cc3b</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-    </COMReference>
-  </ItemGroup>
+		<PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.15.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+		<PackageReference Include="Microsoft.TestPlatform.TestHost" Version="16.8.3" />
+		<PackageReference Include="Selenium.Support" Version="3.141.0" />
+		<PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+		<PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="87.0.4280.8800" />
+		<PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.28.0" />
+		<PackageReference Include="SpecFlow" Version="3.5.14" />
+		<PackageReference Include="SpecFlow.Assist.Dynamic" Version="1.4.2" />
+		<PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.5.14" />
+		<PackageReference Include="SpecRun.Runner" Version="3.5.8" />
+		<PackageReference Include="SpecRun.SpecFlow" Version="3.5.8" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
-    <PackageReference Include="AutoItX.Dotnet" Version="3.3.14.5" />
-    <PackageReference Include="Bogus" Version="31.0.3" />
-    <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
-    <PackageReference Include="DynamicExpresso.Core" Version="2.3.1" />
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-    <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="16.7.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnit.ConsoleRunner" Version="3.11.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Selenium.Support" Version="3.141.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="86.0.4240.2200" />
-    <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.27.0" />
-    <PackageReference Include="SpecFlow" Version="3.4.3" />
-    <PackageReference Include="SpecFlow.Assist.Dynamic" Version="1.4.2" />
-    <PackageReference Include="SpecFlow.NUnit" Version="3.4.3" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.4.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
+	<ItemGroup>
+	  <None Update="Data\RatingManual\*">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Selenium\" />
-    <Folder Include="Pages\Claims\" />
-    <Folder Include="TestCases\Regression\Permissions\" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Features\Quote\Quote_LeftNavBar.feature.cs">
+	    <DependentUpon>Quote_LeftNavBar.feature</DependentUpon>
+	  </Compile>
+	  <Compile Update="Features\Quote\Quote_Section_Vehicle.feature.cs">
+	    <DependentUpon>Quote_Section_Vehicle.feature</DependentUpon>
+	  </Compile>
+	  <Compile Update="Features\Quote\Quote_Section_Driver.feature.cs">
+	    <DependentUpon>Quote_Section_Driver.feature</DependentUpon>
+	  </Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="TestCases\Regression\Navigation\N000-LogInAsAdmin.feature.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="TestCases\Regression\Rating\RA000_LogInAsAdmin.feature.cs">
-      <DependentUpon>RA000_LogInAsAdmin.feature</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+	  <None Update="default.env.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="qa1.env.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="DataFiles\Rating\Factors.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DataFiles\Rating\KnownFields.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\RatingManual\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_LeftNavBar.feature">
+	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
+	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+	  </SpecFlowFeatureFiles>
+	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_Section_Vehicle.feature">
+	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
+	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+	  </SpecFlowFeatureFiles>
+	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_Section_Driver.feature">
+	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
+	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+	  </SpecFlowFeatureFiles>
+	</ItemGroup>
 
-  <ItemGroup>
-    <SpecFlowFeatureFiles Update="TestCases\Regression\Navigation\N000-LogInAsAdmin.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="TestCases\Regression\Rating\RA000_LogInAsAdmin.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-  </ItemGroup>
-
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="taskkill /f /fi &quot;pid gt 0&quot; /im dotnet.exe" />
+	</Target>
 </Project>

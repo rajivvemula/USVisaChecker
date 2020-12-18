@@ -1,0 +1,111 @@
+﻿{
+  "BaseRateFactors": {
+    "Fields": [ "BaseRateFactors" ],
+    "nameUI": [ "Base Rate Factor" ]
+  },
+  "IsAccidentPreventionFactors": {
+    "Fields": [ "Accident Prevention" ],
+    "nameUI": [ "Accident Prevention Factor" ]
+  },
+  "ClassCodeFactors": {
+    "Fields": [ "Class Code" ],
+    "nameUI": [ "Class Code Factor" ]
+  },
+  "CoveredAutosFactors": {
+    "Fields": [ "Covered Autos" ],
+    "nameUI": [ "Covered Autos Factor" ]
+  },
+  "RadiusFactors": {
+    "Fields": [ "Radius" ],
+    "nameUI": [ "Radius Factor" ]
+  },
+  "VehicleAgeFactors": {
+    "Fields": [ "Vehicle Age" ],
+    "nameUI": [ "Vehicle Age Factor" ]
+  },
+  "FleetSizeFactors": {
+    "Fields": [ "Fleet Size" ],
+    "nameUI": [ "Fleet Size Factor" ]
+  },
+  "OrganizationTypeFactors": {
+    "Fields": [ "Organization Type" ],
+    "nameUI": [ "Organization Type Factor" ]
+  },
+  "MotorCarrierFilingTypeFactors": {
+    "Fields": [ "Motor Carrier Filing Type" ],
+    "nameUI": [ "Motor Carrier Filing Type Factor" ]
+  },
+  "InsuranceScoreTierFactors": {
+    "Fields": [ "Insurance Score Tier" ],
+    "nameUI": [ "Insurance Score Tier Factor" ]
+  },
+  "TerritoryFactors": {
+    "Fields": [ "Territory" ],
+    "nameUI": [ "Territory Factor" ]
+  },
+  "ClassCode_RadiusFactors": {
+    "Fields": [ "Class Code", "Radius" ],
+    "nameUI": [ "Class Code Radius Factor", "Class Code_Radius Factor" ]
+  },
+  "ClassCode_MotorCarrierFilingTypeFactors": {
+    "Fields": [ "Class Code", "Motor Carrier Filing Type" ],
+    "nameUI": [ "Class Code Motor Carrier Filing Type Factor", "Class Code_Motor Carrier Filing Type Factor" ]
+  },
+  "ClassCode_OrganizationTypeFactors": {
+    "Fields": [ "Class Code", "Organization Type" ],
+    "nameUI": [ "Class Code_Organization Type Factor" ]
+  },
+  "BillingType_IsEFT_PaymentPlanFactors": {
+    "Fields": [ "Billing Type", "Payment Plan", "EFT" ],
+    "nameUI": [ "Billing Type EFT Payment Plan Factor" ]
+  },
+  "SizeTypeFactors": {
+    "Fields": [ "Vehicle Type", "GVW/GCW" ],
+    "nameUI": [ "Size Type Factor" ]
+  },
+  "BusinessExperienceFactors": {
+    "Fields": [ "Business Experience" ],
+    "nameUI": [ "Business Experience Factor" ]
+  },
+  "SizeType_VehicleAgeFactors": {
+    "Fields": [ "Vehicle Type", "GVW/GCW", "Vehicle Age" ],
+    "nameUI": [ "Size Type Vehicle Age Factor" ]
+
+  },
+  "MotorCarrierFilingType_SizeTypeFactors": {
+    "Fields": [ "Vehicle Type Description", "GVW/GCW", "Motor Carrier Filing Type" ],
+    "nameUI": [ "Motor Carrier Filing Type Size Type Factor" ]
+
+  },
+  "SizeType_TerritoryFactors": {
+    "Fields": [ "Vehicle Type", "GVW/GCW", "Territory" ],
+    "nameUI": [ "Size Type Territory Factor" ]
+
+  },
+  "Radius_TerritoryFactors": {
+    "Fields": [ "Radius", "Territory" ],
+    "nameUI": [ "Radius Territory Factor" ]
+
+  },
+  "ClassCode_TerritoryFactors": {
+    "Fields": [ "Class Code", "Territory" ],
+    "nameUI": [ "Class Code Territory Factor" ]
+
+  },
+  "ClassCode_FleetSizeFactors": {
+    "Fields": [ "Class Code", "Fleet Size" ],
+    "nameUI": [ "Class Code Fleet Size Factor" ]
+
+  },
+  "FleetSize_SizeTypeFactors": {
+    "Fields": [ "Fleet Size", "Vehicle Type Description", "GVW/GCW" ],
+    "nameUI": [ "Fleet Size Size Type Factor" ]
+
+  },
+  "ClassCode_SizeTypeFactors": {
+    "Fields": [ "Class Code", "Vehicle Type", "GVW/GCW" ],
+    "nameUI": [ "Class Code Size Type Factor" ]
+
+  }
+
+}

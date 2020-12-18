@@ -4,14 +4,19 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
-- Casey
+  branches:
+    include:
+      - master
+      - Casey
+  paths:
+    exclude:
+      - ApolloQA_SpecFlow/*
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
-- name: Browser
+- name: BROWSER
   value: Chrome
 
 
@@ -19,18 +24,18 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/*.sln'
+    restoreSolution: '**/ApolloQA.sln'
     feedsToUse: 'select'
 - task: VSBuild@1
   inputs:
-    solution: '**\*.sln'
+    solution: '**\ApolloQA.sln'
     restoreNugetPackages: true
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
-      $env:Browser = "chrome"
-      Write-Host "Current Browser Value is $env:Browser"
+      $env:BROWSER = "chrome"
+      Write-Host "Current Browser Value is $env:BROWSER"
 - task: VSTest@2
   displayName: 'Running a Smoke Test'
   continueOnError: true
@@ -44,4 +49,3 @@ steps:
     searchFolder: '$(System.DefaultWorkingDirectory)'
     testFiltercriteria: 'TestCategory=SmokeTestBase'
     testRunTitle: 'SmokeTest'
-
