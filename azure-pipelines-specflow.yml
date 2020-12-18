@@ -20,70 +20,75 @@ variables:
 - name: SourceDir
   value: '$(Build.SourcesDirectory)/ApolloQA'
 
+stages:
 
-steps:
+- stage: Test
+  displayName: 'Test '
+  jobs: 
+  - job: RunAutomatedTest
+    displayName: 'Run Automated Tests'
+    steps:
+      - task: NuGetCommand@2
+        inputs:
+          command: 'restore'
+          restoreSolution: '**/ApolloQA.sln'
+          feedsToUse: 'select'
+      - task: VSBuild@1
+        inputs:
+          solution: '**\ApolloQA.sln'
+          restoreNugetPackages: true
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'restore'
-    restoreSolution: '**/ApolloQA.sln'
-    feedsToUse: 'select'
-- task: VSBuild@1
-  inputs:
-    solution: '**\ApolloQA.sln'
-    restoreNugetPackages: true
+      - task: AzureKeyVault@1
+        inputs:
+          azureSubscription: 'Apollo - Dev'
+          KeyVaultName: 'XBIBAOAZCKV2-QA2'
+          SecretsFilter: '*'
+          RunAsPreJob: true
 
-- task: AzureKeyVault@1
-  inputs:
-    azureSubscription: 'Apollo - Dev'
-    KeyVaultName: 'XBIBAOAZCKV2-QA2'
-    SecretsFilter: '*'
-    RunAsPreJob: true
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: Set-DisplayResolution -Width 1920 -Height 1080 -Force
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: Set-DisplayResolution -Width 1920 -Height 1080 -Force
-
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      $url = "https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe"
-      $output = "$(System.DefaultWorkingDirectory)\autoit-v3-setup.exe"
-      Invoke-WebRequest -Uri $url -OutFile $output
-      Start-Process -Wait  -FilePath '$(System.DefaultWorkingDirectory)\autoit-v3-setup.exe' -ArgumentList '/S','/v','/qn' -passthru
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            $url = "https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe"
+            $output = "$(System.DefaultWorkingDirectory)\autoit-v3-setup.exe"
+            Invoke-WebRequest -Uri $url -OutFile $output
+            Start-Process -Wait  -FilePath '$(System.DefaultWorkingDirectory)\autoit-v3-setup.exe' -ArgumentList '/S','/v','/qn' -passthru
 
 
-- task: VSTest@2
-  displayName: 'Running a Smoke Test'
-  continueOnError: true
-  timeoutInMinutes: 120
-  env:
-      ApolloSQL: $(ApolloSQL)
-      CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
-      CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
-      BROWSER: "Chrome"
-      HIGHLIGHT_ON: "false"
-  inputs:
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\ApolloQA.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    testRunTitle: 'SmokeTest'
+      - task: VSTest@2
+        displayName: 'Running a Smoke Test'
+        continueOnError: true
+        timeoutInMinutes: 120
+        env:
+            ApolloSQL: $(ApolloSQL)
+            CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
+            CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
+            BROWSER: "Chrome"
+            HIGHLIGHT_ON: "false"
+        inputs:
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\ApolloQA.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          testRunTitle: 'SmokeTest'
 
-- task: CopyFiles@2
-  displayName: 'Copy TestResults'
-  inputs:
-    SourceFolder: $(Agent.TempDirectory)/TestResults
-    Contents: '**/*'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/TestResults'
-    OverWrite: true
+      - task: CopyFiles@2
+        displayName: 'Copy TestResults'
+        inputs:
+          SourceFolder: $(Agent.TempDirectory)/TestResults
+          Contents: '**/*'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/TestResults'
+          OverWrite: true
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Test Results Files'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/TestResults'
-    ArtifactName: 'TestResults'
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Test Results Files'
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/TestResults'
+          ArtifactName: 'TestResults'
