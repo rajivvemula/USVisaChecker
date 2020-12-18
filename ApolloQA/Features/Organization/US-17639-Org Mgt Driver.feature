@@ -28,6 +28,10 @@ Scenario:TC01 Verify Grid Titles in Driver
 	#| l   | DL Status    |
 
 
+#failing due to driver license repetition. 
+#we might need to use a third party API call to get a random driver license
+#or
+#delete existing driver license from database as a pre-condition
 Scenario:TC02 Add a Driver to Organization
 	When user clicks  Driver Button
 	When user enters following values
