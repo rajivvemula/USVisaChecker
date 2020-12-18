@@ -35,9 +35,9 @@ namespace ApolloQA.StepDefinition.Claim
             }
             catch
             {
-                LossDetails.FaultIndicatorDropdown.SelectMatDropdownOptionByText(" No Fault ");
+                LossDetails.FaultIndicatorDropdown.SelectMatDropdownOptionByText("No Fault");
                 LossDetails.ClaimsAdjusterDropdown.SelectMatDropdownOptionByText("Unassigned");
-                LossDetails.ComplexityDropdown.SelectMatDropdownOptionByText(" Fastrack ");
+                LossDetails.ComplexityDropdown.SelectMatDropdownOptionByText("Fastrack");
                 LossDetails.SupervisorNotesInput.setText("Notes of Supervisor : TEST TEST!");
             }
         }
