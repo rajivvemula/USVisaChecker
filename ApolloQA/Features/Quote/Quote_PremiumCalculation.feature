@@ -65,8 +65,9 @@ Scenario: Run Rate Calculation New Quote
 	When user clicks View Rating Worksheet Button
 	Then Rating Worksheet should display the correct result
 
-
-
+#ignored because it's covered with the above scenario
+#implemented for testing purposes
+@ignore
 Scenario: Run Rate Calculation Existing Quote
 	Given user is successfully logged into biberk
 	When User Navigates to Quote 11557
