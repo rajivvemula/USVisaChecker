@@ -3,6 +3,7 @@
 
 # TODO 
 # Bug 27197 reported for line 20
+@bugReported
 Scenario: TC 22799 Global Search - Search Items
 	Given user is successfully logged into biberk
 	And user validates search for 'EntityType'
