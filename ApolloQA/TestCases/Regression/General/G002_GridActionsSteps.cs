@@ -26,7 +26,7 @@ namespace ApolloQA.TestCases.Regression.General
             foreach (var detail in details)
             {
                 bool checkLabel = grid.CheckColumnLabel(detail.Value);
-                Assert.IsTrue(checkLabel, "Column Title:" + detail.value + " not found");
+                Assert.IsTrue(checkLabel, "Column Title:" + detail.Value + " not found");
             }
 
         }

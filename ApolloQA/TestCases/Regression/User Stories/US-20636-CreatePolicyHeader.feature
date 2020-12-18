@@ -1,4 +1,4 @@
-﻿Feature: 20636_CreatePolicyHeader
+﻿Feature: US-20636-CreatePolicyHeader
 	Verify Policy header details with expanded mode and collapsed mode
 
 @mytag

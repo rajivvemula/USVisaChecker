@@ -151,62 +151,62 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "a",
                             "Date of Loss"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "b",
                             "Time of Loss (HH:MM AM/PM)"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "c",
                             "How was the Notice Received"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "d",
                             "Date Reported"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "e",
                             "Time Reported (HH:MM AM/PM)"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "f",
                             "Related to an Existing Claim?"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "g",
                             "Policy Number"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "h",
                             "First Name"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "i",
                             "Middle Name"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "j",
                             "Last Name"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "k",
                             "Suffix"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "l",
                             "Email"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "m",
                             "Phone Type"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "n",
                             "CAT Field"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "o",
                             "Description of Loss"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "p",
                             "Police Involved?"});
-                table20.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "q",
                             "Fire Department Involved?"});
 #line 15
- testRunner.Then("Verify an input is displayed with label", ((string)(null)), table20, "Then ");
+ testRunner.Then("Verify an input is displayed with label", ((string)(null)), table24, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

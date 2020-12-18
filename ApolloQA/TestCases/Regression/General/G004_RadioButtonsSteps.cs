@@ -25,5 +25,12 @@ namespace ApolloQA.TestCases.Regression.General
             bool verifyRadio = helper.CheckIfRadioExists(radioValue);
             Assert.IsTrue(verifyRadio, " radio button with the value: " + radioValue + " does not exist");
         }
+
+        [When(@"User selects radio option: (.*)")]
+        public void WhenUserSelectsRadioOption(string radio)
+        {
+            helper.SelectRadioOption(radio);
+        }
+
     }
 }

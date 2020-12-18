@@ -106,7 +106,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "DBA",
                             "OrgType",
@@ -118,7 +118,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "YearStart",
                             "YearOwn",
                             "Keyword"});
-                table28.AddRow(new string[] {
+                table56.AddRow(new string[] {
                             "Smoke Test",
                             "Smoke",
                             "Corporation",
@@ -131,7 +131,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "2012",
                             "Accountant"});
 #line 7
- testRunner.When("User creates an Organization", ((string)(null)), table28, "When ");
+ testRunner.When("User creates an Organization", ((string)(null)), table56, "When ");
 #line hidden
 #line 10
  testRunner.Then("Verify organization is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -207,18 +207,18 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
                             "Line1",
                             "City",
                             "State",
                             "Zip"});
-                table29.AddRow(new string[] {
+                table57.AddRow(new string[] {
                             "39 Public Sq",
                             "Wilkes Barre",
                             "PA",
                             "18701"});
 #line 19
- testRunner.When("User adds address to Organization", ((string)(null)), table29, "When ");
+ testRunner.When("User adds address to Organization", ((string)(null)), table57, "When ");
 #line hidden
 #line 22
  testRunner.Then("Verify address is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -254,7 +254,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
                             "First",
                             "Last",
                             "Middle",
@@ -263,7 +263,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Number",
                             "Exp",
                             "CDL"});
-                table30.AddRow(new string[] {
+                table58.AddRow(new string[] {
                             "Jacob",
                             "Seed",
                             "J",
@@ -273,7 +273,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "01/01/2022",
                             "No"});
 #line 25
- testRunner.When("User adds driver to Organization", ((string)(null)), table30, "When ");
+ testRunner.When("User adds driver to Organization", ((string)(null)), table58, "When ");
 #line hidden
 #line 28
  testRunner.Then("Verify driver is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -309,7 +309,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
                             "VIN",
                             "Year",
                             "Make",
@@ -323,7 +323,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Cost",
                             "Value",
                             "Stated"});
-                table31.AddRow(new string[] {
+                table59.AddRow(new string[] {
                             "Random",
                             "2015",
                             "Toyota",
@@ -338,7 +338,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "11000",
                             "12000"});
 #line 31
- testRunner.When("User adds vehicle to Organization", ((string)(null)), table31, "When ");
+ testRunner.When("User adds vehicle to Organization", ((string)(null)), table59, "When ");
 #line hidden
 #line 34
  testRunner.Then("Verify vehicle is added to Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

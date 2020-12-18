@@ -100,14 +100,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                             "Organization Type",
                             "Insurrance Score Tier"});
-                table18.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "Individual",
                             "AB01"});
 #line 6
- testRunner.When("user Selects an Organization with the following relevant values", ((string)(null)), table18, "When ");
+ testRunner.When("user Selects an Organization with the following relevant values", ((string)(null)), table19, "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -140,16 +140,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                             "Vehicle Age",
                             "Radius",
                             "Class Code"});
-                table19.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "3",
                             "100",
                             "602"});
 #line 11
- testRunner.When("user Selects Vehicle Type risks with the following relevant values", ((string)(null)), table19, "When ");
+ testRunner.When("user Selects Vehicle Type risks with the following relevant values", ((string)(null)), table20, "When ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -20,9 +20,9 @@ namespace ApolloQA.TestCases.Regression.UserStories
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("S000-SmokeTest")]
+    [NUnit.Framework.DescriptionAttribute("US-00000-LoginAsAdminForUS")]
     [NUnit.Framework.CategoryAttribute("RegressionTesting")]
-    public partial class S000_SmokeTestFeature
+    public partial class US_00000_LoginAsAdminForUSFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -37,7 +37,7 @@ namespace ApolloQA.TestCases.Regression.UserStories
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "S000-SmokeTest", "Covers Login and Navigation Tests", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-00000-LoginAsAdminForUS", "Covers Login and Navigation Tests", ProgrammingLanguage.CSharp, new string[] {
                         "RegressionTesting"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -153,7 +153,7 @@ testRunner.Given("User is on Homepage", ((string)(null)), ((TechTalk.SpecFlow.Ta
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("1C User Interactions With Dashboard Tabs")]
         [NUnit.Framework.TestCaseAttribute("Policy", null)]
-        [NUnit.Framework.TestCaseAttribute("Application", null)]
+        [NUnit.Framework.TestCaseAttribute("Quote", null)]
         [NUnit.Framework.TestCaseAttribute("Organization", null)]
         [NUnit.Framework.TestCaseAttribute("Home", null)]
         public virtual void _1CUserInteractionsWithDashboardTabs(string tab, string[] exampleTags)

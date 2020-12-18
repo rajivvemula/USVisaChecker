@@ -23,7 +23,7 @@ namespace ApolloQA.Pages.Shared
         public IWebElement HomeIcon => functions.FindElementWait(60, By.XPath("//fa-icon[contains(@class, 'apollo-icon')]"));
         public IWebElement PolicyTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Policy')]"));
         public IWebElement OrganizationTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Organization')]"));
-        public IWebElement ApplicationTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Application')]"));
+        public IWebElement QuoteTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Quote')]"));
         public IWebElement ManagerDashboardTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Manager Dashboard')]"));
         public IWebElement AdjusterDashboardTab => functions.FindElementWait(60, By.XPath("//button[contains(@class, 'top-menu-item') and contains(span, 'Adjuster Dashboard')]"));
         public IWebElement waffleUWTab => functions.FindElementWait(10, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='Underwriting']"));
@@ -38,7 +38,7 @@ namespace ApolloQA.Pages.Shared
             {
                 case "Home": return HomeIcon;
                 case "Organization": return OrganizationTab;
-                case "Application": return ApplicationTab;
+                case "Quote": return QuoteTab;
                 case "Policy": return PolicyTab;
                 case "Underwriting": return waffleUWTab;
                 case "Billing": return waffleBillingTab;
@@ -67,7 +67,7 @@ namespace ApolloQA.Pages.Shared
 
         public void ClickApplicationTab()
         {
-            ApplicationTab.Click();
+            QuoteTab.Click();
         }
 
     }

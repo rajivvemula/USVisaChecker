@@ -106,38 +106,38 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
  testRunner.Then("Verify <tabset> are present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table10.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "a",
                             "Application Information"});
-                table10.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "b",
                             "Business Information"});
-                table10.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "c",
                             "Contacts"});
-                table10.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "d",
                             "UW Questions"});
-                table10.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "e",
                             "Policy Coverages"});
-                table10.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "f",
                             "Drivers"});
-                table10.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "g",
                             "Vehicles"});
-                table10.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "h",
                             "Additional Questions"});
-                table10.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "i",
                             "Summary"});
 #line 8
- testRunner.Then("Verify sidetab is present", ((string)(null)), table10, "Then ");
+ testRunner.Then("Verify sidetab is present", ((string)(null)), table14, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

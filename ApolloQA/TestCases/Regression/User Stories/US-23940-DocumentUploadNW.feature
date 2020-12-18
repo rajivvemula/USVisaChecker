@@ -1,4 +1,4 @@
-﻿Feature: R072_23940DocumentUploadNW
+﻿Feature: US-23940-DocumentUploadNW
 User able to upload document and verify document
 	
 

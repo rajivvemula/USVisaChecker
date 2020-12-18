@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -114,6 +115,63 @@ namespace ApolloQA.Helpers
             return theField.GetAttribute("value");
         }
 
+        public bool UpdateInputField(string fieldName, string fieldType, string value)
+        {
+            switch(fieldType)
+            {
+                case "Input":
+                    IWebElement inputField = functions.FindElementWait(10, By.XPath("//mat-label[normalize-space(text())='" + fieldName +"']/../../preceding-sibling::input"));
+                    inputField.Clear();
+                    inputField.SendKeys(value);
+                    return true;
+                case "Dropdown":
+                    IWebElement dropdownField = functions.FindElementWait(10, By.XPath("//mat-label[normalize-space(text())='" + fieldName + "']/../../preceding-sibling::mat-select"));
+                    if (dropdownField.GetAttribute("aria-disabled").Equals("true"))
+                        return false;
+                    dropdownField.Click();
+                    IWebElement theSelection;
+                    if (value.Equals("Random"))
+                    {
+                        IList<IWebElement> options = cDriver.FindElements(By.XPath("//mat-option"));
+                        //get random
+                        Random r = new Random();
+                        int rInt = r.Next(0, options.Count);
+                        theSelection = options[rInt];
+                    } 
+                    else
+                    {
+                        theSelection = functions.FindElementWaitUntilClickable(10, By.XPath("//mat-option/span[normalize-space(text())='" + value + "']"));
+                    }            
+                    theSelection.Click();
+                    return true;
+                default:
+                    return false;
+
+            }
+
+        }
+
+        public string GetValueOfInputField(string fieldName, string fieldType)
+        {
+            switch (fieldType)
+            {
+                case "Input":
+                    IWebElement inputField = functions.FindElementWait(10, By.XPath("//mat-label[normalize-space(text())='" + fieldName + "']/../../preceding-sibling::input"));
+                    Assert.That(() => inputField.GetAttribute("value").Length, Is.GreaterThan(0).After(15).Seconds.PollEvery(250).MilliSeconds, "Input field " + fieldName + " did not have a value with length>0 after 10 seconds.");
+                    Console.WriteLine("input field has value: " + inputField.GetAttribute("value"));                    
+                    return inputField.GetAttribute("value");
+                case "Dropdown":
+                    IWebElement dropdownFieldValue = functions.FindElementWait(10, By.XPath("//mat-label[normalize-space(text())='" + fieldName + "']/../../preceding-sibling::mat-select//span[contains(@class, 'mat-select-value-text')]/span"));
+                    Assert.That(() => dropdownFieldValue.Text.Length, Is.GreaterThan(0).After(15).Seconds.PollEvery(250).MilliSeconds, "Dropdown field" + fieldName + " did not have a value with length>0 after 10 seconds.");
+                    Console.WriteLine("dropdown field has value: " + dropdownFieldValue.Text);
+                    return dropdownFieldValue.Text;
+                default:
+                    return null;
+
+            }
+
+        }
+
 
         public bool CheckIfDialogPresent()
         {
@@ -133,14 +191,14 @@ namespace ApolloQA.Helpers
         }
         public bool CheckIfTabPresent(string tabName)
         {
-            IWebElement tabLink = functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='" + tabName + "']"));
+            IWebElement tabLink = functions.FindElementWait(30, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='" + tabName + "']"));
             bool verifyTab = tabLink.Displayed;
             return verifyTab;
         }
 
         public void ClickSideTab(string tabName)
         {
-            IWebElement tabLink = functions.FindElementWait(60, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='" + tabName + "']"));
+            IWebElement tabLink = functions.FindElementWaitUntilClickable(30, By.XPath("//div[@class='mat-list-item-content' and normalize-space(text())='" + tabName + "']"));
             tabLink.Click();
         }
 
@@ -187,7 +245,20 @@ namespace ApolloQA.Helpers
             //IWebElement checkbox = functions.FindElementWait(10, By.XPath("//span[@class='mat-checkbox-label' and normalize-space(text())='" + radioValue + "']"));
             IWebElement checkbox = functions.FindElementWait(10, By.XPath("//div[@class='mat-radio-label-content' and text() = ' " + radioValue + " '])"));
             return checkbox.Displayed;
-    }
+        }
+
+        public void SelectRadioOption(string radio)
+        {
+            IWebElement checkbox = functions.FindElementWait(10, By.XPath("//div[@class='mat-radio-label-content' and text() = ' " + radio + " '])"));
+            checkbox.Click();
+        }
+        public string CheckInputRequirement(string name)
+        {
+            //*[@formcontrolname='subrogationReferralId']
+            IWebElement input = functions.FindElementWait(10, By.XPath("//*[@formcontrolname='" + name + "'])"));
+            return input.GetAttribute("aria-required");
+        }
+
         //public void UpdateResourceSelectDropdown()
         //{
 

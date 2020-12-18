@@ -51,7 +51,7 @@ namespace ApolloQA.DataFiles
             //for each vehicle in the Policy/Application find it's algorithm factors
             var selectedCoverages = (JArray)root.GetVehicleTypeRisk()["selectedCoverages"];
 
-            interpreter.SetVariable("InsurranceScoreTier", InsurranceScoreTier);
+            interpreter.SetVariable("InsuranceScoreTier", InsurranceScoreTier);
             foreach (var vehicle in root.GetVehicles())
             {
                 /*

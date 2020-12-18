@@ -17,6 +17,11 @@ namespace ApolloQA.Pages.Shared
             functions = new Functions(driver);
         }
 
+        public IWebElement nextPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to next page']"));
+        public IWebElement firstPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to first page']"));
+        public IWebElement prevPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to previous page']"));
+        public IWebElement lastPage => functions.FindElementWait(10, By.XPath("//a[@aria-label = 'go to last page']"));
+
         //This is the first ellipsis, use it to verify if it exists.
         public IWebElement gridEllipsis => functions.FindElementWait(10, By.XPath("//mat-icon[@aria-label='more']"));
 

@@ -103,6 +103,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  testRunner.Then("Verify Radio Option is present : <Option>", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+#line 7
+ testRunner.When("User selects radio option: <optionName>", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

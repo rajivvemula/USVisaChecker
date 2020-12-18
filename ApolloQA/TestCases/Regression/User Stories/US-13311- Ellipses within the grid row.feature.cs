@@ -144,20 +144,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key",
                             "Value"});
-                table24.AddRow(new string[] {
+                table28.AddRow(new string[] {
                             "a",
                             "Delete"});
-                table24.AddRow(new string[] {
+                table28.AddRow(new string[] {
                             "b",
                             "View"});
-                table24.AddRow(new string[] {
+                table28.AddRow(new string[] {
                             "c",
                             "Edit"});
 #line 14
- testRunner.Then("Verify ellipsis contains the following options", ((string)(null)), table24, "Then ");
+ testRunner.Then("Verify ellipsis contains the following options", ((string)(null)), table28, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ApolloQA.TestCases.Regression
+namespace ApolloQA.TestCases.Regression.UserStories
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,22 +20,22 @@ namespace ApolloQA.TestCases.Regression
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("20636_CreatePolicyHeader")]
-    public partial class _20636_CreatePolicyHeaderFeature
+    [NUnit.Framework.DescriptionAttribute("US-20636-CreatePolicyHeader")]
+    public partial class US_20636_CreatePolicyHeaderFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "20636_CreatePolicyHeader.feature"
+#line 1 "US-20636-CreatePolicyHeader.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression", "20636_CreatePolicyHeader", "\tVerify Policy header details with expanded mode and collapsed mode", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TestCases/Regression/User Stories", "US-20636-CreatePolicyHeader", "\tVerify Policy header details with expanded mode and collapsed mode", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

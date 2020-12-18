@@ -9,3 +9,7 @@ Scenario: Verify Inputs
 	Then Verify a Select contains value : <Select Name>
 	| Key | Value            |
 	| a   | DropDown Value 1 |
+	Then Verify if the input is required
+	| Key | Value     | Required |
+	| a   | Something | false    |
+	

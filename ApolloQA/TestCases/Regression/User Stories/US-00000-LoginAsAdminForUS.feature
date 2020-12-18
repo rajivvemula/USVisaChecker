@@ -1,5 +1,5 @@
 ﻿@RegressionTesting
-Feature: S000-SmokeTest
+Feature: US-00000-LoginAsAdminForUS
 Covers Login and Navigation Tests
 
 
@@ -16,8 +16,8 @@ Scenario Outline:1C User Interactions With Dashboard Tabs
 	Then Tab navigates to <Tab> URL
 
 Examples:
-	| Tab          |  
-	| Policy       | 
-	| Application  | 
-	| Organization | 
+	| Tab          |
+	| Policy       |
+	| Quote        |
+	| Organization |
 	| Home         |

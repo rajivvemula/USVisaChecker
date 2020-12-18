@@ -32,6 +32,9 @@ namespace ApolloQA.Pages.Shared
                 case "appInsertNext": return appInsertNext;
                 case "orgDriverAdd": return orgDriverAdd;
                 case "buttonCancel": return buttonCancel;
+                case "orgVehicleAdd": return orgVehicleAdd;
+                case "orgVehicleVerifyVIN": return orgVehicleVerifyVIN;
+                case "orgVehicleSave": return orgVehicleSave;
                 default: return null;
 
             }
@@ -60,7 +63,9 @@ namespace ApolloQA.Pages.Shared
         public IWebElement orgDriverAdd => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Driver']"));
 
         //Org Vehicle
-        public IWebElement orgVehicleAdd => functions.FindElementWait(10, By.XPath("//span[@class='mat-button-wrapper' and normalize-space(text())='Add Vehicle']"));
+        public IWebElement orgVehicleAdd => functions.FindElementWait(10, By.XPath("//button[.//mat-icon[@aria-label='add']]"));
+        public IWebElement orgVehicleVerifyVIN => functions.FindElementWait(10, By.XPath("//button/span[normalize-space(text())='Verify VIN']"));
+        public IWebElement orgVehicleSave => functions.FindElementWait(10, By.XPath("//button/span[normalize-space(text())='Save']"));
 
         //Org Ripple Menu
         public IWebElement orgRippleCreateChildOrg => functions.FindElementWait(60, By.XPath("//button[//text()[normalize-space() = 'Create Child Organization']]"));

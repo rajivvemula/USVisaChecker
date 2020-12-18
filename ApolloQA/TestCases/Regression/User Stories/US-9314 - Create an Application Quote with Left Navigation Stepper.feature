@@ -18,8 +18,8 @@ Scenario: 0 Login
 Scenario: 1 Create new application
 	Given User is on Homepage
 	When I create a new application with values
-	| Business Name               | LOB             | Effective Date |
-	| Casey Test Organization 921 | Commercial Auto | 10/21/2020     |
+	| Business Name          | LOB             | Effective Date |
+	| Casey IL Test Org 1021 | Commercial Auto | 10/31/2020     |
 	Then an application is successfully created with the proper values
 	And Business Information page is displayed
 

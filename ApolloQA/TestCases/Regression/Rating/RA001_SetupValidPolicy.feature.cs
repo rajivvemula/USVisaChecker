@@ -107,16 +107,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 9
  testRunner.When("User navigates to policy ID 10539", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                             "Vehicle Age",
                             "Radius",
                             "Class Code"});
-                table22.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "7",
                             "150",
                             "603"});
 #line 10
- testRunner.And("user Selects Vehicle Type risks with the following relevant values", ((string)(null)), table22, "And ");
+ testRunner.And("user Selects Vehicle Type risks with the following relevant values", ((string)(null)), table23, "And ");
 #line hidden
 #line 13
  testRunner.And("User navigates to Policy Summary Section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
