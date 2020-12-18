@@ -5,7 +5,7 @@
 	stopAfterFailures="-1" 
 	testThreadCount="1"
 	testSchedulingMode="Sequential" 
-	retryFor="None"
+	retryFor="Failing"
     />
 
 	<Environment testThreadIsolation="AppDomain"/>
