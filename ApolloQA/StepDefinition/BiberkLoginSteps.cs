@@ -2,7 +2,8 @@
 using System;
 using TechTalk.SpecFlow;
 using ApolloQA.Source.Driver;
-
+using System.IO;
+using ApolloQA.Source.Helpers;
 
 namespace ApolloQA.StepDefinition
 {
@@ -20,8 +21,9 @@ namespace ApolloQA.StepDefinition
         [Given(@"user is successfully logged into biberk")]
         public void GivenUserIsSuccessfullyLoggedIntoBiberk()
         {
-            if (driver.Url == "data:,")
+            if (driver.Url == "data:," && loadSessionIntoDriver() == false)
             {
+                
                 GivenUserLandedBiBerkPageWithValidURL();
                 WhenUserEntersAnd("ApolloTestUserG311@biberk.com", "ApolloTest12");
                 WhenUserAttemptsToLogin();
@@ -62,6 +64,20 @@ namespace ApolloQA.StepDefinition
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
             Pages.Home.ApolloIcon.assertElementIsVisible(120);
+        }
+
+        public static bool loadSessionIntoDriver()
+        {
+            String filepath = Path.Combine(Setup.SourceDir, "SessionToken.temp");
+            if (File.Exists(filepath))
+            {
+                string sessionObject = File.ReadAllText(filepath);
+                Pages.Login.navigate();
+                JSExecutor.execute($"window.localStorage.setItem('currentUser', arguments[0])", sessionObject);
+                Pages.Login.navigate();
+                return true;
+            }
+            return false;
         }
     }
 }
