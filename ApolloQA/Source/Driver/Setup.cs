@@ -92,7 +92,10 @@ namespace ApolloQA.Source.Driver
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            driver.Quit();
+            if (Severity.parseLevel(Environment.GetEnvironmentVariable("CURRENT_SEVERITY_LEVEL")).Level != Severity.INT_DEBUG)
+            {
+                driver.Quit();
+            }
             Cosmos.client.Dispose();
         }
 
