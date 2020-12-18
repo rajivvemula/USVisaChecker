@@ -52,7 +52,7 @@ namespace ApolloQA.Source.Helpers
         //
         //  Failure Handling
         //
-        public static void handleFailure(string message, Exception ex = null, bool optional = false)
+        public static System.Exception handleFailure(string message, Exception ex = null, bool optional = false)
         {
             if (optional)
             { Log.Info(message); }
@@ -68,9 +68,10 @@ namespace ApolloQA.Source.Helpers
                     throw new Exception(message);
                 }
             }
+            return ex ?? new Exception(message);
 
         }
-        public static void handleFailure(string message, Exception ex = null, bool optional = false, params (string key, dynamic value)[] parameters)
+        public static System.Exception handleFailure(string message, Exception ex = null, bool optional = false, params (string key, dynamic value)[] parameters)
         {
             if (optional)
             { Log.Info(message, parameters); }
@@ -86,9 +87,10 @@ namespace ApolloQA.Source.Helpers
                     throw new Exception(message);
                 }
             }
+            return ex ?? new Exception(message);
 
         }
-        public static void handleFailure(Exception ex, bool optional = false)
+        public static System.Exception handleFailure(Exception ex, bool optional = false)
         {
             if (optional)
             {
@@ -99,25 +101,10 @@ namespace ApolloQA.Source.Helpers
                 Log.Error(ex.Message);
                 throw ex;
             }
+            return ex;
 
         }
-        public static IEnumerable<Dictionary<String, String>> parseUITable(IWebElement ngxDatatableElement)
-        {
-            List<String> columnNames = ngxDatatableElement.FindElements(By.XPath("//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();
 
-            foreach(var row in ngxDatatableElement.FindElements(By.XPath("//datatable-body-row")))
-            {
-                List<IWebElement> cells = row.FindElements(By.XPath("//datatable-body-cell")).ToList<IWebElement>();
-                var rowDict = new Dictionary<String, String>();
-
-                for(int i=0; i<columnNames.Count(); i++)
-                {
-                    String cellText = string.Join("", cells[i].FindElements(By.XPath("/descendant::*/text()")).Select(child => child.Text));
-                    rowDict.Add(columnNames[i], cellText);
-                }
-                yield return rowDict;
-            }
-        }
 
         public static Dictionary<string, string> TableToDictionary(TechTalk.SpecFlow.Table table)
         {
@@ -183,6 +170,17 @@ namespace ApolloQA.Source.Helpers
             else
             {
                 return null;
+            }
+        }
+        public static int parseInt(string IntegerString)
+        {
+            try
+            {
+                return int.Parse(string.Join("", IntegerString.Where(Char.IsDigit)));
+            }
+            catch (Exception ex)
+            {
+                throw handleFailure($"String {IntegerString} Failed to parse into int", ex);
             }
         }
 

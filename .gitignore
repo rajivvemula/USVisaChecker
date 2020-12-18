@@ -42,6 +42,7 @@ TestResult.xml
 
 # Specflow
 *.feature.cs
+*.temp
 
 # Build Results of an ATL Project
 [Dd]ebugPS/

@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\Quote_Create - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\Quote_PremiumCalculation - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\Quote_Section_Driver - Copy.feature.cs" />
   </ItemGroup>
 
 	<ItemGroup>
@@ -51,6 +53,12 @@
 	  <Compile Update="Features\Quote\Quote_LeftNavBar.feature.cs">
 	    <DependentUpon>Quote_LeftNavBar.feature</DependentUpon>
 	  </Compile>
+	  <Compile Update="Features\Quote\Quote_Section_Vehicle.feature.cs">
+	    <DependentUpon>Quote_Section_Vehicle.feature</DependentUpon>
+	  </Compile>
+	  <Compile Update="Features\Quote\Quote_Section_Driver.feature.cs">
+	    <DependentUpon>Quote_Section_Driver.feature</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -64,6 +72,14 @@
 
 	<ItemGroup>
 	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_LeftNavBar.feature">
+	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
+	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+	  </SpecFlowFeatureFiles>
+	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_Section_Vehicle.feature">
+	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
+	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+	  </SpecFlowFeatureFiles>
+	  <SpecFlowFeatureFiles Update="Features\Quote\Quote_Section_Driver.feature">
 	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
 	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
 	  </SpecFlowFeatureFiles>

@@ -7,6 +7,7 @@ using System.Threading;
 using ApolloQA.Source.Helpers;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 using Utf8Json.Formatters;
 using OpenQA.Selenium.Interactions;
 
@@ -15,7 +16,28 @@ namespace ApolloQA.Source.Driver
     class UserActions
     {
         public const int DEFAULT_WAIT_SECONDS = 30;
-        private static bool HIGHLIGHT_ON = Boolean.Parse(Environment.GetEnvironmentVariable("HIGHLIGHT_ON"));
+        private static bool HIGHLIGHT_ON = Boolean.Parse(Environment.GetEnvironmentVariable("HIGHLIGHT_ON") ?? "false");
+
+        //Most applications have some sort of loading screen, please allow this variable to hold the that locator. please set this xpath in your .env.json file
+        private static readonly String LOADING_SCREEN_XPATH = Environment.GetEnvironmentVariable("LOADING_SCREEN_XPATH");
+        public static void waitForPageLoad()
+        {
+            if(LOADING_SCREEN_XPATH != null)
+            {
+                By locator = By.XPath(LOADING_SCREEN_XPATH);
+                //this is optional
+                try
+                {
+                    FindElementWaitUntilVisible(locator, 1);
+                    WaitForElementToDisappear(locator, 120);
+                }
+                catch(Exception)
+                {
+                    //do nothing
+                }
+            }
+        }
+  
 
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
@@ -61,9 +83,20 @@ namespace ApolloQA.Source.Driver
             {
                 FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
             }
-            catch(Exception ex)
+            catch(StaleElementReferenceException)
             {
-                Functions.handleFailure(ex, optional);
+                Thread.Sleep(1000);
+                FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+
+            }
+            catch(ElementClickInterceptedException)
+            {
+                waitForPageLoad();
+                FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+            }
+            catch (Exception ex)
+            {
+                Functions.handleFailure($"Locator: {ElementLocator}",ex, optional);
             }
         }
 
@@ -167,31 +200,15 @@ namespace ApolloQA.Source.Driver
             IWebElement target;
 
 
-            try
-            {
-                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
-            }
-            catch (StaleElementReferenceException)
-            {
-                Console.WriteLine("caught StaleElementReferenceException");
 
-                Thread.Sleep(2000);
-
-                //retry finding the element
-                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
-            }
-            catch (ElementClickInterceptedException)
-            {
-                Console.WriteLine("caught ElementClickInterceptedException");
-
-                Thread.Sleep(5000);
-
-                //retry finding the element
-                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
-            }
+            target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
             ScrollIntoView(target);
+
             if (HIGHLIGHT_ON)
-                highlight(target);
+                Task.Run(() => highlight(target));
+
+            //upon scroll and highlight to the element, the element would become stale for clicking
+            target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
 
             return target;
         }
@@ -234,29 +251,35 @@ namespace ApolloQA.Source.Driver
 
         public static void SelectMatDropdownOptionByText(By DropdownLocator, string optionDisplayText)
         {
-            var dropdown = FindElementWaitUntilClickable(DropdownLocator);
-            dropdown.Click();
-            var option = FindElementWaitUntilClickable(By.XPath($"//mat-option[normalize-space(*//text())='{optionDisplayText}'] |" + 
-                                                                $"//mat-option[*[@class='mat-option-text' and contains(text(), '{optionDisplayText}')]]"));
-            option.Click();
+            Click(DropdownLocator);
+            Click(By.XPath($"//mat-option[descendant::*[normalize-space(text())= '{optionDisplayText}']]"));
+        }
+        public static void SelectMatDropdownOptionContainingText(By DropdownLocator, string optionDisplayText)
+        {
+            Click(DropdownLocator);
+            Click(By.XPath($"//mat-option[descendant::*[contains(normalize-space(text()), '{optionDisplayText}')]]"));
         }
 
         public static void SelectMatDropdownOptionByIndex(By DropdownLocator, int LogicalIndex)
         {
-            var dropdown = FindElementWaitUntilClickable(DropdownLocator);
-            dropdown.Click();
-            var option = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
-            option[LogicalIndex].Click();
+            Click(DropdownLocator);
+            Click(By.XPath($"//mat-option[{LogicalIndex + 1}]"));
         }
 
         public static void SelectMatDropdownOptionByIndex(By DropdownLocator, int LogicalIndex, out string selectionDisplayName)
         {
-            var dropdown = FindElementWaitUntilClickable(DropdownLocator);
-            dropdown.Click();
+            Click(DropdownLocator);
+            try
+            {
+                WaitForElementToDisappear(By.XPath("//mat-option[descendant::*[normalize-space(text())= 'Searching...']]"));
+            }catch(Exception)
+            {
+
+            }
             var options = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
             selectionDisplayName = string.Join("", options[0].FindElements(By.XPath($"(//mat-option)[{LogicalIndex + 1}]/descendant::*")).Select(it => it.Text.Trim()).Distinct());
+            Click(By.XPath($"//mat-option[{LogicalIndex + 1}]"));
 
-            options[LogicalIndex].Click();
         }
 
         public static IEnumerable<String> GetAllMatDropdownOptions(By DropdownLocator)
@@ -279,9 +302,7 @@ namespace ApolloQA.Source.Driver
 
         public static void ScrollIntoView(IWebElement element)
         {
-            Actions actions = new Actions(Setup.driver);
-            actions.MoveToElement(element);
-            actions.Perform();
+            JSExecutor.execute($"arguments[0].scrollIntoView();", element);
         }
 
         //
@@ -320,6 +341,31 @@ namespace ApolloQA.Source.Driver
             //at this point, spinner appeared, wait until invisible
             waitDisappear.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(spinnerBy));
 
+        }
+
+
+        public static IEnumerable<Dictionary<String, String>> parseUITable(string datatableXpath)
+        {
+            FindElementWaitUntilPresent(By.XPath(datatableXpath));
+            List<String> columnNames = Setup.driver.FindElements(By.XPath(datatableXpath + "//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();
+
+            int rowCount = Driver.Setup.driver.FindElements(By.XPath(datatableXpath + "//datatable-body-row")).Count;
+            for (int rowIndex = 1; rowIndex <= rowCount; rowIndex++)
+            {
+
+                var rowDict = new Dictionary<String, String>();
+
+                for (int i = 0; i < columnNames.Count(); i++)
+                {
+                    // String cellText = string.Join("", cells[i].FindElements(By.XPath("/descendant::*"))
+                    String cellText = string.Join("", Driver.Setup.driver
+                                                      .FindElements(By.XPath($"(({datatableXpath} //datatable-body-row)[{rowIndex}] //datatable-body-cell)[{i + 1}]/descendant::*"))
+                                                      .Select(child => child.Text).Distinct());
+
+                    rowDict.Add(columnNames[i], cellText.Trim());
+                }
+                yield return rowDict;
+            }
         }
     }
 }

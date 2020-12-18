@@ -23,11 +23,34 @@ namespace ApolloQA.Source.Driver
         {
             this.locator = locator;
         }
+        
+        public override string ToString()
+        {
+            return this.locator.ToString();
+        }
+        
+        public string Xpath
+        {
+            get
+            {
+                string loc = locator.ToString();
+                if(loc.Contains("By.XPath:"))
+                {
+                    return loc.Substring(10);
+                }
+                else
+                {
+                    throw Functions.handleFailure(new NotImplementedException($"Locator string [{loc}] xpath conversion not built"));
+                }
+                
+            }
+        }
+
 
         //
         //  General Element Actions
         //
- 
+
         public void Click()
         {
             UserActions.Click(locator);
@@ -217,6 +240,10 @@ namespace ApolloQA.Source.Driver
         {
             UserActions.SelectMatDropdownOptionByText(locator, optionDisplayText);
         }
+        public void SelectMatDropdownOptionContainingText(string optionDisplayText)
+        {
+            UserActions.SelectMatDropdownOptionContainingText(locator, optionDisplayText);
+        }
 
         public void SelectMatDropdownOptionByIndex(int LogicalIndex, out string selectionDisplayName)
         {
@@ -240,6 +267,17 @@ namespace ApolloQA.Source.Driver
             List<String> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
 
             return Assert.AreEqual(dropdownOptions, optionsText, optional);
+        }
+
+
+        //
+        // TABLE HANDLINg
+        //
+
+        public IEnumerable<Dictionary<String, String>> parseUITable()
+        {
+            return UserActions.parseUITable(this.Xpath);
+
         }
     }
 }

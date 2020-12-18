@@ -8,8 +8,12 @@ Scenario: Shared Given
 Scenario: Shared When
 	When user clicks <DisplayName> Button
 	When user clicks <DisplayName> Dropdown
-	When user clicks <DIsplayName> Sidetab
+	When user clicks <DisplayName> Sidetab
+	When user selects dropdown <DropdownDisplayText> option equaling <OptionDisplayText>
+	When user selects dropdown <DropdownDisplayText> option containing <OptionDisplayName>
+	When user selects dropdown <DropdownDisplayText> option at index <Optionindex>
 
+	When user waits 1 seconds
 
 	When user enters the following address
 	| Field Display Name        | Field Type | Field Value     |
@@ -21,6 +25,8 @@ Scenario: Shared When
 	| Country                   | Dropdown   | United States   |
 	And user saves the address
 
+
+	When user selects answer to <Question display text> as <Answer display text>
 
 
 @ignore

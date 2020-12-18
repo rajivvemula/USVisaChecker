@@ -14,8 +14,8 @@ namespace ApolloQA.Data
 {
     public class Engine
     {
-        private static readonly dynamic Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader("Data/Rating/Factors.json").ReadToEnd());
-        private static readonly dynamic KnownFields =  JsonConvert.DeserializeObject<JObject>(new StreamReader("Data/Rating/KnownFields.json").ReadToEnd());
+        private static readonly dynamic Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine($"{Source.Driver.Setup.SourceDir}","Data/Rating/Factors.json")).ReadToEnd());
+        private static readonly dynamic KnownFields =  JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine($"{Source.Driver.Setup.SourceDir}", $"Data/Rating/KnownFields.json")).ReadToEnd());
 
         /// <summary>
         ///  Interpreter used to evaluate strings of code <br/>
@@ -25,7 +25,7 @@ namespace ApolloQA.Data
         public readonly Interpreter interpreter;
 
         //properties public in order to be mentioned in the json files
-        public readonly Entity.Policy root;
+        public readonly Entity.Quote root;
         
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace ApolloQA.Data
         /// constructed with a root object which in the future could be a Policy or Quote. <br/><br/>
         /// <param name="CoverageCode"> To be removed in the future, (iteration through all policy coverages need to be implemented)</param>
         /// </summary>
-        public Engine(Entity.Policy root)
+        public Engine(Entity.Quote root)
         {
             this.root = root;
 
@@ -50,7 +50,8 @@ namespace ApolloQA.Data
         {
             //for each vehicle in the Policy/Quote find it's algorithm factors
             var selectedCoverages = (JArray)root.GetVehicleTypeRisk()["selectedCoverages"];
-            
+            interpreter.SetVariable("InsuranceScoreTier", InsuranceScoreTier);
+
             foreach (var vehicle in root.GetVehicles())
             {
                 /*
@@ -62,10 +63,16 @@ namespace ApolloQA.Data
                 //this foreach finds coverages code dependig on current selection under Policy->Coverage List Test
                 foreach (var coverageCode in root.getCoverageCodes(vehicle))      
                 {
-                    interpreter.SetVariable("BaseRateFactors", float.Parse(getTable($"{coverageCode}.BaseRateFactors")[0]["Base Rate Factor"]));
+                    var baseRateFactor = getTable($"{coverageCode}.BaseRateFactors")[0]["Base Rate Factor"];
+                    Log.Debug("Base rate Factor string"+ baseRateFactor);
+                    Log.Debug("Base rate Factor decimal.parse" + decimal.Parse(baseRateFactor));
+
+                    
+
+                    interpreter.SetVariable("BaseRateFactors", decimal.Parse(getTable($"{coverageCode}.BaseRateFactors")[0]["Base Rate Factor"]));
 
                     var factors = GetAlgorithmFactors(coverageCode, vehicle);
-                    float premium = 0;
+                    decimal premium = 0;
                     foreach (var factor in factors)
                     {
                         if (factor.Key == "CoverageCode")
@@ -74,11 +81,11 @@ namespace ApolloQA.Data
                         }
                         if (factor.Key.Contains("BaseRateFactors"))
                         {
-                            premium = (float)factor.Value["factor"];
+                            premium = (decimal)factor.Value["factor"];
                         }
                         else
                         {
-                            premium = premium * (float)factor.Value["factor"];
+                            premium = premium * (decimal)factor.Value["factor"];
                         }
 
                         ((JObject)factor.Value).Add("currentPremium", premium);
@@ -166,24 +173,26 @@ namespace ApolloQA.Data
 
                                 param["parsedValue"] = ((bool)param["value"]) ? "Yes" : "No";
                             }
-                            if (column.Key.Contains(LOWERBOUND) && param["value"].ToObject<int>() >= int.Parse(column.Value))
+                            if (column.Key.Contains(LOWERBOUND) && param["value"].Type != JTokenType.Null && param["value"].ToObject<int>() >= Functions.parseInt(column.Value))
                             {
                                 lowerBoundMatch = true;
                             }
                             else if (column.Key.Contains(UPPERBOUND))
                             {
-                                var columnValue = column.Value == "+" ? int.MaxValue : int.Parse(column.Value);
-                                var nextRowLowerBound = rowIndex == factorTable.Count-1 ? int.MinValue : int.Parse(factorTable[rowIndex + 1][columnToMatch + $" {LOWERBOUND}"]);
-                                if (param["value"].ToObject<int>() <= columnValue)
+                                var columnValue = column.Value == "+" ? int.MaxValue : Functions.parseInt(column.Value);
+                                var nextRowLowerBound = rowIndex == factorTable.Count-1 ? int.MinValue : Functions.parseInt(factorTable[rowIndex + 1][columnToMatch + $" {LOWERBOUND}"]);
+
+                                if (param["value"].Type != JTokenType.Null && param["value"].ToObject<int>() <= columnValue)
                                 {
                                     upperBoundMatch = true;
                                 }
                                 //check for interpolation US 12209
                                 else if(columnValue != int.MaxValue && 
                                         columnValue+1 != nextRowLowerBound &&
-                                        param["value"].ToObject<int>() < nextRowLowerBound
+                                        param["value"].Type != JTokenType.Null && param["value"].ToObject<int>() < nextRowLowerBound
                                        )
                                 {
+
                                     match.Add(INTERPOLATIONUPPERMATCH, true);
                                     upperBoundMatch = true;
                                 }
@@ -195,7 +204,7 @@ namespace ApolloQA.Data
                                 match.Add(column.Key, true);
 
                                 lowerBoundMatch = false;
-                                lowerBoundMatch = false;
+                                upperBoundMatch = false;
                             }
                             else if (column.Value != null && column.Value == param["value"]?.ToString() || column.Value == param["parsedValue"]?.ToString())
                             {
@@ -223,12 +232,12 @@ namespace ApolloQA.Data
                             ((JObject)factor.Value).Add("matchedNextRow", JObject.FromObject(nextRow));
                             ((JObject)factor.Value).Add("interpolated", true);
 
-                            ((JObject)factor.Value).Add("factor", (float.Parse(row[factorColName])+ float.Parse(nextRow[factorColName]))/2);
+                            ((JObject)factor.Value).Add("factor", (decimal.Parse(row[factorColName])+ decimal.Parse(nextRow[factorColName]))/2);
                         }
                         else
                         {
                             ((JObject)factor.Value).Add("matchedRow", JObject.FromObject(row));
-                            ((JObject)factor.Value).Add("factor", float.Parse(row[factorColName]));
+                            ((JObject)factor.Value).Add("factor", decimal.Parse(row[factorColName]));
 
                         }
 
@@ -242,7 +251,7 @@ namespace ApolloQA.Data
 
                 if (!((JObject)factor.Value).ContainsKey("factor"))
                 {
-                    ((JObject)factor.Value).Add("factor", float.Parse("1"));
+                    ((JObject)factor.Value).Add("factor", decimal.Parse("1"));
                 }
 
             }
@@ -294,7 +303,8 @@ namespace ApolloQA.Data
         {
             JObject values = new JObject();
 
-            dynamic factorFields = Factors[KnownField]?.Fields;
+            var ratingFactor = Factors[KnownField];
+            dynamic factorFields = ratingFactor?.Fields;
 
             if (factorFields == null) { throw new KeyNotFoundException($"Factor Name: [{KnownField}] was not found in DataFiles/Rating/Factors.json"); }
 
@@ -318,6 +328,13 @@ namespace ApolloQA.Data
                 {
                     factorField.Add("type", "float");
                     factorField.Add("value", (float)factor);
+
+                    values[field.Value] = factorField;
+                }
+                else if (factor is decimal)
+                {
+                    factorField.Add("type", "decimal");
+                    factorField.Add("value", (decimal)factor);
 
                     values[field.Value] = factorField;
                 }
@@ -348,6 +365,7 @@ namespace ApolloQA.Data
 
 
             }
+                        values.Merge(ratingFactor);
 
             return values;
         }
@@ -409,7 +427,8 @@ namespace ApolloQA.Data
         /// </returns>
         public static List<Dictionary<String, String>> getTable(String tableName)
         {
-            return Functions.parseCSV(@"lib\RatingManual\" + tableName + ".xlsx").ToList();
+            Log.Debug("Using "+Path.Combine(Source.Driver.Setup.SourceDir, @$"Data\RatingManual\{tableName}.xlsx"));
+            return Functions.parseCSV(Path.Combine(Source.Driver.Setup.SourceDir, @$"Data\RatingManual\{tableName}.xlsx")).ToList();
         }
 
         public int? Territory
@@ -418,11 +437,20 @@ namespace ApolloQA.Data
             {
                 var riskId = ((Entity.Vehicle)this.interpreter.Eval("Vehicle"))["RiskId"];
 
-                var risk = ((JArray)this.root.GetQuote()["risks"]).ToObject<List<dynamic>>().Find(risk => risk["riskId"] == riskId);
+                dynamic risk = new JObject();
+                if (this.root is Entity.Policy)
+                {
+                    //risk = ((JArray)this.root.GetQuote()["risks"]).ToObject<List<dynamic>>().Find(risk => risk["riskId"] == riskId);
+                }
+                else
+                {
+                    risk = ((JArray)this.root["risks"]).ToObject<List<dynamic>>().Find(risk => risk["riskId"] == riskId);
+                }
 
-                var locationID = risk["VehicleDriverLocation"]?["locationId"];
+                var locationID = risk["outputMetadata"]["VehicleDriverLocation"]?["locationId"];
                 if(locationID == null)
                 {
+                    //Log.Debug("Location ID null " + risk.ToString());
                     return null;
                 }
                 var zip = SQL.executeQuery($"SELECT PostalCode FROM [location].[Address] where Id = {locationID}")[0]["PostalCode"];
@@ -431,8 +459,44 @@ namespace ApolloQA.Data
                 if (int.TryParse(data.Find(row => row["Zip Code"] == zip)?["Territory"], out int value))
                 { return value; }
 
+                //Log.Debug("No Match Null" + risk.ToString());
                 return null;
 
+            }
+        }
+
+        public String InsuranceScoreTier
+        {
+            get
+            {
+                var org = root.Organization;
+                int? score = org.InsuranceScore;
+
+                if (score.HasValue)
+                {
+
+                    int fleetSize = root.GetVehicles().Count;
+
+                    String type = org.TypeName;
+
+
+                    foreach (Dictionary<String, String> row in Engine.getTable("CT.2"))
+                    {
+
+                        if (Functions.parseRatingFactorNumericalValues(row["Fleet Size Lower Bound"]) <= fleetSize &&
+                            Functions.parseRatingFactorNumericalValues(row["Fleet Size Upper Bound"]) >= fleetSize &&
+                            Functions.parseRatingFactorNumericalValues(row["Insurance Score Lower Bound"]) <= score &&
+                            Functions.parseRatingFactorNumericalValues(row["Insurance Score Upper Bound"]) >= score &&
+                            row["Organization Type"] == type
+                            )
+                        {
+                            return row["Insurance Score Tier"];
+                        }
+                    }
+                    throw new KeyNotFoundException($"No Score tier found for   Insurrance Score: [[{score}]  -  Org Type: [{type}]  -  Fleet Size: [{fleetSize}]");
+                }
+
+                return null;
             }
         }
 

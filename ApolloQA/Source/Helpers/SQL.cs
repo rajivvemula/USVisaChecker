@@ -17,7 +17,7 @@ namespace ApolloQA.Source.Helpers
         }
         public static List<Dictionary<String, dynamic>> executeQuery(String query, params (string key, dynamic value)[] parameters)
         {
-            IEnumerable<(string key, dynamic value)> listParams = parameters.ToList().FindAll(param => param.value is IEnumerable);
+            IEnumerable<(string key, dynamic value)> listParams = parameters.ToList().FindAll(param => !(param.value is string) && param.value is IEnumerable);
             if (listParams.Any())
             {
                 foreach(var listParam in listParams)
@@ -51,7 +51,15 @@ namespace ApolloQA.Source.Helpers
                     }
                 }
                 connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
+                SqlDataReader reader = null;
+                try
+                {
+                    reader = command.ExecuteReader();
+
+                }catch(Exception ex)
+                {
+                    Functions.handleFailure($"Query: \n{query}\n", ex);
+                }
 
                 try
                 {

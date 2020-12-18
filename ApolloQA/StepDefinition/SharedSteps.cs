@@ -21,6 +21,29 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetDropdownField("Physical Address").Click();
         }
+        [When(@"user selects dropdown (.*) option equaling (.*)")]
+        public void WhenUserSelectsDropdownOption(string DropdownDisplayText, string OptionDisplayText)
+        {
+            Shared.GetDropdownField(DropdownDisplayText).SelectMatDropdownOptionByText(OptionDisplayText);
+        }
+        [When(@"user selects dropdown (.*) option containing (.*)")]
+        public void WhenUserSelectsDropdownOptionContaining(string DropdownDisplayText, string OptionDisplayText)
+        {
+            Shared.GetDropdownField(DropdownDisplayText).SelectMatDropdownOptionContainingText(OptionDisplayText);
+        }
+
+        [When(@"user selects dropdown (.*) option at index (.*)")]
+        public void WhenUserSelectsDropdownOptionAtIndex(string DropdownDisplayText, int index)
+        {
+            Shared.GetDropdownField(DropdownDisplayText).SelectMatDropdownOptionByIndex(index);
+        }
+
+        [When(@"user waits '(.*)' seconds")]
+        public void WhenUserWaitsSeconds(string seconds)
+        {
+            System.Threading.Thread.Sleep(int.Parse(seconds) * 1000);
+        }
+
 
         public static Address previouslyEnteredAddress;
         [When(@"user enters the following address")]
@@ -77,7 +100,7 @@ namespace ApolloQA.StepDefinition
             Shared.GetError(ErrorText);
         }
 
-        [When(@"user enters '(.*)' into '(.*)' field")]
+        [When(@"user enters (.*) into (.*) field")]
         public void WhenUserEnterIntoField(string username, string fieldName)
         {
             Shared.GetField(fieldName, "input").setText(username);
@@ -86,14 +109,24 @@ namespace ApolloQA.StepDefinition
         [When(@"user waits for spinner to load")]
         public void WhenUserWaitsForSpinnerToLoad()
         {
-            Shared.SpinnerLoad.assertElementIsVisible(5, true);
+            Shared.SpinnerLoad.assertElementIsVisible(2, true);
             Shared.SpinnerLoad.assertElementNotPresent();
         }
+
+
+        [When(@"user waits for spinner to dissappear for (.*) seconds")]
+        public void WhenUserWaitsForSpinnerToDissappearForSeconds(int waitTime)
+        {
+            Shared.SpinnerLoad.assertElementIsVisible(2, true);
+            Shared.SpinnerLoad.assertElementNotPresent(waitTime);
+        }
+
 
         [When(@"user clicks (.*) Sidetab")]
         public void WhenUserClicksSidetab(string sidetab)
         {
             Shared.GetLeftSideTab(sidetab).Click();
+            Shared.GetButton("Continue anyway").TryClick(1);
         }
 
         [Then(@"Grid column label is displayed")]
@@ -130,5 +163,24 @@ namespace ApolloQA.StepDefinition
                 Shared.GetLeftSideTab(detail.Value).assertElementIsVisible();
             }
         }
+
+        [When(@"user selects answer to (.*) as (.*)")]
+        public void WhenUserSelectsAnswerToAs(string QuestionDisplayText, string AnswerDisplayText)
+        {
+            Shared.GetQuestionAnswer(QuestionDisplayText, AnswerDisplayText).Click();
+        }
+
+        [When(@"user selects (.*) coverage with (.*) deductible of (.*)")]
+        public void WhenUserSelectsCoverageWithDeductibleOf(string CoverageDisplayText, string DeductibleTypeDisplayText, string DeductilbeAmountDisplayText)
+        {
+            Shared.GetCoverageCheckbox(CoverageDisplayText).Click();
+            Shared.GetCoverageLimitButton(CoverageDisplayText, DeductibleTypeDisplayText).Click();
+            Shared.GetCoverageLimitDropdown(CoverageDisplayText, DeductibleTypeDisplayText).SelectMatDropdownOptionByText(DeductilbeAmountDisplayText);
+            new SharedSteps().WhenUserWaitsForSpinnerToLoad();
+
+
+        }
+
+
     }
 }

@@ -9,7 +9,7 @@ namespace ApolloQA.Source.Helpers
  
     public class JSExecutor
     {
-        public static Object execute(String script, params object[] args)
+        public static object execute(String script, params object[] args)
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)Driver.Setup.driver;
             return js.ExecuteScript(script,args );

@@ -12,12 +12,12 @@ using System.Linq;
 namespace ApolloQA.StepDefinition.Quote
 {
     [Binding]
-    public class Quote_BusinessInformationSteps
+    public class Quote_Section_BusinessInformationSteps
     {
         public static EntityQuote Quote;
         public List<Address> addresses;
 
-        public Quote_BusinessInformationSteps()
+        public Quote_Section_BusinessInformationSteps()
         {
             Quote = Quote_SharedSteps.Quote;
         }
@@ -71,7 +71,7 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"National Credit Score should be displayed")]
         public void ThenNationalCreditScoreShouldBeDisplayed()
         {
-            int? insurranceScore = Quote.Organization.InsurranceScore;
+            int? insurranceScore = Quote.Organization.InsuranceScore;
             String actual = Pages.Quote.Quote_BusinessInformation_Page.Score.GetElementText();
 
             String expected = insurranceScore == null ? "Score:" : $"Score: {insurranceScore}";

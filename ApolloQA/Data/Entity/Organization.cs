@@ -199,11 +199,11 @@ namespace ApolloQA.Data.Entity
         }
 
 
-        public int? InsurranceScore
+        public int? InsuranceScore
         {
             get
             {
-                var response = Cosmos.GetQuery("NcfResponse", $"SELECT * FROM c where c.PartyId = {this.Id} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result;
+                var response = Cosmos.GetQuery("NcfResponse", $"SELECT * FROM c where c.PartyId = {this["partyId"]} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result;
 
                 return response.Count > 0 ? response[0]["RawScore"] : null;
                 
@@ -211,44 +211,7 @@ namespace ApolloQA.Data.Entity
         }
 
 
-        public String InsurranceScoreTier
-        {
-            get
-            {
-                    int? score = this.InsurranceScore;
-                    if(score == null)
-                    {
-                        return null;
-                    }
-                    var VehicleSearchBody = new JObject();
-
-                    VehicleSearchBody.Add("currentPage", 0);
-                    VehicleSearchBody.Add("filters", new JObject("CurrentVehiclesRisksPartyFilter", "\"{\"PartyId\":"+ this["partyId"] + "}\""));
-                    VehicleSearchBody.Add("loadChildren", true);
-
-
-                    int fleetSize = RestAPI.POST("/vehicle/search", VehicleSearchBody).info.totalRecords;
-                    String type = this.TypeName;
-
-
-                    foreach(Dictionary<String, String>row in Engine.getTable("CT.2"))
-                    {
-
-                        if (Functions.parseRatingFactorNumericalValues(row["Fleet Size Lower Bound"]) <= fleetSize &&
-                            Functions.parseRatingFactorNumericalValues(row["Fleet Size Upper Bound"]) >= fleetSize &&
-                            Functions.parseRatingFactorNumericalValues(row["Insurance Score Lower Bound"]) <= score &&
-                            Functions.parseRatingFactorNumericalValues(row["Insurance Score Upper Bound"]) >= score &&
-                            row["Organization Type"] == type
-                            )
-                        {
-                            return row["Insurance Score Tier"];
-                        }
-                    }
-                    return null;
-
-                
-            }
-        }
+       
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,12 @@ namespace ApolloQA
             else if (severity.Level <= currentSev)
             {
               
-                Console.WriteLine($"[{severity.Name}] {text}");
+                if(text is JObject) {
+                    Console.WriteLine($"[{severity.Name}] {text.ToString()}");
+                }
+                else {
+                    Console.WriteLine($"[{severity.Name}] {text}");
+                }
 
             }
         }

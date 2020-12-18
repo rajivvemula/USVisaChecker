@@ -44,6 +44,26 @@ namespace ApolloQA.Data.Entity
             return property == null ? "" : property;
         }
 
+        //Policy caching for better performance
+        private Policy _Policy = null;
+        public Policy GetPolicy()
+        {
+            if(_Policy == null)
+            {
+                _Policy = new Policy((int)GetProperties().issuedPolicyId);
+            }
+            return _Policy;
+        }
+        public JArray getCoverages()
+        {
+           return this.GetPolicy().getCoverages();
+        }
+        public List<String> getCoverageCodes(Vehicle risk)
+        {
+            return this.GetPolicy().getCoverageCodes(risk);
+
+
+        }
         public dynamic GetVehicleTypeRisk()
         {
             int riskTypeId = 1;
@@ -83,6 +103,59 @@ namespace ApolloQA.Data.Entity
                 Log.Debug($"Get Storyboard for Quote ID: {this.Id}");
                 int storyBoardId = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id}").Result[0]["StoryboardId"];
                 return new Storyboard.Storyboard(storyBoardId);
+            }
+        }
+
+        public string CoveredAutos
+        {
+            get
+            {
+                return this.GetPolicy().CoveredAutos;
+            }
+        }
+
+        public String MotorCarrierFiling
+        {
+            get
+            {
+                return this.GetPolicy().MotorCarrierFiling;
+            }
+        }
+        public Boolean AccidentPreventionCredit
+        {
+            get
+            {
+                return this.GetPolicy().AccidentPreventionCredit;
+            }
+
+        }
+        public String BillingType
+        {
+            get
+            {
+                return this.GetPolicy().BillingType;
+            }
+        }
+        public String PaymentPlan
+        {
+            get
+            {
+                return this.GetPolicy().PaymentPlan;
+            }
+        }
+        public String isEft
+        {
+            get
+            {
+                return this.GetPolicy().isEft;
+            }
+
+        }
+        public int? RadiusOfOperation
+        {
+            get
+            {
+                return this.GetPolicy().RadiusOfOperation;
             }
         }
 

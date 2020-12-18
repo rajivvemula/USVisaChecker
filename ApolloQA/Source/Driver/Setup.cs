@@ -35,7 +35,7 @@ namespace ApolloQA.Source.Driver
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            invokeEnvironmentVariables(Environment.GetEnvironmentVariable("ENVIRONMENT_FILE") ?? "default.env.json");
+            invokeEnvironmentVariables(Environment.GetEnvironmentVariable("ENVIRONMENT_FILE") ?? Environment.GetEnvironmentVariable("ENVIRONMENT_FILE", EnvironmentVariableTarget.User) ?? "default.env.json");
 
             invokeNewDriver();
         }
@@ -58,6 +58,7 @@ namespace ApolloQA.Source.Driver
             }
             driver.Manage().Window.Maximize();
         }
+     
 
         [BeforeScenario("newWindow", Order =1)]
         public static void pre_NewWindow()
@@ -110,7 +111,6 @@ namespace ApolloQA.Source.Driver
             //sets Secret and it's value as Environment Variables if provided SECRETNAME
             foreach (var variable in environmentVariables)
             {
-                Console.WriteLine("Env Variable: "+Environment.GetEnvironmentVariable(variable.Key));
                 if (Environment.GetEnvironmentVariable(variable.Key) == null)
                 {
                     Log.Info($"Setting {variable.Key} = {variable.Value}");

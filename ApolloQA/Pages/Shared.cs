@@ -48,8 +48,9 @@ namespace ApolloQA.Pages
         public static Element GetInputField(string DisplayName)
         {
             return new Element($"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::input | " +
-                               $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::textarea |" +
-                               $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::*/input |" +
+                               $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::textarea | " +
+                               $"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::*/input | " +
+                               $"//bh-question-number[descendant::*[text()='{DisplayName}']] //input | " +
                                $"//input[@name='{DisplayName}']");
         }
         public static Element GetButton(string displayName)
@@ -91,11 +92,29 @@ namespace ApolloQA.Pages
             return new Element($"//mat-error[@role='alert' and contains(text(), '{ErrorText}')]");
         }
 
+        public static Element GetQuestionAnswer(string QuestionDisplayText, string AnswerDisplayText)
+        {
+            return new Element($"//bh-question-singleselect[descendant::*[text()='{QuestionDisplayText}']] //mat-radio-button[descendant::*[normalize-space(text())='{AnswerDisplayText}']] |" +
+                               $"//bh-question-boolean[descendant::*[text()='{QuestionDisplayText}']] //mat-radio-button[descendant::*[normalize-space(text())='{AnswerDisplayText}']]");
+        }
+        public static Element GetCoverageCheckbox(string CoverageDisplayText)
+        {
+            return new Element($"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']]//mat-checkbox");
+        }
+        public static Element GetCoverageLimitButton(string CoverageDisplayText, string CoverageLimitDisplayText)
+        {
+            return new Element($"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']] //bh-coverage-limit-definition[descendant::*[normalize-space(text())='{CoverageLimitDisplayText}']]//mat-radio-button");
+        }
+        public static Element GetCoverageLimitDropdown(string CoverageDisplayText, string CoverageLimitDisplayText)
+        {
+            return new Element($"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']] //bh-coverage-limit-definition[descendant::*[normalize-space(text())='{CoverageLimitDisplayText}']]//mat-select");
+        }
+
         //
         // Specific Shared Elements
         //
         public static Element SuggestedAddressCTA => new Element("//bh-address-details/*");
-        public static Element SpinnerLoad => new Element("//bh-mat-spinner-overlay");
+        public static Element SpinnerLoad => new Element("//bh-mat-spinner-overlay/*");
         public static Element GridskipToLastButton => new Element("//a[@role='button' and @aria-label='go to last page']");
         public static Element LastGridItem => new Element("(//a[@class='nav-link'])[last()]");
 

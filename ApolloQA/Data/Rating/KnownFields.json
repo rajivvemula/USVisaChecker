@@ -3,17 +3,17 @@
     "source": "BaseRateFactors"
   },
   "Accident Prevention": {
-    "source": "root.accidentPreventionCredit"
+    "source": "root.AccidentPreventionCredit"
   },
   "Class Code": {
     "type": "string",
     "source": "Vehicle.ClassCode"
   },
   "Covered Autos": {
-    "source": "root.coveredAutos"
+    "source": "root.CoveredAutos"
   },
   "Radius": {
-    "source": "Vehicle.RadiusOfOperation"
+    "source": "root.RadiusOfOperation"
   },
   "Vehicle Age": {
     "setter": "Vehicle.YearOfManufacture = DateTime.Now.Year - value",
@@ -23,10 +23,10 @@
     "source": "root.GetVehicles().Count"
   },
   "Motor Carrier Filing Type": {
-    "source": "root.motorCarrierFiling"
+    "source": "root.MotorCarrierFiling"
   },
   "Insurance Score Tier": {
-    "source": "root.Organization.InsurranceScoreTier"
+    "source": "InsuranceScoreTier"
   },
   "Territory": {
     "source": "Territory"
@@ -42,8 +42,20 @@
   },
   "EFT": {
     "source": "root.isEft"
+  },
+  "Vehicle Type": {
+    "source": "Vehicle.TypeName"
+  },
+  "Vehicle Type Description": {
+    "source": "Vehicle.TypeName"
+  },
+  "GVW/GCW": {
+    "source": "Vehicle.GrossVehicleWeight"
+  },
+  "Business Experience": {
+    "source": "DateTime.Now.Year - root.Organization.YearBusinessStarted"
   }
- 
+
 }
   
 

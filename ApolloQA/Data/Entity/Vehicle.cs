@@ -84,5 +84,23 @@ namespace ApolloQA.Data.Entity
             }
         }
 
+        public string TypeName
+        {
+            get
+            {
+               return (String)SQL.executeQuery(@" SELECT Name 
+                                     FROM risk.VehicleType VT
+                                     LEFT JOIN risk.Vehicle V ON V.TypeId = VT.id
+                                     WHERE V.Id = @Id;", (("@Id", $"{this.Id}")))[0]["Name"];
+            }
+        }
+        public int GrossVehicleWeight
+        {
+            get
+            {
+                return int.Parse(this.GetProperty("GrossVehicleWeight"));
+            }
+        }
+
     }
 }

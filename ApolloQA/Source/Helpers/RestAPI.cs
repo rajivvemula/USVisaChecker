@@ -29,6 +29,7 @@ namespace ApolloQA.Source.Helpers
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            Log.Debug("token " + getAuthToken());
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getAuthToken());
 
             String bodyString;

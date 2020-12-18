@@ -47,16 +47,6 @@ namespace ApolloQA.Data.Entity
             return property == null ? "" : property;
         }
 
-        public List<dynamic> GetCoverages()
-        {
-            return ((JArray)this.GetProperties().coverages).Select(coverage => coverage).ToList<dynamic>();
-        }
-        public List<String> GetCoverageCodes()
-        {
-            return GetCoverages().Select(coverage => (String)coverage["associatedCoverage"]["coverageCode"]).ToList<String>();
-
-
-        }
         public Quote GetQuote()
         {
             return new Quote(GetProperties()["quoteId"].ToObject<int>());
@@ -119,7 +109,7 @@ namespace ApolloQA.Data.Entity
             }
         }
         
-        public Boolean accidentPreventionCredit
+        public Boolean AccidentPreventionCredit
         {
             get
             {
@@ -127,18 +117,18 @@ namespace ApolloQA.Data.Entity
             }
 
         }
-        public String coveredAutos
+        public String CoveredAutos
         {
             get
             {
-                return (String)this["ratingFactors"]["coveredAutos"];
+                return (String)this["metadata"]["CoveredAutos"];
             }
         }
-        public String motorCarrierFiling
+        public String MotorCarrierFiling
         {
             get
             {
-                return (String)this["ratingFactors"]["motorCarrierFiling"];
+                return (String)this["metadata"]["MotorCarrierFiling"];
             }
         }
         public String BillingType
@@ -162,6 +152,21 @@ namespace ApolloQA.Data.Entity
                 return (String)this["ratingFactors"]["isEft"];
             }
 
+        }
+        public int? RadiusOfOperation
+        {
+            get
+            {
+                if (int.TryParse((String)this["metadata"]["RadiusOfOperation"], out int result))
+                {
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+                
+            }
         }
 
     }
