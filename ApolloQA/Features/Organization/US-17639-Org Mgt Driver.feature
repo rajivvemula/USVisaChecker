@@ -5,26 +5,28 @@ Feature: US-17639-Org Mgt Driver
 	so that I can pull it in as necessary at the Application Quote level.
 
 
-
 Scenario:TC01 Verify Grid Titles in Driver
 	Given user is successfully logged into biberk
 	When user clicks Organization Button
-	When user clicks  New  Button
-	And user waits for spinner to load
-	When user enters business information
-	| BusinessName | DBA | TaxIdType | TaxIdNumber | DescriptionOfOperations | BusinessPhoneNumber | BusinessEamil  | BusinessWebsite | Keyword	| YearStarted | YearOwned |
-	| TheTestOrg   | dba | FEIN      | 81-6541000  | DescriptionofOps        | 8021585010          | testorg@me.com | testorg.com     | S       | 2000        | 2005      |
-	And user clicks  Save  Button
+	And user selects Organization
 	And user waits for spinner to load
 	When user clicks Drivers Sidetab
+	And user waits for spinner to load
 	Then Grid column label is displayed
-	| Key | Value      |
-	| a   | Driver #   |
-	| b   | License #  |
-	| c   | State      |
-	| d   | First Name |
-	| e   | Last Name  |
-	| f   | Status     |
+	| Key | Value        |
+	| a   | Driver #     |
+	| b   | License #    |
+	| c   | State        |
+	| d   | First Name   |
+	| e   | Last Name    |
+	| f   | Status       |
+	#| g   | Excluded     |
+	#| h   | Driver Added |
+	#| i   | Accidents    |
+	#| j   | Violations   |
+	#| k   | Convictions  |
+	#| l   | DL Status    |
+
 
 Scenario:TC02 Add a Driver to Organization
 	When user clicks  Driver Button

@@ -1,6 +1,5 @@
 ﻿using System;
 using TechTalk.SpecFlow;
-using ApolloQA.Pages.Quote;
 using ApolloQA.Pages;
 using System.Collections.Generic;
 
@@ -21,14 +20,18 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"User should be able to navigate to each section successfully")]
         public void ThenUserShouldBeAbleToNavigateToEachSectionSuccessfully()
         {
-            
+            //TODO : Storyboard section missmatch
             foreach(var section in Quote_SharedSteps.Quote.Storyboard.Sections)
             {
                 new SharedSteps().WhenUserWaitsForSpinnerToLoad();
                 var sectionCTA = Shared.GetLeftSideTab(section.Name);
                 sectionCTA.Click();
+                try { Shared.GetButton(" Continue Anyway ").assertElementNotPresent(); }
+                catch
+                {
+                    Shared.GetButton(" Continue Anyway ").Click();
+                }
                 Assert.CurrentURLEquals(Quote_Page.GetURL(Quote_SharedSteps.Quote.Id, section.Id));
-
             }
         }
     }

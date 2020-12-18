@@ -11,8 +11,8 @@ Scenario: Create New Quote Existing Organization
 	And user Selects Policy Effective Date as Tomorrow
 	And user clicks Next Button
 	Then A new Quote should successfully be created
-#	And User should be redirected to the newly created Quote Business Information Section
-#	And Quote header should contain correct values
+	And User should be redirected to the newly created Quote Business Information Section
+	And Quote header should contain correct values
 
 
 @SmokeTest @Quote 
@@ -38,14 +38,6 @@ Scenario: Create New Quote New Organization
 	Then A new Quote should successfully be created
 	And User should be redirected to the newly created Quote Business Information Section
 	And Quote header should contain correct values
-
-Scenario: TC 26736: Show All / Collapse All on Quote -> Drivers tab
-	Given user is successfully logged into biberk
-	When user clicks Quote Button
-	And user selects last Quote on grid
-	And user waits for spinner to load
-	When user clicks  Drivers  Sidetab
-	Then User verifies collapse all and expand all
 
 
 

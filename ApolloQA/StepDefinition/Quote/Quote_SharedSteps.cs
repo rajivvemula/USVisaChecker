@@ -1,6 +1,6 @@
 ﻿using System;
 using TechTalk.SpecFlow;
-using ApolloQA.Pages.Quote;
+using ApolloQA.Pages;
 using ApolloQA.Source.Driver;
 using System.Linq;
 using EntityQuote = ApolloQA.Data.Entity.Quote;

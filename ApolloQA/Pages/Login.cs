@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ApolloQA.Source.Helpers;
-using ApolloQA.Source.Driver;
+﻿using ApolloQA.Source.Driver;
 using OpenQA.Selenium;
 
 namespace ApolloQA.Pages

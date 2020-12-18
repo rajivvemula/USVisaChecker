@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ApolloQA.Source.Driver;
+﻿using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 
-namespace ApolloQA.Pages.Quote
+namespace ApolloQA.Pages
 {
     class Quote_Create_Page
     {
@@ -12,7 +9,7 @@ namespace ApolloQA.Pages.Quote
         public static string GetURL() => Functions.ParseURL(URL_PATH);
         public static void Navigate() => UserActions.Navigate(GetURL());
 
-        public static Element BusinessName => new Element("//bh-input-autocomplete[@name='businessName']/..");
+        public static Element BusinessName => new Element("//bh-input-autocomplete[@name='businessName']//input");
         public static Element LineOfBusiness => new Element("//mat-select[@name='lineOfBusiness']/..");
         public static Element PolicyEffectiveDate => new Element("//input[@name='policyEffectiveDate']");
         public static Element PolicyExpirationDate => new Element("//input[@name='policyExpirationDate']");

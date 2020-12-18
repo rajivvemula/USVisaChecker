@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using System;
 using System.Linq;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace ApolloQA.StepDefinition
 {
@@ -52,7 +53,8 @@ namespace ApolloQA.StepDefinition
         [When(@"user enters occurrence information for Policy")]
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
-            Occurrence.policyNumberField.setText("101"); // generic Text to initiate the list to choose from
+            Occurrence.policyNumberField.setText("142"); // policy number 
+            GlobalSearch.SearchResultLabel.assertElementContainsText("Policy 10080-142");
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
@@ -154,5 +156,99 @@ namespace ApolloQA.StepDefinition
             String URL = driver.Url;
             Assert.IsTrue(URL.EndsWith("/claims/fnol-dashboard"));
         }
+
+        [When(@"user enters 255 characters in Location description field")]
+        public void WhenUser255EntersCharactersInLocationDescriptionField()
+        {
+            Occurrence.LocationDescriptionInput.setText("Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Te255");
+            var charCount = Occurrence.LocationDescriptionInput.getTextFieldText().Length;
+            Assert.SoftAreEqual(charCount, "255");
+        }
+
+        [Then(@"user verifies 256 characters in field is not accepted")]
+        public void ThenUserVerifiesCharactersInFieldIsNotAccepted()
+        {
+            Occurrence.LocationDescriptionInput.clearTextField();
+            Occurrence.LocationDescriptionInput.setText("Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Test! Description of Location - Tes256");
+            var charCount = Occurrence.LocationDescriptionInput.getTextFieldText().Length;
+            Assert.SoftAreEqual(charCount, "255");
+        }
+
+        [When(@"user verifies '(.*)' button")]
+        public void WhenUserVerifiesButton(string addReceipt)
+        {
+            Shared.GetButton(addReceipt).assertElementContainsText("Add Receipt Information");
+        }
+
+        [When(@"user validates address dropdwon")]
+        public void WhenUserValidatesAddressDropdwon()
+        {
+            Occurrence.AddressDropdown.assertElementIsVisible();
+            Occurrence.AddressDropdown.Click();
+            Occurrence.AddressOption.assertElementIsVisible();            
+        }
+
+        [Then(@"user validates Address fields")]
+        public void ThenUserValidatesAddressFields()
+        {
+            Occurrence.StreetAddressOneInput.assertElementIsVisible();
+            Occurrence.StreetAddressTwoInput.assertElementIsVisible();
+            Occurrence.CityInput.assertElementIsVisible();
+            Occurrence.StateDropdown.assertElementIsVisible();
+            Occurrence.ZipCodeInput.assertElementIsVisible();
+        }
+
+        [When(@"user selects open claim")]
+        public void WhenUserSelectsOpenClaim()
+        {
+            ClaimsFNOLGrid.OpenClaim.assertElementIsVisible(60);
+            ClaimsFNOLGrid.OpenClaim.Click();
+        }
+
+        [When(@"user selects (.*) button")]
+        public void WhenUserSelectsButton(string button)
+        {
+            switch (button.ToLower())
+            {
+                case "recovery":
+                    try { Shared.GetButton("Continue anyway").Click();
+                        Shared.GetLeftSideTab(" Recovery ").Click();
+                    }
+                    catch { Shared.GetLeftSideTab(" Recovery ").Click(); }
+                    break;
+                case "salvage":
+                    try { Shared.GetButton("Continue anyway").Click();
+                        ClaimsFNOLGrid.SalvageButton.Click();
+                    }
+                    catch { ClaimsFNOLGrid.SalvageButton.Click(); }
+                    break;
+                case "subrogation":
+                    try { Shared.GetButton("Continue anyway").Click();
+                        ClaimsFNOLGrid.SubrogationButton.Click();
+                    }
+                    catch { ClaimsFNOLGrid.SubrogationButton.Click(); }
+                    break;
+            }
+        }
+
+        [Then(@"claim header is visible on '(.*)'")]
+        public void ThenClaimHeaderIsVisibleOnFor(string page)
+        {
+            Shared.GetLeftSideTab( page ).Click();
+            try { Shared.GetButton("Continue anyway").Click();
+                ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible();
+            }
+            catch { ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible(); }
+        }
+
+        [Then(@"user asserts of claims header")]
+        public void ThenUserAssertsOfClaimsHeader()
+        {
+            ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible();
+        }
+
+
+
+
     }
 }

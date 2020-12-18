@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
-using Microsoft.Identity.Client;
-using OpenQA.Selenium.Support.UI;
 
 namespace ApolloQA.Pages
 {
@@ -42,7 +38,8 @@ namespace ApolloQA.Pages
 
         public static Element GetDropdownField(string DisplayName)
         {
-            return new Element($"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::mat-select");
+            return new Element($"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::mat-select |" +
+                               $"//*[@class='mat-option-text']//*[contains(text(), '{DisplayName}')]");
 
         }
         public static Element GetInputField(string DisplayName)
@@ -58,7 +55,8 @@ namespace ApolloQA.Pages
             return new Element($"//button[./*[normalize-space(text())='{displayName}']] |" +
                                $"//button[normalize-space(text())='{displayName}'] |" +
                                $"//button//*[contains(text(), '{displayName}')] |" +
-                               $"//mat-radio-button //*[contains(text(), '{displayName}')]");
+                               $"//mat-radio-button //*[contains(text(), '{displayName}')] |" +
+                               $"//a[@role='button' and @class='nav-link' and contains(text(), '{displayName}')]");
         }
 
         public static Element GetIconButton(string iconText)
@@ -117,6 +115,6 @@ namespace ApolloQA.Pages
         public static Element SpinnerLoad => new Element("//bh-mat-spinner-overlay/*");
         public static Element GridskipToLastButton => new Element("//a[@role='button' and @aria-label='go to last page']");
         public static Element LastGridItem => new Element("(//a[@class='nav-link'])[last()]");
-
+        public static Element toastrMessage => new Element("//div[@class='toast-content']/descendant::*");
     }
 }

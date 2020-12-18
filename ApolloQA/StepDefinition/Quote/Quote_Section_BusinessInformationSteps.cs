@@ -1,6 +1,6 @@
 ﻿using System;
 using TechTalk.SpecFlow;
-using ApolloQA.Pages.Quote;
+using ApolloQA.Pages;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 using EntityQuote = ApolloQA.Data.Entity.Quote;
@@ -72,7 +72,7 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenNationalCreditScoreShouldBeDisplayed()
         {
             int? insurranceScore = Quote.Organization.InsuranceScore;
-            String actual = Pages.Quote.Quote_BusinessInformation_Page.Score.GetElementText();
+            String actual = Pages.Quote_BusinessInformation_Page.Score.GetElementText();
 
             String expected = insurranceScore == null ? "Score:" : $"Score: {insurranceScore}";
             Assert.AreEqual(expected, actual.Substring(0, actual.IndexOf("\nLast Checked")-1));
@@ -82,9 +82,7 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenDropdownShouldContainThePreviouslyEnteredAddress()
         {
             var currentAddresses = Quote.Organization.Addresses;
-
             var oldAddressIDs = this.addresses.Select(item => item.Id).ToList();
-
             var actualNewAddresses = currentAddresses.FindAll(it =>  !oldAddressIDs.Contains(it.Id));
             if(actualNewAddresses.Count >1)
             {
@@ -98,7 +96,7 @@ namespace ApolloQA.StepDefinition.Quote
             var currentAddressesString = currentAddresses.Select(it => it.ToString()).ToList();
 
             currentAddressesString.Add("add Add Addressadd");
-            Pages.Shared.GetDropdownField("Physical Address").AssertMatDropdownOptionsEqual(currentAddressesString);
+            Shared.GetDropdownField("Physical Address").AssertMatDropdownOptionsEqual(currentAddressesString);
         }
 
         public static Dictionary<String, String> Display_PropsNames = new Dictionary<String, String>()

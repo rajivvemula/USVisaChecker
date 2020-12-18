@@ -29,6 +29,7 @@ Scenario: Shared When
 	When user selects answer to <Question display text> as <Answer display text>
 
 
+
 @ignore
 Scenario: Shared Then
 
@@ -43,4 +44,3 @@ Scenario: Shared Then
 	| Key | Value                |
 	| a   | Business Information |
 
-	
