@@ -10,7 +10,7 @@
 
 	<Environment testThreadIsolation="AppDomain"/>
 	
-	<Filter>!@ignore &amp; !@bugReported</Filter>
+	<Filter>!@ignore &amp; !@bugReported &amp; !@broken</Filter>
    <!--<Filter>@SmokeTest &amp; @Quote</Filter>
    -->
 
