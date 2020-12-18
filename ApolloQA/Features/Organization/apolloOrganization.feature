@@ -1,5 +1,7 @@
 ﻿Feature: apolloOrganization
 
+#is failing due to Delete Organization functionality no longer being present in QA.
+@broken
 Scenario: TC 25558 Add business information and save as organization
 	Given user is successfully logged into biberk
 	When user clicks Organization Button
