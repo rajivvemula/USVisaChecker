@@ -1,6 +1,6 @@
 ﻿Feature: apolloOrganization
 
-Scenario: TC 25558 : Add business information and save as organization
+Scenario: TC 25558 Add business information and save as organization
 	Given user is successfully logged into biberk
 	When user clicks Organization Button
 	When user clicks  New  Button
