@@ -5,7 +5,7 @@ Feature: US-17639-Org Mgt Driver
 	so that I can pull it in as necessary at the Application Quote level.
 
 
-Scenario:TC01 Verify Grid Titles in Driver
+Scenario: TC01 Verify Grid Titles in Driver
 	Given user is successfully logged into biberk
 	When user clicks Organization Button
 	And user selects Organization
@@ -28,12 +28,7 @@ Scenario:TC01 Verify Grid Titles in Driver
 	#| l   | DL Status    |
 
 
-#failing due to driver license repetition. 
-#we might need to use a third party API call to get a random driver license
-#or
-#delete existing driver license from database as a pre-condition
-@broken
-Scenario:TC02 Add a Driver to Organization
+Scenario: TC02 Add a Driver to Organization
 	When user clicks  Driver Button
 	When user enters following values
 	| Display Name           | Field Type | Value     |
@@ -49,7 +44,7 @@ Scenario:TC02 Add a Driver to Organization
 	When user clicks Save Button
 	Then Toast with a message: Driver saved is visible 
 
-Scenario:TC04 Verify left navigation bar sections
+Scenario: TC04 Verify left navigation bar sections
 	Then Verify sidetab is present
 	| Key | Value                |
 	| a   | Business Information |

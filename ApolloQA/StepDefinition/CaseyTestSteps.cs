@@ -1,6 +1,7 @@
 ﻿using ApolloQA.Components;
 using ApolloQA.Pages;
 using ApolloQA.Source.Driver;
+using ApolloQA.Source.Helpers;
 using OpenQA.Selenium;
 using System;
 using System.Xml.XPath;
@@ -11,6 +12,20 @@ namespace ApolloQA.Features
     [Binding]
     public class CaseyTestSteps
     {
+        FeatureContext featureContext;
+
+        public CaseyTestSteps(FeatureContext featureContext)
+        {
+            this.featureContext = featureContext;
+        }
+
+        [When(@"user clicks (.*) button")]
+        public void WhenUserClicksSaveButton(string buttonName)
+        {
+            Button button = new Button(buttonName);
+            button.Click();
+        }
+
 
         [When(@"user clicks (.*) tab")]
         public void WhenUserClicksTab(string tabName)
@@ -33,6 +48,13 @@ namespace ApolloQA.Features
                 if (fieldType.ToLower() == "input")
                 {
                     InputField inputField = new InputField(displayName);
+
+                    if (displayName == "VIN" && value == "Random")
+                    {
+                        value = Functions.GetRandomVIN();
+                        featureContext.Add("Last Random " + displayName, value);
+                    }
+
                     inputField.SetValue(value);
                 }
                 else if (fieldType.ToLower() == "dropdown")
@@ -69,6 +91,8 @@ namespace ApolloQA.Features
         [Then(@"the following fields have values")]
         public void ThenTheFollowingFieldsHaveValues(Table table)
         {
+            UserActions.WaitForSpinnerToDisappear();
+
             foreach (var row in table.Rows)
             {
                 string displayName = row["Display Name"];
@@ -80,6 +104,10 @@ namespace ApolloQA.Features
                 if (fieldType.ToLower() == "input")
                 {
                     InputField inputField = new InputField(displayName);
+
+                    if (displayName == "VIN" && value == "Last Random")
+                        value = featureContext.Get<string>("Last Random " + displayName);
+
                     displayedValue = inputField.GetValue();
                 }
                 else if (fieldType.ToLower() == "dropdown")
@@ -97,10 +125,14 @@ namespace ApolloQA.Features
                     Console.WriteLine("Unexpected fieldType.");
                 }
 
-                if (value.ToLower() == "Any")
+                if (value.ToLower() == "any")
                     Assert.IsTrue(displayedValue.Length > 0);
                 else
-                    Assert.Equals(displayedValue, value);
+                {
+                    Console.WriteLine("displayed value: " + displayedValue + "    expected: " + value);
+                    Assert.AreEqual(displayedValue, value);
+
+                }
             }
         }
 
@@ -117,14 +149,14 @@ namespace ApolloQA.Features
             UserActions.WaitForSpinnerToDisappear();
 
             LeftSidetab sidetab = new LeftSidetab(tabName);
-            Assert.Equals(tabName, sidetab.GetActiveSidetab());
+            Assert.AreEqual(tabName, sidetab.GetActiveSidetab());
         }
 
         [Then(@"URL contains (.*)")]
         public void ThenURLContains(string urlContains)
         {
             UserActions.WaitForSpinnerToDisappear();
-            Assert.IsTrue(UserActions.GetCurrentURL().Contains(urlContains));
+            Assert.CurrentURLContains(urlContains);
         }
 
         [Then(@"(.*) modal is visible")]
@@ -142,5 +174,76 @@ namespace ApolloQA.Features
         //{
         //    IWebElement toast = UserActions.FindElementWaitUntilVisible(By.ClassName("toast-title"), 20);
         //}
+
+        [Then(@"Verify grid contains entry with column equals value")]
+        public void ThenVerifyGridContainsEntryWithColumnEqualsValue(Table table)
+        {
+            Grid theGrid = new Grid();
+
+            foreach (var row in table.Rows)
+            {
+                string columnName = row["Column"];
+                string value = row["Value"];
+
+                //if (value.Contains("Last Random"))
+                //{
+                //    string lastRandom = featureContext.Get<string>("Last Random " + columnName);
+                //    value = lastRandom;
+                //}
+
+                if (columnName == "VIN" && value == "Last Random")
+                    value = featureContext.Get<string>("Last Random " + columnName);
+
+                if (!theGrid.GridContainsColumnWithValue(columnName, value))
+                    NUnit.Framework.Assert.IsTrue(false, "Unable to locate value " + value + " in Grid column " + columnName);
+                else
+                    Console.WriteLine("Successfully located " + columnName + " = " + value + " in Grid.");
+
+            }
+
+        }
+
+        [When(@"user clicks (.*) option for grid with column equals value")]
+        public void WhenUserClicksOptionForGridWithColumnEqualsValue(string option, Table table)
+        {
+            Grid theGrid = new Grid();
+
+            foreach (var row in table.Rows)
+            {
+                string columnName = row["Column"];
+                string value = row["Value"];
+
+                if (columnName == "VIN" && value == "Last Random")
+                    value = featureContext.Get<string>("Last Random " + columnName);
+
+                //if (value.Contains("Last Random"))
+                //{
+                //    string lastRandom = featureContext.Get<string>("Last Random " + columnName);
+                //    value = lastRandom;
+                //}
+
+                if (!theGrid.GridClickRowOptionForColumnWithValue(columnName, value, option))
+                    NUnit.Framework.Assert.IsTrue(false, "Unable to locate value " + value + " in Grid column " + columnName);
+                else
+                    Console.WriteLine("Successfully located " + columnName + " = " + value + " in Grid and clicked option " + option);
+
+            }
+        }
+
+        [When(@"user enters search query: (.*)")]
+        public void WhenUserEntersSearchQuery(string query)
+        {
+            NavigationBar navBar = new NavigationBar();
+            navBar.SearchQuery(query);
+        }
+
+        [When(@"user clicks first search result")]
+        public void WhenUserClicksFirstSearchResult()
+        {
+            NavigationBar navBar = new NavigationBar();
+            navBar.ClickFirstSearchResult();
+        }
+
+
     }
 }

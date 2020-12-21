@@ -27,7 +27,7 @@ namespace ApolloQA.Components
 
         public string GetValue()
         {
-            return autocompleteField.Text;
+            return autocompleteField.GetAttribute("value");
         }
 
         public void SetValue(string value)

@@ -217,7 +217,7 @@ namespace ApolloQA
         {
             try
             {
-                NUnitAssert.That(() => UserActions.GetCurrentURL(), Does.Contain(URL).After(10).Seconds.PollEvery(250).MilliSeconds);
+                NUnitAssert.That(() => UserActions.GetCurrentURL(), Does.Contain(URL).After(15).Seconds.PollEvery(250).MilliSeconds);
                 success($"URL {URL} is the current URL");
                 return true;
             }

@@ -4,7 +4,7 @@ Feature: US-9314 - Create an Application Quote with Left Navigation Stepper
 	As an authorized user
 	I want to verify the application tabs are present and clickable
 
-Scenario:TC01 Create new application
+Scenario: TC01 Create new application
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
 	When user clicks New Button

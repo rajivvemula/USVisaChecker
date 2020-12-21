@@ -1,6 +1,6 @@
-﻿Feature: CaseyTest
+﻿Feature: Organization_AddVehicle
 
-Scenario: 1 Test Create Org
+Scenario: Add Vehicle to existing Organization using VIN
 	Given user is successfully logged into biberk
 	When user enters search query: Automation Test Org 1218
 	And user clicks first search result
@@ -11,8 +11,8 @@ Scenario: 1 Test Create Org
 	When user clicks Vehicle Button
 	Then New Vehicle modal is visible
 	When user enters following values
-	| Display Name | Field Type | Value             |
-	| VIN          | Input      | 2GTEC13J371513264 |
+	| Display Name | Field Type | Value  |
+	| VIN          | Input      | Random |
 	And user clicks Verify VIN button
 	Then the following fields have values
 	| Display Name | Field Type | Value |
@@ -38,12 +38,13 @@ Scenario: 1 Test Create Org
 	| Stated Amount            | Input      | $ 12,000.00   |
 	When user clicks Save Button
 	Then Toast with a message: Vehicle saved is visible
-	Then Verify grid contains entry with column equals value
+	Then Vehicles sidetab is active
+	And Verify grid contains entry with column equals value
 	| Column | Value             |
-	| VIN    | 2GTEC13J371513264 |
+	| VIN    | Last Random       |
 	When user clicks Edit option for grid with column equals value
-	| Column | Value             |
-	| VIN    | 2GTEC13J371513264 |
+	| Column | Value       |
+	| VIN    | Last Random |
 	Then Edit Vehicle modal is visible
 	And the following fields have values
 	| Display Name             | Field Type | Value                |

@@ -2,7 +2,7 @@
 Feature: apolloClaimFNOL
 
 @biBerkClaimFNOLAdd @SmokeTest
-Scenario: TC 25557 : Create an Occurrence successfully
+Scenario: TC 25557 Create an Occurrence successfully
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
@@ -21,7 +21,7 @@ Scenario: TC 25557 : Create an Occurrence successfully
 	Then user asserts for Occurence save
 
 	@SmokeTest
-Scenario: TC 25518 : User able to search by policy number
+Scenario: TC 25518 User able to search by policy number
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
@@ -39,7 +39,7 @@ Scenario: TC 25518 : User able to search by policy number
 	Then user asserts for Occurence cancel
 
 	@SmokeTest
-Scenario: TC 25541 : Location field accepts 255 characters
+Scenario: TC 25541 Location field accepts 255 characters
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
@@ -49,7 +49,7 @@ Scenario: TC 25541 : Location field accepts 255 characters
 	Then user verifies 256 characters in field is not accepted
 
 	@SmokeTest
-Scenario: TC 25541 : Address dropdown provided and include correct Address fields
+Scenario: TC 25541 Address dropdown provided and include correct Address fields
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button
@@ -61,7 +61,7 @@ Scenario: TC 25541 : Address dropdown provided and include correct Address field
 	Then user validates Address fields 
 
 		# This currently works in QA1, but not in QA2 - waiting for latest build in QA2
-Scenario Outline: TC 25638  Claim headers visible
+Scenario Outline: TC 25638 Claim headers visible
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
 	When user clicks Claim right menu button

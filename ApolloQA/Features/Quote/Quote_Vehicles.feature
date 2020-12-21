@@ -1,9 +1,7 @@
 ﻿Feature: Quote_Vehicles
 
-#all these scenarios failed, might be due to extra spaces ' Vehicle ' might need to be just 'Vehicle'.
-#note: the functions normally find elements using xpath funciton normalize-space(text()) which trims any leading and trailing spaces
-@broken
-Scenario: TC 26825 : Quote - vehicle section : vehicle owned
+
+Scenario: TC 26825 Quote - vehicle section : vehicle owned
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
 	When User Navigates to Quote latest
@@ -20,8 +18,7 @@ Scenario: TC 26825 : Quote - vehicle section : vehicle owned
 	And user verifies owner input is visible
 	Then user adds Address
 
-@broken
-Scenario: TC 26826 : Quote - vehicle section : vehicle financed
+Scenario: TC 26826 Quote - vehicle section : vehicle financed
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
 	When User Navigates to Quote latest
@@ -33,8 +30,7 @@ Scenario: TC 26826 : Quote - vehicle section : vehicle financed
 	And user enters Lienholder info
 	Then user adds Address
 
-@broken
-Scenario: TC 26827 : Quote - vehicle section : vehicle leased
+Scenario: TC 26827 Quote - vehicle section : vehicle leased
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
 	When User Navigates to Quote latest

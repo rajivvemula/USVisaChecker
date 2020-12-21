@@ -1,7 +1,7 @@
 ﻿Feature: Quote_Driver
 
 
-Scenario: TC 26736: Show All / Collapse All on Quote -> Drivers tab
+Scenario: TC 26736 Show All Collapse All on Quote Drivers tab
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
 	When User Navigates to Quote latest
@@ -12,11 +12,7 @@ Scenario: TC 26736: Show All / Collapse All on Quote -> Drivers tab
 	And user waits for spinner to load
 	Then User verifies collapse all and expand all
 
-#button //button[@aria-label='Submit']  was vissible after 3 seconds?, 
-#that means that if the button is vissible for 3 seconds the test would fail. 
-#might not want to provide a wait time at all? 
-@broken
-Scenario: TC 25560 & 25562 - Button Color is correct
+Scenario: TC 25560 25562 Button Color is correct
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
 	When user clicks  New  Button

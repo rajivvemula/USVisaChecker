@@ -1,15 +1,18 @@
 ﻿using ApolloQA.Source.Driver;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace ApolloQA.Components
 {
     class NavigationBar
     {
 
-        public IWebElement HomeIcon => UserActions.FindElementWaitUntilVisible(By.XPath("//fa-icon[contains(@class, 'apollo-icon')]"), UserActions.DEFAULT_WAIT_SECONDS);
+        public IWebElement HomeIcon => UserActions.FindElementWaitUntilVisible(By.XPath("//fa-icon[contains(@class, 'apollo-icon')]"));
+        public IWebElement SearchField => UserActions.FindElementWaitUntilVisible(By.XPath("//input[@placeholder='Search here']"));
 
         public bool ClickTab(string tabName)
         {
@@ -39,6 +42,23 @@ namespace ApolloQA.Components
                 return false;
             }
         }
+
+        public void SearchQuery(string query)
+        {
+            SearchField.Clear();
+            SearchField.SendKeys(query);
+        }
+
+        public void ClickFirstSearchResult()
+        {
+            new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(10)).Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.XPath("//mat-option[contains(@class,'provided')]")));
+            Thread.Sleep(1000);
+            IList<IWebElement> SearchResults = UserActions.FindElementsWaitUntilVisible(By.XPath("//mat-option[contains(@class,'provided')]"));
+
+            SearchResults[0].Click();
+        }
+
+
 
     }
 }

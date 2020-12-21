@@ -8,6 +8,10 @@ using System.Linq;
 using System.Threading;
 using TechTalk.SpecFlow.Assist;
 using ApolloQA.Source.Driver;
+using OpenQA.Selenium.Chrome;
+using System.IO;
+using System.Reflection;
+
 namespace ApolloQA.Source.Helpers
 {
     class Functions
@@ -182,6 +186,18 @@ namespace ApolloQA.Source.Helpers
             {
                 throw handleFailure($"String {IntegerString} Failed to parse into int", ex);
             }
+        }
+
+        public static string GetRandomVIN()
+        {
+            //grabs random vin via randomvin.com
+            IWebDriver vinDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            vinDriver.Navigate().GoToUrl("https://randomvin.com/");
+            Thread.Sleep(2000);
+            string randomVin = vinDriver.FindElement(By.XPath("//span[@id='Result']/h2")).Text;
+            Console.WriteLine("the random vin is: " + randomVin);
+            vinDriver.Quit();
+            return randomVin;
         }
 
     }

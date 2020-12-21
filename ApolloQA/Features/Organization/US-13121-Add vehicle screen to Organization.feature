@@ -5,7 +5,7 @@ Feature: US-13121-Add vehicle screen to Organization
 	and show them in a grid, so that I can associate them in a policy coverage.
 
 # End to End TestCase
-Scenario:TC01 Verify Grid Titles in Vehicle Organization
+Scenario: TC01 Verify Grid Titles in Vehicle Organization
 	Given user is successfully logged into biberk
 	When user clicks Organization Button
 	When user clicks  New  Button
