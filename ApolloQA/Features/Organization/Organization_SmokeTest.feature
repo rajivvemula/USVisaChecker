@@ -1,10 +1,9 @@
-﻿
+﻿@bugReported
 Feature: Organization_SmokeTest
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@bugReported
 Scenario: 1 Test Create Org
 	Given user is successfully logged into biberk
 	When user clicks Organization tab
