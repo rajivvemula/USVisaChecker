@@ -1,4 +1,5 @@
-﻿Feature: Organization_Create
+﻿@bugReported
+Feature: Organization_Create
 
 
 Scenario: 1 Test Create Org

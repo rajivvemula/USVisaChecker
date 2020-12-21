@@ -1,4 +1,5 @@
-﻿Feature: Organization_AddVehicle
+﻿@bugReported
+Feature: Organization_AddVehicle
 
 Scenario: Add Vehicle to existing Organization using VIN
 	Given user is successfully logged into biberk
