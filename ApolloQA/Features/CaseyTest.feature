@@ -14,7 +14,7 @@ Scenario: 1 Test Create Org
 	When user enters following values
 	| Display Name | Field Type | Value             |
 	| VIN          | Input      | 2GTEC13J371513264 |
-	And user clicks Verify VIN button
+	And user clicks Verify VIN Button
 	Then the following fields have values
 	| Display Name | Field Type | Value |
 	| Year         | Input      | Any   |

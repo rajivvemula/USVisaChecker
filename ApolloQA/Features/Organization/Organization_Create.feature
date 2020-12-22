@@ -5,7 +5,7 @@ Feature: Organization_Create
 Scenario: 1 Test Create Org
 	Given user is successfully logged into biberk
 	When user clicks Organization tab
-	When user clicks New button
+	When user clicks New Button
 	Then URL contains organization/insert
 	When user enters following values
 	| Display Name              | Field Type   | Value                                                  |
@@ -24,7 +24,7 @@ Scenario: 1 Test Create Org
 	| Display Name   | Field Type | Value |
 	| Class Taxonomy | Input      | Any   |
 	And Save button is enabled
-	When user clicks Save button
+	When user clicks Save Button
 	Then URL contains /organization/
 	And Business Information sidetab is active
 	And the following fields have values
