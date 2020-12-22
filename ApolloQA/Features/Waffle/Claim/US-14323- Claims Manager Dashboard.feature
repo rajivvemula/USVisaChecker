@@ -18,6 +18,7 @@ Scenario:TC01 Verify Adjusters Claim Grid FNOL
 	| 6   | Policy No.        |
 	| 7   | Date of Loss      |
 
+#scenario is not mutually exclusive
 @broken
 Scenario: TC02 Verify Adjusters Claim Grid Statistics
 	Then Grid column label is displayed
