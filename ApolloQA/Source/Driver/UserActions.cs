@@ -137,6 +137,8 @@ namespace ApolloQA.Source.Driver
             ScrollIntoView(target);
             if(HIGHLIGHT_ON)
                 highlight(target);
+
+            target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             return target;
         }
 
@@ -195,6 +197,7 @@ namespace ApolloQA.Source.Driver
             ScrollIntoView(target);
             if (HIGHLIGHT_ON)
                 highlight(target);
+            target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(by));
             return target;
         }
 
@@ -210,7 +213,7 @@ namespace ApolloQA.Source.Driver
             ScrollIntoView(target);
 
             if (HIGHLIGHT_ON)
-                Task.Run(() => highlight(target));
+                highlight(target);
 
             //upon scroll and highlight to the element, the element would become stale for clicking
             target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
@@ -317,7 +320,7 @@ namespace ApolloQA.Source.Driver
         private static void highlight(IWebElement target)
         {
             JSExecutor.highlight(target);
-            Thread.Sleep(250);
+            Thread.Sleep(200);
             try
             {
                 JSExecutor.highlight(target, 0);

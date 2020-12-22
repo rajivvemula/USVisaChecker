@@ -70,6 +70,7 @@ stages:
             CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
             BROWSER: "Chrome"
             HIGHLIGHT_ON: "false"
+            CURRENT_SEVERITY_LEVEL: "info"
         inputs:
           testSelector: 'testAssemblies'
           testAssemblyVer2: |
