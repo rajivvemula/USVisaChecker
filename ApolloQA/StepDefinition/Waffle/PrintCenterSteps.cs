@@ -4,6 +4,7 @@ using System;
 using Azure;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
+using ApolloQA.Pages;
 
 namespace ApolloQA.Features.Waffle
 
@@ -17,6 +18,7 @@ namespace ApolloQA.Features.Waffle
         PrintCenterSteps(IWebDriver _driver)
         {
             this.driver = _driver;
+            
         }
 
 
@@ -103,7 +105,7 @@ namespace ApolloQA.Features.Waffle
         {
             Pages.PrintCenter.PrintCenterPopupSchedulebutton.Click();
             System.Threading.Thread.Sleep(2000);
-            var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "updated");
             //Console.WriteLine(toastMessage);
         }
@@ -121,7 +123,7 @@ namespace ApolloQA.Features.Waffle
         {
             Pages.PrintCenter.PrintCenterGridLastItemScheduleORCancelSche.Click();
             System.Threading.Thread.Sleep(2000);
-            var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "cancelled");
         }
 
@@ -129,7 +131,7 @@ namespace ApolloQA.Features.Waffle
          public void ThenUserClicksReleaseButtonFromTheLastQueueName()
          {
              Pages.PrintCenter.PrintCenterJobQueueLastItemRelease.Click();
-            var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "released");
             System.Threading.Thread.Sleep(2000);
         }
@@ -138,7 +140,7 @@ namespace ApolloQA.Features.Waffle
         public void ThenUserClickDeleteButtonFromTheLastQueueName()
         {
             Pages.PrintCenter.PrintCenterJobQueueLastItemDelete.Click();
-            var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "deleted");
         } 
 
@@ -146,7 +148,7 @@ namespace ApolloQA.Features.Waffle
         public void ThenUserClicksHoldLink()
         {
             Pages.PrintCenter.PrintCenterJobQueueLastItemHoldOrStopHold.Click();
-            var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "held");
             System.Threading.Thread.Sleep(2000);
         }
@@ -168,7 +170,7 @@ namespace ApolloQA.Features.Waffle
          public void ThenUserVerifiesLinkRenamedToHold()
          {
             Pages.PrintCenter.PrintCenterJobQueueLastItemHoldOrStopHold.assertElementInnerTextEquals("Hold");
-            var toastMessage = Pages.Quote.Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "removed from hold");
         } 
 
