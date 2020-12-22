@@ -34,14 +34,14 @@ namespace ApolloQA.Features.Waffle
         {
 
             String URL = driver.Url;
-            if (URL.Contains("bibaoqa2-printermanagementfunction"))
+            if (URL.Contains("bibaoqa2"))
             {
                 JsonData = JObject.Parse(QA2Bodydata);
                 dynamic response = RestAPI.POST(QA2baseURL, JsonData);
                 Console.WriteLine("response:" + response);
             }
 
-            if (URL.Contains("bibaoqa-printermanagementfunction"))
+            if (URL.Contains("bibaoqa"))
             {
                 JsonData = JObject.Parse(QA1Bodydata);
                 dynamic response = RestAPI.POST(QA1baseURL, JsonData);

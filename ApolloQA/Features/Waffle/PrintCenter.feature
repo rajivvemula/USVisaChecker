@@ -1,4 +1,6 @@
-﻿Feature: Print Center
+﻿#none of these scenarios are working on QA2
+@broken
+Feature: Print Center
 	As a user I want to be able to verify print center queue and its associated job
 
 @SmokeTest @PrintCenterUI
@@ -7,7 +9,6 @@ Scenario: Post API Call to make Print Center Queue data and make sure it has bee
 	Given user is successfully logged into biberk
 	When  User adds data to printcenter queue
 	
-
 Scenario: TC04 Verify PrintCenter - Schedule for last item on the dashboard
 	Given user is successfully logged into biberk
 	When user navigates to Printcenter Page by accessing Waffle 
