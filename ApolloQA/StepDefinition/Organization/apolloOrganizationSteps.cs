@@ -52,19 +52,20 @@ namespace ApolloQA.StepDefinition
         public void WhenUserAssertsForSavedOrganization()
         {
             // TODO : Issue with the save toastMessage
-            //var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
+            var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
             //Assert.TextContains(toastMessage, "created");
             //OrgID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
             //Log.Info($"Expected: Quote Saved. Result: " + toastMessage + "");
 
-            BusinessInformation.toastrMessage.assertElementNotPresent();
-            BusinessInformation.blueEllipsesButton.Click();
-            BusinessInformation.deleteOrgButton.Click();
-            BusinessInformation.confirmDeleteOrg.Click();
-            var toastMessage2 = BusinessInformation.toastrMessage.GetInnerText();
-            Assert.TextContains(toastMessage2, "was deleted.");
-            OrgID = int.Parse(string.Join("", toastMessage2.Where(Char.IsDigit)));
-            Log.Info($"Expected: Org Deleted. Result: " + toastMessage2 + "");
+            // Delete Org Functinality temporarily disabled 
+            //BusinessInformation.toastrMessage.assertElementNotPresent();
+            //BusinessInformation.blueEllipsesButton.Click();
+            //BusinessInformation.deleteOrgButton.Click();
+            //BusinessInformation.confirmDeleteOrg.Click();
+            //var toastMessage2 = BusinessInformation.toastrMessage.GetInnerText();
+            //Assert.TextContains(toastMessage2, "was deleted.");
+            //OrgID = int.Parse(string.Join("", toastMessage2.Where(Char.IsDigit)));
+            //Log.Info($"Expected: Org Deleted. Result: " + toastMessage2 + "");
         }
 
         [Then(@"user asserts for canceled organization add")]
