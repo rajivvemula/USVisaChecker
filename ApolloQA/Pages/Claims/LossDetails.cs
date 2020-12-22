@@ -12,7 +12,7 @@ namespace ApolloQA.Pages
         public static Element BodilyInjuryButton = new Element("//mat-radio-button//*[contains(text(), ' Bodily Injury ')]");
         public static Element PropertyDamageButton = new Element("//mat-radio-button//*[contains(text(), ' Property Damage ')]");
         public static Element FaultIndicatorDropdown = new Element("//mat-select[@name='faultIndicatorTypeId']");
-        public static Element ClaimsAdjusterDropdown = new Element("//mat-select[@class='mat-select ng-tns-c179-79 ng-tns-c107-78 mat-select-empty ng-star-inserted']");
+        public static Element ClaimsAdjusterDropdown = new Element("//mat-select[@role='combobox' and @id='mat-select-44']");
         public static Element ComplexityDropdown = new Element("//mat-select[@formcontrolname='complexityId']");
         public static Element SupervisorNotesInput = new Element("//textarea[@formcontrolname='supervisoryNotes']");
 
