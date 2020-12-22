@@ -12,6 +12,8 @@ Scenario: TC 26736 Show All Collapse All on Quote Drivers tab
 	And user waits for spinner to load
 	Then User verifies collapse all and expand all
 
+#timedout after set to 3 seconds?
+@broken
 Scenario: TC 25560 25562 Button Color is correct
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
