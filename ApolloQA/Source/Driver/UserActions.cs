@@ -285,7 +285,7 @@ namespace ApolloQA.Source.Driver
 
             }
             var options = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
-            selectionDisplayName = string.Join("", options[0].FindElements(By.XPath($"(//mat-option)[{LogicalIndex + 1}]/descendant::*")).Select(it => it.Text.Trim()).Distinct());
+            selectionDisplayName = string.Join("", Setup.driver.FindElements(By.XPath($"(//mat-option)[{LogicalIndex + 1}]/descendant::*")).Select(it => it.Text.Trim()).Distinct());
             Click(By.XPath($"//mat-option[{LogicalIndex + 1}]"));
 
         }
