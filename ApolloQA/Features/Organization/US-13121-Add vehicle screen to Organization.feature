@@ -4,9 +4,7 @@ Feature: US-13121-Add vehicle screen to Organization
 	I want to be able to add vehicles to an organization 
 	and show them in a grid, so that I can associate them in a policy coverage.
 
-# End to End TestCase
-#Broken - keyword not working
-@broken
+
 Scenario: TC01 Verify Grid Titles in Vehicle Organization
 	Given user is successfully logged into biberk
 	When user clicks Organization Button
@@ -28,7 +26,7 @@ Scenario: TC01 Verify Grid Titles in Vehicle Organization
 	| f   | Cost New      |
 	| g   | Stated Amount |
 
-#BROKEN - scenario not mutually exclusive
+#scenario not mutually exclusive
 	#TC02 and TC03 Combined, the last statement is TC03 and shared scenario context 
 @broken
 Scenario: TC02 Add a vehicle to Organization

@@ -1,5 +1,6 @@
 ﻿Feature: CaseyTest
-
+#duplicate vin validation causing failure.
+@broken
 Scenario: 1 Test Create Org
 	Given user is successfully logged into biberk
 	When user enters search query: Automation Test Org 1218

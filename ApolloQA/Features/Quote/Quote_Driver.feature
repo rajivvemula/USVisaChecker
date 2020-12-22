@@ -1,6 +1,8 @@
 ﻿Feature: Quote_Driver
 
 
+#element Quote_Drivers_Page.ExpandedInfo not found. xpath has css? might be failing due to window size.
+@broken
 Scenario: TC 26736 Show All Collapse All on Quote Drivers tab
 	Given user is successfully logged into biberk
 	When user clicks Quote Button

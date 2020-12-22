@@ -4,6 +4,7 @@
 	So that I can modify parameters during testing
 	
 #QA 2 rating algorithm not working
+#BUG 28223
 @SmokeTest @broken
 Scenario: Run Rate Calculation New Quote
 	Given user is successfully logged into biberk

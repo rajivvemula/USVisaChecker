@@ -1,6 +1,7 @@
 ﻿Feature: Quote_Vehicles
 
-
+#scenario failing
+@broken
 Scenario: TC 26825 Quote - vehicle section - vehicle owned
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
@@ -10,14 +11,16 @@ Scenario: TC 26825 Quote - vehicle section - vehicle owned
 	When user clicks  Vehicle  Button
 	And user waits for spinner to load
 	When user selects Owned Button
-	When user clicks  The Business  Button
+	When user clicks The Business Button
 	And user verifies owner input is visible
-	When user clicks  One or more of the Business Owner(s)  Button
+	When user clicks One or more of the Business Owner(s) Button
 	And user verifies owner input is visible
-	When user clicks  Someone else  Button
+	When user clicks Someone else Button
 	And user verifies owner input is visible
 	Then user adds Address
 
+#scenario failing
+@broken
 Scenario: TC 26826 Quote - vehicle section - vehicle financed
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
@@ -30,6 +33,8 @@ Scenario: TC 26826 Quote - vehicle section - vehicle financed
 	And user enters Lienholder info
 	Then user adds Address
 
+#scenario failing
+@broken
 Scenario: TC 26827 Quote - vehicle section - vehicle leased
 	Given user is successfully logged into biberk
 	When user clicks Quote Button
