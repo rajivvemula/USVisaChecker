@@ -7,7 +7,7 @@ Feature: Organization_SmokeTest
 Scenario: 1 Test Create Org
 	Given user is successfully logged into biberk
 	When user clicks Organization tab
-	When user clicks New Button
+	When user clicks New button
 	Then URL contains organization/insert
 	When user enters following values
 	| Display Name              | Field Type   | Value                                                  |
@@ -26,7 +26,7 @@ Scenario: 1 Test Create Org
 	| Display Name   | Field Type | Value |
 	| Class Taxonomy | Input      | Any   |
 	And Save button is enabled
-	When user clicks Save Button
+	When user clicks Save button
 	Then URL contains /organization/
 	And Business Information sidetab is active
 	And the following fields have values
@@ -48,7 +48,7 @@ Scenario: 1 Test Create Org
 Scenario: 2 Add Address to Organization
 	When user clicks Addresses sidetab
 	Then Addresses sidetab is active
-	When user clicks Add Address Button
+	When user clicks Add Address button
 	Then Add New Address modal is visible
 	When user enters following values
 	| Display Name              | Field Type | Value            |
@@ -56,7 +56,7 @@ Scenario: 2 Add Address to Organization
 	| City                      | Input      | Dolton           |
 	| State / Province / Region | Dropdown   | IL               |
 	| Zip / Postal Code         | Input      | 60419            |
-	When user clicks Save Button
+	When user clicks Save button
 	Then Verify grid contains entry with column equals value
 	| Column         | Value            |
 	| Street Address | 14210 Avalon Ave |
@@ -76,7 +76,7 @@ Scenario: 2 Add Address to Organization
 Scenario: 3 Add Driver to Organization
 	When user clicks Drivers sidetab
 	Then Drivers sidetab is active
-	When user clicks Driver Button
+	When user clicks Driver button
 	Then Add Driver modal is visible
 	When user enters following values
 	| Display Name           | Field Type | Value          |
@@ -87,7 +87,7 @@ Scenario: 3 Add Driver to Organization
 	| Drivers License Number | Input      | F255-9215-0094 |
 	| Expiration Date        | Input      | 10/15/2023     |
 	| CDL                    | Dropdown   | Yes            |
-	When user clicks Save Button
+	When user clicks Save button
 	Then Verify grid contains entry with column equals value
 	| Column    | Value          |
 	| License # | F255-9215-0094 |
@@ -110,12 +110,12 @@ Scenario: 3 Add Driver to Organization
 Scenario: 4 Add Vehicle to Organization
 	When user clicks Vehicles sidetab
 	Then Vehicles sidetab is active
-	When user clicks Vehicle Button
+	When user clicks Vehicle button
 	Then New Vehicle modal is visible
 	When user enters following values
 	| Display Name | Field Type | Value  |
 	| VIN          | Input      | Random |
-	And user clicks Verify VIN Button
+	And user clicks Verify VIN button
 	Then the following fields have values
 	| Display Name | Field Type | Value |
 	| Year         | Input      | Any   |
@@ -138,7 +138,7 @@ Scenario: 4 Add Vehicle to Organization
 	| Body Category            | Dropdown   | Any           |
 	| Additional Modifications | Input      | Test comment. |
 	| Stated Amount            | Input      | $ 12,000.00   |
-	When user clicks Save Button
+	When user clicks Save button
 	Then Toast with a message: Vehicle saved is visible
 	Then Vehicles sidetab is active
 	And Verify grid contains entry with column equals value

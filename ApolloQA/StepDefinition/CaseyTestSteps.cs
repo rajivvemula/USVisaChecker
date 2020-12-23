@@ -19,12 +19,14 @@ namespace ApolloQA.Features
             this.featureContext = featureContext;
         }
 
-        //[When(@"user clicks (.*) button")]
-        //public void WhenUserClicksSaveButton(string buttonName)
-        //{
-        //    Button button = new Button(buttonName);
-        //    button.Click();
-        //}
+        //please do not change this step
+        // the button click step in shared steps has a capital B for Button, please use that naming convention to avoid overlap with this step
+        [When(@"user clicks (.*) button")]
+        public void WhenUserClicksSaveButton(string buttonName)
+        {
+            Button button = new Button(buttonName);
+            button.Click();
+        }
 
 
         [When(@"user clicks (.*) tab")]

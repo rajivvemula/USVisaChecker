@@ -9,7 +9,7 @@ Scenario: Add Driver to existing Organization
 	And Business Information sidetab is active
 	When user clicks Drivers sidetab
 	Then Drivers sidetab is active
-	When user clicks Driver Button
+	When user clicks Driver button
 	Then Add Driver modal is visible
 	When user enters following values
 	| Display Name           | Field Type | Value          |
@@ -20,7 +20,7 @@ Scenario: Add Driver to existing Organization
 	| Drivers License Number | Input      | F255-9215-0094 |
 	| Expiration Date        | Input      | 10/15/2023     |
 	| CDL                    | Dropdown   | Yes            |
-	When user clicks Save Button
+	When user clicks Save button
 	Then Verify grid contains entry with column equals value
 	| Column    | Value          |
 	| License # | F255-9215-0094 |

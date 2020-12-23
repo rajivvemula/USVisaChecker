@@ -9,7 +9,7 @@ Scenario: Add Vehicle to existing Organization using VIN
 	And Business Information sidetab is active
 	When user clicks Vehicles sidetab
 	Then Vehicles sidetab is active
-	When user clicks Vehicle Button
+	When user clicks Vehicle button
 	Then New Vehicle modal is visible
 	When user enters following values
 	| Display Name | Field Type | Value  |
@@ -37,7 +37,7 @@ Scenario: Add Vehicle to existing Organization using VIN
 	| Body Category            | Dropdown   | Any           |
 	| Additional Modifications | Input      | Test comment. |
 	| Stated Amount            | Input      | $ 12,000.00   |
-	When user clicks Save Button
+	When user clicks Save button
 	Then Toast with a message: Vehicle saved is visible
 	Then Vehicles sidetab is active
 	And Verify grid contains entry with column equals value

@@ -23,7 +23,7 @@ Scenario: TC 25557 Create an Occurrence successfully
 	@SmokeTest
 Scenario: TC 25518 User able to search by policy number
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon button
+	When user clicks ' apps ' icon Button
 	When user clicks Claim right menu button
 	When user clicks New FNOL Button
 	And user waits for spinner to load
