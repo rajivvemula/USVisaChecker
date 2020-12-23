@@ -49,18 +49,18 @@ namespace ApolloQA.StepDefinition.Claim
             LossDetails.InsurerPolicyNumInput.setText("132");
             LossDetails.InsurerClaimNumInput.setText("987");
             LossDetails.OtherInsurerAdjusterInput.setText("Test Test");
-            LossDetails.SuitFiledDropdown.SelectMatDropdownOptionByText(" Yes ");
-            LossDetails.AttorneyAuthRepDropdown.SelectMatDropdownOptionByText(" No ");
-            LossDetails.ReportOnlyDropdown.SelectMatDropdownOptionByText(" Yes ");
+            LossDetails.SuitFiledDropdown.SelectMatDropdownOptionByText("Yes");
+            LossDetails.AttorneyAuthRepDropdown.SelectMatDropdownOptionByText("No");
+            LossDetails.ReportOnlyDropdown.SelectMatDropdownOptionByText("Yes");
         }
 
         [When(@"user completes Vehicle damage section")]
         public void WhenUserCompletesVehicleDamageSection()
         {
-            LossDetails.VehicleDispositionDropdown.SelectMatDropdownOptionByText("Damaged ");
+            LossDetails.VehicleDispositionDropdown.SelectMatDropdownOptionByText("Damaged");
             LossDetails.DamageSeenInput.setText("Front Bumper");
             LossDetails.EstimateOfLossInput.setText("2,000");
-            LossDetails.SubrogationReferralDropdown.SelectMatDropdownOptionByText(" No ");
+            LossDetails.SubrogationReferralDropdown.SelectMatDropdownOptionByText("No");
         }
 
         [When(@"user completes additional information section")]
@@ -69,7 +69,7 @@ namespace ApolloQA.StepDefinition.Claim
             LossDetails.InsuredButton.Click();
             LossDetails.VehicleNotOnPolicyButton.Click();
             LossDetails.NoDriverButton.Click();
-            LossDetails.RelationshipToInsuredDropdown.SelectMatDropdownOptionByText(" Not Related ");
+            LossDetails.RelationshipToInsuredDropdown.SelectMatDropdownOptionByText("Not Related");
         }
 
         [Then(@"user assert for Loss Details save")]
