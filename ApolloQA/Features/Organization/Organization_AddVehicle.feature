@@ -1,9 +1,9 @@
-﻿@bugReported
+﻿
 Feature: Organization_AddVehicle
 
 Scenario: Add Vehicle to existing Organization using VIN
 	Given user is successfully logged into biberk
-	When user enters search query: Automation Test Org 1218
+	When user enters search query: Automation Test Org 1223
 	And user clicks first search result
 	Then URL contains organization/
 	And Business Information sidetab is active
@@ -58,3 +58,4 @@ Scenario: Add Vehicle to existing Organization using VIN
 	| Estimated Current Value  | Input      | $ 14,000.00          |
 	| Additional Modifications | Input      | Test comment.        |
 	| Stated Amount            | Input      | $ 12,000.00          |
+	When user clicks Cancel button
