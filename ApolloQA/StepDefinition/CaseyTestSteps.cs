@@ -22,7 +22,7 @@ namespace ApolloQA.Features
         //please do not change this step
         // the button click step in shared steps has a capital B for Button, please use that naming convention to avoid overlap with this step
         [When(@"user clicks (.*) button")]
-        public void WhenUserClicksSaveButton(string buttonName)
+        public void WhenUserClicksButton(string buttonName)
         {
             Button button = new Button(buttonName);
             button.Click();

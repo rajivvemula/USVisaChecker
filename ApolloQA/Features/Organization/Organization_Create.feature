@@ -29,7 +29,7 @@ Scenario: 1 Test Create Org
 	And Business Information sidetab is active
 	And the following fields have values
 	| Display Name              | Field Type   | Value                                                  |
-	| Business Name             | Input        | Automation Test Org 1218                               |
+	| Business Name             | Input        | Automation Test Org New                                |
 	| Organization Type         | Dropdown     | Corporation                                            |
 	| Tax ID Type               | Dropdown     | FEIN                                                   |
 	| Tax ID No                 | Input        | 12-3123111                                             |
