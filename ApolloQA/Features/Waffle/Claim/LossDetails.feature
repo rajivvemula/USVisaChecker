@@ -1,11 +1,6 @@
 ﻿Feature: LossDetails
 
 
-
-
-#I tried fixing but some xpaths are not working, please find elements using human readable parameters (not bootstrap generated element attributes)
-#-Miguel Acosta
-@broken
 Scenario: User able to complete loss details on Pending FNOL
 Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button

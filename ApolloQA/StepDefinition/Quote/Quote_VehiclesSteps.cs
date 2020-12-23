@@ -62,13 +62,13 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenUserAddsAddress()
         {
             Quote_Vehicles_Page.AddAddressButton.Click();
-            Quote_Vehicles_Page.AddressTypeDropdown.SelectMatDropdownOptionByText(" Location ");
+            Quote_Vehicles_Page.AddressTypeDropdown.SelectMatDropdownOptionByText("Location");
             Quote_Vehicles_Page.StreetAddressOneInput.setText("14662 La Grange Road");
             Quote_Vehicles_Page.StreetAddressTwoInput.setText("Unit B-1");
             Quote_Vehicles_Page.CityInput.setText("Orland Park");
-            Quote_Vehicles_Page.StateDropdown.SelectMatDropdownOptionByText(" IL ");
+            Quote_Vehicles_Page.StateDropdown.SelectMatDropdownOptionByText("IL");
             Quote_Vehicles_Page.ZipInput.setText("60462");
-            Quote_Vehicles_Page.CountryDropdown.SelectMatDropdownOptionByText(" United States ");
+            Quote_Vehicles_Page.CountryDropdown.SelectMatDropdownOptionByText("United States");
         }
     }
 }

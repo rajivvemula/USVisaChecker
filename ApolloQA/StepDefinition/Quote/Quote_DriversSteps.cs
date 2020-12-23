@@ -69,7 +69,7 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"user checks Quote info page buttons")]
         public void WhenUserChecksQuoteInfoPageButtons()
         {
-            Quote_Create_Page.SubmitButton.assertElementNotPresent(3);
+            //Quote_Create_Page.SubmitButton.assertElementNotPresent();
             Quote_Create_Page.BusinessName.setText("A&M");
             Quote_Create_Page.BusinessName.SelectMatDropdownOptionByText("A&M Organization Test");
             var primary = Quote_Create_Page.SubmitButton.GetAttribute("class");

@@ -3,7 +3,8 @@
 
 
 #Business Email Address source seems to be incorrect
-@SmokeTest @Quote @broken
+#BUG 27888
+@SmokeTest @Quote @bugReported
 Scenario: Business Information Section Loads successfully
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest

@@ -4,7 +4,8 @@
 	So that I can modify parameters during testing
 	
 #QA 2 rating algorithm not working
-@SmokeTest @broken
+#BUG 28223
+@SmokeTest @bugReported
 Scenario: Run Rate Calculation New Quote
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page

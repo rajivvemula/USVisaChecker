@@ -82,6 +82,7 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton("Use selected").Click(3, true);
         }
 
+
         [When(@"user clicks '(.*)' icon button")]
         public void WhenUserClicksIconButton(string iconButton)
         {

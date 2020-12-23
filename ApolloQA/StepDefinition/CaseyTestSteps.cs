@@ -19,12 +19,12 @@ namespace ApolloQA.Features
             this.featureContext = featureContext;
         }
 
-        [When(@"user clicks (.*) button")]
-        public void WhenUserClicksSaveButton(string buttonName)
-        {
-            Button button = new Button(buttonName);
-            button.Click();
-        }
+        //[When(@"user clicks (.*) button")]
+        //public void WhenUserClicksSaveButton(string buttonName)
+        //{
+        //    Button button = new Button(buttonName);
+        //    button.Click();
+        //}
 
 
         [When(@"user clicks (.*) tab")]
