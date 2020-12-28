@@ -12,29 +12,30 @@ Scenario: Add Driver to existing Organization
 	When user clicks Driver button
 	Then Add Driver modal is visible
 	When user enters following values
-	| Display Name           | Field Type | Value          |
-	| First Name             | Input      | Joseph         |
-	| Last Name              | Input      | Driver         |
-	| Date of Birth          | Input      | 10/14/1994     |
-	| Drivers License State  | Dropdown   | IL             |
-	| Drivers License Number | Input      | F255-9215-0094 |
-	| Expiration Date        | Input      | 10/15/2023     |
-	| CDL                    | Dropdown   | Yes            |
+	| Display Name           | Field Type | Value      |
+	| First Name             | Input      | Joseph     |
+	| Last Name              | Input      | Driver     |
+	| Date of Birth          | Input      | 10/14/1994 |
+	| Drivers License State  | Dropdown   | IL         |
+	| Drivers License Number | Input      | Random     |
+	| Expiration Date        | Input      | 10/15/2023 |
+	| CDL                    | Dropdown   | Yes        |
 	When user clicks Save button
+	Then Toast with a message: Driver saved is visible
 	Then Verify grid contains entry with column equals value
-	| Column    | Value          |
-	| License # | F255-9215-0094 |
+	| Column    | Value                              |
+	| License # | Last Random Drivers License Number |
 	When user clicks Edit option for grid with column equals value
-	| Column    | Value          |
-	| License # | F255-9215-0094 |
+	| Column    | Value                              |
+	| License # | Last Random Drivers License Number |
 	Then Add Driver modal is visible
 	And the following fields have values
-	| Display Name           | Field Type | Value          |
-	| First Name             | Input      | Joseph         |
-	| Last Name              | Input      | Driver         |
-	| Date of Birth          | Input      | 10/14/1994     |
-	| Drivers License State  | Dropdown   | IL             |
-	| Drivers License Number | Input      | F255-9215-0094 |
-	| Expiration Date        | Input      | 10/15/2023     |
-	| CDL                    | Dropdown   | Yes            |
+	| Display Name           | Field Type | Value       |
+	| First Name             | Input      | Joseph      |
+	| Last Name              | Input      | Driver      |
+	| Date of Birth          | Input      | 10/14/1994  |
+	| Drivers License State  | Dropdown   | IL          |
+	| Drivers License Number | Input      | Last Random |
+	| Expiration Date        | Input      | 10/15/2023  |
+	| CDL                    | Dropdown   | Yes         |
 	When user clicks Cancel button

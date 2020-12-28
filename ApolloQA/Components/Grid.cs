@@ -32,7 +32,7 @@ namespace ApolloQA.Components
 
         public bool GridContainsColumnWithValue(string column, string value)
         {
-            IList<IWebElement> columnHeaders = UserActions.FindElementsWaitUntilVisible(By.XPath("//datatable-header-cell"));
+            IList<IWebElement> columnHeaders = UserActions.FindElementsWaitUntilVisible(By.XPath("//datatable-header-cell"), 5);
             int totalColumns = columnHeaders.Count;
             int columnNumber = 0;
 
@@ -44,7 +44,17 @@ namespace ApolloQA.Components
                     break;
             }
 
-            //need to start at first page of grid
+            //if it's already on the current page of grid, find it
+            try
+            {
+                //find if value is present
+                IWebElement targetCell = UserActions.FindElementWaitUntilVisible(By.XPath("//datatable-body-row//datatable-body-cell[" + columnNumber + "]//*[normalize-space(text())='" + value + "']"), 3);
+
+                return true;
+            }
+            catch { }
+
+            //otherwise, need to start at first page of grid
             try
             {
                 if (firstPage.Enabled)
@@ -57,7 +67,7 @@ namespace ApolloQA.Components
                 try
                 {
                     //find if value is present
-                    IWebElement targetCell = UserActions.FindElementWaitUntilVisible(By.XPath("//datatable-body-row//datatable-body-cell[" + columnNumber + "]//*[normalize-space(text())='" + value + "']"));
+                    IWebElement targetCell = UserActions.FindElementWaitUntilVisible(By.XPath("//datatable-body-row//datatable-body-cell[" + columnNumber + "]//*[normalize-space(text())='" + value + "']"), 3);
 
                     return true;
                 }
@@ -95,8 +105,26 @@ namespace ApolloQA.Components
                         break;
                 }
 
-                //need to start at first page of grid
-                try
+            //if it's already on the current page of grid, find it
+            try
+            {
+                //find if value is present
+                IWebElement targetCell = UserActions.FindElementWaitUntilVisible(By.XPath("//datatable-body-row//datatable-body-cell[" + columnNumber + "]//*[normalize-space(text())='" + value + "']"), 3);
+
+                //if value present, click ellipsis
+                IWebElement ellipsis = UserActions.FindElementWaitUntilVisible(By.XPath("//datatable-body-row//datatable-body-cell[" + columnNumber + "]//*[normalize-space(text())='" + value + "']/../../../datatable-body-cell[" + totalColumns + "]//button"));
+                ellipsis.Click();
+
+                //click the option
+                IWebElement targetOption = UserActions.FindElementWaitUntilClickable(By.XPath("//button[@role='menuitem' and normalize-space(text())='" + option + "']"));
+                targetOption.Click();
+
+                return true;
+            }
+            catch { }
+
+            //otherwise, need to start at first page of grid
+            try
                 {
                     if (firstPage.Enabled)
                         firstPage.Click();

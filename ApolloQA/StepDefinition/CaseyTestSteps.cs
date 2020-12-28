@@ -26,6 +26,7 @@ namespace ApolloQA.Features
         {
             Button button = new Button(buttonName);
             button.Click();
+            UserActions.WaitForSpinnerToDisappear();
         }
 
 
@@ -39,7 +40,7 @@ namespace ApolloQA.Features
         [When(@"user enters following values")]
         public void WhenUserEntersFollowingValues(Table table)
         {
-            UserActions.WaitForSpinnerToDisappear();
+            //UserActions.WaitForSpinnerToDisappear();
 
             foreach (var row in table.Rows)
             {
@@ -54,6 +55,12 @@ namespace ApolloQA.Features
                     if (displayName == "VIN" && value == "Random")
                     {
                         value = Functions.GetRandomVIN();
+                        featureContext.Add("Last Random " + displayName, value);
+                    }
+
+                    if (displayName == "Drivers License Number" && value == "Random")
+                    {
+                        value = Functions.GetValidIllinoisDriversLicenseNumber();
                         featureContext.Add("Last Random " + displayName, value);
                     }
 
@@ -93,7 +100,6 @@ namespace ApolloQA.Features
         [Then(@"the following fields have values")]
         public void ThenTheFollowingFieldsHaveValues(Table table)
         {
-            UserActions.WaitForSpinnerToDisappear();
 
             foreach (var row in table.Rows)
             {
@@ -107,7 +113,7 @@ namespace ApolloQA.Features
                 {
                     InputField inputField = new InputField(displayName);
 
-                    if (displayName == "VIN" && value == "Last Random")
+                    if (value == "Last Random")
                         value = featureContext.Get<string>("Last Random " + displayName);
 
                     displayedValue = inputField.GetValue();
@@ -187,14 +193,11 @@ namespace ApolloQA.Features
                 string columnName = row["Column"];
                 string value = row["Value"];
 
-                //if (value.Contains("Last Random"))
-                //{
-                //    string lastRandom = featureContext.Get<string>("Last Random " + columnName);
-                //    value = lastRandom;
-                //}
-
-                if (columnName == "VIN" && value == "Last Random")
-                    value = featureContext.Get<string>("Last Random " + columnName);
+                if (value.Contains("Last Random"))
+                {
+                    string lastRandom = featureContext.Get<string>(value);
+                    value = lastRandom;
+                }
 
                 if (!theGrid.GridContainsColumnWithValue(columnName, value))
                     NUnit.Framework.Assert.IsTrue(false, "Unable to locate value " + value + " in Grid column " + columnName);
@@ -215,14 +218,11 @@ namespace ApolloQA.Features
                 string columnName = row["Column"];
                 string value = row["Value"];
 
-                if (columnName == "VIN" && value == "Last Random")
-                    value = featureContext.Get<string>("Last Random " + columnName);
-
-                //if (value.Contains("Last Random"))
-                //{
-                //    string lastRandom = featureContext.Get<string>("Last Random " + columnName);
-                //    value = lastRandom;
-                //}
+                if (value.Contains("Last Random"))
+                {
+                    string lastRandom = featureContext.Get<string>(value);
+                    value = lastRandom;
+                }
 
                 if (!theGrid.GridClickRowOptionForColumnWithValue(columnName, value, option))
                     NUnit.Framework.Assert.IsTrue(false, "Unable to locate value " + value + " in Grid column " + columnName);

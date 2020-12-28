@@ -200,5 +200,19 @@ namespace ApolloQA.Source.Helpers
             return randomVin;
         }
 
+        public static string GetValidIllinoisDriversLicenseNumber()
+        {
+            //not a great implementation but it works
+
+            char[] chars =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+            Random r = new Random();
+
+            string licenseNo = "" + chars[r.Next(chars.Length)];
+
+            licenseNo += (r.Next(100, 1000).ToString()) + (r.Next(1000, 10000).ToString()) + (r.Next(1000, 10000).ToString());
+
+            return licenseNo;
+        }
+
     }
 }

@@ -41,11 +41,11 @@ Scenario: Add Vehicle to existing Organization using VIN
 	Then Toast with a message: Vehicle saved is visible
 	Then Vehicles sidetab is active
 	And Verify grid contains entry with column equals value
-	| Column | Value             |
-	| VIN    | Last Random       |
+	| Column | Value           |
+	| VIN    | Last Random VIN |
 	When user clicks Edit option for grid with column equals value
-	| Column | Value       |
-	| VIN    | Last Random |
+	| Column | Value           |
+	| VIN    | Last Random VIN |
 	Then Edit Vehicle modal is visible
 	And the following fields have values
 	| Display Name             | Field Type | Value                |

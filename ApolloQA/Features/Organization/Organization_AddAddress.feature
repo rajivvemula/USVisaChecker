@@ -1,5 +1,4 @@
-﻿
-Feature: Organization_AddAddress
+﻿Feature: Organization_AddAddress
 
 
 Scenario: Add Address to existing Organization
