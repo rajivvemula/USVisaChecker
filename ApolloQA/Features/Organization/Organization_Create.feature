@@ -34,10 +34,10 @@ Scenario: 1 Test Create Org
 	| Tax ID Type               | Dropdown     | FEIN                                                   |
 	| Tax ID No                 | Input        | 12-3123111                                             |
 	| Description Of Operations | Input        | Sample text.                                           |
-	#| Business Phone No.        | Input        | 249-213-1518                                           |
-	#| Business Email Address    | Input        | business@email.com                                     |
-	#| Business Website          | Input        | business.com                                           |
+	| Business Phone No.        | Input        | 249-213-1518                                           |
+	| Business Email Address    | Input        | business@email.com                                     |
+	| Business Website          | Input        | business.com                                           |
 	| Keyword                   | Autocomplete | Pizza - Restaurant - no deep frying - no table service |
-	#| Class Taxonomy            | Input        | Hospitality\Restaurants\All Other                      |
+	| Class Taxonomy            | Input        | Hospitality\Restaurants\All Other                      |
 	| Year Business Started     | Input        | 2017                                                   |
 	| Year Ownership Started    | Input        | 2018                                                   |

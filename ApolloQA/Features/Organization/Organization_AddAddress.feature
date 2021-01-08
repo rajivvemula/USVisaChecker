@@ -3,7 +3,7 @@
 
 Scenario: Add Address to existing Organization
 	Given user is successfully logged into biberk
-	When user enters search query: Automation Test Org 1223
+	When user enters search query: Automation Test Org 0108
 	And user clicks first search result
 	Then URL contains organization/
 	And Business Information sidetab is active

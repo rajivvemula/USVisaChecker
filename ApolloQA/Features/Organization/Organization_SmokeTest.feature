@@ -36,11 +36,11 @@ Scenario: 1 Test Create Org
 	| Tax ID Type               | Dropdown     | FEIN                                                   |
 	| Tax ID No                 | Input        | 12-3123111                                             |
 	| Description Of Operations | Input        | Sample text.                                           |
-	#| Business Phone No.        | Input        | 249-213-1518                                           |
-	#| Business Email Address    | Input        | business@email.com                                     |
-	#| Business Website          | Input        | business.com                                           |
+	| Business Phone No.        | Input        | 249-213-1518                                           |
+	| Business Email Address    | Input        | business@email.com                                     |
+	| Business Website          | Input        | business.com                                           |
 	| Keyword                   | Autocomplete | Pizza - Restaurant - no deep frying - no table service |
-	#| Class Taxonomy            | Input        | Hospitality\Restaurants\All Other                      |
+	| Class Taxonomy            | Input        | Hospitality\Restaurants\All Other                      |
 	| Year Business Started     | Input        | 2017                                                   |
 	| Year Ownership Started    | Input        | 2018                                                   |
 
@@ -88,7 +88,7 @@ Scenario: 3 Add Driver to Organization
 	| Expiration Date        | Input      | 10/15/2023 |
 	| CDL                    | Dropdown   | Yes        |
 	When user clicks Save button
-	Then Toast with a message: Driver saved is visible
+	Then Toast appears containing text: Driver saved
 	Then Verify grid contains entry with column equals value
 	| Column    | Value                              |
 	| License # | Last Random Drivers License Number |
@@ -107,7 +107,7 @@ Scenario: 3 Add Driver to Organization
 	| CDL                    | Dropdown   | Yes         |
 	When user clicks Cancel button
 
-
+@bugReported
 Scenario: 4 Add Vehicle to Organization
 	When user clicks Vehicles sidetab
 	Then Vehicles sidetab is active
@@ -129,19 +129,19 @@ Scenario: 4 Add Vehicle to Organization
 	| Body Subcategory         | Dropdown   | Random               |
 	| Seating Capacity         | Dropdown   | Random               |
 	| Gross Vehicle Weight     | Dropdown   | Random               |
-	| Cost New                 | Input      | $ 22,000.00          |
-	| Estimated Current Value  | Input      | $ 14,000.00          |
+	| Cost New                 | Input      | 22000                |
+	| Estimated Current Value  | Input      | 14000                |
 	| Additional Modifications | Input      | Test comment.        |
-	| Stated Amount            | Input      | $ 12,000.00          |
+	| Stated Amount            | Input      | 12000                |
 	Then the following fields have values
 	| Display Name             | Field Type | Value         |
 	| Vehicle Trim             | Input      | Sport         |
 	| Body Category            | Dropdown   | Any           |
 	| Additional Modifications | Input      | Test comment. |
-	| Stated Amount            | Input      | $ 12,000.00   |
+	| Stated Amount            | Input      | 12000         |
 	When user clicks Save button
-	Then Toast with a message: Vehicle saved is visible
-	Then Vehicles sidetab is active
+	Then Toast appears containing text: Vehicle saved
+	And Vehicles sidetab is active
 	And Verify grid contains entry with column equals value
 	| Column | Value           |
 	| VIN    | Last Random VIN |
@@ -156,10 +156,10 @@ Scenario: 4 Add Vehicle to Organization
 	| Body Subcategory         | Dropdown   | Any                  |
 	| Seating Capacity         | Dropdown   | Any                  |
 	| Gross Vehicle Weight     | Dropdown   | Any                  |
-	| Cost New                 | Input      | $ 22,000.00          |
-	| Estimated Current Value  | Input      | $ 14,000.00          |
+	| Cost New                 | Input      | 22000                |
+	| Estimated Current Value  | Input      | 14000                |
 	| Additional Modifications | Input      | Test comment.        |
-	| Stated Amount            | Input      | $ 12,000.00          |
+	| Stated Amount            | Input      | 12000                |
 	When user clicks Cancel button
 
 

@@ -246,6 +246,14 @@ namespace ApolloQA.Features
             navBar.ClickFirstSearchResult();
         }
 
+        [Then(@"Toast appears containing text: (.*)")]
+        public void ThenToastAppearsContainingText(string containsText)
+        {
+            Toaster toaster = new Toaster(containsText);
+
+            NUnit.Framework.Assert.IsTrue(toaster.IsPresent(), "Unable to locate toast containing" + containsText);
+        }
+
 
     }
 }

@@ -9,10 +9,10 @@ Scenario: TC01 Create new application
 	When user clicks Quote Button
 	When user clicks New Button
 	When user enters following values
-	| Display Name     | Field Type   | Value                    |
-	| Business Name    | Autocomplete | Casey Auto Test Org 1202 |
-	| Line of Business | Dropdown     | Commercial Auto          |
-	| Agent            | Dropdown     | Thurston Howell          |
+	| Display Name     | Field Type   | Value                   |
+	| Business Name    | Autocomplete | Automation Test Org New |
+	| Line of Business | Dropdown     | Commercial Auto         |
+	| Agent            | Dropdown     | Thurston Howell         |
 	When user clicks Next Button
 	And user waits for spinner to load
 	Then URL contains /section/9000

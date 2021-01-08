@@ -3,7 +3,7 @@ Feature: Organization_AddDriver
 
 Scenario: Add Driver to existing Organization
 	Given user is successfully logged into biberk
-	When user enters search query: Automation Test Org 1223
+	When user enters search query: Automation Test Org 0108
 	And user clicks first search result
 	Then URL contains organization/
 	And Business Information sidetab is active
@@ -21,7 +21,7 @@ Scenario: Add Driver to existing Organization
 	| Expiration Date        | Input      | 10/15/2023 |
 	| CDL                    | Dropdown   | Yes        |
 	When user clicks Save button
-	Then Toast with a message: Driver saved is visible
+	Then Toast appears containing text: Driver saved
 	Then Verify grid contains entry with column equals value
 	| Column    | Value                              |
 	| License # | Last Random Drivers License Number |
