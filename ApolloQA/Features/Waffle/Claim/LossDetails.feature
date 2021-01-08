@@ -1,4 +1,5 @@
-﻿Feature: LossDetails
+﻿@broken
+Feature: LossDetails
 
 
 Scenario: User able to complete loss details on Pending FNOL

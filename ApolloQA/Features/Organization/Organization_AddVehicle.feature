@@ -1,4 +1,4 @@
-﻿@bugreported
+﻿@bugReported
 Feature: Organization_AddVehicle
 
 Scenario: Add Vehicle to existing Organization using VIN
