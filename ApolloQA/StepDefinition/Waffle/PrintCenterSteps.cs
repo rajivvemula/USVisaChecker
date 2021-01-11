@@ -1,11 +1,11 @@
 ﻿using TechTalk.SpecFlow;
 using ApolloQA.Pages;
 using ApolloQA.Source.Helpers;
+using ApolloQA.Source.Driver;
 using System;
 using Azure;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
-using ApolloQA.Pages;
 
 namespace ApolloQA.Features.Waffle
 
@@ -110,6 +110,7 @@ namespace ApolloQA.Features.Waffle
             System.Threading.Thread.Sleep(2000);
             var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "updated");
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
             //Console.WriteLine(toastMessage);
         }
 
@@ -128,6 +129,8 @@ namespace ApolloQA.Features.Waffle
             System.Threading.Thread.Sleep(2000);
             var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "cancelled");
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+
         }
 
         [Then(@"User clicks Release button from the last queue name")]
@@ -136,7 +139,9 @@ namespace ApolloQA.Features.Waffle
              Pages.PrintCenter.PrintCenterJobQueueLastItemRelease.Click();
             var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "released");
-            System.Threading.Thread.Sleep(2000);
+            //System.Threading.Thread.Sleep(2000);
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+
         }
 
         [Then(@"User Click Delete button from the last queue name")]
@@ -145,7 +150,9 @@ namespace ApolloQA.Features.Waffle
             Pages.PrintCenter.PrintCenterJobQueueLastItemDelete.Click();
             var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "deleted");
-        } 
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+
+        }
 
         [Then(@"User Clicks Hold link")]
         public void ThenUserClicksHoldLink()
@@ -153,7 +160,9 @@ namespace ApolloQA.Features.Waffle
             Pages.PrintCenter.PrintCenterJobQueueLastItemHoldOrStopHold.Click();
             var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "held");
-            System.Threading.Thread.Sleep(2000);
+            //System.Threading.Thread.Sleep(2000);
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+
         }
 
         [Then(@"User verifies link renamed to Stop Hold")]
@@ -175,7 +184,8 @@ namespace ApolloQA.Features.Waffle
             Pages.PrintCenter.PrintCenterJobQueueLastItemHoldOrStopHold.assertElementInnerTextEquals("Hold");
             var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "removed from hold");
-        } 
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+        }
 
 
 
