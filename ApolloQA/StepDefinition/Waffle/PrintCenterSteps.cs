@@ -1,16 +1,16 @@
 ﻿using TechTalk.SpecFlow;
 using ApolloQA.Pages;
 using ApolloQA.Source.Helpers;
+using ApolloQA.Source.Driver;
 using System;
 using Azure;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
-using ApolloQA.Pages;
 
 namespace ApolloQA.Features.Waffle
 
 {
-    [Binding]
+   [Binding]
     public class PrintCenterSteps
     {
 
@@ -22,11 +22,12 @@ namespace ApolloQA.Features.Waffle
             
         }
 
+        public string header;
 
         public string QA2baseURL = "https://bibaoqa2-printermanagementfunction.azurewebsites.net/api/printer/queue/job";
-        public string QA2Bodydata = "{\"printerQueueId\":2000," + "\"documentId\":10013," + "\"pageCount\":2," + "\"isHeld\":false}";
+        public string QA2Bodydata = "{\"printerQueueId\":10000," + "\"documentId\":10006," + "\"pageCount\":2," + "\"isHeld\":false}";
         public string QA1baseURL = "https://bibaoqa-printermanagementfunction.azurewebsites.net/api/printer/queue/job";
-        public string QA1Bodydata = "{\"printerQueueId\":9001," + "\"documentId\":10789," + "\"pageCount\":2," + "\"isHeld\":false}";
+        public string QA1Bodydata = "{\"printerQueueId\":20000," + "\"documentId\":10789," + "\"pageCount\":2," + "\"isHeld\":false}";
 
         JObject JsonData = new JObject();
 
@@ -35,14 +36,14 @@ namespace ApolloQA.Features.Waffle
         {
 
             String URL = driver.Url;
-            if (URL.Contains("bibaoqa2"))
+            if (URL.Contains("biberk-apollo-qa2."))
             {
                 JsonData = JObject.Parse(QA2Bodydata);
                 dynamic response = RestAPI.POST(QA2baseURL, JsonData);
                 Console.WriteLine("response:" + response);
             }
 
-            if (URL.Contains("bibaoqa"))
+            if (URL.Contains("biberk-apollo-qa."))
             {
                 JsonData = JObject.Parse(QA1Bodydata);
                 dynamic response = RestAPI.POST(QA1baseURL, JsonData);
@@ -67,7 +68,8 @@ namespace ApolloQA.Features.Waffle
         [Then(@"User should be redirected to Print Center Page")]
         public void ThenUserShouldBeRedirectedToPrintCenterPage()
         {
-            Pages.PrintCenter.PrintCenterHeader.assertElementInnerTextEquals("Print Center");
+            header = Pages.PrintCenter.PrintCenterHeader1.GetInnerText();
+            Assert.AreEqual(header,"Print Center");
         }
         
         [Then(@"User Clicks on the Last Queue name in Print Center table")]
@@ -106,8 +108,9 @@ namespace ApolloQA.Features.Waffle
         {
             Pages.PrintCenter.PrintCenterPopupSchedulebutton.Click();
             System.Threading.Thread.Sleep(2000);
-            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "updated");
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
             //Console.WriteLine(toastMessage);
         }
 
@@ -124,34 +127,42 @@ namespace ApolloQA.Features.Waffle
         {
             Pages.PrintCenter.PrintCenterGridLastItemScheduleORCancelSche.Click();
             System.Threading.Thread.Sleep(2000);
-            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "cancelled");
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+
         }
 
         [Then(@"User clicks Release button from the last queue name")]
          public void ThenUserClicksReleaseButtonFromTheLastQueueName()
          {
              Pages.PrintCenter.PrintCenterJobQueueLastItemRelease.Click();
-            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "released");
-            System.Threading.Thread.Sleep(2000);
+            //System.Threading.Thread.Sleep(2000);
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+
         }
 
         [Then(@"User Click Delete button from the last queue name")]
         public void ThenUserClickDeleteButtonFromTheLastQueueName()
         {
             Pages.PrintCenter.PrintCenterJobQueueLastItemDelete.Click();
-            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "deleted");
-        } 
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+
+        }
 
         [Then(@"User Clicks Hold link")]
         public void ThenUserClicksHoldLink()
         {
             Pages.PrintCenter.PrintCenterJobQueueLastItemHoldOrStopHold.Click();
-            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
+            var toastMessage = Pages.PrintCenter.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "held");
-            System.Threading.Thread.Sleep(2000);
+            //System.Threading.Thread.Sleep(2000);
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+
         }
 
         [Then(@"User verifies link renamed to Stop Hold")]
@@ -173,7 +184,8 @@ namespace ApolloQA.Features.Waffle
             Pages.PrintCenter.PrintCenterJobQueueLastItemHoldOrStopHold.assertElementInnerTextEquals("Hold");
             var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "removed from hold");
-        } 
+            Pages.PrintCenter.toastMessage.assertElementNotPresent();
+        }
 
 
 
