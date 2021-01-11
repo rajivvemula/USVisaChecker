@@ -1,7 +1,8 @@
 ﻿#none of these scenarios are working on QA2
-@broken
 Feature: Print Center
 	As a user I want to be able to verify print center queue and its associated job
+# Pre Conditions: Make sure to have Printer Queue SQL table has queue name [system].[PrinterQueue], 
+# take the Queue ID and create a job using Postman API End point since we don't have UI to create these data 
 
 @SmokeTest @PrintCenterUI
 # US 21816 - Print Center Functions (4 Test cases)

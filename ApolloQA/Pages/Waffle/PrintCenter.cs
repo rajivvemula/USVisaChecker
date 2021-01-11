@@ -13,7 +13,8 @@ namespace ApolloQA.Pages
 
         public static Element WaffleMenuOptionPrintCenter => new Element("//a[@href='/print-center']");
         public static Element PrintCenterDashboard = new Element("//*[contains(text(), ' Dashboard ')]");
-        public static Element PrintCenterHeader = new Element("//*[contains(text(), 'Print Center')]");
+        public static Element PrintCenterHeader1 = new Element("//bh-print-center-dashboard//*/h2");
+
         public static Element PrintCenterGridLastItem => new Element("(//div[@class='datatable-row-center datatable-row-group ng-star-inserted'])[last()] //*[@role='button']");
         public static Element PrintCenterGridLastItemRelease = new Element ("(//div[@class='datatable-row-center datatable-row-group ng-star-inserted'])[last()] //datatable-body-cell[4]/div/a");
        //This element is used for both schedule and cancelschedule
