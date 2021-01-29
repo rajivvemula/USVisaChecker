@@ -21,6 +21,16 @@ namespace ApolloQA.StepDefinition
         public static int OrgID;
         public string OrgType = "";
         public string Keyword = "";
+        public static Data.Entity.Organization _Organization;
+
+        [When(@"user navigates to latest organization")]
+        public void WhenUserNavigatesToLatestOrganization()
+        {
+            Log.Debug("Latest Organization ID" + Data.Entity.Organization.GetLatestOrganization().Id);
+            _Organization = Data.Entity.Organization.GetLatestOrganization();
+            Organization_Page.Navigate(_Organization.Id);
+        }
+
 
         [When(@"user enters business information")]
         public void WhenUserEntersBusinessInformation(Table table)
@@ -32,7 +42,7 @@ namespace ApolloQA.StepDefinition
             OrgType = selectionOrgType;
             Log.Info($"Expected : {nameof(OrgType)}={OrgType}");
             BusinessInformation.businessDBAField.setText(OrgTable.DBA);
-            Pages.Shared.GetDropdownField("Tax ID Type").SelectMatDropdownOptionByText(OrgTable.TaxIdType);
+            Shared.GetDropdownField("Tax ID Type").SelectMatDropdownOptionByText(OrgTable.TaxIdType);
             BusinessInformation.taxIdNumberField.setText(OrgTable.TaxIdNumber);
             BusinessInformation.descriptionOfOperationsField.setText(OrgTable.DescriptionOfOperations);
             BusinessInformation.businessphoneNumberField.setText(OrgTable.BusinessPhoneNumber);
@@ -40,8 +50,8 @@ namespace ApolloQA.StepDefinition
             string isRequired = BusinessInformation.businessEmailAddressField.GetAttribute("aria-required");
             Assert.AreEqual("true", isRequired);
             BusinessInformation.businessWebsiteField.setText(OrgTable.BusinessWebsite);
-            Pages.Shared.GetInputField("Keyword").setText(OrgTable.Keyword);
-            Pages.Shared.GetInputField("Keyword").SelectMatDropdownOptionByIndex(0, out string selectionKeyWord);
+            Shared.GetInputField("Keyword").setText(OrgTable.Keyword);
+            Shared.GetInputField("Keyword").SelectMatDropdownOptionByIndex(1, out string selectionKeyWord);
             Keyword = selectionKeyWord;
             Log.Info($"Expected: {nameof(Keyword)}={Keyword}");
             BusinessInformation.businessYearStartedField.setText(OrgTable.YearStarted);
@@ -73,6 +83,16 @@ namespace ApolloQA.StepDefinition
         {
             String URL = driver.Url;
             Assert.IsTrue(URL.EndsWith("/organization"));
+        }
+
+        [Then(@"user deletes entry")]
+        public void ThenUserDeletesEntry()
+        {
+            OrganizationGrid.gridButton.Click();
+            OrganizationGrid.gridDeleteButton.Click();
+            OrganizationGrid.confirmGridDeleteButton.Click();
+            var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
+            Assert.TextContains(toastMessage, "deleted");
         }
     }
 }

@@ -177,10 +177,6 @@ namespace ApolloQA.StepDefinition
             Shared.GetCoverageLimitButton(CoverageDisplayText, DeductibleTypeDisplayText).Click();
             Shared.GetCoverageLimitDropdown(CoverageDisplayText, DeductibleTypeDisplayText).SelectMatDropdownOptionByText(DeductilbeAmountDisplayText);
             new SharedSteps().WhenUserWaitsForSpinnerToLoad();
-
-
         }
-
-
     }
 }

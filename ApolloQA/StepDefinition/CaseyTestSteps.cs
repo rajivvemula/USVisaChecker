@@ -253,7 +253,5 @@ namespace ApolloQA.Features
 
             NUnit.Framework.Assert.IsTrue(toaster.IsPresent(), "Unable to locate toast containing" + containsText);
         }
-
-
     }
 }
