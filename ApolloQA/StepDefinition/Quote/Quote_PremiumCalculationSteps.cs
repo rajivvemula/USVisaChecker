@@ -21,6 +21,44 @@ namespace ApolloQA.StepDefinition.Quote
                                                           "Experience Rating"
                                                         };
         public static List<JObject> ratingResult;
+        public static SharedSteps STEPS= new SharedSteps();
+
+        [Given(@"user is in the Rating Worksheet Page")]
+        public void GivenUserIsInTheRatingWorksheetPage()
+        {
+            if(Functions.GetCurrentURL().Contains("ratings-worksheet"))
+            {
+                return;
+            }
+            else if (Functions.GetCurrentURL().Contains("section"))
+            {
+                var urlPath = Functions.GetCurrentURLPath();
+
+                var sectionID = int.Parse(urlPath.Substring(urlPath.IndexOf("section/") + 8, 4));
+
+                if(new Data.Entity.Storyboard.Section(sectionID).Name!="Summary")
+                {
+                    STEPS.WhenUserClicksSidetab("Summary");
+                    STEPS.WhenUserWaitsForSpinnerToDissappearForSeconds(120);
+
+                }
+
+
+                STEPS.WhenUserClicksButton("View Rating Worksheet");
+            }
+            else
+            {
+
+                new BiberkLoginSteps().GivenUserIsSuccessfullyLoggedIntoBiberk();
+                new Quote_GeneralSteps().GivenUserNavigatesToQuote("latest");
+                STEPS.WhenUserClicksSidetab("Summary");
+                STEPS.WhenUserWaitsForSpinnerToDissappearForSeconds(120);
+                STEPS.WhenUserClicksButton("View Rating Worksheet");
+
+            }
+        }
+
+
 
         [Then(@"the premium should be calculated")]
         public void ThenThePremiumShouldBeCalculated()

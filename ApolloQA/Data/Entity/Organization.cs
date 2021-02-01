@@ -21,7 +21,10 @@ namespace ApolloQA.Data.Entity
 
         public static Organization GetLatestOrganization()
         {
-            return new Organization((int)SQL.executeQuery("SELECT TOP (1) org.Id FROM [party].[Organization] org LEFT JOIN party.OrganizationType OrgType ON org.OrganizationTypeId = OrgType.id WHERE orgType.Name = 'Insured' ORDER BY Id Desc; ")[0]["Id"]);
+            return new Organization((int)SQL.executeQuery(@"SELECT TOP (1) OrganizationId
+                                                          FROM [party].[OrganizationProfile]
+                                                          Where StatusId = 0
+                                                          order by Id desc ")[0]["OrganizationId"]);
         }
 
         public Organization(String filterName, String filterValue )
@@ -30,6 +33,7 @@ namespace ApolloQA.Data.Entity
             dynamic body = new JObject();
             body.filters = new JObject();
             body.filters[$"{filterName}"] = filterValue;
+            body.filters["EntityStatusComplexFilter"] = "{\"StatusIds\":[0,2,1]}";
             body.loadChildren = true;
 
             dynamic response = RestAPI.POST($"/organization/search", body);

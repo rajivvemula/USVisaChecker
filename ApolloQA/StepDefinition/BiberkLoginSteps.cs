@@ -10,18 +10,12 @@ namespace ApolloQA.StepDefinition
     [Binding]
     public sealed class BiberkLoginSteps
     {
-        public IWebDriver driver;
 
-
-        public BiberkLoginSteps(IWebDriver _driver)
-        {
-            this.driver = _driver;
-        }
 
         [Given(@"user is successfully logged into biberk")]
         public void GivenUserIsSuccessfullyLoggedIntoBiberk()
         {
-            if (driver.Url == "data:," && loadSessionIntoDriver() == false)
+            if (Functions.GetCurrentURL() == "data:," && loadSessionIntoDriver() == false)
             {
                 
                 GivenUserLandedBiBerkPageWithValidURL();

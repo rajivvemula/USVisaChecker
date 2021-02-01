@@ -3,6 +3,8 @@
 Feature: LossDetails
 
 
+@broken
+#Searching for FNOL didn't return anything?
 Scenario: User able to complete loss details on Pending FNOL
 Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button

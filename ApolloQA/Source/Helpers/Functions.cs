@@ -17,6 +17,15 @@ namespace ApolloQA.Source.Helpers
     class Functions
     {
 
+        public static void ScrollToBottom()
+        {
+            UserActions.ScrollToBottom();
+
+        }
+        public static void ScrollToTop()
+        {
+            UserActions.ScrollToTop();
+        }
         public static string GetCurrentURL()
         {
             return UserActions.GetCurrentURL();
@@ -191,13 +200,10 @@ namespace ApolloQA.Source.Helpers
         public static string GetRandomVIN()
         {
             //grabs random vin via randomvin.com
-            IWebDriver vinDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            vinDriver.Navigate().GoToUrl("https://randomvin.com/");
-            Thread.Sleep(2000);
-            string randomVin = vinDriver.FindElement(By.XPath("//span[@id='Result']/h2")).Text;
-            Console.WriteLine("the random vin is: " + randomVin);
-            vinDriver.Quit();
-            return randomVin;
+
+            var vin = (string)RestAPI.GET("https://randomvin.com/getvin.php?type=real");
+
+            return vin;
         }
 
         public static string GetValidIllinoisDriversLicenseNumber()

@@ -56,22 +56,15 @@ namespace ApolloQA.Source.Driver
             UserActions.Click(locator);
         }
 
-        public void Click(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional =false)
+        public bool Click(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional =false)
         {
-            UserActions.Click(locator, wait_Seconds, optional);
+            return UserActions.Click(locator, wait_Seconds, optional);
         }
 
         public bool TryClick(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
         {
-            try
-            {
-                this.Click(wait_Seconds);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return this.Click(wait_Seconds, true);
+            
         }
 
         public string GetAttribute(string attributeName)
@@ -266,7 +259,12 @@ namespace ApolloQA.Source.Driver
         {
             List<String> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
 
+            dropdownOptions.ForEach(it => Log.Debug("dropdownOptions: " + it));
             return Assert.AreEqual(dropdownOptions, optionsText, optional);
+        }
+        public IEnumerable<string> GetMatdropdownOptionsText()
+        {
+            return UserActions.GetAllMatDropdownOptions(locator);
         }
 
 

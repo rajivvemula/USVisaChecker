@@ -82,7 +82,7 @@ namespace ApolloQA.Source.Driver
             return textField.Text.Trim();
         }
 
-        public static void Click(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS, bool optional = false)
+        public static bool Click(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS, bool optional = false)
         {
             try
             {
@@ -102,7 +102,9 @@ namespace ApolloQA.Source.Driver
             catch (Exception ex)
             {
                 Functions.handleFailure($"Locator: {ElementLocator}",ex, optional);
+                return false;
             }
+            return true;
         }
 
         public static string GetAttribute(By ElementLocator, string attributeName)
@@ -311,6 +313,16 @@ namespace ApolloQA.Source.Driver
         public static void ScrollIntoView(IWebElement element)
         {
             JSExecutor.execute($"arguments[0].scrollIntoView();", element);
+        }
+        public static void ScrollToBottom()
+        {
+            new Actions(Setup.driver).SendKeys(Keys.End).Build().Perform();
+            
+        }
+        public static void ScrollToTop()
+        {
+            new Actions(Setup.driver).SendKeys(Keys.Home).Build().Perform();
+
         }
 
         //

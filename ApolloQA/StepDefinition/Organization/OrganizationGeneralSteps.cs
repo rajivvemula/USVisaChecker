@@ -4,16 +4,17 @@ using System;
 using System.Linq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using ApolloQA.Source.Helpers;
 using static ApolloQA.Source.Helpers.SpecflowTables;
 
 namespace ApolloQA.StepDefinition
 {
     [Binding]
-    public sealed class apolloOrganizationSteps
+    public sealed class OrganizationGeneralSteps
     {
         public IWebDriver driver;
 
-        apolloOrganizationSteps(IWebDriver _driver)
+        OrganizationGeneralSteps(IWebDriver _driver)
         {
             this.driver = _driver;
         }
@@ -88,11 +89,13 @@ namespace ApolloQA.StepDefinition
         [Then(@"user deletes entry")]
         public void ThenUserDeletesEntry()
         {
+            var toastMessage = BusinessInformation.toastrMessage;
             OrganizationGrid.gridButton.Click();
             OrganizationGrid.gridDeleteButton.Click();
+
+            toastMessage.assertElementNotPresent();
             OrganizationGrid.confirmGridDeleteButton.Click();
-            var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
-            Assert.TextContains(toastMessage, "deleted");
+            Assert.TextContains(toastMessage.GetInnerText(), "deleted");
         }
     }
 }

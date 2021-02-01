@@ -53,13 +53,13 @@ namespace ApolloQA.Features
                     if (displayName == "VIN" && value == "Random")
                     {
                         value = Functions.GetRandomVIN();
-                        featureContext.Add("Last Random" + displayName, value);
+                        featureContext["Last Random " + displayName] = value;
                     }
 
                     if (displayName == "Drivers License Number" && value == "Random")
                     {
                         value = Functions.GetValidIllinoisDriversLicenseNumber();
-                        featureContext.Add("Last Random " + displayName, value);
+                        featureContext["Last Random " + displayName] = value;
                     }
 
                     inputField.SetValue(value);

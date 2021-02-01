@@ -7,11 +7,12 @@ using Entity_Quote = ApolloQA.Data.Entity.Quote;
 using Entity_Organization = ApolloQA.Data.Entity.Organization;
 using ApolloQA.Source.Helpers;
 using ApolloQA.Components;
+using System.Collections.Generic;
 
 namespace ApolloQA.StepDefinition.Quote
 {
     [Binding]
-    public class Quote_CreateSteps
+    public class Quote_GeneralSteps
     {
         public string BusinessName = "";
         public string LineOfBusiness = "";
@@ -25,33 +26,6 @@ namespace ApolloQA.StepDefinition.Quote
         {
             Log.Debug("Latest quote ID" + Data.Entity.Quote.GetLatestQuote().Id);
             Quote_Home_Page.navigate();
-        }
-
-        [When(@"user Selects Business Name as (.*)")]
-        public void WhenUserSelectsBusinessNameAs(string business)
-        {
-            if (business.ToLower() == "random")
-            {
-                Quote_Create_Page.BusinessName.SelectMatDropdownOptionByIndex(0, out string selectionDisplayName);
-                this.BusinessName = selectionDisplayName;
-            }
-            else if (int.TryParse(business, out int businessIndex))
-            {
-                Quote_Create_Page.BusinessName.SelectMatDropdownOptionByIndex(businessIndex, out string selectionDisplayName);
-                this.BusinessName = selectionDisplayName;
-            }
-            else
-            {
-                Quote_Create_Page.BusinessName.SelectMatDropdownOptionByText(business);
-                this.BusinessName = business;
-            }
-        }
-
-        [When(@"user Selects Line of Business as (.*)")]
-        public void WhenUserSelectsLineOfBusinessAs(string LOB)
-        {
-            LineOfBusiness = LOB;
-            Quote_Create_Page.LineOfBusiness.SelectMatDropdownOptionByText(LOB);
         }
 
         [When(@"user Selects Policy Effective Date as (.*)")]
@@ -77,8 +51,10 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenPreviouslyCreatedOrganizationShouldBePartOfTheBusinessNameDropdown()
         {
             string orgName = this.organization.Name;
-            Quote_Create_Page.BusinessName.AssertMatDropdownOptionsContain(orgName);
-            WhenUserSelectsBusinessNameAs(orgName);
+            var field = Shared.GetDropdownField("Named Insured");
+            field.AssertMatDropdownOptionsContain(orgName);
+            field.SelectMatDropdownOptionByText(orgName);
+
         }
 
 
@@ -88,7 +64,7 @@ namespace ApolloQA.StepDefinition.Quote
             var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
             Assert.TextContains(toastMessage, "created");
 
-            quote = new Entity_Quote(int.Parse(string.Join("", toastMessage.Where(Char.IsDigit))));
+            quote = new Entity_Quote("ApplicationNumber", string.Join("", toastMessage.Where(Char.IsDigit)));
         }
 
         [Then(@"User should be redirected to the newly created Quote Business Information Section")]
@@ -115,5 +91,53 @@ namespace ApolloQA.StepDefinition.Quote
             Log.Info($"Expected: {nameof(PolicyEffectiveDate)}={PolicyEffectiveDate}");
             Log.Warn("Lastly created quote page test to be implemented");
         }
+
+
+
+
+        List<String> sortedSectionNames;
+
+        [Then(@"Left Nav Sections should be displayed successfully")]
+        public void ThenLeftNavSectionsShouldBeDisplayedAccordingToTheCurrentStoryboard()
+        {
+            this.sortedSectionNames = Quote_GeneralSteps.Quote.Storyboard.GetSortedSectionNames();
+            Assert.AreEqual(this.sortedSectionNames, Quote_Page.LeftSiveNavBar.GetInnerTexts().FindAll(it => it != "Underwriting Results"));
+        }
+
+        [Then(@"User should be able to navigate to each section successfully")]
+        public void ThenUserShouldBeAbleToNavigateToEachSectionSuccessfully()
+        {
+            //TODO: Storyboard section missmatch
+            foreach (var section in Quote_GeneralSteps.Quote.Storyboard.Sections)
+            {
+                new SharedSteps().WhenUserWaitsForSpinnerToLoad();
+                var sectionCTA = Shared.GetLeftSideTab(section.Name);
+                sectionCTA.Click();
+                try { Shared.GetButton(" Continue Anyway ").assertElementNotPresent(); }
+                catch
+                {
+                    Shared.GetButton(" Continue Anyway ").Click();
+                }
+                Assert.CurrentURLEquals(Quote_Page.GetURL(Quote_GeneralSteps.Quote.Id, section.Id));
+            }
+        }
+
+        public static Entity_Quote Quote;
+
+        [When(@"User Navigates to Quote (.*)")]
+        public void GivenUserNavigatesToQuote(string quote)
+        {
+            if (quote?.ToLower() == "recent" || quote?.ToLower() == "latest")
+            {
+                Quote = Entity_Quote.GetLatestQuote();
+            }
+            else
+            {
+                Quote = new Entity_Quote(int.Parse(quote));
+            }
+            Quote_Page.Navigate(Quote.Id);
+        }
+
+
     }
 }

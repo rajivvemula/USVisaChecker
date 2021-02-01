@@ -9,11 +9,20 @@ Scenario: Shared When
 	When user clicks <DisplayName> Button
 	When user clicks <DisplayName> Dropdown
 	When user clicks <DisplayName> Sidetab
+
 	When user selects dropdown <DropdownDisplayText> option equaling <OptionDisplayText>
 	When user selects dropdown <DropdownDisplayText> option containing <OptionDisplayName>
 	When user selects dropdown <DropdownDisplayText> option at index <Optionindex>
 
-	When user waits 1 seconds
+	When user enters <text> into <FieldDisplayText> field
+
+	When user enters <typeAheadText> and selects option equaling <OptionDisplayText> into <FieldDisplayText>
+
+	
+
+	When user waits '1' seconds
+
+	
 
 	When user enters the following address
 	| Field Display Name        | Field Type | Field Value     |
@@ -27,6 +36,7 @@ Scenario: Shared When
 
 
 	When user selects answer to <Question display text> as <Answer display text>
+	When user enters answer to <Question display text> as <Answer text>
 
 
 

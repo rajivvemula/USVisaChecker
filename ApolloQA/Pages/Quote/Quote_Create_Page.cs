@@ -10,8 +10,10 @@ namespace ApolloQA.Pages
         public static void Navigate() => UserActions.Navigate(GetURL());
 
         public static Element BusinessName => new Element("//bh-input-autocomplete[@name='businessName']//input");
+        public static Element NamedInsurred => new Element("//bh-input-autocomplete[@name='nameInsurred']//input");
+
         public static Element LineOfBusiness => new Element("//mat-select[@name='lineOfBusiness']/..");
-        public static Element PolicyEffectiveDate => new Element("//input[@name='policyEffectiveDate']");
+        public static Element PolicyEffectiveDate => new Element("//input[@formcontrolname='ratableObjectEffectiveDate']");
         public static Element PolicyExpirationDate => new Element("//input[@name='policyExpirationDate']");
         public static Element SubmitButton => new Element("//button[@aria-label='Submit']");
 

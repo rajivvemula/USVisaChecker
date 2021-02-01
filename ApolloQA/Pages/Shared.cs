@@ -38,8 +38,9 @@ namespace ApolloQA.Pages
 
         public static Element GetDropdownField(string DisplayName)
         {
-            return new Element($"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::mat-select |" +
-                               $"//*[@class='mat-option-text']//*[contains(text(), '{DisplayName}')]");
+            return new Element($"//mat-label[normalize-space(text())='{DisplayName}']/../../preceding-sibling::mat-select | " +
+                               $"//*[@class='mat-option-text']//*[contains(text(), '{DisplayName}')] | " +
+                               $"//mat-form-field[descendant::*[text()='{DisplayName}']] //input ");
 
         }
         public static Element GetInputField(string DisplayName)
@@ -92,8 +93,13 @@ namespace ApolloQA.Pages
 
         public static Element GetQuestionAnswer(string QuestionDisplayText, string AnswerDisplayText)
         {
-            return new Element($"//bh-question-singleselect[descendant::*[text()='{QuestionDisplayText}']] //mat-radio-button[descendant::*[normalize-space(text())='{AnswerDisplayText}']] |" +
-                               $"//bh-question-boolean[descendant::*[text()='{QuestionDisplayText}']] //mat-radio-button[descendant::*[normalize-space(text())='{AnswerDisplayText}']]");
+            return new Element($"//bh-question-singleselect[descendant::*[normalize-space(text())='{QuestionDisplayText}']] //mat-radio-button[descendant::*[normalize-space(text())='{AnswerDisplayText}']] |" +
+                               $"//bh-question-boolean[descendant::*[normalize-space(text())='{QuestionDisplayText}']] //mat-radio-button[descendant::*[normalize-space(text())='{AnswerDisplayText}']]");
+        }
+        public static Element GetQuestionTextField(string QuestionDisplayText)
+        {
+            return new Element($"//bh-question-number[descendant::*[normalize-space(text())='{QuestionDisplayText}']] //input |" +
+                               $"//bh-question-text[descendant::*[normalize-space(text())='{QuestionDisplayText}']] //input");
         }
         public static Element GetCoverageCheckbox(string CoverageDisplayText)
         {

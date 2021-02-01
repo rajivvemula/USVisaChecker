@@ -19,7 +19,7 @@ namespace ApolloQA.StepDefinition.Quote
 
         public Quote_Section_BusinessInformationSteps()
         {
-            Quote = Quote_SharedSteps.Quote;
+            Quote = Quote_GeneralSteps.Quote;
         }
 
         [When(@"User Navigates to Business Information Section")]

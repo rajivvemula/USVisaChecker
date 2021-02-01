@@ -59,7 +59,7 @@ namespace ApolloQA.StepDefinition
            }
 
 
-            IDictionary<String, String> fieldValues = new Dictionary<String, String>();
+           IDictionary<String, String> fieldValues = new Dictionary<String, String>();
 
             foreach (var row in table.Rows)
             {
@@ -170,6 +170,15 @@ namespace ApolloQA.StepDefinition
             Shared.GetQuestionAnswer(QuestionDisplayText, AnswerDisplayText).Click();
         }
 
+        [When(@"user enters answer to (.*) as (.*)")]
+        public void WhenUserEntersAnswerToAs(string QuestionDisplayText, string AnswerText)
+        {
+            Shared.GetQuestionTextField(QuestionDisplayText).setText(AnswerText);
+        }
+
+
+
+
         [When(@"user selects (.*) coverage with (.*) deductible of (.*)")]
         public void WhenUserSelectsCoverageWithDeductibleOf(string CoverageDisplayText, string DeductibleTypeDisplayText, string DeductilbeAmountDisplayText)
         {
@@ -178,5 +187,15 @@ namespace ApolloQA.StepDefinition
             Shared.GetCoverageLimitDropdown(CoverageDisplayText, DeductibleTypeDisplayText).SelectMatDropdownOptionByText(DeductilbeAmountDisplayText);
             new SharedSteps().WhenUserWaitsForSpinnerToLoad();
         }
+
+        [When(@"user enters (.*) and selects option equaling (.*) into (.*)")]
+        public void WhenUserEntersAndSelectsOptionEqualingInto(string typeAheadText, string OptionDisplayText, string FieldDisplayText)
+        {
+            var inputField = Shared.GetInputField(FieldDisplayText);
+            inputField.setText(typeAheadText);
+            inputField.SelectMatDropdownOptionByText(OptionDisplayText);
+        }
+
+
     }
 }

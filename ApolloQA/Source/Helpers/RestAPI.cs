@@ -67,7 +67,16 @@ namespace ApolloQA.Source.Helpers
             response.EnsureSuccessStatusCode();
             String dataObjects = response.Content.ReadAsStringAsync().Result;
             response.Dispose();
-            return JsonConvert.DeserializeObject<dynamic>(dataObjects);
+            
+            
+
+            try
+            {
+                return JsonConvert.DeserializeObject<dynamic>(dataObjects);
+            }catch(JsonReaderException)
+            {
+                return dataObjects;
+            }
         }
 
         private static String getAuthToken()

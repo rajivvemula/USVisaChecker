@@ -14,6 +14,16 @@ namespace ApolloQA.Data.Entity
         public Quote(int Id) {
             this.Id = Id;
         }
+        public Quote(string property,  int value)
+        {
+            this.Id = (int)Cosmos.GetQuery("Application", $"SELECT * FROM c Where c.{property}={value} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"];
+
+        }
+        public Quote(string property, string value)
+        {
+            this.Id = (int)Cosmos.GetQuery("Application", $"SELECT * FROM c Where c.{property}='{value}' ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"];
+
+        }
         public dynamic this[String propertyName]
         {
             get
@@ -91,6 +101,9 @@ namespace ApolloQA.Data.Entity
                 }
                 catch (Exception exception)
                 {
+                    Log.Critical(exception.ToString());
+                    Log.Critical(exception.Message);
+                    Log.Critical(exception.StackTrace);
                     throw new Exception($"error constructing Organization with the following params 1=PartyId 2={this.GetProperties()?.insuredPartyId?.Value?.ToString()}");
                 }
             }
