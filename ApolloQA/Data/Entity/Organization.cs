@@ -21,7 +21,7 @@ namespace ApolloQA.Data.Entity
 
         public static Organization GetLatestOrganization()
         {
-            return new Organization((int)SQL.executeQuery("SELECT TOP (1) [Id] FROM [party].[Organization] order by Id desc")[0]["Id"]);
+            return new Organization((int)SQL.executeQuery("SELECT TOP (1) org.Id FROM [party].[Organization] org LEFT JOIN party.OrganizationType OrgType ON org.OrganizationTypeId = OrgType.id WHERE orgType.Name = 'Insured' ORDER BY Id Desc; ")[0]["Id"]);
         }
 
         public Organization(String filterName, String filterValue )

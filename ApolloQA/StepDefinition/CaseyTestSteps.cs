@@ -40,8 +40,6 @@ namespace ApolloQA.Features
         [When(@"user enters following values")]
         public void WhenUserEntersFollowingValues(Table table)
         {
-            //UserActions.WaitForSpinnerToDisappear();
-
             foreach (var row in table.Rows)
             {
                 string displayName = row["Display Name"];
@@ -55,7 +53,7 @@ namespace ApolloQA.Features
                     if (displayName == "VIN" && value == "Random")
                     {
                         value = Functions.GetRandomVIN();
-                        featureContext.Add("Last Random " + displayName, value);
+                        featureContext.Add("Last Random" + displayName, value);
                     }
 
                     if (displayName == "Drivers License Number" && value == "Random")

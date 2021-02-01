@@ -5,6 +5,7 @@
 	
 #QA 2 rating algorithm not working
 #BUG 28223
+#TODO
 @SmokeTest @bugReported
 Scenario: Run Rate Calculation New Quote
 	Given user is successfully logged into biberk
@@ -69,6 +70,7 @@ Scenario: Run Rate Calculation New Quote
 #ignored because it's covered with the above scenario
 #implemented for testing purposes
 @ignore
+#TODO
 Scenario: Run Rate Calculation Existing Quote
 	Given user is successfully logged into biberk
 	When User Navigates to Quote 11557

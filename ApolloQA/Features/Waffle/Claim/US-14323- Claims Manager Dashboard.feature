@@ -4,6 +4,7 @@ Feature: US-14323- Claims Manager Dashboard
 	I will be able to view my dashboard which will allow me to view my work as well as a snapshot of my employees work.
 
 @broken
+#TODO
 Scenario:TC01 Verify Adjusters Claim Grid FNOL
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -20,6 +21,7 @@ Scenario:TC01 Verify Adjusters Claim Grid FNOL
 
 #scenario is not mutually exclusive
 @broken
+#TODO
 Scenario: TC02 Verify Adjusters Claim Grid Statistics
 	Then Grid column label is displayed
 	| Key | Value            |

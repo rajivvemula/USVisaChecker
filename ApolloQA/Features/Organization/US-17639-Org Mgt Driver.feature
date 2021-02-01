@@ -1,4 +1,5 @@
 ﻿@demo @broken
+#TODO
 Feature: US-17639-Org Mgt Driver
 	As an underwriter, 
 	I want to update the Driver functionality at the Organization Level, 
@@ -29,6 +30,7 @@ Scenario: TC01 Verify Grid Titles in Driver
 
 #scenario not mutually exclusive, failing on pipeline
 @broken
+#TODO
 Scenario: TC02 Add a Driver to Organization
 	When user clicks  Driver Button
 	When user enters following values
@@ -47,6 +49,7 @@ Scenario: TC02 Add a Driver to Organization
 
 #scenario not mutually exclusive, failing on pipeline
 @broken
+#TODO
 Scenario: TC04 Verify left navigation bar sections
 	Then Verify sidetab is present
 	| Key | Value                |

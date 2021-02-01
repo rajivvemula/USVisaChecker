@@ -1,4 +1,5 @@
 ﻿@ignore
+#TODO
 Feature: apolloClaimFNOL
 
 @biBerkClaimFNOLAdd @SmokeTest
@@ -21,6 +22,7 @@ Scenario: TC 25557 Create an Occurrence successfully
 	Then user asserts for Occurence save
 
 	@SmokeTest
+	#TODO
 Scenario: TC 25518 User able to search by policy number
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
@@ -39,6 +41,7 @@ Scenario: TC 25518 User able to search by policy number
 	Then user asserts for Occurence cancel
 
 	@SmokeTest
+	#TODO
 Scenario: TC 25541 Location field accepts 255 characters
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -49,6 +52,7 @@ Scenario: TC 25541 Location field accepts 255 characters
 	Then user verifies 256 characters in field is not accepted
 
 	@SmokeTest
+	#TODO
 Scenario: TC 25541 Address dropdown provided and include correct Address fields
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -61,6 +65,7 @@ Scenario: TC 25541 Address dropdown provided and include correct Address fields
 	Then user validates Address fields 
 
 		# This currently works in QA1, but not in QA2 - waiting for latest build in QA2
+		#TODO
 Scenario Outline: TC 25638 Claim headers visible
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -84,9 +89,10 @@ Scenario Outline: TC 25638 Claim headers visible
 		| Activities          |
 
 	# This currently works in QA1, but not in QA2 - waiting for latest build in QA2
+	#TODO
 Scenario: TC 25656, 25657 Claim headers visible
 Given user is successfully logged into biberk
-	When user clicks ' apps ' icon button
+	When user clicks 'apps' icon button
 	When user clicks Claim right menu button
 	When user clicks  Adjuster Dashboard  Button
 	And user waits for spinner to load
