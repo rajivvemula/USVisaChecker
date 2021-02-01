@@ -2,7 +2,7 @@
 <TestProfile xmlns="http://www.specflow.org/schemas/plus/TestProfile/1.5">
   <Settings projectName="ApolloQA" />
 	<Execution
-	stopAfterFailures="-1" 
+	stopAfterFailures="30" 
 	testThreadCount="1"
 	testSchedulingMode="Sequential" 
 	/>
