@@ -20,9 +20,24 @@ Scenario: Create New Quote
 
 @SmokeTest @Quote
 Scenario: Left Nav Bar displays successfully
-Given user is successfully logged into biberk
-When User Navigates to Quote latest
-Then Left Nav Sections should be displayed successfully
+	Given user is successfully logged into biberk
+	When User Navigates to Quote latest
+	Then Left Nav Sections should be displayed successfully
+	| SectionName           |
+	| Business Information  |
+	| Contacts              |
+	| UW Questions          |
+	| Vehicles              |
+	| Trailers              |
+	| Drivers               |
+	| Additional Questions  |
+	| Policy Coverages      |
+	| Modifiers             |
+	| Policy Addl Interests |
+	| Summary               |
+	| UW Results            |
+
+
 
 
 @SmokeTest @Quote

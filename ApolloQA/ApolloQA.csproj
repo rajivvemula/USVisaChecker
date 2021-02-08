@@ -6,9 +6,6 @@
 	<UserSecretsId>1f2a3f51-b841-4600-b502-0e1c7709bb0d</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Organization\Organization_General - Copy.feature.cs" />
-  </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Azure.Core" Version="1.7.0" />
@@ -47,12 +44,6 @@
 	  </None>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Compile Update="Features\Organization\Organization_Address_Section.feature.cs">
-	    <DependentUpon>Organization_Address_Section.feature</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
 
 	<ItemGroup>
 	  <None Update="default.env.json">
@@ -63,13 +54,6 @@
 	  </None>
 	</ItemGroup>
 
-
-	<ItemGroup>
-	  <SpecFlowFeatureFiles Update="Features\Organization\Organization_Address_Section.feature">
-	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
-	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-	  </SpecFlowFeatureFiles>
-	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 	  <Exec Command="taskkill /f /fi &quot;pid gt 0&quot; /im dotnet.exe" />

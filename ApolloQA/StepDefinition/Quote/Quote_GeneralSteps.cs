@@ -98,10 +98,10 @@ namespace ApolloQA.StepDefinition.Quote
         List<String> sortedSectionNames;
 
         [Then(@"Left Nav Sections should be displayed successfully")]
-        public void ThenLeftNavSectionsShouldBeDisplayedAccordingToTheCurrentStoryboard()
+        public void ThenLeftNavSectionsShouldBeDisplayedAccordingToTheCurrentStoryboard(Table table)
         {
-            this.sortedSectionNames = Quote_GeneralSteps.Quote.Storyboard.GetSortedSectionNames();
-            Assert.AreEqual(this.sortedSectionNames, Quote_Page.LeftSiveNavBar.GetInnerTexts().FindAll(it => it != "Underwriting Results"));
+            this.sortedSectionNames = table.Rows.ToList<TableRow>().Select(it => (String)it[0]).ToList<String>();
+            Assert.AreEqual(this.sortedSectionNames, Quote_Page.LeftSiveNavBar.GetInnerTexts());
         }
 
         [Then(@"User should be able to navigate to each section successfully")]
