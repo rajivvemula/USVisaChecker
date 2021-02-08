@@ -43,7 +43,7 @@ Scenario: Rate Calculation New Quote
 	#And user select a Driver with the following relevant values
 	When user adds a new Driver with the following relevant values
 	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number | Expiration Date |
-	| Miguel     | Acosta    | 10/26/1996    | IL                   | P12332423413           | 1/30/2025       |  
+	| Miguel     | Acosta    | 10/26/1996    | IL                   |  random           | 1/30/2025       |  
 	And user enters answer to What is your Inspection Count? as 0
 	And user selects answer to Exclude Driver? as No
 	And user selects answer to Has this driver had an accident or violation in the past 3 years, or a conviction in the past 5 years? as No
