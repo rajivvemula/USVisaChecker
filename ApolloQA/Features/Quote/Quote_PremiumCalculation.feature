@@ -30,8 +30,8 @@ Scenario: Rate Calculation New Quote
 	When user clicks Vehicles Sidetab
 	And user clicks Vehicle Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Seating Capacity | Gross Vehicle Weight | Vehicle Class Code | Stated Amount |
-	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 5 or less        | 0 - 5000             | index:0            | 10000         |
+	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Seating Capacity | Gross Vehicle Weight | Stated Amount |
+	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 5 or less        | 0 - 5000             | 10000         |
 	And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
 	And user selects answer to Is this vehicle: as Leased
 	And user clicks Save Vehicle Button
@@ -53,7 +53,7 @@ Scenario: Rate Calculation New Quote
 
 	#Select a Policy Coverage
 	When user clicks Policy Coverages Sidetab
-	And user selects Bodily Injury Property Damage (BIPD) coverage with Combined Single Limit deductible of $75,000
+	And user selects Bodily Injury Property Damage (BIPD) coverage with Combined Single Limit deductible of $100,000
 	And user clicks Next Button
 	And user waits for spinner to load
 
