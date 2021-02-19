@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Linq;
 
 namespace ApolloQA.Source.Driver
 {
@@ -27,6 +28,8 @@ namespace ApolloQA.Source.Driver
         public static IWebDriver driver;
         public static IWebDriver driverTemp;
         public static String SourceDir = Environment.GetEnvironmentVariable("SourceDir") ?? "../" ;
+        public static Dictionary<int, int> TestCaseOutcome = new Dictionary<int, int> ();
+
         public Setup(IObjectContainer objectContainer)
         {
             _objectContainer = objectContainer;
@@ -83,10 +86,51 @@ namespace ApolloQA.Source.Driver
         [AfterScenario]
         public void AfterScenario(ScenarioContext _scenarioContext)
         {
+            IEnumerable<string> testCases = _scenarioContext.ScenarioInfo.Tags.Where(it => it.ToLower().StartsWith("tc:")).Select(it => it.Substring(3));
+            List<int> testCaseids = new List<int>();
+
+            foreach (var tc in testCases)
+            {
+                if (int.TryParse(tc, out int testCaseId))
+                {
+                    testCaseids.Add(testCaseId);
+                }
+                else
+                {
+                    Functions.handleFailure(new ArgumentException($"Scenario: {_scenarioContext.ScenarioInfo.Title} Test Case {tc} is invalid"));
+                }
+
+            }
             if (_scenarioContext.TestError != null)
             {
                 ScreenShot.Error();
+                foreach(var testCaseId in testCaseids)
+                {
+                    if(! TestCaseOutcome.ContainsKey(testCaseId))
+                    {
+                        TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_FAIL);
+                    }
+                   
+                }
+
             }
+            else
+            {
+                foreach (var testCaseId in testCaseids)
+                {
+                    //if it already contains an outcome (pass or fail) we do not want to alter it
+                    if ( !TestCaseOutcome.ContainsKey(testCaseId))
+                    {
+                        TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_PASS);
+                    }
+                }
+            }
+        }
+
+        [AfterFeature]
+        public static void AfterFeature()
+        {
+            Devops.markTestCases(TestCaseOutcome);
         }
 
         [AfterTestRun]

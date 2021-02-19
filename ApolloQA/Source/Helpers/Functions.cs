@@ -11,6 +11,7 @@ using ApolloQA.Source.Driver;
 using OpenQA.Selenium.Chrome;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace ApolloQA.Source.Helpers
 {
@@ -57,9 +58,9 @@ namespace ApolloQA.Source.Helpers
         }
         public static string ParseURL(string Host, string Path)
         {
-            
+
             return Host + (Path.StartsWith('/') ? Path : "/" + Path);
-            
+
         }
 
         //
@@ -129,33 +130,43 @@ namespace ApolloQA.Source.Helpers
             return dictionary;
         }
 
-        public static IEnumerable<Dictionary<String, String>> parseCSV(String filePath, int headerRow=0)
+        public static IEnumerable<Dictionary<String, String>> parseCSV(String filePath, int headerRow = 0)
         {
-
+            var tasks = new List<Task<Dictionary<String, String>>>();
             using (SpreadsheetDocument doc = SpreadsheetDocument.Open(filePath, false))
             {
                 WorkbookPart workbookPart = doc.WorkbookPart;
                 WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
                 Row[] sheetData = worksheetPart.Worksheet.Elements<SheetData>().First().Elements<Row>().ToArray<Row>();
 
-                var header = sheetData[0].Elements<Cell>().Select(cell =>extractCellText(workbookPart, cell)).ToArray<string>();
+                var header = sheetData[0].Elements<Cell>().Select(cell => extractCellText(workbookPart, cell)).ToArray<string>();
 
                 for (int rowIndex = 1; rowIndex < sheetData.Length; rowIndex++)
                 {
-                    
-                    var cells = sheetData[rowIndex].Elements<Cell>().ToArray<Cell>();
-
-                    var dict = new Dictionary<String, String>();
-                    for (int i = 0; i < header.Length; i++)
-                    {                        
-                        
-                        dict.Add(header[i], extractCellText(workbookPart, (Cell)cells[i]));
-                    }
-                    yield return dict;
+                    tasks.Add(parseRow(workbookPart, header, sheetData[rowIndex]));
+                   
                 }
-            }
 
-           
+               
+
+            }
+            return tasks.Select(it => it.Result);
+
+
+
+        }
+
+        private static async Task<Dictionary<String, String>> parseRow(WorkbookPart workbookPart, string [] header, Row row)
+        {
+            var cells = row.Elements<Cell>().ToArray<Cell>();
+
+            var dict = new Dictionary<String, String>();
+            for (int i = 0; i < header.Length; i++)
+            {
+
+                dict.Add(header[i], extractCellText(workbookPart, (Cell)cells[i]));
+            }
+            return dict;
         }
 
         private static String extractCellText(WorkbookPart workbookPart, Cell cell)
@@ -219,6 +230,11 @@ namespace ApolloQA.Source.Helpers
 
             return licenseNo;
         }
+
+        public static void MarkTestCasePassed(int testCaseId) => Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_PASS);
+        
+        public static void MarkTestCaseFailed(int testCaseId) => Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_FAIL);
+        
 
     }
 }

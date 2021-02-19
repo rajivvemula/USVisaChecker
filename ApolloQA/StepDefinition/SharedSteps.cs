@@ -4,6 +4,7 @@ using ApolloQA.Pages;
 using ApolloQA.Data.Entity;
 using System.Collections.Generic;
 using TechTalk.SpecFlow.Assist;
+using ApolloQA.Source.Helpers;
 
 namespace ApolloQA.StepDefinition
 {
@@ -13,6 +14,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user clicks (.*) Button")]
         public void WhenUserClicksButton(string buttonName)
         {
+            
             Shared.GetButton(buttonName).Click();
         }
 
@@ -196,6 +198,16 @@ namespace ApolloQA.StepDefinition
             inputField.SelectMatDropdownOptionByText(OptionDisplayText);
         }
 
+        [Then(@"mark Test Case as (.*) passed")]
+        public void markTestCaseaspassed(string testCaseId)
+        {
+            Functions.MarkTestCasePassed(int.Parse(testCaseId));
+        }
+        [Then(@"mark Test Case as (.*) failed")]
+        public void markTestCaseasfailed(string testCaseId)
+        {
+            Functions.MarkTestCaseFailed(int.Parse(testCaseId));
+        }
 
     }
 }

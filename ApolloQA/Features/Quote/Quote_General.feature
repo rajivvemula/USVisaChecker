@@ -2,6 +2,7 @@
 	As a user I want to be able to create a new quote
 
 @SmokeTest @Quote @bugReported
+@tc:17022 @tc:17024 @tc:17027 @tc:17974 @tc:17028
 #BUG 30162
 Scenario: Create New Quote
 	Given user is successfully logged into biberk
@@ -18,7 +19,7 @@ Scenario: Create New Quote
 	And Quote header should contain correct values
 
 
-@SmokeTest @Quote
+@SmokeTest @Quote @tc:16080 @tc:16082 @tc:17029
 Scenario: Left Nav Bar displays successfully
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest
@@ -39,8 +40,7 @@ Scenario: Left Nav Bar displays successfully
 
 
 
-
-@SmokeTest @Quote
+@ignore @SmokeTest @Quote
 Scenario: Left Nav Bar Sections load Successfully
 Given user is successfully logged into biberk
 When User Navigates to Quote latest

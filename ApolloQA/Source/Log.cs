@@ -47,11 +47,22 @@ namespace ApolloQA
             }
             else if (severity.Level <= currentSev)
             {
-              
-                if(text is JObject) {
-                    Console.WriteLine($"[{severity.Name}] {text.ToString()}");
+
+                if (text is JObject)
+                {
+                    Log.Write(severity, $"[{severity.Name}] {text.ToString()}");
                 }
-                else {
+                else if (text is Dictionary<string, string>  || text is Dictionary<String, String>)
+                {
+                    Log.Write(severity, ((Dictionary<String, String>)text).Select(entry => $"{entry.Key}:{entry.Value}"));
+                   
+                }
+                else if(text is IEnumerable<String> || text is IEnumerable<string>)
+                {
+                    Log.Write(severity, string.Join(", ", (IEnumerable<String>)text ));
+                }
+                else
+                {
                     Console.WriteLine($"[{severity.Name}] {text}");
                 }
 
@@ -69,6 +80,10 @@ namespace ApolloQA
                 if (parameter.value is IEnumerable)
                 {
                     text = text.Replace(parameter.key, EnumerableToHumanReadable((IEnumerable)parameter.value));
+                }
+                if(parameter.value != null && !(parameter.value is string) && !(parameter.value is String))
+                {
+                    text = text.Replace(parameter.key, parameter.value.ToString());
                 }
                 else
                 {

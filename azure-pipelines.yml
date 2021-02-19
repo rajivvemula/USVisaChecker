@@ -71,6 +71,7 @@ stages:
             BROWSER: "Chrome"
             HIGHLIGHT_ON: "false"
             CURRENT_SEVERITY_LEVEL: "info"
+            AZUREDEVOPS_PAT: $(System.AccessToken)
         inputs:
           testSelector: 'testAssemblies'
           testAssemblyVer2: |

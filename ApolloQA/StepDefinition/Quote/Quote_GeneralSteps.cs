@@ -40,12 +40,6 @@ namespace ApolloQA.StepDefinition.Quote
 
         }
 
-        [Then(@"user should be redirected to the newly created organization")]
-        public void WhenUserShouldBeRedirectedToTheNewlyCreatedOrganization()
-        {
-            Assert.CurrentURLContains("organization");
-            this.organization = new Entity_Organization(int.Parse(string.Join("", Functions.GetCurrentURLPath().Where(char.IsDigit))));
-        }
 
         [Then(@"previously created organization should be part of the Business Name Dropdown")]
         public void ThenPreviouslyCreatedOrganizationShouldBePartOfTheBusinessNameDropdown()
@@ -65,12 +59,18 @@ namespace ApolloQA.StepDefinition.Quote
             Assert.TextContains(toastMessage, "created");
 
             quote = new Entity_Quote("ApplicationNumber", string.Join("", toastMessage.Where(Char.IsDigit)));
+            Functions.MarkTestCasePassed(17022);
+            Functions.MarkTestCasePassed(17024);
+            Functions.MarkTestCasePassed(17974);
+
         }
 
         [Then(@"User should be redirected to the newly created Quote Business Information Section")]
         public void ThenUserShouldBeRedirectedToTheNewlyCreatedQuote()
         {
             Assert.CurrentURLEquals(Quote_BusinessInformation_Page.GetURL(quote.Id, quote.Storyboard.Sections.Find(it => ((string)it["SectionName"]) == "Business Information").Id));
+
+            Functions.MarkTestCasePassed(17027);
         }
 
         [Then(@"Quote header should contain correct values")]
@@ -90,6 +90,8 @@ namespace ApolloQA.StepDefinition.Quote
             Log.Info($"Expected: {nameof(LineOfBusiness)}={LineOfBusiness}");
             Log.Info($"Expected: {nameof(PolicyEffectiveDate)}={PolicyEffectiveDate}");
             Log.Warn("Lastly created quote page test to be implemented");
+
+            Functions.MarkTestCasePassed(17028);
         }
 
 
