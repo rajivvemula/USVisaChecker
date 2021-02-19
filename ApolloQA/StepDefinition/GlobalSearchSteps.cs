@@ -32,18 +32,18 @@ namespace ApolloQA.StepDefinition
                 case "ENTITYNAME":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("Policy 10130-167");
+                    GlobalSearch.SearchInput.setText("Policy 0010007-01-CA");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var EntityName = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(EntityName, "Policy 10130-167");
+                    Assert.TextContains(EntityName, "Policy 0010007-01-CA");
                     break;
                 case "ENTITYNUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("10130-167");
+                    GlobalSearch.SearchInput.setText("0010007-01-CA");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var EntityNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(EntityNumber, "10130-167");
+                    Assert.TextContains(EntityNumber, "0010007-01-CA");
                     break;
                 case "TYPEDESCRIPTION":
                     UserActions.Refresh();
@@ -51,7 +51,7 @@ namespace ApolloQA.StepDefinition
                     GlobalSearch.SearchInput.setText("Claim");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var TypeDescription = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(TypeDescription, "FNOL");
+                    Assert.TextContains(TypeDescription, "Claim 0010001-01-CA");
                     break;
                 case "STATUSDESCRIPTION":
                     UserActions.Refresh();
@@ -59,7 +59,18 @@ namespace ApolloQA.StepDefinition
                     GlobalSearch.SearchInput.setText("Policy");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var StatusDescription = GlobalSearch.SearchResultDescription.GetElementText();
-                    Assert.TextContains(StatusDescription, "Pre-Submission");
+                    switch (StatusDescription)
+                    {
+                        case "Issued - biBERK":
+                            Assert.TextContains(StatusDescription, "Issued - biBERK");
+                            break;
+                        case "Bound - biBERK":
+                            Assert.TextContains(StatusDescription, "Bound - biBERK");
+                            break;
+                        case "Cancelled - biBERK":
+                            Assert.TextContains(StatusDescription, "Cancelled - biBERK");
+                            break;
+                    }
                     break;
                 case "SOURCESYSTEM":
                     // This search should always be null
@@ -78,27 +89,27 @@ namespace ApolloQA.StepDefinition
                 case "POLICYHOLDERNAME":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("a master organization");
+                    GlobalSearch.SearchInput.setText("TheTestOrg");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var policyNameHolder = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(policyNameHolder, "Agency A Master Organization");
+                    Assert.TextContains(policyNameHolder, "TheTestOrg");
                     var policyHolderName = GlobalSearch.SearchResultDescription.GetElementText();
                     Assert.TextContains(policyHolderName, "Organization");
                     break;
                 case "AGENCYORGANIZATION":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("Acme Agency Child");
+                    GlobalSearch.SearchInput.setText("TheTestOrg");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var agencyOrganization = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(agencyOrganization, "Agency Ace Agency");
+                    Assert.TextContains(agencyOrganization, "TheTestOrg");
                     break;
                 case "CARRIERORGANIZATION":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
                     GlobalSearch.SearchInput.setText("Berkshire Hathaway Direct Insurance Company");
                     GlobalSearch.SearchResult.assertElementIsVisible();
-                    var carrierOrganization = GlobalSearch.SearchResultDescription.GetElementText();
+                    var carrierOrganization = GlobalSearch.SearchResultLabel.GetElementText();
                     Assert.TextContains(carrierOrganization, "Berkshire Hathaway Direct Insurance Company");
                     break;
                 case "UNDERWRITERNAME":
@@ -119,34 +130,34 @@ namespace ApolloQA.StepDefinition
                 case "TAXIDLASTFOUR":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("9824");
+                    GlobalSearch.SearchInput.setText("8065");
                     GlobalSearch.SearchResult.assertElementIsVisible();
-                    var taxID = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.AreNotEqual(taxID, "Insured Smoke Test407");
+                    var taxID = GlobalSearch.SearchResultLastLabel.GetElementText();
+                    Assert.TextContains(taxID, "The Other Guys");
                     break;
                 case "VALIDPOLICYNUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("10130-167");
+                    GlobalSearch.SearchInput.setText("0010007-01-CA");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var policyNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(policyNumber, "Policy 10130-167");
+                    Assert.TextContains(policyNumber, "0010007-01-CA");
                     break;
                 case "VALIDQUOTENUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("10028");
+                    GlobalSearch.SearchInput.setText("9000033");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var quoteNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(quoteNumber, "Quote 10028");
+                    Assert.TextContains(quoteNumber, "Quote 9000033");
                     break;
                 case "VALIDCLAIMNUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("100009");
+                    GlobalSearch.SearchInput.setText("10002");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var claimNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(claimNumber, "FNOL 100009");
+                    Assert.TextContains(claimNumber, "FNOL 10002");
                     break;
                 default:
                     throw new Exception($"Search Text {SearchText} not found.");
