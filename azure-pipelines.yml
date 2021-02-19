@@ -84,7 +84,7 @@ stages:
 
       - task: SpecFlowPlus@0
         inputs:
-          projectFilePath: '$(System.DefaultWorkingDirectory)'
+          projectFilePath: '$(System.DefaultWorkingDirectory)/ApolloQA'
           projectName: 'ApolloQA'
           projectLanguage: 'en'
           bindingAssemblies: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/ApolloQA.dll'
