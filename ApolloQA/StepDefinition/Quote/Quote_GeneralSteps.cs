@@ -104,6 +104,8 @@ namespace ApolloQA.StepDefinition.Quote
         {
             this.sortedSectionNames = table.Rows.ToList<TableRow>().Select(it => (String)it[0]).ToList<String>();
             Assert.AreEqual(this.sortedSectionNames, Quote_Page.LeftSiveNavBar.GetInnerTexts());
+
+            ScreenShot.Error();
         }
 
         [Then(@"User should be able to navigate to each section successfully")]
