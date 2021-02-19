@@ -60,6 +60,26 @@ stages:
             Start-Process -Wait  -FilePath '$(System.DefaultWorkingDirectory)\autoit-v3-setup.exe' -ArgumentList '/S','/v','/qn' -passthru
 
 
+      - task: VSTest@2
+        displayName: 'Running a Smoke Test'
+        continueOnError: true
+        timeoutInMinutes: 120
+        env:
+            ApolloSQL: $(ApolloSQL)
+            CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
+            CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
+            BROWSER: "Chrome"
+            HIGHLIGHT_ON: "false"
+            CURRENT_SEVERITY_LEVEL: "info"
+            AZUREDEVOPS_PAT: $(System.AccessToken)
+        inputs:
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\ApolloQA.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          testRunTitle: 'SmokeTest'
 
 
       - task: SpecFlowPlus@0
@@ -68,8 +88,10 @@ stages:
           projectName: 'ApolloQA'
           projectLanguage: 'en'
           bindingAssemblies: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/ApolloQA.dll'
+          testExecutionJson: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/TestExecution.json'
+
           
-         
+        
 
       - task: CopyFiles@2
         displayName: 'Copy TestResults'
