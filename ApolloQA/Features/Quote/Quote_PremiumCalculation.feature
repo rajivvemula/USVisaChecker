@@ -20,12 +20,6 @@ Scenario: Rate Calculation New Quote
 	And user clicks Next Button
 	Then A new Quote should successfully be created	
 
-	#Answer UW Quesitons (Radius of Operation)
-	When user clicks UW Questions Sidetab
-	And user selects answer to What is the farthest distance any of your vehicles travel from their base location? as 50 miles or less
-	And user clicks Next Button
-	And user waits for spinner to load
-	
 	#Select a Vehicle
 	When user clicks Vehicles Sidetab
 	And user clicks Vehicle Button
@@ -50,6 +44,13 @@ Scenario: Rate Calculation New Quote
 	And user clicks Save Driver Button
 	And user waits for spinner to load
 
+	
+	#Answer Operations (Radius of Operation)
+	When user clicks Operations Sidetab
+	And user selects answer to What is the farthest distance any of your vehicles travel from their base location? as 50 miles or less
+	And user clicks Next Button
+	And user waits for spinner to load
+	
 
 	#Select a Policy Coverage
 	When user clicks Policy Coverages Sidetab

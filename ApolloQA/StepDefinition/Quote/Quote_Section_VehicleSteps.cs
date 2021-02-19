@@ -4,6 +4,7 @@ using ApolloQA.Pages;
 using ApolloQA.Source.Helpers;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace ApolloQA.StepDefinition.Quote
 {
@@ -156,6 +157,8 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenUserAddsAddress()
         {
             Quote_Vehicles_Page.AddAddressButton.Click();
+            //scenario sometimes fails because it clicks location too fast (before it loads)
+            Thread.Sleep(1000);
             Quote_Vehicles_Page.AddressTypeDropdown.SelectMatDropdownOptionByText("Location");
             Quote_Vehicles_Page.StreetAddressOneInput.setText("14662 La Grange Road");
             Quote_Vehicles_Page.StreetAddressTwoInput.setText("Unit B-1");

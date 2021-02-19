@@ -27,11 +27,9 @@ Scenario: Left Nav Bar displays successfully
 	| SectionName           |
 	| Business Information  |
 	| Contacts              |
-	| UW Questions          |
 	| Vehicles              |
-	| Trailers              |
 	| Drivers               |
-	| Additional Questions  |
+	| Operations			|
 	| Policy Coverages      |
 	| Modifiers             |
 	| Policy Addl Interests |
@@ -40,10 +38,11 @@ Scenario: Left Nav Bar displays successfully
 
 
 
-@ignore @SmokeTest @Quote
+@SmokeTest @Quote
 Scenario: Left Nav Bar Sections load Successfully
 Given user is successfully logged into biberk
 When User Navigates to Quote latest
+When user waits '10' seconds
 Then User should be able to navigate to each section successfully
 
 
