@@ -61,7 +61,7 @@ stages:
 
 
       - task: VSTest@2
-        displayName: 'Running Regression Test'
+        displayName: 'Running a Smoke Test'
         continueOnError: true
         timeoutInMinutes: 120
         env:
@@ -79,15 +79,19 @@ stages:
             !**\*TestAdapter.dll
             !**\obj\**
           searchFolder: '$(System.DefaultWorkingDirectory)'
-          testRunTitle: 'RegressionTest'
+          testRunTitle: 'SmokeTest'
+
 
       - task: SpecFlowPlus@0
         inputs:
           projectFilePath: '$(System.DefaultWorkingDirectory)'
-          projectName: 'Apollo'
+          projectName: 'ApolloQA'
           projectLanguage: 'en'
+          bindingAssemblies: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/ApolloQA.dll'
+          testExecutionJson: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/TestExecution.json'
+
           
-         
+        
 
       - task: CopyFiles@2
         displayName: 'Copy TestResults'
