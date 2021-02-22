@@ -18,7 +18,7 @@ Scenario: Create New Quote
 	And User should be redirected to the newly created Quote Business Information Section
 	And Quote header should contain correct values
 
-
+#Add precondition to search for latest quote LOB=Commercial Auto
 @SmokeTest @Quote @tc:16080 @tc:16082 @tc:17029
 Scenario: Left Nav Bar displays successfully
 	Given user is successfully logged into biberk
