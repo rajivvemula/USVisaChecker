@@ -248,7 +248,8 @@ namespace ApolloQA.Features
         public void ThenToastAppearsContainingText(string containsText)
         {
             Toaster toaster = new Toaster(containsText);
-
+            //TODO :
+            //API response failure - revisit post release 1
             NUnit.Framework.Assert.IsTrue(toaster.IsPresent(), "Unable to locate toast containing" + containsText);
         }
     }

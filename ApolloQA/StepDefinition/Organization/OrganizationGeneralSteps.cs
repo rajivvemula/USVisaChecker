@@ -95,6 +95,8 @@ namespace ApolloQA.StepDefinition
 
             toastMessage.assertElementNotPresent();
             OrganizationGrid.confirmGridDeleteButton.Click();
+            //TODO :
+            // API error response - Address post release 1
             Assert.TextContains(toastMessage.GetInnerText(), "deleted");
         }
     }

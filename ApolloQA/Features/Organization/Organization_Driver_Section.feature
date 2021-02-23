@@ -4,7 +4,7 @@ Feature: Organization Driver Section
 Scenario: Driver Add New
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
-	When user clicks Drivers Sidetab
+	When user clicks 'Drivers' Sidetab
 	When user clicks Driver Button
 	Then Add Driver modal is visible
 	When user enters following values
@@ -34,10 +34,12 @@ Scenario: Driver Add New
 	| Expiration Date        | Input      | 10/15/2023  |
 	When user clicks Cancel button
 
+# Broken - Defect 32288
+@bugReported
 Scenario: Driver delete
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
-	When user clicks Drivers Sidetab
+	When user clicks 'Drivers' Sidetab
 	When user clicks Driver Button
 	Then Add Driver modal is visible
 	When user enters following values

@@ -1,10 +1,12 @@
 ﻿Feature: Organization Vehicle Section
 
 
+# Broken - Defect 24781
+@bugReported
 Scenario: Organization Vehicle add new
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
-	And user clicks Vehicles Sidetab
+	And user clicks 'Vehicles' Sidetab
 	And user clicks Vehicle Button
 	Then New Vehicle modal is visible
 	When user enters following values
@@ -56,10 +58,12 @@ Scenario: Organization Vehicle add new
 	| Stated Amount            | Input      | 12000                |
 	When user clicks Cancel button
 
+	# Broken - Defect 32287
+	@bugReported
 Scenario: Organization Vehicle Delete
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
-	And user clicks Vehicles Sidetab
+	And user clicks 'Vehicles' Sidetab
 	And user clicks Vehicle Button
 	Then New Vehicle modal is visible
 	When user enters following values

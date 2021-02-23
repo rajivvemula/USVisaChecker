@@ -125,7 +125,7 @@ namespace ApolloQA.StepDefinition
         }
 
 
-        [When(@"user clicks (.*) Sidetab")]
+        [When(@"user clicks '(.*)' Sidetab")]
         public void WhenUserClicksSidetab(string sidetab)
         {
             Shared.GetLeftSideTab(sidetab).Click();

@@ -4,7 +4,7 @@
 Scenario: Organization Address Add New
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
-	When user clicks Address Sidetab
+	When user clicks 'Addresses' Sidetab
 	When user clicks Add Address Button
 	When user enters the following address
 	| Field Display Name        | Field Type | Field Value      |
