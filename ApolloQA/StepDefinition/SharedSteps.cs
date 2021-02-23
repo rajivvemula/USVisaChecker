@@ -11,7 +11,7 @@ namespace ApolloQA.StepDefinition
     [Binding]
     public class SharedSteps
     {
-        [When(@"user clicks (.*) Button")]
+        [When(@"user clicks '(.*)' Button")]
         public void WhenUserClicksButton(string buttonName)
         {
             
@@ -84,14 +84,14 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton("Use selected").Click(3, true);
         }
 
-
-        [When(@"user clicks '(.*)' icon button")]
+        [When(@"user clicks '(.*)' icon Button")]
         public void WhenUserClicksIconButton(string iconButton)
         {
             Shared.GetIconButton(iconButton).Click();
         }
 
-        [When(@"user clicks (.*) right menu button")]
+
+        [When(@"user clicks '(.*)' right menu Button")]
         public void WhenUserClicksRightMenuButton(string rightMenuButton)
         {
             Shared.GetRightSideTab(rightMenuButton).Click();
@@ -177,8 +177,6 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetQuestionTextField(QuestionDisplayText).setText(AnswerText);
         }
-
-
 
 
         [When(@"user selects (.*) coverage with (.*) deductible of (.*)")]

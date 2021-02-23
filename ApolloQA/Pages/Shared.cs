@@ -33,7 +33,7 @@ namespace ApolloQA.Pages
 
         public static Element GetRightSideTab(string DisplayName)
         {
-            return new Element($"//*[contains(text(), '{DisplayName}')]");
+            return new Element($"//mat-nav-list//*[contains(text(), '{DisplayName}')]");
         }
 
         public static Element GetDropdownField(string DisplayName)

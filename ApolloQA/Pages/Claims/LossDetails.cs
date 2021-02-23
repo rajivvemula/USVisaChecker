@@ -7,12 +7,10 @@ namespace ApolloQA.Pages
         // Loss Details
         public static Element LossDetailsButton = new Element("//bh-left-navbar/mat-sidenav/div/mat-nav-list/*/a/*[contains(text(), ' Loss Details ')]");
         public static Element LossDetailsHeading = new Element("//h2[contains(text(), 'Loss Details')]");
-        public static Element FirstPartyButton = new Element("//mat-radio-button//*[contains(text(), ' First Party ')]");
-        public static Element ThirdPartyButton = new Element("//mat-radio-button//*[contains(text(), ' Third Party ')]");
-        public static Element BodilyInjuryButton = new Element("//mat-radio-button//*[contains(text(), ' Bodily Injury ')]");
-        public static Element PropertyDamageButton = new Element("//mat-radio-button//*[contains(text(), ' Property Damage ')]");
+        public static Element CoverageTypeDropdown = new Element("//mat-select[@name='claimCoverageTypeIds']");
+        public static Element CauseOfLossDropdown = new Element("//mat-select[@name='causeOfLossTypeId']");
         public static Element FaultIndicatorDropdown = new Element("//mat-select[@name='faultIndicatorTypeId']");
-        public static Element ClaimsAdjusterDropdown = new Element("//mat-select[@role='combobox' and @id='mat-select-44']");
+        public static Element ClaimsAdjusterDropdown = new Element("(//mat-select)[3]");
         public static Element ComplexityDropdown = new Element("//mat-select[@formcontrolname='complexityId']");
         public static Element SupervisorNotesInput = new Element("//textarea[@formcontrolname='supervisoryNotes']");
 

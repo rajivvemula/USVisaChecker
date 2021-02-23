@@ -1,13 +1,11 @@
-﻿@ignore
-#TODO
+﻿#TODO
 Feature: apolloClaimFNOL
 
-@biBerkClaimFNOLAdd @SmokeTest
-Scenario: TC 25557 Create an Occurrence successfully
+Scenario: TC 25557 Creates FNOL successfully
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon button
-	When user clicks Claim right menu button
-	When user clicks New FNOL Button
+	When user clicks ' apps ' icon Button
+	When user clicks 'Claim' right menu Button
+	When user clicks 'New FNOL' Button
 	And user waits for spinner to load
 	And user selects 'No' this occurrence related to an existing claim
 	And user enters occurrence information for Policy
@@ -16,13 +14,23 @@ Scenario: TC 25557 Create an Occurrence successfully
 	And user enters Location information
 	And user enters police involved info - 'Yes'
 	And user enters fire involved info - 'Yes'
-	And user verifies ' Add Receipt Information ' button
-	When user clicks  Save  Button
+	When user clicks 'Add Receipt Information' Button
 	And user waits for spinner to load
-	Then user asserts for Occurence save
+	Then user completes receipt informaiton
+	When user clicks 'Add Loss Details' Button
+	Then user completes Loss Details information
+	When user clicks 'Add Contacts' Button
+	When user clicks 'Add Documents' Button
+	When user clicks 'Next' Button
+	And user selects pending claim to activate
+	When user clicks 'Activate a Claim' Button
+	And user waits for spinner to load
+	Then claim should be successfully activated
 
-	@SmokeTest
-	#TODO
+
+	
+
+@ignore
 Scenario: TC 25518 User able to search by policy number
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
@@ -40,8 +48,7 @@ Scenario: TC 25518 User able to search by policy number
 	When user clicks Continue anyway Button
 	Then user asserts for Occurence cancel
 
-	@SmokeTest
-	#TODO
+@ignore
 Scenario: TC 25541 Location field accepts 255 characters
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -51,8 +58,7 @@ Scenario: TC 25541 Location field accepts 255 characters
 	And user enters 255 characters in Location description field
 	Then user verifies 256 characters in field is not accepted
 
-	@SmokeTest
-	#TODO
+@ignore
 Scenario: TC 25541 Address dropdown provided and include correct Address fields
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -64,8 +70,7 @@ Scenario: TC 25541 Address dropdown provided and include correct Address fields
 	When user validates address dropdwon
 	Then user validates Address fields 
 
-		# This currently works in QA1, but not in QA2 - waiting for latest build in QA2
-		#TODO
+@ignore
 Scenario Outline: TC 25638 Claim headers visible
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon button
@@ -88,8 +93,7 @@ Scenario Outline: TC 25638 Claim headers visible
 		| Documents           |
 		| Activities          |
 
-	# This currently works in QA1, but not in QA2 - waiting for latest build in QA2
-	#TODO
+@ignore
 Scenario: TC 25656, 25657 Claim headers visible
 Given user is successfully logged into biberk
 	When user clicks 'apps' icon button

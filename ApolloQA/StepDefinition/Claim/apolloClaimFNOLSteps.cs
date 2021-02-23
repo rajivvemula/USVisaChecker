@@ -27,6 +27,8 @@ namespace ApolloQA.StepDefinition
         public string RelatedExistingClaim = "";
         public string PoliceInvolved = "";
         public string FireInvolved = "";
+        public string ClaimAdjuster = "";
+        public string VehicleOnPolicy = "";
         public int ClaimID = 0;
 
         [When(@"user selects '(.*)' this occurrence related to an existing claim")]
@@ -53,8 +55,8 @@ namespace ApolloQA.StepDefinition
         [When(@"user enters occurrence information for Policy")]
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
-            Occurrence.policyNumberField.setText("142"); // policy number 
-            GlobalSearch.SearchResultLabel.assertElementContainsText("Policy 10080-142");
+            Occurrence.policyNumberField.setText("0010000-01-CA"); // policy number 
+            GlobalSearch.SearchResultLabel.assertElementContainsText("0010000-01-CA");
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
@@ -72,9 +74,11 @@ namespace ApolloQA.StepDefinition
         public void WhenUserEntersLocationInformation()
         {
             Occurrence.LocationDescriptionInput.setText("Description of Location - Test!");
-            Occurrence.AddressDropdown.SelectMatDropdownOptionByIndex(0, out string streetAddress);
-            StreetAddress = streetAddress;
-            Log.Info($"Expected: {nameof(StreetAddress)}={StreetAddress}");
+            Occurrence.StreetAddressOneInput.setText("1900 W Field CT");
+            Occurrence.StreetAddressTwoInput.setText("Apt 2");
+            Occurrence.CityInput.setText("Lake Forrest");
+            Occurrence.StateDropdown.SelectMatDropdownOptionByText("IL");
+            Occurrence.ZipCodeInput.setText("60045");
             Occurrence.DescriptionOfLossInput.setText("Loss Description - Test!");
             Occurrence.CatastropheTypeDropdown.SelectMatDropdownOptionByText("None");
         }
@@ -83,11 +87,9 @@ namespace ApolloQA.StepDefinition
         public void WhenUserSelectsLocationInformationFromDropdown()
         {
             Occurrence.LocationDescriptionInput.setText("Description of Location - Test!");
-            Occurrence.StreetAddressOneInput.setText("1900 W Field CT");
-            Occurrence.StreetAddressTwoInput.setText("Apt 2");
-            Occurrence.CityInput.setText("Lake Forrest");
-            Occurrence.StateDropdown.SelectMatDropdownOptionByText(" IL ");
-            Occurrence.ZipCodeInput.setText("60045");
+            Occurrence.AddressDropdown.SelectMatDropdownOptionByIndex(0, out string streetAddress);
+            StreetAddress = streetAddress;
+            Log.Info($"Expected: {nameof(StreetAddress)}={StreetAddress}");
             Occurrence.DescriptionOfLossInput.setText("Loss Description - Test!");
             Occurrence.CatastropheTypeDropdown.SelectMatDropdownOptionByText("None");
         }
@@ -180,6 +182,56 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton(addReceipt).assertElementContainsText("Add Receipt Information");
         }
 
+        [Then(@"user completes receipt informaiton")]
+        public void ThenUserCompletesReceiptInformaiton()
+        {
+            ReceiptInformation.FirstPartyButton.Click();
+            ReceiptInformation.PropertyDamageButton.Click();
+            ReceiptInformation.HowReceivedDropdown.SelectMatDropdownOptionByText("Phone");
+            ReceiptInformation.FirstNameInput.setText("John");
+            ReceiptInformation.LastNameInput.setText("Smith");
+            ReceiptInformation.PhoneNumberInput.setText("8489698404");
+            ReceiptInformation.EmailInput.setText("jsmith@email.com");
+            ReceiptInformation.CityInput.setText("Chicago");
+            ReceiptInformation.StateDropdown.SelectMatDropdownOptionByText("IL");
+            ReceiptInformation.ZipInput.setText("61614");
+            ReceiptInformation.SameAsReportedButton.Click();
+            ReceiptInformation.SameAsPrimaryButton.Click();
+        }
+
+        [Then(@"user completes Loss Details information")]
+        public void ThenUserCompletesLossDetailsInformation()
+        {
+            //LossDetails.CoverageTypeDropdown.SelectMatDropdownOptionByText("Comprehensive");
+            LossDetails.CauseOfLossDropdown.SelectMatDropdownOptionByText("Hail");
+            LossDetails.FaultIndicatorDropdown.SelectMatDropdownOptionByText("No Fault");
+            LossDetails.ClaimsAdjusterDropdown.SelectMatDropdownOptionByIndex(1, out string claimAdjuster);
+            ClaimAdjuster = claimAdjuster;
+            Log.Info($"Expected: {nameof(ClaimAdjuster)}={ClaimAdjuster}");
+            LossDetails.InsuredButton.Click();
+            LossDetails.VehicleOnPolicyButton.Click();
+            LossDetails.SelectVehicleOnPolicyDropdown.SelectMatDropdownOptionByIndex(0, out string vehicleOnPolicy);
+            VehicleOnPolicy = vehicleOnPolicy;
+            Log.Info($"Expected: {nameof(VehicleOnPolicy)}={VehicleOnPolicy}");
+            LossDetails.NoDriverButton.Click();
+        }
+
+        [When(@"user selects pending claim to activate")]
+        public void WhenUserSelectsPendingClaimToActivate()
+        {
+            PendingClaim.PendingClaimToActivate.Click();  
+        }
+
+        [Then(@"claim should be successfully activated")]
+        public void ThenClaimShouldBeSuccessfullyActivated()
+        {
+            var toastMessage = Occurrence.toastrMessage.GetInnerText();
+            Assert.SoftAreEqual(toastMessage, "Claim has been activated");
+            this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            Log.Info($"Expected: Claim Saved. Result: " + toastMessage + "");
+        }
+
+
         [When(@"user validates address dropdwon")]
         public void WhenUserValidatesAddressDropdwon()
         {
@@ -246,9 +298,6 @@ namespace ApolloQA.StepDefinition
         {
             ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible();
         }
-
-
-
 
     }
 }
