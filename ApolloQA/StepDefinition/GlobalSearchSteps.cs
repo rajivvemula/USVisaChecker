@@ -32,18 +32,18 @@ namespace ApolloQA.StepDefinition
                 case "ENTITYNAME":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("Policy 0010007-01-CA");
+                    GlobalSearch.SearchInput.setText("Policy 0010001-01-CA");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var EntityName = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(EntityName, "Policy 0010007-01-CA");
+                    Assert.TextContains(EntityName, "Policy 0010001-01-CA");
                     break;
                 case "ENTITYNUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("0010007-01-CA");
+                    GlobalSearch.SearchInput.setText("0010001-01-CA");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var EntityNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(EntityNumber, "0010007-01-CA");
+                    Assert.TextContains(EntityNumber, "0010001-01-CA");
                     break;
                 case "TYPEDESCRIPTION":
                     UserActions.Refresh();
@@ -51,7 +51,7 @@ namespace ApolloQA.StepDefinition
                     GlobalSearch.SearchInput.setText("Claim");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var TypeDescription = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(TypeDescription, "Claim 0010001-01-CA");
+                    Assert.SoftAreEqual(TypeDescription, "Claim 0010001-01-CA");
                     break;
                 case "STATUSDESCRIPTION":
                     UserActions.Refresh();
@@ -130,26 +130,26 @@ namespace ApolloQA.StepDefinition
                 case "TAXIDLASTFOUR":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("8065");
+                    GlobalSearch.SearchInput.setText("3972");
                     GlobalSearch.SearchResult.assertElementIsVisible();
-                    var taxID = GlobalSearch.SearchResultLastLabel.GetElementText();
-                    Assert.TextContains(taxID, "The Other Guys");
+                    var taxID = GlobalSearch.SearchResultLabel.GetElementText();
+                    Assert.TextContains(taxID, "TruckingTest");
                     break;
                 case "VALIDPOLICYNUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("0010007-01-CA");
+                    GlobalSearch.SearchInput.setText("0010001-01-CA");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var policyNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(policyNumber, "0010007-01-CA");
+                    Assert.TextContains(policyNumber, "0010001-01-CA");
                     break;
                 case "VALIDQUOTENUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("9000033");
+                    GlobalSearch.SearchInput.setText("9000032");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var quoteNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(quoteNumber, "Quote 9000033");
+                    Assert.TextContains(quoteNumber, "Quote 9000032");
                     break;
                 case "VALIDCLAIMNUMBER":
                     UserActions.Refresh();
