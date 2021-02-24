@@ -5,7 +5,7 @@ Scenario: Organization Address Add New
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
 	When user clicks 'Addresses' Sidetab
-	When user clicks Add Address Button
+	When user clicks 'Add Address' Button
 	When user enters the following address
 	| Field Display Name        | Field Type | Field Value      |
 	| Street Address Line 1     | Input      | 14210 Avalon Ave |
@@ -25,4 +25,4 @@ Scenario: Organization Address Add New
 	| City                      | Input      | Dolton           |
 	| State / Province / Region | Dropdown   | IL               |
 	| Zip / Postal Code         | Input      | 60419            |
-	When user clicks Cancel button
+	When user clicks 'Cancel' Button

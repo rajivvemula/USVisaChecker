@@ -7,12 +7,12 @@ Scenario: Organization Vehicle add new
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
 	And user clicks 'Vehicles' Sidetab
-	And user clicks Vehicle Button
+	And user clicks 'Vehicle' Button
 	Then New Vehicle modal is visible
 	When user enters following values
 	| Display Name | Field Type | Value  |
 	| VIN          | Input      | Random |
-	And user clicks Verify VIN button
+	And user clicks 'Verify VIN' Button
 	Then the following fields have values
 	| Display Name | Field Type | Value |
 	| Year         | Input      | Any   |
@@ -35,7 +35,7 @@ Scenario: Organization Vehicle add new
 	| Body Category            | Dropdown   | Any           |
 	| Additional Modifications | Input      | Test comment. |
 	| Stated Amount            | Input      | 12000         |
-	When user clicks Save button
+	When user clicks 'Save' Button
 	Then Toast appears containing text: Vehicle saved
 	Then Vehicles sidetab is active
 	And Verify grid contains entry with column equals value
@@ -56,7 +56,7 @@ Scenario: Organization Vehicle add new
 	| Estimated Current Value  | Input      | 14000                |
 	| Additional Modifications | Input      | Test comment.        |
 	| Stated Amount            | Input      | 12000                |
-	When user clicks Cancel button
+	When user clicks 'Cancel' Button
 
 	# Broken - Defect 32287
 	@bugReported
@@ -64,12 +64,12 @@ Scenario: Organization Vehicle Delete
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
 	And user clicks 'Vehicles' Sidetab
-	And user clicks Vehicle Button
+	And user clicks 'Vehicle' Button
 	Then New Vehicle modal is visible
 	When user enters following values
 	| Display Name | Field Type | Value  |
 	| VIN          | Input      | Random |
-	And user clicks Verify VIN button
+	And user clicks 'Verify VIN' Button
 	Then the following fields have values
 	| Display Name | Field Type | Value |
 	| Year         | Input      | Any   |
@@ -86,6 +86,6 @@ Scenario: Organization Vehicle Delete
 	| Estimated Current Value  | Input      | 14000                |
 	| Additional Modifications | Input      | Test comment.        |
 	| Stated Amount            | Input      | 12000                |
-	When user clicks Save button
+	When user clicks 'Save' Button
 	Then Toast appears containing text: Vehicle saved
 	Then user deletes entry

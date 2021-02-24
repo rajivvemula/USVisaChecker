@@ -7,7 +7,7 @@ Feature: US-14323- Claims Manager Dashboard
 #TODO
 Scenario:TC01 Verify Adjusters Claim Grid FNOL
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon button
+	When user clicks ' apps ' icon Button
 	When user clicks Claim right menu button
 	Then Grid column label is displayed
 	| Key | Value             |

@@ -34,8 +34,8 @@ Scenario: TC 25557 Creates FNOL successfully
 Scenario: TC 25518 User able to search by policy number
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
-	When user clicks Claim right menu button
-	When user clicks New FNOL Button
+	When user clicks 'Claim right menu' Button
+	When user clicks 'New FNOL' Button
 	And user waits for spinner to load
 	And user selects 'Yes' this occurrence related to an existing claim
 	And user enters occurrence information for Policy
@@ -44,16 +44,16 @@ Scenario: TC 25518 User able to search by policy number
 	And user selects Location Information from dropdown
 	And user enters police involved info - 'No'
 	And user enters fire involved info - 'No'
-	When user clicks Cancel Button
-	When user clicks Continue anyway Button
+	When user clicks 'Cancel' Button
+	When user clicks 'Continue anyway' Button
 	Then user asserts for Occurence cancel
 
 @ignore
 Scenario: TC 25541 Location field accepts 255 characters
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon button
-	When user clicks Claim right menu button
-	When user clicks New FNOL Button
+	When user clicks ' apps ' icon Button
+	When user clicks 'Claim right menu' Button
+	When user clicks 'New FNOL' Button
 	And user waits for spinner to load
 	And user enters 255 characters in Location description field
 	Then user verifies 256 characters in field is not accepted
@@ -61,9 +61,9 @@ Scenario: TC 25541 Location field accepts 255 characters
 @ignore
 Scenario: TC 25541 Address dropdown provided and include correct Address fields
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon button
-	When user clicks Claim right menu button
-	When user clicks New FNOL Button
+	When user clicks ' apps ' icon Button
+	When user clicks 'Claim right menu' Button
+	When user clicks 'New FNOL' Button
 	And user waits for spinner to load
 	And user selects 'Yes' this occurrence related to an existing claim
 	And user enters occurrence information for Policy
@@ -73,9 +73,9 @@ Scenario: TC 25541 Address dropdown provided and include correct Address fields
 @ignore
 Scenario Outline: TC 25638 Claim headers visible
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon button
-	When user clicks Claim right menu button
-	When user clicks  Adjuster Dashboard  Button
+	When user clicks ' apps ' icon Button
+	When user clicks 'Claim right menu' Button
+	When user clicks 'Adjuster Dashboard' Button
 	And user waits for spinner to load
 	When user selects open claim
 	And user waits for spinner to load
@@ -96,9 +96,9 @@ Scenario Outline: TC 25638 Claim headers visible
 @ignore
 Scenario: TC 25656, 25657 Claim headers visible
 Given user is successfully logged into biberk
-	When user clicks 'apps' icon button
-	When user clicks Claim right menu button
-	When user clicks  Adjuster Dashboard  Button
+	When user clicks ' apps ' icon Button
+	When user clicks 'Claim right menu' Button
+	When user clicks 'Adjuster Dashboard' Button
 	And user waits for spinner to load
 	When user selects open claim
 	When user selects Recovery button

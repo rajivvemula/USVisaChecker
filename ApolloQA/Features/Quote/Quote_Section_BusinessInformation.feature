@@ -40,7 +40,7 @@ Scenario: Business Information Add Address Functionality
 	When User Navigates to Quote latest
 	And User Navigates to Business Information Section
 	And user clicks Physical Address Dropdown
-	And user clicks Add Address Button
+	And user clicks 'Add Address' Button
 	And user saves current Business Addresses
 	And user enters the following address
 	| Field Display Name        | Field Type | Field Value     |

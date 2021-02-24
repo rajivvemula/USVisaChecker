@@ -6,9 +6,9 @@ Scenario: Shared Given
 	
 @ignore
 Scenario: Shared When
-	When user clicks <DisplayName> Button
+	When user clicks '<DisplayName>' Button
 	When user clicks <DisplayName> Dropdown
-	When user clicks <DisplayName> Sidetab
+	When user clicks '<DisplayName>' Sidetab
 
 	When user selects dropdown <DropdownDisplayText> option equaling <OptionDisplayText>
 	When user selects dropdown <DropdownDisplayText> option containing <OptionDisplayName>
