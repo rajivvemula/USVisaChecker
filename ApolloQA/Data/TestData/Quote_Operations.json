@@ -1,0 +1,8 @@
+﻿[
+  //radius: 50 Miles or less
+  {
+    "questionId": 1106,
+    "hidden": false,
+    "response": "50"
+  }
+]

@@ -12,6 +12,7 @@ using OpenQA.Selenium.Chrome;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace ApolloQA.Source.Helpers
 {
@@ -229,6 +230,66 @@ namespace ApolloQA.Source.Helpers
             licenseNo += (r.Next(100, 1000).ToString()) + (r.Next(1000, 10000).ToString()) + (r.Next(1000, 10000).ToString());
 
             return licenseNo;
+        }
+
+        public static string getValidCreditCardNumber(string cardType="Visa")
+        {
+            switch (cardType)
+            {
+                case "AmericanExpress":
+                    return "370000000000002";
+
+                case "Discover":
+                    return "6011000000000012";
+
+                case "JCB":
+                    return "3088000000000017";
+           
+                case "Visa":
+                    return "4111111111111111";
+
+                case "Visa1":
+                    return "4012888818888";
+
+                case "Visa2":
+                    return "4007000000027";
+
+                case "Mastercard":
+                    return "5424000000000015";
+
+                case "Mastercard1":
+                    return "2223000010309703";
+
+                case "Mastercard2":
+                    return "2223000010309711";
+
+                case "DinersClub/CarteBlanche":
+                    return "38000000000006";
+
+                default:
+                    throw handleFailure($"Credit Card Type: {cardType} is not supported");
+            }
+        }
+
+        public static int GetRandomInteger(int max=100)
+        {
+           return new Random().Next(max);
+            
+        }
+
+        public static JObject IssueNewQuoteThroughAPI()
+        {
+            var org = Data.TestData.Organization.CreateOrganization();
+            var addr = Data.TestData.Organization.OrganizationAddAddress(org);
+            var quote = Data.TestData.Quote.CreateQuote();
+            Data.TestData.Quote.CreateVehicle();
+            Data.TestData.Quote.AddVehicleToQuote(quote);
+            Data.TestData.Quote.CreateDriver();
+            Data.TestData.Quote.AddDriverToQuote(quote);
+            Data.TestData.Quote.AnswerOperationQuestions(quote);
+            Data.TestData.Quote.AddPolicyCoverages(quote);
+            var summary = Data.TestData.Quote.GetSummary(quote);
+            return summary;
         }
 
         public static void MarkTestCasePassed(int testCaseId) => Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_PASS);

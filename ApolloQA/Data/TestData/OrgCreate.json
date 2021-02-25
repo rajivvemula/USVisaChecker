@@ -1,0 +1,29 @@
+﻿{
+  "name": "Automation API org",
+  "businessTypeEntityId": 1,
+  "organizationTypeId": 0,
+  "phones": [
+    {
+      "number": "",
+      "phoneTypeId": 0
+    }
+  ],
+  "sites": [
+    {
+      "address": "",
+      "internetTypeId": 2
+    }
+  ],
+  "keywordId": 730,
+  "industryClassTaxonomyId": 5,
+  "yearBusinessStarted": "1990",
+  "yearOwnershipStarted": "1993",
+  "taxTypeId": 0,
+  "taxId": "34-5678974",
+  "dba": "AutomationAPI",
+  "description": "",
+  "primaryEmail": {
+    "address": "",
+    "emailTypeId": 1
+  }
+}

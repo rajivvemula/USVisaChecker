@@ -21,10 +21,9 @@ namespace ApolloQA.Data.Entity
 
         public static Organization GetLatestOrganization()
         {
-            return new Organization((int)SQL.executeQuery(@"SELECT TOP (1) OrganizationId
-                                                          FROM [party].[OrganizationProfile]
-                                                          Where StatusId = 0
-                                                          order by Id desc ")[0]["OrganizationId"]);
+            return new Organization((int)SQL.executeQuery("SELECT TOP (1) org.Id FROM [party].[Organization] org " +
+                "LEFT JOIN party.OrganizationType OrgType ON org.OrganizationTypeId = OrgType.id " +
+                "WHERE orgType.Name = 'Insured' and org.StatusId = 0 ORDER BY Id Desc;")[0]["Id"]);
         }
 
         public Organization(String filterName, String filterValue )
@@ -84,6 +83,13 @@ namespace ApolloQA.Data.Entity
             
         }
 
+        public int PartyId
+        {
+            get
+            {
+                return (int)this.GetProperty("partyId");
+            }
+        }
         public List<Address> Addresses
         {
             get

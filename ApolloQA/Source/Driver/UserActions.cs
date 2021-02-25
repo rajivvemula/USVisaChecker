@@ -308,6 +308,18 @@ namespace ApolloQA.Source.Driver
             }
         }
 
+        //
+        // Radio Button
+        //
+
+        public static bool IsRadioButtonSelected(By RadioButtonLocator)
+        {
+            var radioButton =FindElementWaitUntilPresent(RadioButtonLocator);
+
+            return radioButton.Selected;
+        }
+
+
         // Scroll
 
         public static void ScrollIntoView(IWebElement element)

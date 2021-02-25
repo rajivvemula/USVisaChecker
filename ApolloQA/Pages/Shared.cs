@@ -14,12 +14,20 @@ namespace ApolloQA.Pages
                     return GetInputField(fieldDisplayName);
                 case "dropdown":
                     return GetDropdownField(fieldDisplayName);
+                case "button":
+                    return GetButton(fieldDisplayName);
                 default:
                     Functions.handleFailure(new NotImplementedException($"Field type: {fieldType} is not implemented"));
                     return null;
             }
         }
-        public static Element GetHeaderField(string DisplayName)
+
+        public static Element GetHeaderButton(string DisplayName)
+        {
+            return new Element($"//bh-top-navbar //button[descendant::*[normalize-space(text())='{DisplayName}']]");
+
+        }
+        public static Element GetQuoteHeaderField(string DisplayName)
         {
             return new Element($"//bh-quote-header//*[contains(text(), '{DisplayName}')]//preceding-sibling::div/descendant::*");
 
@@ -28,12 +36,13 @@ namespace ApolloQA.Pages
         public static Element GetLeftSideTab(string DisplayName)
         {
             return new Element($"//bh-left-navbar //div[@class='mat-list-item-content' and normalize-space(text())='{DisplayName}'] |" +
-                               $"//a[@routerlinkactive='active-link']//*[contains(text(), '{DisplayName}')]");
+                               $"//a[@routerlinkactive='active-link']//*[contains(text(), '{DisplayName}')] |" +
+                               $"//mat-nav-list[@role='navigation'] //*[contains(text(), '{DisplayName}')]");
         }
 
         public static Element GetRightSideTab(string DisplayName)
         {
-            return new Element($"//*[contains(text(), '{DisplayName}')]");
+            return new Element($"//mat-nav-list//*[contains(text(), '{DisplayName}')]");
         }
 
         public static Element GetDropdownField(string DisplayName)
@@ -65,6 +74,14 @@ namespace ApolloQA.Pages
             return new Element($"//mat-icon[contains(text(), '{iconText}')]");
         }
 
+        public static Element GetRadioButton(string buttonText)
+        {
+            return new Element($"//mat-radio-button[descendant::*[text()='{buttonText}']]//input");
+        }
+
+        public static Element Table = new Element($"//ngx-datatable");
+
+
         // Grid Titles Verify
         public static Element GetColumnTitle(string gridTitle)
         {
@@ -80,6 +97,14 @@ namespace ApolloQA.Pages
         public static Element GetToast()
         {
             return new Element($"//*[@class='toast-title']");
+        }
+        public static Element GetToast(string message)
+        {
+            return new Element($"//div[@class='toast-content']/descendant::*[text()='{message}']");
+        }
+        public static Element GetToastContaining(string message)
+        {
+            return new Element($"//div[@class='toast-content']/descendant::*[contains(text(),'{message}' )]");
         }
 
         //
@@ -113,6 +138,7 @@ namespace ApolloQA.Pages
         {
             return new Element($"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']] //bh-coverage-limit-definition[descendant::*[normalize-space(text())='{CoverageLimitDisplayText}']]//mat-select");
         }
+
 
         //
         // Specific Shared Elements

@@ -12,6 +12,7 @@ Scenario: TC 25643 Global Search - Search Items
 	And user validates search for 'PolicyHolderName'
 	And user validates search for 'AgencyOrganization'
 	And user validates search for 'CarrierOrganization'
+	# bugReported - 32061
 #	And user validates search for 'UnderwriterName'
 	And user validates search for 'AdjusterName'
     And user validates search for 'TaxIdLastFour'

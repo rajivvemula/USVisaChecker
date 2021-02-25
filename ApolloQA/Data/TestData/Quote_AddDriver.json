@@ -1,0 +1,71 @@
+﻿[
+  {
+    "riskId": "@DriverRiskId",
+    "riskType": 2,
+    "outputMetadata": {
+      "DriverHistory": {
+        "accidents": [],
+        "violations": [],
+        "convictions": []
+      },
+      "QuestionResponses": [
+        {
+          "questionId": 1300,
+          "response": "",
+          "questionType": 90,
+          "sectionId": 9015,
+          "hidden": true
+        },
+        {
+          "questionId": 1306,
+          "response": 0,
+          "questionType": 20,
+          "sectionId": 9015,
+          "hidden": false
+        },
+        {
+          "questionId": 1302,
+          "response": false,
+          "questionType": 90,
+          "sectionId": 9015,
+          "hidden": false
+        },
+        {
+          "questionId": 1308,
+          "response": "",
+          "questionType": 60,
+          "sectionId": 9015,
+          "hidden": true
+        },
+        {
+          "questionId": 1309,
+          "response": "",
+          "questionType": 90,
+          "sectionId": 9015,
+          "hidden": true
+        },
+        {
+          "questionId": 1310,
+          "response": "",
+          "questionType": 90,
+          "sectionId": 9015,
+          "hidden": true
+        },
+        {
+          "questionId": 1315,
+          "response": false,
+          "questionType": 90,
+          "sectionId": 9015,
+          "hidden": false
+        },
+        {
+          "questionId": 1307,
+          "response": "",
+          "questionType": 10,
+          "sectionId": 9015,
+          "hidden": false
+        }
+      ]
+    }
+  }
+]

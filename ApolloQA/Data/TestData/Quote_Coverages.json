@@ -1,0 +1,10 @@
+﻿[
+  {
+    "coverageTypeId": 17001,
+    "selectedDeductibleName": "Deductible",
+    "selectedLimitName": "Combined Single Limit",
+    "selectedLimits": [
+      100000
+    ]
+  }
+]

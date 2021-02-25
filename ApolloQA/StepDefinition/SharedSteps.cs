@@ -5,13 +5,14 @@ using ApolloQA.Data.Entity;
 using System.Collections.Generic;
 using TechTalk.SpecFlow.Assist;
 using ApolloQA.Source.Helpers;
+using System.Linq;
 
 namespace ApolloQA.StepDefinition
 {
     [Binding]
     public class SharedSteps
     {
-        [When(@"user clicks (.*) Button")]
+        [When(@"user clicks '(.*)' Button")]
         public void WhenUserClicksButton(string buttonName)
         {
             
@@ -84,14 +85,14 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton("Use selected").Click(3, true);
         }
 
-
-        [When(@"user clicks '(.*)' icon button")]
+        [When(@"user clicks '(.*)' icon Button")]
         public void WhenUserClicksIconButton(string iconButton)
         {
             Shared.GetIconButton(iconButton).Click();
         }
 
-        [When(@"user clicks (.*) right menu button")]
+
+        [When(@"user clicks '(.*)' right menu Button")]
         public void WhenUserClicksRightMenuButton(string rightMenuButton)
         {
             Shared.GetRightSideTab(rightMenuButton).Click();
@@ -125,7 +126,7 @@ namespace ApolloQA.StepDefinition
         }
 
 
-        [When(@"user clicks (.*) Sidetab")]
+        [When(@"user clicks '(.*)' Sidetab")]
         public void WhenUserClicksSidetab(string sidetab)
         {
             Shared.GetLeftSideTab(sidetab).Click();
@@ -148,6 +149,12 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetToast().assertElementTextEquals(toastValue);
         }
+        [Then(@"Toast containing (.*) is visible")]
+        public void ThenToastContainingIsVisible(string message)
+        {
+            Shared.GetToastContaining(message).assertElementIsVisible();
+        }
+
 
         [Then(@"Grid contains: (.*)")]
         public void ThenGridContains(string gridValue)
@@ -179,8 +186,6 @@ namespace ApolloQA.StepDefinition
         }
 
 
-
-
         [When(@"user selects (.*) coverage with (.*) deductible of (.*)")]
         public void WhenUserSelectsCoverageWithDeductibleOf(string CoverageDisplayText, string DeductibleTypeDisplayText, string DeductilbeAmountDisplayText)
         {
@@ -208,6 +213,22 @@ namespace ApolloQA.StepDefinition
         {
             Functions.MarkTestCaseFailed(int.Parse(testCaseId));
         }
+        [Given(@"user navigates to Administration (.*)")]
+        public void GivenUserNavigatesToAdministration(string tabName)
+        {
+            WhenUserClicksIconButton(" apps ");
+            WhenUserClicksRightMenuButton("Administration");
+            Shared.GetHeaderButton("Billing").Click();
+
+        }
+        [Then(@"table should have (.*) entries")]
+        public void ThenTableShouldContainEntries(int entries)
+        {
+            Assert.AreEqual(entries, Shared.Table.parseUITable().Count());
+
+        }
+
+
 
     }
 }

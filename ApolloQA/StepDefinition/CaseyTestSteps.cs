@@ -19,16 +19,6 @@ namespace ApolloQA.Features
             this.featureContext = featureContext;
         }
 
-        //please do not change this step
-        // the button click step in shared steps has a capital B for Button, please use that naming convention to avoid overlap with this step
-        [When(@"user clicks (.*) button")]
-        public void WhenUserClicksButton(string buttonName)
-        {
-            Button button = new Button(buttonName);
-            button.Click();
-            UserActions.WaitForSpinnerToDisappear();
-        }
-
 
         [When(@"user clicks (.*) tab")]
         public void WhenUserClicksTab(string tabName)
@@ -248,7 +238,8 @@ namespace ApolloQA.Features
         public void ThenToastAppearsContainingText(string containsText)
         {
             Toaster toaster = new Toaster(containsText);
-
+            //TODO :
+            //API response failure - revisit post release 1
             NUnit.Framework.Assert.IsTrue(toaster.IsPresent(), "Unable to locate toast containing" + containsText);
         }
     }

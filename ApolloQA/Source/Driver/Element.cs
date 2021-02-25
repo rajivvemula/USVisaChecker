@@ -122,6 +122,7 @@ namespace ApolloQA.Source.Driver
             return false;
         }
 
+
         /// <summary>
         ///  Waits for the element to be vissible in the page
         /// </summary>
@@ -172,6 +173,26 @@ namespace ApolloQA.Source.Driver
             }
             return false;
         }
+
+        public bool AssertRadioButtonState(bool state, bool optional=false)
+        {
+            bool isSelected = this.IsRadioButtonSelected();
+            if (optional)
+            {
+                return (state == isSelected )? true : false;
+            }
+            else if (state != isSelected)
+            {
+                throw Functions.handleFailure($"Radio Button state did not match expected {state} \n {this}");       
+                
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
 
         public IWebElement WaitUntilClickable(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
         {
@@ -267,9 +288,17 @@ namespace ApolloQA.Source.Driver
             return UserActions.GetAllMatDropdownOptions(locator);
         }
 
+        //
+        // RADIO BUTTON
+        //
+        public Boolean IsRadioButtonSelected()
+        {
+            return UserActions.IsRadioButtonSelected(locator);
+        }
+
 
         //
-        // TABLE HANDLINg
+        // TABLE HANDLING
         //
 
         public IEnumerable<Dictionary<String, String>> parseUITable()

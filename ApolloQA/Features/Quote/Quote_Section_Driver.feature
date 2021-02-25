@@ -18,10 +18,10 @@ Scenario: Add a driver
 #please avoid TC number on scenario title
 Scenario: Quote Driver Section Schedule
 	Given user is successfully logged into biberk
-	When user clicks Quote Button
+	When user clicks 'Quote' Button
 	When User Navigates to Quote latest
 	And user waits for spinner to load
-	When user clicks Drivers Sidetab
+	When user clicks 'Drivers' Sidetab
 	And user waits for spinner to load
 	And user checks for existing driver
 	And user waits for spinner to load
@@ -34,7 +34,7 @@ Scenario: Quote Driver Button Color is correct
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest
 	And user waits for spinner to load
-	When user clicks Drivers Sidetab
+	When user clicks 'Drivers' Sidetab
 	And user waits for spinner to load
 	Then user checks Drivers grid page buttons
 

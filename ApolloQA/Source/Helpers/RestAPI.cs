@@ -48,7 +48,7 @@ namespace ApolloQA.Source.Helpers
 
             HttpResponseMessage response = client.PostAsync(processURL(URL), content).Result;
             client.Dispose();
-            return ConsumeResponse(response, URL);
+            return ConsumeResponse(response, URL, body);
         }
 
 
@@ -78,7 +78,7 @@ namespace ApolloQA.Source.Helpers
 
             HttpResponseMessage response = client.PatchAsync(processURL(URL), content).Result;
             client.Dispose();
-            return ConsumeResponse(response, URL);
+            return ConsumeResponse(response, URL,body);
         }
         private static String processURL(String URL)
         {
@@ -94,11 +94,13 @@ namespace ApolloQA.Source.Helpers
             return URL;
         }
 
-        private static dynamic ConsumeResponse(HttpResponseMessage response, string url)
+        private static dynamic ConsumeResponse(HttpResponseMessage response, string url, dynamic body=null)
         {
             if(!response.IsSuccessStatusCode)
             {
                 Log.Critical(url);
+                Log.Critical(body);
+
             }
             response.EnsureSuccessStatusCode();
             String dataObjects = response.Content.ReadAsStringAsync().Result;
