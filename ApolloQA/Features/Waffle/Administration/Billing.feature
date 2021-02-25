@@ -39,7 +39,4 @@ Scenario: Make a payment - Quote Issuance
 	| 12 Monthly Payments | Check             |
 
 
-Scenario: Create Quote through API
-	Given user is successfully logged into biberk
-	When API creates an organization
 	
