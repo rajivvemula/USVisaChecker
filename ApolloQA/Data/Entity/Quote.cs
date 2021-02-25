@@ -42,7 +42,7 @@ namespace ApolloQA.Data.Entity
         }
         public static Quote GetLatestQuote()
         {
-            return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
+            return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c WHERE c.ApplicationStatusValue!= \"Issued\" ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
         }
         public dynamic GetProperties()
         {
@@ -90,22 +90,21 @@ namespace ApolloQA.Data.Entity
 
             return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
         }
+
+        private String _ApplicationNumber { get; set; }
+        public String ApplicationNumber
+        {
+            get
+            {
+                return _ApplicationNumber ??= GetProperty("applicationNumber");
+            }
+        } 
         public Organization Organization
         {
 
             get
             {
-                try
-                {
-                    return new Organization("PartyId", this.GetProperties().insuredPartyId.Value.ToString());
-                }
-                catch (Exception exception)
-                {
-                    Log.Critical(exception.ToString());
-                    Log.Critical(exception.Message);
-                    Log.Critical(exception.StackTrace);
-                    throw new Exception($"error constructing Organization with the following params 1=PartyId 2={this.GetProperties()?.insuredPartyId?.Value?.ToString()}");
-                }
+                return new Organization((int)this.GetProperty("insuredId"));               
             }
         }
 

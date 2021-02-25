@@ -76,19 +76,19 @@ namespace ApolloQA.StepDefinition.Quote
         public void ThenQuoteHeaderShouldContainCorrectValues()
         {
             Quote_Page.GetHeaderField("Quote Number").assertElementIsVisible(120);
-            Quote_Page.GetHeaderField("Quote Number").assertElementInnerTextEquals(quote.Id.ToString());
-            Quote_Page.GetHeaderField("Business Name").assertElementInnerTextEquals(this.BusinessName);
+            Quote_Page.GetHeaderField("Quote Number").assertElementInnerTextEquals(quote.ApplicationNumber);
+            Quote_Page.GetHeaderField("Business Name").assertElementInnerTextEquals(quote.Organization.Name);
             Quote_Page.GetHeaderField("Status").assertElementInnerTextEquals("Pre-Submission");
             Quote_Page.GetHeaderField("Effective Date").assertElementInnerTextEquals(this.PolicyEffectiveDate);
-            Quote_Page.GetHeaderField("Line of Business").assertElementInnerTextEquals(this.LineOfBusiness);
+            Quote_Page.GetHeaderField("Line of Business").assertElementInnerTextEquals("Commercial Auto");
             Quote_Page.GetHeaderField("Carrier");
             Quote_Page.GetHeaderField("Agency");
-            Quote_Page.GetHeaderField("Producer").assertElementInnerTextEquals("Unassigned");
+            //this will be readonly in the future
+            //Quote_Page.GetHeaderField("Producer").assertElementInnerTextEquals("Unassigned");
 
             Log.Info($"Expected: {nameof(BusinessName)}={BusinessName}");
             Log.Info($"Expected: {nameof(LineOfBusiness)}={LineOfBusiness}");
             Log.Info($"Expected: {nameof(PolicyEffectiveDate)}={PolicyEffectiveDate}");
-            Log.Warn("Lastly created quote page test to be implemented");
 
             Functions.MarkTestCasePassed(17028);
         }

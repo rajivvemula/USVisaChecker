@@ -130,7 +130,16 @@ namespace ApolloQA.Source.Driver
         [AfterFeature]
         public static void AfterFeature()
         {
-            Devops.markTestCases(TestCaseOutcome);
+            try
+            {
+                Devops.markTestCases(TestCaseOutcome);
+            }
+            catch(Exception ex)
+            {
+                Log.Critical(ex.Message);
+                Log.Critical(ex.StackTrace);
+
+            }
         }
 
         [AfterTestRun]

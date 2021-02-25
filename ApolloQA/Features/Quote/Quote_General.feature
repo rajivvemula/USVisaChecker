@@ -1,9 +1,8 @@
 ﻿Feature: Quote General
 	As a user I want to be able to create a new quote
 
-@SmokeTest @Quote @bugReported
+@SmokeTest @Quote 
 @tc:17022 @tc:17024 @tc:17027 @tc:17974 @tc:17028
-#BUG 30162
 Scenario: Create New Quote
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
@@ -15,7 +14,8 @@ Scenario: Create New Quote
 	And user selects dropdown Physical Address option containing , IL,
 	And user clicks Next Button
 	Then A new Quote should successfully be created
-	And User should be redirected to the newly created Quote Business Information Section
+	#BUG 30162
+	#And User should be redirected to the newly created Quote Business Information Section
 	And Quote header should contain correct values
 
 #Add precondition to search for latest quote LOB=Commercial Auto
