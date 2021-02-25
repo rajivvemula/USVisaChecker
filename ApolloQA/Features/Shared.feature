@@ -3,7 +3,7 @@
 
 @ignore
 Scenario: Shared Given
-	
+	Given user navigates to Administration <tab>
 @ignore
 Scenario: Shared When
 	When user clicks '<DisplayName>' Button
@@ -49,6 +49,8 @@ Scenario: Shared Then
 	Then Grid contains: <Value>
 	
 	Then Toast with a message: <Message> is visible 
+	Then Toast containing <Message> is visible 
+
 
 	Then Verify sidetab is present
 	| Key | Value                |

@@ -15,7 +15,7 @@ namespace ApolloQA.StepDefinition
         [Given(@"user is successfully logged into biberk")]
         public void GivenUserIsSuccessfullyLoggedIntoBiberk()
         {
-            if (Functions.GetCurrentURL() == "data:," && loadSessionIntoDriver() == false)
+            if ((Functions.GetCurrentURL() == "data:," || Functions.GetCurrentURL().Contains("login")) && loadSessionIntoDriver() == false)
             {
                 
                 GivenUserLandedBiBerkPageWithValidURL();

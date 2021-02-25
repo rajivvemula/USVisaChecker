@@ -5,6 +5,7 @@ using ApolloQA.Data.Entity;
 using System.Collections.Generic;
 using TechTalk.SpecFlow.Assist;
 using ApolloQA.Source.Helpers;
+using System.Linq;
 
 namespace ApolloQA.StepDefinition
 {
@@ -148,6 +149,12 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetToast().assertElementTextEquals(toastValue);
         }
+        [Then(@"Toast containing (.*) is visible")]
+        public void ThenToastContainingIsVisible(string message)
+        {
+            Shared.GetToastContaining(message).assertElementIsVisible();
+        }
+
 
         [Then(@"Grid contains: (.*)")]
         public void ThenGridContains(string gridValue)
@@ -206,6 +213,22 @@ namespace ApolloQA.StepDefinition
         {
             Functions.MarkTestCaseFailed(int.Parse(testCaseId));
         }
+        [Given(@"user navigates to Administration (.*)")]
+        public void GivenUserNavigatesToAdministration(string tabName)
+        {
+            WhenUserClicksIconButton(" apps ");
+            WhenUserClicksRightMenuButton("Administration");
+            Shared.GetHeaderButton("Billing").Click();
+
+        }
+        [Then(@"table should have (.*) entries")]
+        public void ThenTableShouldContainEntries(int entries)
+        {
+            Assert.AreEqual(entries, Shared.Table.parseUITable().Count());
+
+        }
+
+
 
     }
 }

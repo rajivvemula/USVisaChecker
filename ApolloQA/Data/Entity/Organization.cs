@@ -83,6 +83,13 @@ namespace ApolloQA.Data.Entity
             
         }
 
+        public int PartyId
+        {
+            get
+            {
+                return (int)this.GetProperty("partyId");
+            }
+        }
         public List<Address> Addresses
         {
             get

@@ -1,0 +1,13 @@
+﻿{
+  "lineId": 7,
+  "insuredId": "@OrganizationId",
+  "agencyId": 2,
+  "carrierId": 3,
+  "ratableObjectEffectiveDate": "2021-02-25T05:00:00.000Z",
+  "ratableObjectExpirationDate": "2022-02-25T05:00:00.000Z",
+  "physicalAddressId": "@PhysicalAddressId",
+  "governingStateId": 185,
+  "keywordId": 730,
+  "industryClassTaxonomyId": 110,
+  "industryClassTaxonomyClassName": "Service - White Collar\\All\\All Other"
+}

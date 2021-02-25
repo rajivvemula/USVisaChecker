@@ -57,12 +57,12 @@ namespace ApolloQA.Data.Entity
 		                                                LEFT JOIN location.Country lc on lc.Id = la.CountryId
 		                                                where la.Id = @ID;", ("@ID", location_Address_ID))[0];
 
-            this.Street1 = address["Line1"];
-            this.Street2 = address["Line2"];
-            this.City = address["MajorMunicipality"];
-            this.StateCode = address["StateCode"];
-            this.PostalCode = address["PostalCode"];
-            this.CountryName = address["CountryName"];
+            this.Street1 = address["Line1"] is DBNull ? null : address["Line1"];
+            this.Street2 = address["Line2"] is DBNull ? null : address["Line2"];
+            this.City = address["MajorMunicipality"] is DBNull ? null: address["MajorMunicipality"];
+            this.StateCode = address["StateCode"] is DBNull ? null: address["StateCode"];
+            this.PostalCode = address["PostalCode"] is DBNull ? null: address["PostalCode"];
+            this.CountryName = address["CountryName"] is DBNull ? null : address["CountryName"];
             this.Id = location_Address_ID;
 
 
