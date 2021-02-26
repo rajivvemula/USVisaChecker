@@ -186,6 +186,7 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
                                                                     WHERE c.Id in ( {string.Join(", ", ratableObjectCandidates)} ) 
                                                                     AND c.RatableObjectStatusValue= 'Quoted'
                                                                     AND c.Billing.Premium !=null
+                                                                    AND c.Billing.Premium !=0
                                                                     ORDER BY c.Id DESC").Result;
 
             if(ratableValidCandidates.Count ==0)

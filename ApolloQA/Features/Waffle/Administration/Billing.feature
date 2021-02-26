@@ -26,12 +26,6 @@ Scenario: Make a payment - Quote Issuance
 	And user clicks 'Submit' Button
 	And user waits for spinner to load
 	Then Toast containing Policy Issuance is complete for ratable object is visible
-	When user waits '30' seconds
-	And user clicks 'Documents' Sidetab
-	Then table should have 3 entries
-
-
-
 	Examples:
 	| payment plan        | method            |
 	| 12 Monthly Payments | Credit/Debit Card |
@@ -39,4 +33,15 @@ Scenario: Make a payment - Quote Issuance
 	| 12 Monthly Payments | Check             |
 
 
-	
+	Scenario: Document Generation upon policy issuance
+	Given user is successfully logged into biberk
+	And user navigates to Administration Billing
+	When user selects a valid quote to make a payment
+	And user selects payment plan 12 Monthly Payments
+	And user enters payment information with Check
+	And user clicks 'Submit' Button
+	And user waits for spinner to load
+	Then Toast containing Policy Issuance is complete for ratable object is visible
+	When user waits '30' seconds
+	And user clicks 'Documents' Sidetab
+	Then table should have 3 entries

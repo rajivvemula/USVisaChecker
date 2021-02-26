@@ -47,6 +47,11 @@ namespace ApolloQA.Data.Entity
             return property == null ? "" : property;
         }
 
+        public static Policy GetLatestPolicy()
+        {
+            return new Policy((int)Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
+        }
+
         public Quote GetQuote()
         {
             return new Quote(GetProperties()["quoteId"].ToObject<int>());
@@ -106,6 +111,14 @@ namespace ApolloQA.Data.Entity
                 {
                     throw new Exception($"error constructing Organization with the following params 1=PartyId 2={this.GetProperties()?.insuredPartyId?.Value?.ToString()}");
                 }
+            }
+        }
+
+        public string PolicyNumber
+        {
+            get
+            {
+                return GetProperty("policyNumber");
             }
         }
         

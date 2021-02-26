@@ -292,10 +292,23 @@ namespace ApolloQA.Source.Helpers
             return summary;
         }
 
-        public static void MarkTestCasePassed(int testCaseId) => Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_PASS);
-        
-        public static void MarkTestCaseFailed(int testCaseId) => Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_FAIL);
-        
+        public static void MarkTestCasePassed(int testCaseId) 
+        {
+            if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))
+            {
+                Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_PASS);
+
+            }
+        }
+
+        public static void MarkTestCaseFailed(int testCaseId)
+        {
+            if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))
+            {
+                Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_FAIL);
+
+            }
+        }        
 
     }
 }

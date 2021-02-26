@@ -1,4 +1,5 @@
-﻿using ApolloQA.Pages;
+﻿using ApolloQA.Data.Entity;
+using ApolloQA.Pages;
 using ApolloQA.Source.Driver;
 using OpenQA.Selenium;
 using System;
@@ -32,10 +33,11 @@ namespace ApolloQA.StepDefinition
                 case "ENTITYNAME":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("Policy 0010001-01-CA");
+                    var policy = Policy.GetLatestPolicy();
+                    GlobalSearch.SearchInput.setText($"Policy {policy.PolicyNumber}");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var EntityName = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(EntityName, "Policy 0010001-01-CA");
+                    Assert.TextContains(EntityName, $"Policy {policy.PolicyNumber}");
                     break;
                 case "ENTITYNUMBER":
                     UserActions.Refresh();
@@ -89,20 +91,21 @@ namespace ApolloQA.StepDefinition
                 case "POLICYHOLDERNAME":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("TheTestOrg");
+                    var OrgName = Organization.GetLatestOrganization();
+                    GlobalSearch.SearchInput.setText($"{OrgName.Name}");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var policyNameHolder = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(policyNameHolder, "TheTestOrg");
+                    Assert.TextContains(policyNameHolder, $"{OrgName.Name}");
                     var policyHolderName = GlobalSearch.SearchResultDescription.GetElementText();
                     Assert.TextContains(policyHolderName, "Organization");
                     break;
                 case "AGENCYORGANIZATION":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("TheTestOrg");
+                    GlobalSearch.SearchInput.setText("biBERK");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var agencyOrganization = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(agencyOrganization, "TheTestOrg");
+                    Assert.TextContains(agencyOrganization, "biBERK");
                     break;
                 case "CARRIERORGANIZATION":
                     UserActions.Refresh();
@@ -138,18 +141,20 @@ namespace ApolloQA.StepDefinition
                 case "VALIDPOLICYNUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("0010001-01-CA");
+                    var PolNum = Policy.GetLatestPolicy();
+                    GlobalSearch.SearchInput.setText($"{PolNum.PolicyNumber}");
                     GlobalSearch.SearchResult.assertElementIsVisible();
-                    var policyNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(policyNumber, "0010001-01-CA");
+                    var Entity = GlobalSearch.SearchResultLabel.GetElementText();
+                    Assert.TextContains(Entity, $"{PolNum.PolicyNumber}");
                     break;
                 case "VALIDQUOTENUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("9000032");
+                    var Quote = Data.Entity.Quote.GetLatestQuote();
+                    GlobalSearch.SearchInput.setText(Quote.ApplicationNumber);
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var quoteNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(quoteNumber, "Quote 9000032");
+                    Assert.TextContains(quoteNumber, $"Quote {Quote.ApplicationNumber}");
                     break;
                 case "VALIDCLAIMNUMBER":
                     UserActions.Refresh();
