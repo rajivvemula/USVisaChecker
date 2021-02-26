@@ -12,6 +12,8 @@ trigger:
   paths:
     exclude:
       - ApolloQA/*
+pr:
+ - master
 
 pool:
   vmImage: 'windows-latest'
