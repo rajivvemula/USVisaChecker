@@ -107,7 +107,7 @@ stages:
         displayName: 'Publish Test Results Files'
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)/TestResults_QA2'
-          ArtifactName: 'TestResults'
+          ArtifactName: 'TestResults_QA2'
           
 - stage: UAT
   displayName: 'UAT'
@@ -193,4 +193,4 @@ stages:
         displayName: 'Publish Test Results Files'
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)/TestResults_UAT'
-          ArtifactName: 'TestResults'
+          ArtifactName: 'TestResults_UAT'
