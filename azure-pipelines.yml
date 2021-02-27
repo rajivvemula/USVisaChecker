@@ -112,6 +112,10 @@ stages:
 - stage: UAT
   displayName: 'UAT'
   jobs: 
+  - deployment: automation_uat
+    environment: automation_uat
+    displayName: Run QA Automated Tests in UAT
+
   - job: RunAutomatedTest
     displayName: 'Run Automated Tests'
     steps:
