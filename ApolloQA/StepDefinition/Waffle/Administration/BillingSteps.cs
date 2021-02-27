@@ -147,6 +147,7 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
                     GetField("Name on Account").setText("Automation Account " + Functions.GetRandomInteger());
                     GetField("Bank Routing Number").setText("12333322");
                     GetField("Account Number").setText("6654654123456");
+                    GetField("Date").setText(DateTime.Today.AddDays(1).ToString("MM/dd/yyyy"));
                     GetField("Checking").Click();
 
 

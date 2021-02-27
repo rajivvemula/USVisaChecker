@@ -132,8 +132,10 @@ namespace ApolloQA.StepDefinition
                     break;
                 case "TAXIDLASTFOUR":
                     UserActions.Refresh();
+                    var org = Organization.GetLatestOrganization();
+
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("3972");
+                    GlobalSearch.SearchInput.setText(org.TaxId);
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var taxID = GlobalSearch.SearchResultLabel.GetElementText();
                     Assert.TextContains(taxID, "TruckingTest");
