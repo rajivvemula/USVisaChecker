@@ -114,7 +114,7 @@ stages:
   jobs: 
   - deployment: automation_uat
     environment: automation_uat
-    displayName: Run QA Automated Tests in UAT
+    displayName: Aproval for UAT automation run
 
   - job: RunAutomatedTest
     displayName: 'Run Automated Tests'
