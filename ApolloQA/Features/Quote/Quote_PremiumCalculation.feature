@@ -27,7 +27,8 @@ Scenario: Rate Calculation New Quote
 	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Seating Capacity | Gross Vehicle Weight | Stated Amount |
 	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 5 or less        | 0 - 5000             | 10000         |
 	And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
-	And user selects answer to Is this vehicle: as Leased
+	And user selects answer to Is this vehicle owned, financed, or leased? as Leased
+	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
 	And user clicks 'Save Vehicle' Button
 	And user waits for spinner to load
 

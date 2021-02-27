@@ -1,9 +1,9 @@
 ﻿{
   "RatableObjectEffectiveDate": "2021-02-25T05:00:00.000Z",
   "RatableObjectExpirationDate": "2022-02-25T05:00:00.000Z",
-  "InsuredId": 10102,
-  "MailingAddressId": 10249,
-  "PhysicalAddressId": 10249,
+  "InsuredId": "@OrganizationId",
+  "MailingAddressId": "@PhysicalAddressId",
+  "PhysicalAddressId": "@PhysicalAddressId",
   "KeywordId": 730,
   "IndustryClassTaxonomyId": 110,
   "IndustryClassTaxonomyClassName": "Service - White Collar\\All\\All Other",

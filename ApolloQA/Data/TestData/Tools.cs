@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace ApolloQA.Data.TestData
@@ -20,10 +21,10 @@ namespace ApolloQA.Data.TestData
                                                       $"Data/TestData/{(fileName.Contains(".json") ? fileName : fileName + ".json")}"
                                                       )).ReadToEnd();
 
-            string[] props = jsonString.Split(",");
-            foreach (var prop in props)
+            int count = jsonString.Count(it => it == '@');
+            for (int i=0; i< count; i++)
             {
-                if(!prop.Contains("\"@"))
+                if(!jsonString.Contains("\"@"))
                 {
                     continue;
                 }
@@ -42,6 +43,7 @@ namespace ApolloQA.Data.TestData
                 {
                     jsonString = jsonString.Replace($"@{variableName}", (string)value);
                 }
+
 
 
             }

@@ -118,8 +118,8 @@ namespace ApolloQA.Pages
 
         public static Element GetQuestionAnswer(string QuestionDisplayText, string AnswerDisplayText)
         {
-            return new Element($"//bh-question-singleselect[descendant::*[normalize-space(text())='{QuestionDisplayText}']] //mat-radio-button[descendant::*[normalize-space(text())='{AnswerDisplayText}']] |" +
-                               $"//bh-question-boolean[descendant::*[normalize-space(text())='{QuestionDisplayText}']] //mat-radio-button[descendant::*[normalize-space(text())='{AnswerDisplayText}']]");
+            return new Element($"//bh-question-singleselect[descendant::*[normalize-space(text())=\"{QuestionDisplayText}\"]] //mat-radio-button[descendant::*[normalize-space(text())=\"{AnswerDisplayText}\"]] |" +
+                               $"//bh-question-boolean[descendant::*[normalize-space(text())=\"{QuestionDisplayText}\"]] //mat-radio-button[descendant::*[normalize-space(text())=\"{AnswerDisplayText}\"]]");
         }
         public static Element GetQuestionTextField(string QuestionDisplayText)
         {

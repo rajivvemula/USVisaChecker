@@ -179,23 +179,30 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
             //gather the Ratable Object Ids on a list
             IEnumerable<int> ratableObjectCandidates = tetherCandidates.Select(row => (int)row["CurrentRatableObjectId"]);
 
-
-            //in cosmos DB, filter out any ratable object which is not Quoted and have no premium
-            var ratableValidCandidates = Cosmos.GetQuery("RatableObject", @$" SELECT * 
+            if (ratableObjectCandidates.Any())
+            {
+                //in cosmos DB, filter out any ratable object which is not Quoted and have no premium
+                var ratableValidCandidates = Cosmos.GetQuery("RatableObject", @$" SELECT * 
                                                                     FROM c 
                                                                     WHERE c.Id in ( {string.Join(", ", ratableObjectCandidates)} ) 
                                                                     AND c.RatableObjectStatusValue= 'Quoted'
                                                                     AND c.Billing.Premium !=null
                                                                     AND c.Billing.Premium !=0
                                                                     ORDER BY c.Id DESC").Result;
+            
 
-            if(ratableValidCandidates.Count ==0)
-            {
-               Functions.IssueNewQuoteThroughAPI();
-               return GetValidApplicationNumber();
+                if(ratableValidCandidates.Count ==0)
+                {
+                   Functions.IssueNewQuoteThroughAPI();
+                   return GetValidApplicationNumber();
+                }
+                this.ratableObject = ratableValidCandidates[0];
             }
-            this.ratableObject = ratableValidCandidates[0];
-
+            else
+            {
+                Functions.IssueNewQuoteThroughAPI();
+                return GetValidApplicationNumber();
+            }
             //get the first valid candidate and find it's tether object.
             var tether = tetherCandidates.Find(tether => (int)tether["CurrentRatableObjectId"] == (int)this.ratableObject.Id);
 
