@@ -55,8 +55,9 @@ namespace ApolloQA.StepDefinition
         [When(@"user enters occurrence information for Policy")]
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
-            Occurrence.policyNumberField.setText("0010000-01-CA"); // policy number 
-            GlobalSearch.SearchResultLabel.assertElementContainsText("0010000-01-CA");
+            var policy = Data.Entity.Policy.GetClaimPolicy();
+            Occurrence.policyNumberField.setText($"{policy.PolicyNumber}");
+            GlobalSearch.SearchResultLabel.assertElementContainsText($"{policy.PolicyNumber}");
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");

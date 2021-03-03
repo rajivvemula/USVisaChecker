@@ -44,4 +44,4 @@ Scenario: Make a payment - Quote Issuance
 	Then Toast containing Policy Issuance is complete for ratable object is visible
 	When user waits '30' seconds
 	And user clicks 'Documents' Sidetab
-	Then table should have 3 entries
+	Then table should have entries

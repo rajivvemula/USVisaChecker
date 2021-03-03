@@ -208,27 +208,26 @@ namespace ApolloQA.StepDefinition
         {
             Functions.MarkTestCasePassed(int.Parse(testCaseId));
         }
+
         [Then(@"mark Test Case as (.*) failed")]
         public void markTestCaseasfailed(string testCaseId)
         {
             Functions.MarkTestCaseFailed(int.Parse(testCaseId));
         }
+
         [Given(@"user navigates to Administration (.*)")]
         public void GivenUserNavigatesToAdministration(string tabName)
         {
             WhenUserClicksIconButton(" apps ");
             WhenUserClicksRightMenuButton("Administration");
             Shared.GetHeaderButton("Billing").Click();
-
         }
-        [Then(@"table should have (.*) entries")]
-        public void ThenTableShouldContainEntries(int entries)
+
+        [Then(@"table should have entries")]
+        public void ThenTableShouldContainEntries()
         {
-            Assert.AreEqual(entries, Shared.Table.parseUITable().Count());
+            Assert.IsTrue(Shared.Table.parseUITable().Count() > 1);
 
         }
-
-
-
     }
 }

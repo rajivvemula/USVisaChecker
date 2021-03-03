@@ -289,7 +289,7 @@ namespace ApolloQA.Source.Helpers
             Data.TestData.Quote.AnswerOperationQuestions(quote);
             Data.TestData.Quote.AddPolicyCoverages(quote);
             var summary = Data.TestData.Quote.GetSummary(quote);
-            if (summary["premium"] == null ||  ((int)(summary["ratingResponse"]["premium"])) > 0 )
+            if (summary["premium"] == null ||  ((int)(summary["ratingResponse"]["premium"])) < 1 )
             {
                 throw Functions.handleFailure($"Premium generation was unsuccessful Quote: {quote.Id} Premium: " + (summary?["ratingResponse"]?["premium"] ?? "null"));
             }

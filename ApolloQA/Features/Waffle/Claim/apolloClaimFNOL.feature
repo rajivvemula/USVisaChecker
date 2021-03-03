@@ -7,7 +7,7 @@ Scenario: TC 25557 Creates FNOL successfully
 	When user clicks 'Claim' right menu Button
 	When user clicks 'New FNOL' Button
 	And user waits for spinner to load
-	And user selects 'No' this occurrence related to an existing claim
+	And user selects 'Yes' this occurrence related to an existing claim
 	And user enters occurrence information for Policy
 	And user waits for spinner to load
 	And user enters loss date and time

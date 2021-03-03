@@ -44,6 +44,7 @@ namespace ApolloQA.Data.Entity
         {
             return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c WHERE c.ApplicationStatusValue!= \"Issued\" ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
         }
+
         public dynamic GetProperties()
         {
             return RestAPI.GET($"/quote/{this.Id}");

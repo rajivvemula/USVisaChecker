@@ -133,12 +133,11 @@ namespace ApolloQA.StepDefinition
                 case "TAXIDLASTFOUR":
                     UserActions.Refresh();
                     var org = Organization.GetLatestOrganization();
-
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText(org.TaxId);
+                    GlobalSearch.SearchInput.setText(org.TaxId.Substring(6, 4));
                     GlobalSearch.SearchResult.assertElementIsVisible();
-                    var taxID = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(taxID, "TruckingTest");
+                    var name = GlobalSearch.SearchResultLabel.GetElementText();
+                    Assert.TextContains(name, $"{org.Name}");
                     break;
                 case "VALIDPOLICYNUMBER":
                     UserActions.Refresh();
@@ -161,10 +160,11 @@ namespace ApolloQA.StepDefinition
                 case "VALIDCLAIMNUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    GlobalSearch.SearchInput.setText("10002");
+                    var claim = Data.Entity.Claim.GetClaim();
+                    GlobalSearch.SearchInput.setText($"{claim.ClaimNumber}");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var claimNumber = GlobalSearch.SearchResultLabel.GetElementText();
-                    Assert.TextContains(claimNumber, "FNOL 10002");
+                    Assert.TextContains(claimNumber, $"Claim {claim.ClaimNumber}");
                     break;
                 default:
                     throw new Exception($"Search Text {SearchText} not found.");
