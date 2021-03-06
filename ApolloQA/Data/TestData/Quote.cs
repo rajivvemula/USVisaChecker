@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ApolloQA.Data.TestData
@@ -13,8 +14,12 @@ namespace ApolloQA.Data.TestData
         {
             var body = Tools.GetObject("QuoteCreate");
             var response = RestAPI.POST("/quote/create", body);
+
             Tools.interpreter.SetVariable("ApplicationId", response.id);
             Tools.interpreter.SetVariable("QuoteId", response.id);
+
+            Tools.interpreter.SetVariable("VehicleSectionId", ((JArray)response.sections).FirstOrDefault(it=> (String)((JObject)it)["sectionName"]== "Vehicles")["id"]);
+            Tools.interpreter.SetVariable("DriverSectionId", ((JArray)response.sections).FirstOrDefault(it => (String)((JObject)it)["sectionName"] == "Drivers")["id"]);
 
             var body2 = Tools.GetObject("QuoteCreatePhysicalAddress");
             var response2 = RestAPI.PATCH($"/quote/{response.id}", body2);

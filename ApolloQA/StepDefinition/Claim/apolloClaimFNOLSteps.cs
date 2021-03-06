@@ -56,6 +56,14 @@ namespace ApolloQA.StepDefinition
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
             var policy = Data.Entity.Policy.GetClaimPolicy();
+
+            if (policy.TimeFrom.CompareTo(DateTime.Today) > -2)
+            {
+                policy.TimeFrom =policy.TimeFrom.AddDays(-2);
+                policy.TimeTo = policy.TimeTo.AddDays(-2);
+            }
+
+
             Occurrence.policyNumberField.setText($"{policy.PolicyNumber}");
             GlobalSearch.SearchResultLabel.assertElementContainsText($"{policy.PolicyNumber}");
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);

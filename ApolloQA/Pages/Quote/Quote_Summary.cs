@@ -8,6 +8,8 @@ namespace ApolloQA.Pages.Quote
 {
     public class Quote_Summary
     {
-        public static Element TotalPremiumInput = new Element("//mat-form-field[descendant::*[text()='Total Premium']] //input");
+        public static Element PremiumMonthly = new Element("//mat-card[descendant::*[text()='Monthly']] //*[@class='premium-display']");
+        public static Element PremiumYearly = new Element("//mat-card[descendant::*[text()='Yearly']] //*[@class='premium-display']");
+
     }
 }

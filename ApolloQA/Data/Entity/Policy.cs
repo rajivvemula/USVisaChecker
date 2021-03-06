@@ -35,6 +35,10 @@ namespace ApolloQA.Data.Entity
                     return GetProperty(propertyName);
                 }
             }
+            set
+            {
+                Cosmos.setProperty("RatableObject", $"SELECT * FROM c WHERE c.Id={this.Id}", propertyName, value);
+            }
         }
 
         public dynamic GetProperties()
@@ -126,7 +130,31 @@ namespace ApolloQA.Data.Entity
                 return GetProperty("policyNumber");
             }
         }
-        
+
+        public DateTime TimeFrom
+        {
+            get
+            {
+                return Convert.ToDateTime((string)this["timeFrom"]);
+            }
+            set
+            {
+                this["TimeFrom"] = value.ToString("O");
+            }
+
+        }
+        public DateTime TimeTo
+        {
+            get
+            {
+                return Convert.ToDateTime((string)this["timeTo"]);
+            }
+            set
+            {
+                this["TimeTo"] = value.ToString("O");
+            }
+
+        }
         public Boolean AccidentPreventionCredit
         {
             get

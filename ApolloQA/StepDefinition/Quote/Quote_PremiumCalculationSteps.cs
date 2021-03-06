@@ -63,13 +63,20 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"the premium should be calculated")]
         public void ThenThePremiumShouldBeCalculated()
         {
-            string premium = Quote_Summary.TotalPremiumInput.getTextFieldText();
-            
-            if(!int.TryParse(string.Join("", premium.Where(Char.IsDigit)), out int result) || result<1)
+            string premiumMonthly = Quote_Summary.PremiumMonthly.GetElementText();
+            string premiumYearly = Quote_Summary.PremiumYearly.GetElementText();
+
+            if (!int.TryParse(string.Join("", premiumMonthly.Where(Char.IsDigit)), out int monthlyResult) || monthlyResult < 100)
             {
-                Functions.handleFailure($"Premium was not calculated - Result: {premium}"); 
+                Functions.handleFailure($"Monthly Premium was not calculated - Result: {premiumMonthly}"); 
             }
-            Log.Info($"Success - Resulting Premium: {premium}");
+            Log.Info($"Success - Resulting Monthly Premium: {premiumMonthly}");
+
+            if (!int.TryParse(string.Join("", premiumYearly.Where(Char.IsDigit)), out int yearlyResult) || yearlyResult < 100)
+            {
+                Functions.handleFailure($"Monthly Premium was not calculated - Result: {premiumYearly}");
+            }
+            Log.Info($"Success - Resulting Monthly Premium: {premiumYearly}");
 
         }
 
