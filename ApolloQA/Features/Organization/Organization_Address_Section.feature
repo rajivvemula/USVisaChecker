@@ -1,4 +1,6 @@
-﻿Feature: Organization Address Section
+﻿#Dissabled for Release 1
+@ignore
+Feature: Organization Address Section
 
 
 Scenario: Organization Address Add New
