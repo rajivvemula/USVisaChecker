@@ -81,6 +81,7 @@ namespace ApolloQA.StepDefinition
         public void WhenUserSavesTheAddress()
         {
             Shared.GetButton("Save").Click();
+            WhenUserWaitsForSpinnerToLoad();
             Shared.SuggestedAddressCTA.Click(optional: true);
             Shared.GetButton("Use selected").Click(3, true);
         }

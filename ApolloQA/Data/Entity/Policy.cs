@@ -12,9 +12,14 @@ namespace ApolloQA.Data.Entity
 {
     public class Policy
     {
-        public readonly int Id;
+        public readonly long Id;
 
         public Policy(int Id)
+        {
+            this.Id = Id;
+
+        }
+        public Policy(long Id)
         {
             this.Id = Id;
 

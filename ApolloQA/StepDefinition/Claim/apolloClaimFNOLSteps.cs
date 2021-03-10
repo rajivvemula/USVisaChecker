@@ -55,7 +55,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user enters occurrence information for Policy")]
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
-            var policy = Data.Entity.Policy.GetClaimPolicy();
+            var policy = Data.Entity.Tether.GetLatestTether().CurrentPolicy;
 
             if (policy.TimeFrom.CompareTo(DateTime.Today) > -2)
             {
@@ -65,7 +65,7 @@ namespace ApolloQA.StepDefinition
 
 
             Occurrence.policyNumberField.setText($"{policy.PolicyNumber}");
-            GlobalSearch.SearchResultLabel.assertElementContainsText($"{policy.PolicyNumber}");
+            GlobalSearch.SearchResultLabel().assertElementContainsText($"{policy.PolicyNumber}");
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
             PolicyNumber = selectionPolicyNumber;
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");

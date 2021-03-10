@@ -16,6 +16,8 @@ namespace ApolloQA.Pages
                     return GetDropdownField(fieldDisplayName);
                 case "button":
                     return GetButton(fieldDisplayName);
+                case "checkbox":
+                    return GetCheckbox(fieldDisplayName);
                 default:
                     Functions.handleFailure(new NotImplementedException($"Field type: {fieldType} is not implemented"));
                     return null;
@@ -67,6 +69,11 @@ namespace ApolloQA.Pages
                                $"//button//*[contains(text(), '{displayName}')] |" +
                                $"//mat-radio-button //*[contains(text(), '{displayName}')] |" +
                                $"//a[@role='button' and @class='nav-link' and contains(text(), '{displayName}')]");
+        }
+
+        public static Element GetCheckbox(string displayText)
+        {
+            return new Element($"//mat-checkbox[descendant::*[normalize-space(text())='{displayText}']]");
         }
 
         public static Element GetIconButton(string iconText)
