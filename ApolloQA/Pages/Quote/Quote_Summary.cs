@@ -10,6 +10,5 @@ namespace ApolloQA.Pages.Quote
     {
         public static Element PremiumMonthly = new Element("//mat-card[descendant::*[text()='Monthly']] //*[@class='premium-display']");
         public static Element PremiumYearly = new Element("//mat-card[descendant::*[text()='Yearly']] //*[@class='premium-display']");
-
     }
 }
