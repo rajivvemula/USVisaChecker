@@ -1,0 +1,11 @@
+﻿[
+  {
+    "coverageTypeId": "@CoverageTypeId",
+    "coverageTypeName": "Bodily Injury Property Damage (BIPD)",
+    "selectedDeductibleName": "Deductible",
+    "selectedLimitName": "Combined Single Limit",
+    "selectedLimits": [
+      100000
+    ]
+  }
+]

@@ -23,10 +23,13 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
             var QuoteNumberField = Pages.Shared.GetInputField("Quote Number");
 
             QuoteNumberField.setText(ApplicationNumber);
-            QuoteNumberField.SelectMatDropdownOptionContainingText($"Quote {ApplicationNumber}");
+
+            var options = QuoteNumberField.GetMatdropdownOptionsText();
+            QuoteNumberField.SelectMatDropdownOptionByIndex(options.Count()-1);
+
+            //BUG 33878
+            // QuoteNumberField.SelectMatDropdownOptionContainingText($"Quote {ApplicationNumber}");
             sharedSteps.WhenUserWaitsForSpinnerToLoad();
-
-
 
         }
 
@@ -194,14 +197,14 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
 
                 if(ratableValidCandidates.Count ==0)
                 {
-                   Functions.IssueNewQuoteThroughAPI();
+                   Functions.GetQuotedQuoteThroughAPI();
                    return GetValidApplicationNumber();
                 }
                 this.ratableObject = ratableValidCandidates[0];
             }
             else
             {
-                Functions.IssueNewQuoteThroughAPI();
+                Functions.GetQuotedQuoteThroughAPI();
                 return GetValidApplicationNumber();
             }
             //get the first valid candidate and find it's tether object.

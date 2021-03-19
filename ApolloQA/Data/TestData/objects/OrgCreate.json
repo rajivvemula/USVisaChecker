@@ -1,0 +1,29 @@
+﻿{
+  "name": "@OrganizationName",
+  "businessTypeEntityId": 1,
+  "organizationTypeId": 0,
+  "phones": [
+    {
+      "number": "2017900000",
+      "phoneTypeId": 0
+    }
+  ],
+  "sites": [
+    {
+      "address": "",
+      "internetTypeId": 2
+    }
+  ],
+  "keywordId": "@KeywordId",
+  "industryClassTaxonomyId": "@IndustryClassTaxonomyId",
+  "yearBusinessStarted": "1990",
+  "yearOwnershipStarted": "1993",
+  "taxTypeId": 0,
+  "taxId": "34-5678974",
+  "dba": "AutomationAPI",
+  "description": "",
+  "primaryEmail": {
+    "address": "automation@biberk.com",
+    "emailTypeId": 1
+  }
+}

@@ -302,7 +302,7 @@ namespace ApolloQA.Source.Driver
             int currentOption = 1;
             foreach(var option in options)
             {
-                List<string> innerText = option.FindElements(By.XPath($"(//mat-option)[{currentOption}]/descendant::*")).Select(it => it.Text.Trim()).Distinct().ToList();
+                List<string> innerText = FindElementsWaitUntilVisible(By.XPath($"(//mat-option)[{currentOption}]/descendant::*")).Select(it => it.Text.Trim()).Distinct().ToList();
                 currentOption++;
                 yield return string.Join("", innerText);
             }

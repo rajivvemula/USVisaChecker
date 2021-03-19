@@ -1,0 +1,10 @@
+﻿[
+  {
+    "riskId": "@VehicleRiskId",
+    "riskType": 1,
+    "outputMetadata": {
+      "VehicleLocation": { "locationId": "@PhysicalAddressId" }
+      //QuestionResponses to be added from hydrator
+    }
+  }
+]

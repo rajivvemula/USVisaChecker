@@ -1,0 +1,18 @@
+﻿[
+  {
+    "riskId": "@DriverRiskId",
+    "riskType": 2,
+    "outputMetadata": {
+      "DriverHistory": {
+        "accidents": [
+        ],
+        "convictions": [
+        ],
+        "violations": [
+        ]
+      },
+      //QuestionResponses to be added from hydrator
+
+    }
+  }
+]

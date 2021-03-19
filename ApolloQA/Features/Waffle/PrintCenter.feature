@@ -1,4 +1,5 @@
-﻿#none of these scenarios are working on QA2
+﻿#none of these scenarios are working
+@broken
 Feature: Print Center
 	As a user I want to be able to verify print center queue and its associated job
 # Pre Conditions since we don't have UI to create these data: 

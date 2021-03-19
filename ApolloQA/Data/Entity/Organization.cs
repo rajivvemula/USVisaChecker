@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 using Newtonsoft.Json.Linq;
@@ -24,6 +26,44 @@ namespace ApolloQA.Data.Entity
             return new Organization((int)SQL.executeQuery("SELECT TOP (1) org.Id FROM [party].[Organization] org " +
                 "LEFT JOIN party.OrganizationType OrgType ON org.OrganizationTypeId = OrgType.id " +
                 "WHERE orgType.Name = 'Insured' and org.StatusId = 0 ORDER BY Id Desc;")[0]["Id"]);
+        }
+
+        //This function cannot be executed asynchronous (parallel)
+        //Because we would get the same name for both threads
+        //
+        //Mutex: basically acquires ownership of the MUTEX_ORG_NEXTVALIDNAME mutex at the operating system level
+        // enforcing that this mutex must be released before any other thread acquires it
+        // learn more: https://docs.microsoft.com/en-us/dotnet/api/system.threading.mutex?view=net-5.0
+        public static String GetNextValidName(String name, out Mutex mutex)
+        {
+            if(Mutex.TryOpenExisting("MUTEX_ORG_NEXTVALIDNAME", out mutex))
+            {
+                mutex.WaitOne();
+            }
+            else
+            {
+                mutex = new Mutex(true, "MUTEX_ORG_NEXTVALIDNAME");
+            }
+            var result = SQL.executeQuery("SELECT [Name] FROM [party].[Organization] Where [Name] Like 'Automation API org%';");
+
+            if(result.Count() ==0)
+            {
+                return name;
+            }
+            
+            IEnumerable<string> names = result.Select(it => ((string)it["Name"]));
+            if (!names.Contains($"{name} (1)"))
+            {
+                return $"{name} (1)";
+            }
+
+            IEnumerable<int> numbers = names.Where(name=> name.Contains('('))
+                                            .Select(name =>
+                                                         int.Parse(
+                                                         string.Join("", name.Substring(name.IndexOf('('))
+                                                         .Where(Char.IsDigit)
+                                                   )));
+            return $"{name} ({numbers.Max() + 1})";
         }
 
         public Organization(String filterName, String filterValue )
@@ -183,6 +223,14 @@ namespace ApolloQA.Data.Entity
             }
         }
 
+        public Rating.ClassCodeKeyword ClassCodeKeyword
+        {
+            get
+            {
+                return Rating.ClassCodeKeyword.GetUsingKeywordId(this.KeywordId);
+            }
+        }
+
         public String KeywordName
         {
             get
@@ -190,11 +238,25 @@ namespace ApolloQA.Data.Entity
                 return this?["keyword"]?["name"];
             }
         }
+        public String KeywordId
+        {
+            get
+            {
+                return this?["keyword"]?["id"];
+            }
+        }
         public String ClassTaxonomyName
         {
             get
             {
                 return this?["keyword"]?["industryClassTaxonomyClassName"];
+            }
+        }
+        public String ClassTaxonomyId
+        {
+            get
+            {
+                return this?["keyword"]?["industryClassTaxonomyId"];
             }
         }
 

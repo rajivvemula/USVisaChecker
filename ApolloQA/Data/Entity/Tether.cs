@@ -28,7 +28,11 @@ namespace ApolloQA.Data.Entity
             {
                 try
                 {
-                    this.GetType().GetProperty(prop.Key).SetValue(this, prop.Value);
+                    if(prop.Key == "Id")
+                    {
+                        continue;
+                    }
+                    this.GetType().GetProperty(prop.Key).SetValue(this, prop.Value is DBNull? null: prop.Value);
                 }
                 catch(Exception ex)
                 {
@@ -55,9 +59,15 @@ namespace ApolloQA.Data.Entity
             }
             else
             {
-                Functions.IssueNewQuoteThroughAPI();
+                Functions.GetQuotedQuoteThroughAPI();
                 return GetLatestTether();
             }
+        }
+        public static Tether GetTether(int QuoteId)
+        {
+            var tetherCandidates = SQL.executeQuery($"SELECT TOP (1) * FROM [tether].[Tether] where CurrentApplicationId ={QuoteId} order by Id desc");
+
+            return new Tether(tetherCandidates[0]["Id"]);
         }
 
         public readonly long Id;
@@ -65,8 +75,7 @@ namespace ApolloQA.Data.Entity
         private int _LineId { get; set; }
         public int LineId {
             get { return _LineId; }
-            set {
-                    this.SetProperty("LineId", value);
+            private set {
                     _LineId = value;
                 } 
         }
@@ -87,9 +96,8 @@ namespace ApolloQA.Data.Entity
         public long CurrentApplicationId
         {
             get { return _CurrentApplicationId; }
-            set
+            private set
             {
-                this.SetProperty("CurrentApplicationId", value);
                 _CurrentApplicationId = value;
             }
         }
@@ -98,38 +106,37 @@ namespace ApolloQA.Data.Entity
         public long CurrentRatableObjectId
         {
             get { return _CurrentRatableObjectId; }
-            set
+            private set
             {
-                this.SetProperty("CurrentRatableObjectId", value);
                 _CurrentRatableObjectId = value;
             }
         }
         public Policy CurrentPolicy => new Policy(CurrentRatableObjectId);
         
 
-        public DateTime EffectiveDate { get; set; }
+        public DateTimeOffset EffectiveDate { get; set; }
 
-        public DateTime ExpirationDate { get; set; }
+        public DateTimeOffset ExpirationDate { get; set; }
 
         public string ApplicationNumber { get; set; }
 
         public string PolicyNumber { get; set; }
 
-        public DateTime? FirstIssuedDate { get; set; }
+        public DateTimeOffset? FirstIssuedDate { get; set; }
 
-        public DateTime? PolicyCancellationDate { get; set; }
+        public DateTimeOffset? PolicyCancellationDate { get; set; }
 
-        public DateTime? PolicyCancellationEffectiveDate { get; set; }
+        public DateTimeOffset? PolicyCancellationEffectiveDate { get; set; }
 
         public bool IsIneligible { get; set; }
 
-        public DateTime InsertDateTime { get; set; }
+        public DateTimeOffset InsertDateTime { get; set; }
 
         public string InsertedBy { get; set; }
 
         public long InsertedByPersonId { get; set; }
 
-        public DateTime? UpdateDateTime { get; set; }
+        public DateTimeOffset? UpdateDateTime { get; set; }
 
         public string UpdatedBy { get; set; }
 

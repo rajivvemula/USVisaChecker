@@ -1,0 +1,88 @@
+{
+  "SC": {
+    "VA00062.ClassCode_FleetSize_SeatingCapacity_VehicleAgeFactors": {
+      "columns": {
+        "Class Code_Fleet Size_Seating Capacity_Veh icle Age Factor": "Class Code_Fleet Size_Seating Capacity_Vehicle Age Factor"
+      }
+    },
+    "VA00083.ClassCode_FleetSize_SeatingCapacity_VehicleAgeFactors": {
+      "columns": {
+        "Class Code_Fleet Size_Seating Capacity_Veh icle Age Factor": "Class Code_Fleet Size_Seating Capacity_Vehicle Age Factor"
+      }
+    },
+    "VA00084.ClassCode_FleetSize_SeatingCapacity_VehicleAgeFactors": {
+      "columns": {
+        "Class Code_Fleet Size_Seating Capacity_Veh icle Age Factor": "Class Code_Fleet Size_Seating Capacity_Vehicle Age Factor"
+      }
+    }
+  },
+  "IL": {
+    "CT.1": {
+      "rows": [
+        {
+          "Class Code": "1634",
+          "Class Code Description": "Rescue Squad Vehicles",
+          "Row": "160"
+        },
+        {
+          "Class Code": "1635",
+          "Class Code Description": "Transportation Funeral Hearses",
+          "Row": "161"
+        },
+        {
+          "Class Code": "1636",
+          "Class Code Description": "Private Passenger Rentals - Owned By An Aviation Related Entity",
+          "Row": "162"
+        },
+        {
+          "Class Code": "1637",
+          "Class Code Description": "Private Passenger Rentals - Owned By A Garage Dealer or Auto Service Operation",
+          "Row": "163"
+        },
+        {
+          "Class Code": "1638",
+          "Class Code Description": "Funeral Escort Vehicles - Owned By A Transportation Business",
+          "Row": "164"
+        },
+        {
+          "Class Code": "1640",
+          "Class Code Description": "Driver Training Trucks & Tractors",
+          "Row": "165"
+        },
+        {
+          "Class Code": "1641",
+          "Class Code Description": "Driver Training Buses",
+          "Row": "166"
+        },
+        {
+          "Class Code": "1642",
+          "Class Code Description": "Luxury Private Passenger Rentals",
+          "Row": "167"
+        },
+        {
+          "Class Code": "1643",
+          "Class Code Description": "Private Passenger Auto Rentals - SUVs and Minivans",
+          "Row": "168"
+        },
+        {
+          "Class Code": "1699",
+          "Class Code Description": "All Other Special Types & Operations; Not Otherwise Classified",
+          "Row": "169"
+        },
+        {
+          "delete": true,
+          "Row": "170"
+        },
+        {
+          "delete": true,
+          "Row": "171"
+        },
+        {
+          "delete": true,
+          "Row": "172"
+        }
+      ]
+    }
+  }
+
+}

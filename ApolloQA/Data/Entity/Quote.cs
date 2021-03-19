@@ -32,7 +32,6 @@ namespace ApolloQA.Data.Entity
                 if (method != null)
                 {
                     return method.GetGetMethod().Invoke(this, null);
-
                 }
                 else
                 {
@@ -65,6 +64,11 @@ namespace ApolloQA.Data.Entity
             }
             return _Policy;
         }
+
+        public Policy GetCurrentRatableObject()
+        {
+           return new Policy(Tether.GetTether(this.Id).CurrentRatableObjectId);
+        }
         public JArray getCoverages()
         {
            return this.GetPolicy().getCoverages();
@@ -92,6 +96,27 @@ namespace ApolloQA.Data.Entity
             return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
         }
 
+        public dynamic GetSectionQuestions(string sectionName)
+        {
+            var sectionId = this.Storyboard.GetSection(sectionName).Id;
+            return RestAPI.GET($"/quote/{this.Id}/sections/{sectionId}/questions");
+        }
+
+        public Address PhysicalAddress
+        {
+            get
+            {
+                return new Address(((JToken)this["physicalAddressId"]).ToObject<long>());
+            }
+        }
+        public int GoverningStateId
+        {
+            get
+            {
+                return int.Parse(this["governingStateId"]);
+            }
+        }
+
         private String _ApplicationNumber { get; set; }
         public String ApplicationNumber
         {
@@ -113,7 +138,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                Log.Debug($"Get Storyboard for Quote ID: {this.Id}");
+                //Log.Debug($"Get Storyboard for Quote ID: {this.Id}");
                 int storyBoardId = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id}").Result[0]["StoryboardId"];
                 return new Storyboard.Storyboard(storyBoardId);
             }

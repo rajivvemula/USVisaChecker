@@ -1,4 +1,5 @@
-﻿using ApolloQA.Source.Helpers;
+﻿using ApolloQA.Data.Rating;
+using ApolloQA.Source.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -8,74 +9,176 @@ using System.Text;
 
 namespace ApolloQA.Data.TestData
 {
-    class Quote
+
+    //Quote API Manager
+    public class Quote
     {
-        public static Entity.Quote CreateQuote()
+        public Entity.Quote quoteEntity;
+
+        Organization organization;
+        Parser parser;
+
+        List<JObject> vehicles = new List<JObject>();
+        List<JObject> drivers = new List<JObject>();
+
+        List<CoverageType> coverages;
+        public Quote(int quoteId)
         {
-            var body = Tools.GetObject("QuoteCreate");
+            parser = new Parser();
+            quoteEntity = new Entity.Quote(quoteId);
+            organization = new Organization(quoteEntity.Organization, parser);
+        }
+        public Quote(Organization organization, List<CoverageType> coverageTypes) : this(organization, "IL", coverageTypes) { }
+
+        public Quote(Organization organization, string state, List<CoverageType> coverageTypes)
+        {
+            this.organization = organization;
+            this.parser = organization.parser;
+            this.coverages = coverageTypes;
+            CreateQuote(state);
+        }
+
+        private JObject CreateQuote(string state="IL")
+        {
+            var body = parser.GetObject("QuoteCreate");
             var response = RestAPI.POST("/quote/create", body);
 
-            Tools.interpreter.SetVariable("ApplicationId", response.id);
-            Tools.interpreter.SetVariable("QuoteId", response.id);
+            parser.interpreter.SetVariable("ApplicationId", response.id);
+            parser.interpreter.SetVariable("QuoteId", response.id);
 
-            Tools.interpreter.SetVariable("VehicleSectionId", ((JArray)response.sections).FirstOrDefault(it=> (String)((JObject)it)["sectionName"]== "Vehicles")["id"]);
-            Tools.interpreter.SetVariable("DriverSectionId", ((JArray)response.sections).FirstOrDefault(it => (String)((JObject)it)["sectionName"] == "Drivers")["id"]);
+            this.quoteEntity = new Entity.Quote((int)response.id);
 
-            var body2 = Tools.GetObject("QuoteCreatePhysicalAddress");
+            if(quoteEntity.Organization.Addresses is var orgAddresses && 
+                orgAddresses.Count>0 &&
+                orgAddresses.Find(it => it.StateCode == state.ToUpper()) is var address && 
+                address!= null)
+            {
+                parser.interpreter.SetVariable("PhysicalAddressId", address.Id);
+                parser.interpreter.SetVariable("GoverningStateId", address.StateId);
+
+            }
+            else
+            {
+                organization.OrganizationAddAddress(state);
+                parser.interpreter.SetVariable("PhysicalAddressId", organization.addresses[0].Id);
+                parser.interpreter.SetVariable("GoverningStateId", organization.addresses[0].StateId);
+
+            }
+            var body2 = parser.GetObject("QuoteCreatePhysicalAddress");
+  
             var response2 = RestAPI.PATCH($"/quote/{response.id}", body2);
+           
+            parser.interpreter.SetVariable("PhysicalAddressId", organization.addresses[0].Id);
 
-            return new Entity.Quote((int)response.id);
+            return response2;
         }
-        public static Entity.Vehicle CreateVehicle()
+        public Entity.Vehicle CreateVehicle()
         {
-            var body = Tools.GetObject("Quote_CreateVehicle");
+            parser.interpreter.SetVariable("VinNumber", Functions.GetRandomVIN());
+            parser.interpreter.SetVariable("ClassCode", organization.classCodeKeyword.ClassCode);
+            var body = parser.GetObject("Quote_CreateVehicle");
             var response = RestAPI.POST("/vehicle", body);
-            Tools.interpreter.SetVariable("VehicleRiskId", response.riskId);
-
+            parser.interpreter.SetVariable("VehicleRiskId", response.riskId);
+            vehicles.Add(response);
             return new Entity.Vehicle((int)response.id);
         }
-        public static dynamic AddVehicleToQuote(Entity.Quote quote)
+        public dynamic AddVehicleToQuote()
         {
-            var body = Tools.GetObject("Quote_AddVehicle");
-            
-            var response = RestAPI.POST($"quote/{quote.Id}/risk", body);
+            if(vehicles.Count<1)
+            {
+                CreateVehicle();
+            }
+
+            var body = parser.GetObject("Quote_AddVehicle");
+
+            ((JObject)((JArray)body)[0]["outputMetadata"]).Add("QuestionResponses", AnswersHydrator.Vehicles(quoteEntity, vehicles[0]));
+
+            var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk", body);
 
             return response;
         }
 
-        public static JObject CreateDriver()
+        public dynamic AddVehicleToQuote(JObject vehicle)
         {
-            var body = Tools.GetObject("Quote_CreateDriver");
+            vehicles.Add(vehicle);
+            return AddVehicleToQuote();
+        }
+        public dynamic AddVehicleCoverage()
+        {
+            return AddVehicleCoverage(vehicles[0]);
+        }
+        public dynamic AddVehicleCoverage(JObject vehicle)
+        {
+            var body = new JArray();
+            foreach (var coverage in coverages)
+            {
+                if (coverage.isVehicleLevel)
+                {
+                    parser.interpreter.SetVariable("CoverageTypeId", coverage.Id);
+                    body.Merge(parser.GetObject($"Quote_Coverages/{coverage.Name}"));
+                }
+            }
+
+            var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk/{vehicle["riskId"]}/limits", body);
+
+            return response;
+        }
+
+        public JObject CreateDriver()
+        {
+            var body = parser.GetObject("Quote_CreateDriver");
             var response = RestAPI.POST("/driver", body);
-            Tools.interpreter.SetVariable("DriverRiskId", response.riskId);
+            parser.interpreter.SetVariable("DriverRiskId", response.riskId);
+            drivers.Add(response);
+            return response;
+        }
+        public dynamic AddDriverToQuote()
+        {
+            if (drivers.Count < 1)
+            {
+                CreateDriver();
+            }
+
+            var body = parser.GetObject("Quote_AddDriver");
+
+            ((JObject)((JArray)body)[0]["outputMetadata"]).Add("QuestionResponses", AnswersHydrator.Drivers(quoteEntity, drivers[0]));
+
+            var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk", body);
 
             return response;
         }
-        public static dynamic AddDriverToQuote(Entity.Quote quote)
+        public dynamic AddDriverToQuote(JObject driver)
         {
-            var body = Tools.GetObject("Quote_AddDriver");
-            var response = RestAPI.POST($"quote/{quote.Id}/risk", body);
+            drivers.Add(driver);
+            return AddDriverToQuote();
+        }
+        public JObject AnswerOperationQuestions()
+        {
+            var body = AnswersHydrator.Operations(quoteEntity);
+            var response = RestAPI.POST($"quote/{quoteEntity.Id}/sections/{quoteEntity.Storyboard.GetSection("Operations").Id}/answers", body);
 
             return response;
         }
-        public static JObject AnswerOperationQuestions(Entity.Quote quote)
+        public JObject AddPolicyCoverages()
         {
-            var body = Tools.GetObject("Quote_Operations");
-            var response = RestAPI.POST($"quote/{quote.Id}/sections/{quote.Storyboard.Sections.Find(it=>it.Name=="Operations").Id}/answers", body);
+            var body = new JArray();
+            foreach (var coverage in coverages)
+            {
+                if(!coverage.isVehicleLevel)
+                {
+                    parser.interpreter.SetVariable("CoverageTypeId", coverage.Id);
+                    body.Merge(parser.GetObject($"Quote_Coverages/{coverage.Name}"));
+                }
+            }
+            
+            var response = RestAPI.POST($"quote/{quoteEntity.Id}/limits", body);
 
             return response;
         }
-        public static JObject AddPolicyCoverages(Entity.Quote quote)
-        {
-            var body = Tools.GetObject("Quote_Coverages");
-            var response = RestAPI.POST($"quote/{quote.Id}/limits", body);
 
-            return response;
-        }
-
-        public static JObject GetSummary(Entity.Quote quote)
+        public JObject GetSummary()
         {
-            var response = RestAPI.POST($"quote/{quote.Id}/summary", "");
+            var response = RestAPI.POST($"quote/{quoteEntity.Id}/summary", "");
             return response;
         }
     }

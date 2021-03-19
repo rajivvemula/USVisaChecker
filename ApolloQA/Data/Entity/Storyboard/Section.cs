@@ -6,9 +6,13 @@ namespace ApolloQA.Data.Entity.Storyboard
 {
     public class Section
     {
-        public int Id;
+        public long Id;
 
         public Section(int Id)
+        {
+            this.Id = Id;
+        }
+        public Section(long Id)
         {
             this.Id = Id;
         }

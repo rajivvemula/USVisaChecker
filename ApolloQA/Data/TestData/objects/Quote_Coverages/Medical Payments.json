@@ -1,0 +1,9 @@
+﻿[
+  {
+    "coverageTypeId": "@CoverageTypeId",
+    "coverageTypeName": "Medical Payments",
+    "selectedLimitName": "Combined Single Limit",
+    "selectedDeductibleName": null,
+    "selectedLimits": [ 1000 ]
+  }
+]

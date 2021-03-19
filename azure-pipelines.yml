@@ -65,7 +65,7 @@ stages:
       - task: VSTest@2
         displayName: 'Running a Smoke Test'
         continueOnError: true
-        timeoutInMinutes: 120
+        timeoutInMinutes: 1500
         env:
             ApolloSQL: $(ApolloSQL)
             CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)

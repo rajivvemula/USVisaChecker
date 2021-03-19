@@ -1,0 +1,10 @@
+﻿[
+  {
+    "coverageTypeId": "@CoverageTypeId",
+    "coverageTypeName": "Comprehensive",
+    "selectedDeductibleName": "Deductible",
+    "selectedLimitName": null,
+    "selectedLimits": [],
+    "selectedDeductibles": [ 1000 ]
+  }
+]

@@ -72,7 +72,7 @@ namespace ApolloQA.StepDefinition
             previouslyEnteredAddress = new Address(fieldValues["Street Address Line 1"],
                         fieldValues["Street Address Line 2"],
                         fieldValues["City"],
-                        fieldValues["State / Province / Region"],
+                        fieldValues["State / Region"],
                         fieldValues["Zip / Postal Code"]
                         );            
         }

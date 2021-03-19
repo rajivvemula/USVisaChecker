@@ -17,6 +17,15 @@ namespace ApolloQA.Data
         private static readonly dynamic Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine($"{Source.Driver.Setup.SourceDir}","Data/Rating/Factors.json")).ReadToEnd());
         private static readonly dynamic KnownFields =  JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine($"{Source.Driver.Setup.SourceDir}", $"Data/Rating/KnownFields.json")).ReadToEnd());
 
+        /// <returns>
+        /// Returns specified table from the Rating Manual
+        /// </returns>
+        public static List<Dictionary<String, String>> getTable(String tableName, string stateCode = "IL")
+        {
+            Log.Debug("Using " + Path.Combine(Source.Driver.Setup.SourceDir, @$"Data\RatingManual\{stateCode}\{tableName}.xlsx"));
+            return Functions.parseExcel(Path.Combine(Source.Driver.Setup.SourceDir, @$"Data\RatingManual\{stateCode}\{tableName}.xlsx")).ToList();
+        }
+
         /// <summary>
         ///  Interpreter used to evaluate strings of code <br/>
         ///  This Interpreter will be used dynamically changing it's variables to accomodate current context. <br/>
@@ -422,14 +431,7 @@ namespace ApolloQA.Data
 
         };
 
-        /// <returns>
-        /// Returns specified table from the Rating Manual
-        /// </returns>
-        public static List<Dictionary<String, String>> getTable(String tableName)
-        {
-            Log.Debug("Using "+Path.Combine(Source.Driver.Setup.SourceDir, @$"Data\RatingManual\{tableName}.xlsx"));
-            return Functions.parseCSV(Path.Combine(Source.Driver.Setup.SourceDir, @$"Data\RatingManual\{tableName}.xlsx")).ToList();
-        }
+       
 
         public int? Territory
         {

@@ -13,6 +13,10 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using CsvHelper;
+using System.Globalization;
+using CsvHelper.Configuration;
+using ApolloQA.Data.Rating;
 
 namespace ApolloQA.Source.Helpers
 {
@@ -131,7 +135,7 @@ namespace ApolloQA.Source.Helpers
             return dictionary;
         }
 
-        public static IEnumerable<Dictionary<String, String>> parseCSV(String filePath, int headerRow = 0)
+        public static IEnumerable<Dictionary<String, String>> parseExcel(String filePath, int headerRow = 0)
         {
             var tasks = new List<Task<Dictionary<String, String>>>();
             using (SpreadsheetDocument doc = SpreadsheetDocument.Open(filePath, false))
@@ -145,16 +149,68 @@ namespace ApolloQA.Source.Helpers
                 for (int rowIndex = 1; rowIndex < sheetData.Length; rowIndex++)
                 {
                     tasks.Add(parseRow(workbookPart, header, sheetData[rowIndex]));
-                   
+
                 }
 
-               
+
 
             }
             return tasks.Select(it => it.Result);
 
 
 
+        }
+        public static List<Dictionary<String, String>> parseCSV(String filePath, int headerRow = 0)
+        {
+            List<string> header = new List<String>();
+
+            if( !File.Exists(filePath))
+            {
+                handleFailure($"File {filePath} does not exist");
+            }
+            filePath = Path.IsPathFullyQualified(filePath) ? filePath : Path.GetFullPath(filePath);
+
+            Log.Debug(filePath);
+
+
+            List<Dictionary<String, String>> result = new List<Dictionary<String, String>>();
+
+            using (TextReader reader = new StreamReader(filePath))
+            {
+                var config = new CsvConfiguration(CultureInfo.CreateSpecificCulture("en-US"))
+                {
+                    MissingFieldFound = null,
+                };
+                using (var csvReader = new CsvReader(reader, config))
+                {
+
+                    // calculate number of columns
+                    csvReader.Read();
+                    int i = 0;
+
+                    var columnName = csvReader.GetField(i);
+
+                    while (!String.IsNullOrEmpty(columnName))
+                    {
+                      
+                        header.Add(columnName);
+                        i++;
+                        columnName = csvReader.GetField(i);
+                    }
+
+                    while (csvReader.Read())
+                    {
+                        
+                        Dictionary<String, String> row = new Dictionary<String, String>();
+                        for(int col =0; col < header.Count; col++)
+                        {
+                            row.Add(header.ElementAt(col), csvReader.GetField(col));
+                        }
+                        result.Add( row);
+                    }
+                }
+            }
+            return result;
         }
 
         private static async Task<Dictionary<String, String>> parseRow(WorkbookPart workbookPart, string [] header, Row row)
@@ -164,8 +220,16 @@ namespace ApolloQA.Source.Helpers
             var dict = new Dictionary<String, String>();
             for (int i = 0; i < header.Length; i++)
             {
-
-                dict.Add(header[i], extractCellText(workbookPart, (Cell)cells[i]));
+                Cell cell;
+                try
+                {
+                     cell= cells[i];
+                }
+                catch(IndexOutOfRangeException)
+                {
+                    cell = new Cell();
+                }
+                dict.Add(header[i], extractCellText(workbookPart, cell));
             }
             return dict;
         }
@@ -212,10 +276,21 @@ namespace ApolloQA.Source.Helpers
         public static string GetRandomVIN()
         {
             //grabs random vin via randomvin.com
+            string vin;
+            try
+            {
+                vin = (string)RestAPI.GET("https://randomvin.com/getvin.php?type=real");
+                if(string.IsNullOrWhiteSpace(vin))
+                {
+                    return GetRandomVIN();
+                }
+                return vin;
+            }
+            catch
+            {
+                return GetRandomVIN();
+            }
 
-            var vin = (string)RestAPI.GET("https://randomvin.com/getvin.php?type=real");
-
-            return vin;
         }
 
         public static string GetValidIllinoisDriversLicenseNumber()
@@ -276,25 +351,55 @@ namespace ApolloQA.Source.Helpers
            return new Random().Next(max);
             
         }
-
-        public static JObject IssueNewQuoteThroughAPI()
+        public static Data.Entity.Quote GetQuotedQuoteThroughAPI()
         {
-            var org = Data.TestData.Organization.CreateOrganization();
-            var addr = Data.TestData.Organization.OrganizationAddAddress(org);
-            var quote = Data.TestData.Quote.CreateQuote();
-            Data.TestData.Quote.CreateVehicle();
-            Data.TestData.Quote.AddVehicleToQuote(quote);
-            Data.TestData.Quote.CreateDriver();
-            Data.TestData.Quote.AddDriverToQuote(quote);
-            Data.TestData.Quote.AnswerOperationQuestions(quote);
-            Data.TestData.Quote.AddPolicyCoverages(quote);
-            var summary = Data.TestData.Quote.GetSummary(quote);
+            return GetQuotedQuoteThroughAPI(ClassCodeKeyword.GetUsingKeywordName("Accounting Services"));
+        }
+        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword)
+        {
+            return GetQuotedQuoteThroughAPI(classCodeKeyword, new List<CoverageType> { classCodeKeyword.coverage ?? new CoverageType("BIPD") });
+        }
+        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword, List<CoverageType> coverages)
+        {
+            var org = new Data.TestData.Organization(classCodeKeyword);
+            var quote = new Data.TestData.Quote(org, coverages);
+
+
+
+            /*Parallel.Invoke(
+                () => quote.CreateVehicle(),
+                () => quote.CreateDriver(),
+                () => quote.AnswerOperationQuestions(),
+                () => quote.AddPolicyCoverages()
+            );
+            Parallel.Invoke(
+                () => quote.AddVehicleToQuote(),
+                () => quote.AddDriverToQuote()
+            );
+            quote.AddVehicleCoverage();*/
+
+
+            quote.CreateVehicle();
+            quote.AddVehicleToQuote();
+            quote.AddVehicleCoverage();
+
+            quote.CreateDriver();
+            quote.AddDriverToQuote();
+
+            quote.AnswerOperationQuestions();
+
+            quote.AddPolicyCoverages();
+
+
+            var summary = quote.GetSummary();
+            Log.Debug("Quote Id: " + quote.quoteEntity.Id);
+            Log.Debug("Rating Group Id (rating worksheet): " + summary?["ratingGroupId"]??"null");
             if (summary["errors"].Count()>0 || summary?["ratingResponses"] == null )
             {
                 Log.Critical(summary);
-                throw Functions.handleFailure($"Premium generation was unsuccessful Quote: {quote.Id} Premium: " + summary?["ratingResponses"]);
+                throw Functions.handleFailure($"Premium generation was unsuccessful Quote: {quote.quoteEntity.Id} Premium: " + summary?["ratingResponses"]);
             }
-            return summary;
+            return quote.quoteEntity;
         }
 
         public static void MarkTestCasePassed(int testCaseId) 
@@ -302,7 +407,6 @@ namespace ApolloQA.Source.Helpers
             if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))
             {
                 Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_PASS);
-
             }
         }
 

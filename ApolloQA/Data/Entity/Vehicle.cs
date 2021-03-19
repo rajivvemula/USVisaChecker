@@ -102,5 +102,13 @@ namespace ApolloQA.Data.Entity
             }
         }
 
+        public int SeatingCapacity
+        {
+            get
+            {
+                return int.Parse(this.GetProperty("SeatingCapacity"));
+            }
+        }
+
     }
 }

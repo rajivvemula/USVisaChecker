@@ -10,7 +10,7 @@ Scenario: Rate Calculation New Quote
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
 	And user clicks 'New' Button
-	And user selects dropdown Line of Business option equaling Commercial Auto
+	#And user selects dropdown Line of Business option equaling Commercial Auto
 
 	#Business 
 	When user selects dropdown Named Insured option at index 0	
@@ -24,27 +24,27 @@ Scenario: Rate Calculation New Quote
 	When user clicks 'Vehicles' Sidetab
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory |Gross Vehicle Weight | Stated Amount |
-	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000         |
-	And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
+	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
+	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000             |
+	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
 	And user selects answer to Is this vehicle owned, financed, or leased? as Leased
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
 	And user clicks 'Save Vehicle' Button
 	And user waits for spinner to load
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory |Gross Vehicle Weight | Stated Amount |
-	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000         |
-	And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
+	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
+	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000             |
+	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
 	And user selects answer to Is this vehicle owned, financed, or leased? as Leased
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
 	And user clicks 'Save Vehicle' Button
 	And user waits for spinner to load
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory |Gross Vehicle Weight | Stated Amount |
-	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000         |
-	And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
+	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
+	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000             |
+	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
 	And user selects answer to Is this vehicle owned, financed, or leased? as Leased
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
 	And user clicks 'Save Vehicle' Button
@@ -55,31 +55,31 @@ Scenario: Rate Calculation New Quote
 	And user clicks 'Driver' Button
 	#And user select a Driver with the following relevant values
 	When user adds a new Driver with the following relevant values
-	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number | Expiration Date |
-	| Miguel     | Acosta    | 10/26/1996    | IL                   |  random           | 1/30/2025       |  
-	And user enters answer to What is your Inspection Count? as 0
+	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number |
+	| Miguel     | Acosta    | 10/26/1996    | IL                    | random                 |
+	#And user enters answer to What is your Inspection Count? as 0
 	And user selects answer to Exclude Driver? as No
-	And user selects answer to Has this driver had any of the following: Accident or Violation in the last 3 years, Convictions in the last 5 years? as No
+	And user selects answer to Has this driver had an accident or violation in the past 3 years, or a conviction in the past 5 years? as No
 	And user clicks 'Save Driver' Button
 	And user waits for spinner to load
 	And user clicks 'Driver' Button
 	#And user select a Driver with the following relevant values
 	When user adds a new Driver with the following relevant values
-	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number | Expiration Date |
-	| Miguel2     | Acosta    | 10/26/1996    | IL                   |  random           | 1/30/2025       |  
-	And user enters answer to What is your Inspection Count? as 0
+	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number |
+	| Miguel2    | Acosta    | 10/26/1996    | IL                    | random                 |
+	#And user enters answer to What is your Inspection Count? as 0
 	And user selects answer to Exclude Driver? as No
-	And user selects answer to Has this driver had any of the following: Accident or Violation in the last 3 years, Convictions in the last 5 years? as No
+	And user selects answer to Has this driver had an accident or violation in the past 3 years, or a conviction in the past 5 years? as No
 	And user clicks 'Save Driver' Button
 	And user waits for spinner to load
 	And user clicks 'Driver' Button
 	#And user select a Driver with the following relevant values
 	When user adds a new Driver with the following relevant values
-	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number | Expiration Date |
-	| Miguel3     | Acosta    | 10/26/1996    | IL                   |  random           | 1/30/2025       |  
-	And user enters answer to What is your Inspection Count? as 0
+	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number |
+	| Miguel3    | Acosta    | 10/26/1996    | IL                    | random                 |
+	#And user enters answer to What is your Inspection Count? as 0
 	And user selects answer to Exclude Driver? as No
-	And user selects answer to Has this driver had any of the following: Accident or Violation in the last 3 years, Convictions in the last 5 years? as No
+	And user selects answer to Has this driver had an accident or violation in the past 3 years, or a conviction in the past 5 years? as No
 	And user clicks 'Save Driver' Button
 	And user waits for spinner to load
 

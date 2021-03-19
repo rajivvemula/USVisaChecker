@@ -1,4 +1,5 @@
-﻿Feature: Shared
+﻿@ignore
+Feature: Shared
 	As a user I want to keep a collection of shared steps
 
 @ignore

@@ -1,0 +1,20 @@
+﻿{
+  "person": {
+    "primaryName": {
+      "given": "Automation",
+      "middle": "",
+      "surName": "Driver",
+      "suffix": ""
+    }
+  },
+  "dateOfBirth": "1995-10-26T04:00:00.000Z",
+  "stateProvinceId": 1,
+  "stateProvince": {
+    "code": "IL",
+    "name": "Illinois"
+  },
+  "licenseNo": "P12332423333",
+  "riskPartyId": "@OrganizationPartyId",
+  "statusId": 0
+
+}

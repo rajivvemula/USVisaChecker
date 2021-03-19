@@ -25,10 +25,12 @@ namespace ApolloQA.Source.Driver
     public class Setup
     {
         private static IObjectContainer _objectContainer;
-        public static IWebDriver driver;
+        public static IWebDriver driver = null;
         public static IWebDriver driverTemp;
         public static String SourceDir = Environment.GetEnvironmentVariable("SourceDir") ?? "../" ;
         public static Dictionary<int, int> TestCaseOutcome = new Dictionary<int, int> ();
+        public static bool isNoBrowserFeature = false;
+
 
         public Setup(IObjectContainer objectContainer)
         {
@@ -40,7 +42,7 @@ namespace ApolloQA.Source.Driver
         {
             invokeEnvironmentVariables(Environment.GetEnvironmentVariable("ENVIRONMENT_FILE") ?? Environment.GetEnvironmentVariable("ENVIRONMENT_FILE", EnvironmentVariableTarget.User) ?? "default.env.json");
 
-            invokeNewDriver();
+            
         }
         public static void invokeNewDriver()
         {
@@ -60,8 +62,9 @@ namespace ApolloQA.Source.Driver
                     throw new NotImplementedException($"Environment variable BROWSER value={browser} is not supported");
             }
             driver.Manage().Window.Maximize();
+
         }
-     
+
 
         [BeforeScenario("newWindow", Order =1)]
         public static void pre_NewWindow()
@@ -79,8 +82,10 @@ namespace ApolloQA.Source.Driver
         [BeforeScenario]
         public void BeforeScenario()
         {
-            _objectContainer.RegisterInstanceAs(driver);
-
+            if (driver != null)
+            {
+                _objectContainer.RegisterInstanceAs(driver);
+            }
         }
 
         [AfterScenario]
@@ -101,7 +106,7 @@ namespace ApolloQA.Source.Driver
                 }
 
             }
-            if (_scenarioContext.TestError != null)
+            if (_scenarioContext.TestError != null && !isNoBrowserFeature)
             {
                 ScreenShot.Error();
                 foreach(var testCaseId in testCaseids)
@@ -126,7 +131,20 @@ namespace ApolloQA.Source.Driver
                 }
             }
         }
+        [BeforeFeature]
+        public static void BeforeFeature(FeatureContext featureContext)
+        {
+            if(!featureContext.FeatureInfo.Tags.Contains("NoBrowser"))
+            {
+                isNoBrowserFeature = false;
+                if (driver == null)
+                {
+                    invokeNewDriver();
+                }
+            }
+            isNoBrowserFeature = true;
 
+        }
         [AfterFeature]
         public static void AfterFeature()
         {

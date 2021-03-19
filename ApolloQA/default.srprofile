@@ -4,7 +4,7 @@
 			reportTemplate="ApolloQAReportTemplate.cshtml"
 			/>
   <Execution 
-	stopAfterFailures="30" 
+	stopAfterFailures="0" 
 	testThreadCount="1"
 	testSchedulingMode="Sequential" 
 	retryFor="Failing"
@@ -13,7 +13,7 @@
 
 	<Environment testThreadIsolation="AppDomain"/>
 	
-	<Filter>!@ignore &amp; !@bugReported &amp; !@broken</Filter>
+	<Filter>!@ignore &amp; !@bugReported &amp; !@broken &amp; !@ratingTests</Filter>
    <!--<Filter>@SmokeTest &amp; @Quote</Filter>
    -->
 

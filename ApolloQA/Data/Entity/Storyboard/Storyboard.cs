@@ -73,5 +73,20 @@ namespace ApolloQA.Data.Entity.Storyboard
             }
         }
 
+        public Section GetSection(string sectionName)
+        {
+            var result = SQL.executeQuery(@"SELECT 
+                                            QS.Id,
+                                            QS.SectionName
+                                            FROM [question].[StoryboardSection]  SS
+                                            LEFT JOIN Question.QuestionSection QS on QS.Id = SS.SectionId
+                                            where SS.StoryboardId = @StoryboardId and QS.SectionName=@SectionName
+                                            ;", 
+                                            ("@StoryboardId", this.Id), 
+                                            ("@SectionName", sectionName)
+                                          );
+            return new Section(result[0]["Id"]);
+        }
+
     }
 }

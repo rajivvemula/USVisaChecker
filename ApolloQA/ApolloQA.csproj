@@ -6,15 +6,21 @@
 	<UserSecretsId>1f2a3f51-b841-4600-b502-0e1c7709bb0d</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Rating\Algorithms - Copy.feature.cs" />
+  </ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="Azure.Core" Version="1.7.0" />
 		<PackageReference Include="Azure.Extensions.Configuration.Secrets" Version="1.0.0-preview.1" />
 		<PackageReference Include="Azure.Identity" Version="1.3.0" />
 		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.1.0" />
+		<PackageReference Include="CsvHelper" Version="26.0.1" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="2.12.0" />
 		<PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
 		<PackageReference Include="DynamicExpresso.Core" Version="2.3.3" />
+		<PackageReference Include="JsonDiffer" Version="0.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
 		<PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
@@ -53,8 +59,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Features\Rating\Keywords.feature.cs">
+	    <DependentUpon>Keywords.feature</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Update="ApolloQAReportTemplate.cshtml">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="dev3.env.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="dev.env.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="StepDefinition\Rating\persistedData.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="uat.env.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="default.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -62,6 +86,13 @@
 	  <None Update="qa1.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <SpecFlowFeatureFiles Update="Features\Rating\Keywords.feature">
+	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
+	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+	  </SpecFlowFeatureFiles>
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

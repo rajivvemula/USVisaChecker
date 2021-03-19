@@ -16,7 +16,16 @@ namespace ApolloQA.Data.Entity
         public String PostalCode;
         public String CountryName;
         public String CountryCode;
-        public int? Id;
+        public long? Id;
+        public int StateId
+        {
+            get
+            {
+               return SQL.executeQuery(@$"SELECT Id  
+                                     FROM [location].[StateProvince]
+                                     Where Code='{StateCode}';")[0]["Id"];
+            }
+        }
 
         public Address(String Street1, String Street2, String City, String StateCode, String PostalCode, String CountryName)
         {
@@ -37,7 +46,11 @@ namespace ApolloQA.Data.Entity
             this.CountryName = CountryName;
         }
 
-        public Address(int location_Address_ID)
+        public Address (int location_Address_ID):this((long)location_Address_ID)
+        {
+            //call constructior for long type
+        }
+        public Address(long location_Address_ID)
         {
             var address = SQL.executeQuery(@"SELECT la.[Id]
 		                                                ,[AddressTypeId]

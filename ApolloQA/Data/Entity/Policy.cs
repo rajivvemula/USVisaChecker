@@ -48,7 +48,7 @@ namespace ApolloQA.Data.Entity
 
         public dynamic GetProperties()
         {
-            return RestAPI.GET($"/policy/{Id}");
+            return Cosmos.GetQuery("RatableObject", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").Result[0];
         }
         public dynamic GetProperty(String propertyName)
         {
@@ -132,7 +132,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return GetProperty("policyNumber");
+                return GetProperty("PolicyNumber");
             }
         }
 
@@ -140,7 +140,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return Convert.ToDateTime((string)this["timeFrom"]);
+                return Convert.ToDateTime((string)this.GetProperty("TimeFrom"));
             }
             set
             {
@@ -152,7 +152,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return Convert.ToDateTime((string)this["timeTo"]);
+                return Convert.ToDateTime((string)this.GetProperty("TimeTo"));
             }
             set
             {
@@ -164,7 +164,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return (Boolean)this["ratingFactors"]["accidentPreventionCredit"];
+                return (Boolean)this["RatingFactors"]["AccidentPreventionCredit"];
             }
 
         }
@@ -172,35 +172,38 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return (String)this["metadata"]["CoveredAutos"];
+                //broken
+                return (String)this["RatingFactors"]["CoveredAutos"];
             }
         }
         public String MotorCarrierFiling
         {
             get
             {
-                return (String)this["metadata"]["MotorCarrierFiling"];
+                return (String)this["Metadata"]["MotorCarrierFiling"];
             }
         }
         public String BillingType
         {
             get
             {
-                return (String)this["ratingFactors"]["billingType"];
+                //broken
+                return (String)this["RatingFactors"]["BillingType"];
             }
         }
         public String PaymentPlan
         {
             get
             {
-                return (String)this["ratingFactors"]["paymentPlan"];
+                //broken
+                return (String)this["RatingFactors"]["paymentPlan"];
             }
         }
         public String isEft
         {
             get
             {
-                return (String)this["ratingFactors"]["isEft"];
+                return (String)this["RatingFactors"]["IsEft"];
             }
 
         }
@@ -208,7 +211,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                if (int.TryParse((String)this["metadata"]["RadiusOfOperation"], out int result))
+                if (int.TryParse((String)this["Metadata"]["RadiusOfOperation"], out int result))
                 {
                     return result;
                 }

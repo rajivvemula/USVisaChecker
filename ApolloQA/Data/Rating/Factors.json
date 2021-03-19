@@ -106,6 +106,101 @@
     "Fields": [ "Class Code", "Vehicle Type", "GVW/GCW" ],
     "nameUI": [ "Class Code Size Type Factor" ]
 
-  }
-
+  },
+  "DeductibleFactors": {
+    "Fields": [ "Deductible" ],
+    "nameUI": [ "Deductible Factor" ]
+  },
+  "InspectionCountFactors": {
+    "Fields": [ "Inspection Count" ],
+    "nameUI": [ "Inspection Count Factor" ]
+  },
+  "IsCombinedDeductibleFactors": {
+    "Fields": [ "Combined Deductible" ],
+    "nameUI": [ "Combined Deductible Factor" ]
+  },
+  "IsPreferredTruckingFactors": {
+    "Fields": [ "Preferred Trucking" ],
+    "nameUI": [ "Preferred Trucking Factor" ]
+  },
+  "IsTeamDrivingFactors": {
+    "Fields": [ "Team Driving" ],
+    "nameUI": [ "Team Driving Factor" ]
+  },
+  "OutOfServiceViolationRatioFactors": {
+    "Fields": [ "Out Of Service Violation Ratio" ],
+    "nameUI": [ "Out Of Service Violation Ratio Factor" ]
+  },
+  "StatedValueFactors": {
+    "Fields": [ "Stated Value" ],
+    "nameUI": [ "Stated Value Factor" ]
+  },
+  "TotalBASICViolationWeightFactors": {
+    "Fields": [ "Total BASIC Violation Weight" ],
+    "nameUI": [ "Total BASIC Violation Weight Factor" ]
+  },
+  "ClassCode_StatedValueFactors": {
+    "Fields": [ "Class Code", "Stated Value" ],
+    "nameUI": [ "Class Code_Stated Value Factor" ]
+  },
+  "Deductible_InsuranceScoreTierFactors": {
+    "Fields": [ "Deductible", "Insurance Score Tier" ],
+    "nameUI": [ "Deductible_Insurance Score Tier Factor" ]
+  },
+  "Deductible_StatedValueFactors": {
+    "Fields": [ "Deductible", "Stated Value" ],
+    "nameUI": [ "Deductible_Stated Value Factor" ]
+  },
+  "FleetSize_InsuranceScoreTierFactors": {
+    "Fields": [ "Fleet Size", "Insurance Score Tier" ],
+    "nameUI": [ "Fleet Size_Insurance Score Tier Factor" ]
+  },
+  "InspectionCount_TotalBASICViolationWeightFactors": {
+    "Fields": [ "Inspection Count", "Total BASIC Violation Weight" ],
+    "nameUI": [ "Inspection Count_Total BASIC Violation Weight Factor" ]
+  },
+  "SizeType_StatedValueFactors": {
+    "Fields": [ "Vehicle Type", "GVW/GCW", "Stated Value" ],
+    "nameUI": [ "Size Type_Stated Value Factor" ]
+  },
+  "IsVehicleLevelSafetyFeaturesFactors": {
+    "Fields": [ "Safety Features" ],
+    "nameUI": [ "Safety Features Factor" ]
+  },
+  "VehicleType_MinimumRatingValueFactors": {
+    "Fields": [ "Vehicle Type" ],
+    "nameUI": [ "Minimum Rating Value Factor" ]
+  },
+  "ClassCode_InsuranceScoreTierFactors": {
+    "Fields": [ "Class Code", "Insurance Score Tier" ],
+    "nameUI": [ "Class Code_Insurance Score Tier Factor" ]
+  },
+  "ClassCode_VehicleAgeFactors": {
+    "Fields": [ "Class Code", "Vehicle Age" ],
+    "nameUI": [ "Class Code_Vehicle Age Factor" ]
+  },
+  "AntiTheftCategoryFactors": {
+    "Fields": [ "Anti-Theft Category" ],
+    "nameUI": [ "Anti-Theft Category Factor" ]
+  },
+  "AutoCoverageTypeFactors": {
+    "Fields": [ "Auto Coverage Type" ],
+    "nameUI": [ "Auto Coverage Type Factor" ]
+  },
+  "FleetSize_InspectionCountFactors": {
+    "Fields": [ "Fleet Size", "Inspection Count" ],
+    "nameUI": [ "Fleet Size_Inspection Count Factor" ]
+  },
+  "LimitFactors": {
+    "Fields": [ "Limit" ],
+    "nameUI": [ "Limit Factor" ]
+  },
+  "SeatingCapacityFactors": {
+    "Fields": [ "Seating Capacity" ],
+    "nameUI": [ "Seating Capacity Factor" ]
+  },
+  "FleetSize_SizeType_VehicleAgeFactors": {
+    "Fields": [ "Fleet Size", "Vehicle Type", "GVW/GCW", "Vehicle Age" ],
+    "nameUI": ["FleetSize_SizeType_VehicleAge Factor"]
+  }       
 }

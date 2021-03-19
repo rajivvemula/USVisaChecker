@@ -16,10 +16,10 @@ namespace ApolloQA.Features.Waffle
 
         public IWebDriver driver;
 
-        PrintCenterSteps(IWebDriver _driver)
+        PrintCenterSteps()
         {
-            this.driver = _driver;
-            
+
+            driver = Setup.driver;
         }
 
         public string header;
@@ -28,12 +28,16 @@ namespace ApolloQA.Features.Waffle
         public string QA2Bodydata = "{\"printerQueueId\":10000," + "\"documentId\":10006," + "\"pageCount\":2," + "\"isHeld\":false}";
         public string QA1baseURL = "https://bibaoqa-printermanagementfunction.azurewebsites.net/api/printer/queue/job";
         public string QA1Bodydata = "{\"printerQueueId\":20000," + "\"documentId\":10789," + "\"pageCount\":2," + "\"isHeld\":false}";
+        public string UATbaseURL = "https://bibaouat-printermanagementfunction.azurewebsites.net/api/printer/queue/job";
+        public string UATBodydata = "{\"printerQueueId\":20000," + "\"documentId\":10789," + "\"pageCount\":2," + "\"isHeld\":false}";
+
 
         JObject JsonData = new JObject();
 
         [When(@"User adds data to printcenter queue")]
         public void WhenUserAddsDataToPrintcenterQueue()
         {
+
 
             String URL = driver.Url;
             if (URL.Contains("biberk-apollo-qa2."))
@@ -42,14 +46,18 @@ namespace ApolloQA.Features.Waffle
                 dynamic response = RestAPI.POST(QA2baseURL, JsonData);
                 Console.WriteLine("response:" + response);
             }
-
-            if (URL.Contains("biberk-apollo-qa."))
+            else if (URL.Contains("biberk-apollo-qa."))
             {
                 JsonData = JObject.Parse(QA1Bodydata);
                 dynamic response = RestAPI.POST(QA1baseURL, JsonData);
                 Console.WriteLine("response:" + response);
             }
-
+            else if (URL.Contains("biberk-apollo-uat."))
+            {
+                JsonData = JObject.Parse(UATBodydata);
+                dynamic response = RestAPI.POST(UATbaseURL, JsonData);
+                Console.WriteLine("response:" + response);
+            }
 
         }
 

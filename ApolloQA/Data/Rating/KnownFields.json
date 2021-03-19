@@ -54,8 +54,46 @@
   },
   "Business Experience": {
     "source": "DateTime.Now.Year - root.Organization.YearBusinessStarted"
+  },
+  "Limit": {
+    "source": "TBD"
+  },
+  "Seating Capacity": {
+    "source": "TBD"
+  },
+  "Inspection Count": {
+    "source": "TBD"
+  },
+  "Deductible": {
+    "source": "TBD"
+  },
+  "Preferred Trucking": {
+    "source": "TBD"
+  },
+  "Team Driving": {
+    "source": "TBD"
+  },
+  "Out Of Service Violation Ratio": {
+    "source": "TBD"
+  },
+  "Stated Value": {
+    "source": "TBD"
+  },
+  "Total BASIC Violation Weight": {
+    "source": "TBD"
+  },
+  "Safety Features": {
+    "source": "TBD"
+  },
+  "Minimum Rating Value": {
+    "source": "TBD"
+  },
+  "Anti-Theft Category": {
+    "source": "TBD"
+  },
+  "Auto Coverage Type": {
+    "source": "TBD"
   }
-
 }
   
 

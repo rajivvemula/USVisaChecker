@@ -98,7 +98,7 @@ namespace ApolloQA.StepDefinition.Quote
             {"Cost New", "Input" },
             {"Estimated Current Value", "Input" },
             {"Additional Modifications", "Input" },
-            {"Stated Amount", "Input" }
+            {"Underwriter Value", "Input" }
         };
 
 

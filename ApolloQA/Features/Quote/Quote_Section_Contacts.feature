@@ -14,13 +14,13 @@ Scenario: Quote Contact Add
 	| Automation | Contact   | Test        | Jr.    | Mr    | 2017900720    | test@biberk.com |                 | Primary Officer | some notes |
 	And user selects dropdown Address option equaling Add Address
 	And user enters the following address
-	| Field Display Name        | Field Type | Field Value     |
-	| Street Address Line 1     | Input      | 618 E Laurel st |
-	| Street Address Line 2     | Input      |                 |
-	| City                      | Input      | Springfield     |
-	| State / Province / Region | Dropdown   | IL              |
-	| Zip / Postal Code         | Input      | 62703           |
-	| Country                   | Dropdown   | United States   |
+	| Field Display Name    | Field Type | Field Value     |
+	| Street Address Line 1 | Input      | 618 E Laurel st |
+	| Street Address Line 2 | Input      |                 |
+	| City                  | Input      | Springfield     |
+	| State / Region        | Dropdown   | IL              |
+	| Zip / Postal Code     | Input      | 62703           |
+	| Country               | Dropdown   | United States   |
 	And user saves the address
 	And user waits for spinner to load
 	Then Toast with a message: Contact was successfully saved. is visible
