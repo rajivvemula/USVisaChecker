@@ -74,6 +74,11 @@ stages:
             HIGHLIGHT_ON: "false"
             CURRENT_SEVERITY_LEVEL: "info"
             AZUREDEVOPS_PAT: $(System.AccessToken)
+            force-field-proxy-ida-tenant: $(force-field-proxy-ida-tenant)
+            force-field-proxy-ida-client-id: $(force-field-proxy-ida-client-id)
+            force-field-proxy-ida-client-secret: $(force-field-proxy-ida-client-secret)
+            force-field-proxy-ida-username: $(force-field-proxy-ida-username)
+            force-field-proxy-ida-password: $(force-field-proxy-ida-password)
         inputs:
           testSelector: 'testAssemblies'
           testAssemblyVer2: |
@@ -163,6 +168,11 @@ stages:
             HIGHLIGHT_ON: "false"
             CURRENT_SEVERITY_LEVEL: "info"
             AZUREDEVOPS_PAT: $(System.AccessToken)
+            force-field-proxy-ida-tenant: $(force-field-proxy-ida-tenant)
+            force-field-proxy-ida-client-id: $(force-field-proxy-ida-client-id)
+            force-field-proxy-ida-client-secret: $(force-field-proxy-ida-client-secret)
+            force-field-proxy-ida-username: $(force-field-proxy-ida-username)
+            force-field-proxy-ida-password: $(force-field-proxy-ida-password)
             ENVIRONMENT_FILE: "uat.env.json"
         inputs:
           testSelector: 'testAssemblies'
