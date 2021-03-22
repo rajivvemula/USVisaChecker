@@ -106,10 +106,14 @@ namespace ApolloQA.Source.Driver
                 }
 
             }
-            if (_scenarioContext.TestError != null && !isNoBrowserFeature)
+            if (_scenarioContext.TestError != null)
             {
-                ScreenShot.Error();
-                foreach(var testCaseId in testCaseids)
+                if (isNoBrowserFeature == false)
+                {
+                    ScreenShot.Error();
+                }
+
+                foreach (var testCaseId in testCaseids)
                 {
                     if(! TestCaseOutcome.ContainsKey(testCaseId))
                     {
@@ -128,6 +132,10 @@ namespace ApolloQA.Source.Driver
                     {
                         TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_PASS);
                     }
+                    else
+                    {
+                        TestCaseOutcome[testCaseId] = Devops.OUTCOME_PASS;
+                    }
                 }
             }
         }
@@ -142,7 +150,10 @@ namespace ApolloQA.Source.Driver
                     invokeNewDriver();
                 }
             }
-            isNoBrowserFeature = true;
+            else
+            {
+                isNoBrowserFeature = true;
+            }
 
         }
         [AfterFeature]

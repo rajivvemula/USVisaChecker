@@ -5,7 +5,7 @@
 	
 #QA 2 rating algorithm not working
 #BUG 28223
-@SmokeTest
+@SmokeTest @tc:29105
 Scenario: Rate Calculation New Quote
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
@@ -102,7 +102,7 @@ Scenario: Rate Calculation New Quote
 	And user waits '3' seconds
 	When user clicks 'Summary' Sidetab
 	And user waits '10' seconds
-	And user waits for spinner to dissappear for 120 seconds
+	And user waits for spinner to dissappear for 240 seconds
 	Then the premium should be calculated
 
 

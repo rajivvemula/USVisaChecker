@@ -15,8 +15,19 @@ namespace ApolloQA.StepDefinition
         [When(@"user clicks '(.*)' Button")]
         public void WhenUserClicksButton(string buttonName)
         {
-            
-            Shared.GetButton(buttonName).Click();
+            var button = Shared.GetButton(buttonName);
+            if(!button.TryClick())
+            {
+                while (Shared.toastrMessage.assertElementIsPresent(3, true) == true)
+                {
+                    Shared.toastrMessage.assertElementNotPresent();
+                }
+
+
+                button.Click();
+            }
+           
+
         }
 
         [When(@"user clicks (.*) Dropdown")]

@@ -1,7 +1,8 @@
 ﻿#TODO
 Feature: apolloClaimFNOL
 
-Scenario: TC 25557 Creates FNOL successfully
+@tc:29860
+Scenario: Creates FNOL successfully
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
 	When user clicks 'Claim' right menu Button

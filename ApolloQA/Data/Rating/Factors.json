@@ -137,7 +137,7 @@
   },
   "TotalBASICViolationWeightFactors": {
     "Fields": [ "Total BASIC Violation Weight" ],
-    "nameUI": [ "Total BASIC Violation Weight Factor" ]
+    "nameUI": [ "Total BASIC Violation Weight Factor", "Total BASIC Violation Weight Factor" ]
   },
   "ClassCode_StatedValueFactors": {
     "Fields": [ "Class Code", "Stated Value" ],

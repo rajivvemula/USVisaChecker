@@ -139,11 +139,13 @@ namespace ApolloQA.Pages
         }
         public static Element GetCoverageLimitButton(string CoverageDisplayText, string CoverageLimitDisplayText)
         {
-            return new Element($"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']] //bh-coverage-limit-definition[descendant::*[normalize-space(text())='{CoverageLimitDisplayText}']]//mat-radio-button");
+            return new Element($"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']] //bh-coverage-limit-definition[descendant::*[normalize-space(text())='{CoverageLimitDisplayText}']]//mat-radio-button | " +
+                               $"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']] //bh-coverage-deductible-definition[descendant::*[normalize-space(text())='{CoverageLimitDisplayText}']]//mat-radio-button");
         }
         public static Element GetCoverageLimitDropdown(string CoverageDisplayText, string CoverageLimitDisplayText)
         {
-            return new Element($"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']] //bh-coverage-limit-definition[descendant::*[normalize-space(text())='{CoverageLimitDisplayText}']]//mat-select");
+            return new Element($"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']] //bh-coverage-limit-definition[descendant::*[normalize-space(text())='{CoverageLimitDisplayText}']]//mat-select | " +
+                               $"//bh-coverage-map[descendant::*[text()='{CoverageDisplayText}']] //bh-coverage-deductible-definition[descendant::*[normalize-space(text())='{CoverageLimitDisplayText}']]//mat-select");
         }
 
 

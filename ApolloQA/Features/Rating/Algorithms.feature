@@ -1,9 +1,10 @@
 ﻿@NoBrowser
 Feature: Algorithms
 
-@ratingTests
+@ratingTests 
 Scenario: Test Rating Algorithm
 	Given quote for '<State>' and '<Algorithm>' is set to Quoted
+
 
 	Examples: 
 	| State | Algorithm |

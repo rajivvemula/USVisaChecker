@@ -3,16 +3,38 @@
 	add, edit, view Vehicles should work properly
 	
 
-@ignore
-#TODO
-Scenario: Add a Vehicle
-	When user selects a Vehicle with the following relevant values
-	| Vehicle Age |
-	| 7           | 
 
+@tc:34147
+Scenario: Add a Vehicle
+	Given user is successfully logged into biberk
+	When user navigates to Quote Page
+	And user clicks 'New' Button
+
+	#Business 
+	When user selects dropdown Named Insured option at index 0	
+	And user enters Accounting Services into Keyword field
+	And user selects dropdown Keyword option equaling Accounting Services	
+	And user selects dropdown Physical Address option containing , IL,
+	And user clicks 'Next' Button
+	Then A new Quote should successfully be created	
+
+	#Select a Vehicle
+	When user clicks 'Vehicles' Sidetab
+	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make  | Model  | Body Category        | Seating Capacity | Gross Vehicle Weight | Vehicle Class Code | Stated Amount |
-	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | 5 or less        | 0 - 5000             | index:0            | 10000         |
+	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
+	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000             |
+	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
+	And user selects answer to Is this vehicle owned, financed, or leased? as Leased
+	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
+	And user selects Collision coverage with Deductible deductible of $5,000
+	And user selects Comprehensive coverage with Deductible deductible of $5,000
+	And user clicks 'Save Vehicle' Button
+	And user waits for spinner to load
+	Then Toast appears containing text: Vehicle saved to quote
+	And Toast appears containing text: Vehicle limits saved
+
+
 
 
 Scenario: Quote vehicle section QE vehicle owned
@@ -54,3 +76,11 @@ Scenario: Quote vehicle section QE vehicle leased
 	When user selects Leased Button
 	And user enters Lessor info
 	Then user adds Address
+
+
+	@ignore
+#TODO
+Scenario: TBD
+	When user selects a Vehicle with the following relevant values
+	| Vehicle Age |
+	| 7           | 

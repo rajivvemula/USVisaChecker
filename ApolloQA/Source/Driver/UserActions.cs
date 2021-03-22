@@ -86,24 +86,30 @@ namespace ApolloQA.Source.Driver
         {
             try
             {
-                FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
-            }
-            catch(StaleElementReferenceException)
-            {
-                Thread.Sleep(1000);
-                FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+                try
+                {
+                    FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+                }
+                catch (StaleElementReferenceException)
+                {
+                    Thread.Sleep(1000);
+                    FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
 
-            }
-            catch(ElementClickInterceptedException)
-            {
-                waitForPageLoad();
-                FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+                }
+                catch (ElementClickInterceptedException)
+                {
+                    waitForPageLoad();
+
+                    FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+                }
+
             }
             catch (Exception ex)
             {
-                Functions.handleFailure($"Locator: {ElementLocator}",ex, optional);
+                Functions.handleFailure($"Locator: {ElementLocator}", ex, optional);
                 return false;
             }
+
             return true;
         }
 

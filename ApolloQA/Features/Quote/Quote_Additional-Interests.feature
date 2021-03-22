@@ -1,6 +1,8 @@
 ﻿Feature: Quote_Additional-Interests
 	Feature to test Additional Interests
 
+
+@tc:34151
 Scenario Outline: Add Policy Additional Interest to Qute - Individual
 	Given user is successfully logged into biberk
 	When user clicks 'Quote' Button
@@ -22,7 +24,7 @@ Scenario Outline: Add Policy Additional Interest to Qute - Individual
 	| Additional Insured Endorsement |
 	| Certificate Holder             |
 
-
+@tc:34151
 	Scenario Outline: Add Policy Additional Interest to Qute - Organization
 	Given user is successfully logged into biberk
 	When user clicks 'Quote' Button
