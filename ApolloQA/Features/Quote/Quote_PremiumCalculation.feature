@@ -5,7 +5,7 @@
 	
 #QA 2 rating algorithm not working
 #BUG 28223
-@SmokeTest @tc:29105
+@SmokeTest @tc:29105 @tc:34153
 Scenario: Rate Calculation New Quote
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page

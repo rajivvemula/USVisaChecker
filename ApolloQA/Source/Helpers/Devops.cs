@@ -32,6 +32,7 @@ namespace ApolloQA.Source.Helpers
         private static string ORGANIZATION => Environment.GetEnvironmentVariable("AZUREDEVOPS_ORGANIZATION");
         private static string PROJECT => Environment.GetEnvironmentVariable("AZUREDEVOPS_PROJECT");
 
+        private static string ENV => Environment.GetEnvironmentVariable("ENVIRONMENT_NAME");
 
         private static AuthenticationHeaderValue authenticationHeader = loadPAT();
 
@@ -82,26 +83,52 @@ namespace ApolloQA.Source.Helpers
 
         }
        
-        private static Dictionary<int, List<int>> getTestPointIds(int planId, int suiteId, IEnumerable<int> testCaseId)
+        private static Dictionary<int, List<int>> getTestPointIds(int planId, int suiteId, IEnumerable<int> testCaseIds)
         {
-            Log.Debug("getting test point @testcases", ("@testcases", testCaseId));
+            Log.Debug("getting test point @testcases", ("@testcases", testCaseIds));
 
             var url = $"https://dev.azure.com/{ORGANIZATION}/{PROJECT}/_apis/testplan/Plans/{planId}/suites/{suiteId}/TestPoint?api-version=6.0-preview.2";
 
             var testPoints = RestAPI.GET(url, authenticationHeader);
             var result = new Dictionary<int, List<int>>();
 
+            var unknownMatches = new Dictionary<int, List<int>>();
+
             foreach (dynamic testPoint in (JArray)testPoints.value)
             {
-                if (testPoint?.testCaseReference?.id != null && testCaseId.Contains((int)testPoint.testCaseReference.id))
+                if (testPoint?.testCaseReference?.id != null && testCaseIds.Contains((int)testPoint.testCaseReference.id))
                 {
-                    if(! result.ContainsKey((int)testPoint.testCaseReference.id))
+                    if (testPoint.configuration.name == $"Automation {ENV}")
                     {
-                        result.Add((int)testPoint.testCaseReference.id, new List<int>());
+                        if (!result.ContainsKey((int)testPoint.testCaseReference.id))
+                        {
+                            result.Add((int)testPoint.testCaseReference.id, new List<int>());
+                        }
+                        result[(int)testPoint.testCaseReference.id].Add((int)testPoint.id);
                     }
-                    result[(int)testPoint.testCaseReference.id].Add((int)testPoint.id);
+                    else if(testPoint.configuration.name == $"Automation Unknown")
+                    {
+                        if (!unknownMatches.ContainsKey((int)testPoint.testCaseReference.id))
+                        {
+                            unknownMatches.Add((int)testPoint.testCaseReference.id, new List<int>());
+                        }
+                        unknownMatches[(int)testPoint.testCaseReference.id].Add((int)testPoint.id);
+                    }
+                    
                 }
             }
+
+           if(result.Count() != testCaseIds.Count())
+           {
+                foreach(var unknownMatch in unknownMatches)
+                {
+                    if (!result.ContainsKey((int)unknownMatch.Key))
+                    {
+                        result.Add(unknownMatch.Key, unknownMatch.Value);
+                    }
+                }
+           }
+
             return result;
         }
 

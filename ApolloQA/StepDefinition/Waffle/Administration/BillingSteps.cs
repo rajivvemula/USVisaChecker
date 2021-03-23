@@ -1,4 +1,5 @@
-﻿using ApolloQA.Source.Driver;
+﻿using ApolloQA.Pages;
+using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
@@ -167,10 +168,16 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
             }
         }
 
-        [When(@"user waits for Policy Issuance")]
+        [Then(@"user waits for Policy Issuance")]
         public void WhenUserWaitsForPolicyIssuance()
         {
-            sharedSteps.ThenToastWithAMessageIsVisible("Policy Issuance is complete for ratable object");
+            if (!Shared.GetToastContaining("Policy Issuance is complete for ratable object").assertElementIsVisible(20, true)) ;
+            {
+                Functions.refreshPage();
+
+                var statusField = Shared.GetQuoteHeaderField("Status");
+                Assert.AreEqual(statusField.GetElementText(), "Issued");
+            }
         }
 
 

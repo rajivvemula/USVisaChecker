@@ -5,7 +5,7 @@
 			/>
   <Execution 
 	stopAfterFailures="0" 
-	testThreadCount="1"
+	testThreadCount="3"
 	testSchedulingMode="Sequential" 
 	retryFor="Failing"
 	retryCount="2"

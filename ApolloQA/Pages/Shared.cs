@@ -31,7 +31,7 @@ namespace ApolloQA.Pages
         }
         public static Element GetQuoteHeaderField(string DisplayName)
         {
-            return new Element($"//bh-quote-header//*[contains(text(), '{DisplayName}')]//preceding-sibling::div/descendant::*");
+            return new Element($"//bh-header//*[contains(text(), '{DisplayName}')]//preceding-sibling::div/descendant::*");
 
         }
 
