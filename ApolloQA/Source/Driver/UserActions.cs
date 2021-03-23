@@ -102,10 +102,15 @@ namespace ApolloQA.Source.Driver
 
                     FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
                 }
+                catch(Exception ex)
+                {
+                    throw ex;
+                }
 
             }
             catch (Exception ex)
             {
+                ex.HelpLink = $"Locator: {ElementLocator}";
                 Functions.handleFailure($"Locator: {ElementLocator}", ex, optional);
                 return false;
             }
@@ -215,13 +220,16 @@ namespace ApolloQA.Source.Driver
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
             IWebElement target;
 
-
-
+          
+            target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(by));
+            ScrollIntoView(target);
             target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
             ScrollIntoView(target);
 
             if (HIGHLIGHT_ON)
+            {
                 highlight(target);
+            }
 
             //upon scroll and highlight to the element, the element would become stale for clicking
             target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));

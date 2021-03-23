@@ -171,7 +171,7 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
         [Then(@"user waits for Policy Issuance")]
         public void WhenUserWaitsForPolicyIssuance()
         {
-            if (!Shared.GetToastContaining("Policy Issuance is complete for ratable object").assertElementIsVisible(20, true)) ;
+            if (!Shared.GetToastContaining("Policy Issuance is complete for ratable object").assertElementIsVisible(20, true))
             {
                 Functions.refreshPage();
 
