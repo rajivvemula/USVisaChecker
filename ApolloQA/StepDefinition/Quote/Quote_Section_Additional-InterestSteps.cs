@@ -39,10 +39,10 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"user completes address section")]
         public void WhenUserCompletesAddressSection()
         {
-            Quote_Additional_Interests_Page.Address1Input.setText("358 Test Address");
-            Quote_Additional_Interests_Page.CityInput.setText("Chicago");
-            Quote_Additional_Interests_Page.StateDropdown.SelectMatDropdownOptionByText("IL");
-            Quote_Additional_Interests_Page.ZipInput.setText("61614");
+            Quote_Additional_Interests_Page.Address1Input.setText("81 n 13th st");
+            Quote_Additional_Interests_Page.CityInput.setText("Prospect Park");
+            Quote_Additional_Interests_Page.StateDropdown.SelectMatDropdownOptionByText("NJ");
+            Quote_Additional_Interests_Page.ZipInput.setText("07508");
         }
 
         [When(@"user completes contact info and description")]
