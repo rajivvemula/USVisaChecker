@@ -51,7 +51,7 @@ stages:
     - template: 'azure-run-steps.yml'
       parameters: 
         environmentLabel: 'QAInt'
-        KEY_VAULT: ''https://xbibaoazckv2-qa2.vault.azure.net/
+        KEY_VAULT: 'https://xbibaoazckv-qaint.vault.azure.net/'
 
 - stage: QA2
   displayName: 'QA2'
@@ -68,6 +68,7 @@ stages:
     - template: 'azure-run-steps.yml'
       parameters: 
         environmentLabel: 'QA2'
+        KEY_VAULT: 'https://xbibaoazckv2-qa2.vault.azure.net/'
 
 - stage: UAT
   displayName: 'UAT'
@@ -84,3 +85,4 @@ stages:
     - template: 'azure-run-steps.yml'
       parameters: 
         environmentLabel: 'UAT'
+        KEY_VAULT: 'https://xbibaoazckv2-qa2.vault.azure.net/'
