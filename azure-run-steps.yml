@@ -15,7 +15,7 @@ steps:
 - task: AzureKeyVault@1
   inputs:
     azureSubscription: 'Apollo - Dev'
-    KeyVaultName: '{{ parameters.KEY_VAULT }}'
+    KeyVaultName: '${{ parameters.KEY_VAULT }}'
     SecretsFilter: '*'
     RunAsPreJob: true
 
