@@ -1,7 +1,5 @@
 parameters: 
   "environmentLabel": ""
-  "KEY_VAULT":""
-
 
 steps:
 - task: NuGetCommand@2
