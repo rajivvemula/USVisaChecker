@@ -1,5 +1,6 @@
 parameters: 
   "environmentLabel": ""
+  "KEY_VAULT":""
 
 
 steps:
@@ -16,7 +17,7 @@ steps:
 - task: AzureKeyVault@1
   inputs:
     azureSubscription: 'Apollo - Dev'
-    KeyVaultName: 'XBIBAOAZCKV-${{ parameters.environmentLabel }}'
+    KeyVaultName: '{{ parameters.KEY_VAULT }}'
     SecretsFilter: '*'
     RunAsPreJob: true
 
