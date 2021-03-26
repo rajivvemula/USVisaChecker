@@ -181,10 +181,10 @@ namespace ApolloQA.Source.Driver
             Cosmos.client.Dispose();
         }
 
-        private static void invokeEnvironmentVariables(string JsonEnvironmentFile_RelativePath )
+        private static void invokeEnvironmentVariables(string JsonEnvironmentFileName )
         {
 
-            JObject environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine(SourceDir, JsonEnvironmentFile_RelativePath)).ReadToEnd());
+            JObject environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine(SourceDir, JsonEnvironmentFileName.ToLower())).ReadToEnd());
 
             var keyVault = new KeyVault(environmentVariables?["KEY_VAULT_URI"]?.ToString());
 

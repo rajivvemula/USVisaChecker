@@ -1,0 +1,115 @@
+parameters: 
+  "environmentLabel": ""
+
+
+steps:
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/ApolloQA.sln'
+    feedsToUse: 'select'
+- task: VSBuild@1
+  inputs:
+    solution: '**\ApolloQA.sln'
+    restoreNugetPackages: true
+
+- task: AzureKeyVault@1
+  inputs:
+    azureSubscription: 'Apollo - Dev'
+    KeyVaultName: 'XBIBAOAZCKV-${{ parameters.environmentLabel }}'
+    SecretsFilter: '*'
+    RunAsPreJob: true
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: | 
+      Set-DisplayResolution -Width 1920 -Height 1080 -Force
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $url = "https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe"
+      $output = "$(System.DefaultWorkingDirectory)\autoit-v3-setup.exe"
+      Invoke-WebRequest -Uri $url -OutFile $output
+      Start-Process -Wait  -FilePath '$(System.DefaultWorkingDirectory)\autoit-v3-setup.exe' -ArgumentList '/S','/v','/qn' -passthru
+
+- task: VSTest@2
+  displayName: 'Running a Smoke Test'
+  condition: and(succeeded(), eq('${{ parameters.environmentLabel }}','QA2'))
+  continueOnError: true
+  timeoutInMinutes: 120
+  env:
+      ApolloSQL: $(ApolloSQL)
+      CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
+      CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
+      BROWSER: "Chrome"
+      HIGHLIGHT_ON: "false"
+      CURRENT_SEVERITY_LEVEL: "info"
+      AZUREDEVOPS_PAT: $(System.AccessToken)
+      force-field-proxy-ida-tenant: $(force-field-proxy-ida-tenant)
+      force-field-proxy-ida-client-id: $(force-field-proxy-ida-client-id)
+      force-field-proxy-ida-client-secret: $(force-field-proxy-ida-client-secret)
+      force-field-proxy-ida-username: $(force-field-proxy-ida-username)
+      force-field-proxy-ida-password: $(force-field-proxy-ida-password)
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\ApolloQA.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    testRunTitle: 'SmokeTest'
+
+- task: VSTest@2
+  displayName: 'Running a Smoke Test'
+  condition: and(succeeded(), ne('${{ parameters.environmentLabel }}','QA2'))
+  continueOnError: true
+  timeoutInMinutes: 120
+  env:
+      ApolloSQL: $(ApolloSQL)
+      CosmosDB-EndpointUrl: $(CosmosDB-EndpointUrl)
+      CosmosDB-AuthorizationKey: $(CosmosDB-AuthorizationKey)
+      BROWSER: "Chrome"
+      HIGHLIGHT_ON: "false"
+      CURRENT_SEVERITY_LEVEL: "info"
+      AZUREDEVOPS_PAT: $(System.AccessToken)
+      force-field-proxy-ida-tenant: $(force-field-proxy-ida-tenant)
+      force-field-proxy-ida-client-id: $(force-field-proxy-ida-client-id)
+      force-field-proxy-ida-client-secret: $(force-field-proxy-ida-client-secret)
+      force-field-proxy-ida-username: $(force-field-proxy-ida-username)
+      force-field-proxy-ida-password: $(force-field-proxy-ida-password)
+      ENVIRONMENT_FILE: "${{ parameters.environmentLabel }}.env.json"
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\ApolloQA.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    testRunTitle: 'SmokeTest'
+
+
+- task: SpecFlowPlus@0
+  inputs:
+    projectFilePath: '$(System.DefaultWorkingDirectory)/ApolloQA'
+    projectName: 'ApolloQA'
+    projectLanguage: 'en'
+    bindingAssemblies: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/ApolloQA.dll'
+    testExecutionJson: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/TestExecution.json'
+
+    
+- task: CopyFiles@2
+  displayName: 'Copy TestResults'
+  inputs:
+    SourceFolder: $(Agent.TempDirectory)/TestResults
+    Contents: '**/*'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/TestResults_${{ parameters.environmentLabel }}'
+    OverWrite: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Test Results Files'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/TestResults_${{ parameters.environmentLabel }}'
+    ArtifactName: 'TestResults_${{ parameters.environmentLabel }}'

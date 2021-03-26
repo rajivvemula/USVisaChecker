@@ -20,6 +20,7 @@ Scenario: Create New Quote
 
 #Add precondition to search for latest quote LOB=Commercial Auto
 @SmokeTest @Quote @tc:16080 @tc:16082 @tc:17029
+@bugReported
 Scenario: Left Nav Bar displays successfully
 	Given user is successfully logged into biberk
 	When User Navigates to Quote latest
