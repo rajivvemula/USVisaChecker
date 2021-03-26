@@ -34,7 +34,8 @@ stages:
     - template: 'azure-run-steps.yml'
       parameters: 
         environmentLabel: 'QA'
-        
+        KEY_VAULT: 'https://xbibaoazckv-qa.vault.azure.net/'
+
 - stage: QAInt
   displayName: 'QAInt'
   condition: or(eq('${{ variables.environmentLabel}}', ''), eq('${{ variables.environmentLabel}}', 'QAInt'))
@@ -50,6 +51,7 @@ stages:
     - template: 'azure-run-steps.yml'
       parameters: 
         environmentLabel: 'QAInt'
+        KEY_VAULT: ''https://xbibaoazckv2-qa2.vault.azure.net/
 
 - stage: QA2
   displayName: 'QA2'
