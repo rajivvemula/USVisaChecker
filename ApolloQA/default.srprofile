@@ -4,7 +4,7 @@
 			reportTemplate="ApolloQAReportTemplate.cshtml"
 			/>
   <Execution 
-	stopAfterFailures="0" 
+	stopAfterFailures="20" 
 	testThreadCount="1"
 	testSchedulingMode="Sequential" 
 	retryFor="Failing"

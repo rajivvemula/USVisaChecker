@@ -21,16 +21,16 @@ namespace ApolloQA.Data.TestData
         List<JObject> vehicles = new List<JObject>();
         List<JObject> drivers = new List<JObject>();
 
-        List<CoverageType> coverages;
+        List<Entity.CoverageType> coverages;
         public Quote(int quoteId)
         {
             parser = new Parser();
             quoteEntity = new Entity.Quote(quoteId);
             organization = new Organization(quoteEntity.Organization, parser);
         }
-        public Quote(Organization organization, List<CoverageType> coverageTypes) : this(organization, "IL", coverageTypes) { }
+        public Quote(Organization organization, List<Entity.CoverageType> coverageTypes) : this(organization, "IL", coverageTypes) { }
 
-        public Quote(Organization organization, string state, List<CoverageType> coverageTypes)
+        public Quote(Organization organization, string state, List<Entity.CoverageType> coverageTypes)
         {
             this.organization = organization;
             this.parser = organization.parser;

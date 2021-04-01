@@ -3,11 +3,11 @@
     "source": "BaseRateFactors"
   },
   "Accident Prevention": {
-    "source": "root.AccidentPreventionCredit"
+    "source": "AccidentPrevention"
   },
   "Class Code": {
     "type": "string",
-    "source": "Vehicle.ClassCode"
+    "source": "VehicleClassCode"
   },
   "Covered Autos": {
     "source": "root.CoveredAutos"
@@ -35,13 +35,13 @@
     "source": "root.Organization.TypeName"
   },
   "Billing Type": {
-    "source": "root.BillingType"
+    "source": "BillingType"
   },
   "Payment Plan": {
-    "source": "root.PaymentPlan"
+    "source": "PaymentPlan"
   },
   "EFT": {
-    "source": "root.isEft"
+    "source": "IsEft"
   },
   "Vehicle Type": {
     "source": "Vehicle.TypeName"
@@ -61,26 +61,31 @@
   "Seating Capacity": {
     "source": "TBD"
   },
+  //CAB response
   "Inspection Count": {
-    "source": "TBD"
+    "source": "root.InspectionCount"
   },
   "Deductible": {
     "source": "TBD"
   },
+  //Preferred Trucking refer to CL.15
+  //US 12237
   "Preferred Trucking": {
-    "source": "TBD"
+    "source": "false"
   },
   "Team Driving": {
-    "source": "TBD"
+    "source": "root.GetQuestionResponse(\"TeamDriving\")"
   },
+  //CAB response
   "Out Of Service Violation Ratio": {
-    "source": "TBD"
+    "source": "root.OutOfServiceViolationRatio"
   },
   "Stated Value": {
-    "source": "TBD"
+    "source": "Vehicle.StatedValue"
   },
+  //CAB response
   "Total BASIC Violation Weight": {
-    "source": "TBD"
+    "source": "root.TotalBASICViolationWeight"
   },
   "Safety Features": {
     "source": "TBD"
@@ -93,6 +98,12 @@
   },
   "Auto Coverage Type": {
     "source": "TBD"
+  },
+  "Schedule Rating": {
+    "source": "ScheduleRating"
+  },
+  "Policy Term Factor": {
+    "source": "PolicyTermFactor"
   }
 }
   

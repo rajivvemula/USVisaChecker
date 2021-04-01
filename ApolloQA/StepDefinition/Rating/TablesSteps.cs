@@ -153,16 +153,22 @@ namespace ApolloQA.StepDefinition.Rating
         [Given(@"tables are loaded from the system")]
         public void ThenTablesAreParsedIntoJsonFormat()
         {
-            var tables = SQL.executeQuery($@"SELECT RatingTable.Id, RatingTable.Name ,StateProv.Code
+            var tables = SQL.executeQuery($@"SELECT RatingTable.Id, RatingTable.[Name], StateProv.Code
                                 FROM [rating].[ReferenceTable] RatingTable
                                 LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
                                 LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
-                                WHERE LineId =7 AND CarrierPartyId = 4 and StateProv.Code = '{state.ToUpper()}'");
+                                WHERE LineId =7 AND CarrierPartyId = 4 and StateProv.Code = '{state.ToUpper()}'
+                                GROUP BY  RatingTable.Id, RatingTable.[Name], StateProv.Code 
+                                ;");
             
             //Task.Factory.StartNew(() => Parallel.ForEach(tables, table => ActualManual.Add(table["Name"], JArray.FromObject(GetTable((int)table["Id"]))))).Wait();
 
             foreach (var table in tables)
             {
+                if(ActualManual.ContainsKey(table["Name"]))
+                {
+                    continue;
+                }
                 ActualManual.Add(table["Name"], JArray.FromObject(GetTable((long)table["Id"])));
             }
 
@@ -473,10 +479,26 @@ namespace ApolloQA.StepDefinition.Rating
                     try
                     {
                         var columnValue = row[column["AttributeColumn"]];
+
+                        //for corrupt duplicate columns
+                        /*if(rowObj.ContainsKey((String)column["AttributeName"]))
+                        {
+                            column["AttributeName"] = column["AttributeName"] + " [DUPLICATE]";
+                        }*/
+
                         rowObj.Add((String)column["AttributeName"], (columnValue is DBNull? "": columnValue) ?? "");
                     }
                     catch(Exception ex)
                     {
+                        //for corrupt duplicate columns
+/*                        var knownErrors = new List<string>()
+                        {
+                        
+                        };
+                        if(knownErrors.Contains(column["AttributeName"]))
+                        {
+                            continue;
+                        }*/
                         Log.Debug("Row-> "+JObject.FromObject(row));
                         Log.Debug("column-> "+column["AttributeColumn"]);
                         Log.Debug($"table ID-> : {tableId} Att Name: {column["AttributeName"]} value:{row[column["AttributeColumn"]]} ");
@@ -500,7 +522,7 @@ namespace ApolloQA.StepDefinition.Rating
             var actualIndexedTable = FormatTable((JArray)actualTable.DeepClone());
 
             // out of both tables find the row with the least amount of columns
-            int failSafeColCount = actualIndexedTable.Select(row => row.Count()).Min();
+            int failSafeColCount = actualIndexedTable.Count == 0? 0: actualIndexedTable.Select(row => row.Count()).Min();
             List<string> columnsToOrderBy = ((JObject)actualIndexedTable[0]).Properties().Select(it => it.Name).OrderBy(self => self).ToList();
 
 

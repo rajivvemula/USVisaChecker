@@ -5,7 +5,8 @@ using System.Text;
 using ApolloQA.Source.Helpers;
 using Newtonsoft.Json;
 
-namespace ApolloQA.Data.Rating
+namespace ApolloQA.Data.Entity
+
 {
     //this function is to represent coverage types in the system
     public class CoverageType
@@ -69,12 +70,15 @@ namespace ApolloQA.Data.Rating
             {"Comprehensive"}
         };
 
+
         //Key = possible name in any source - Value= standard Name on Apollo System
-        private static readonly Dictionary<string, string> Persisted = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> Persisted = new Dictionary<string, string>()
         {
             {"BIPD", "Bodily Injury Property Damage (BIPD)" },
             {"OTC", "Comprehensive" },
             {"Other Than Collision", "Comprehensive" },
+            {"Med Pay", "Medical Payments" },
+
 
         };
 

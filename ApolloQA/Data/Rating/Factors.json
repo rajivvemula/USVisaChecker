@@ -1,206 +1,224 @@
 ﻿{
   "BaseRateFactors": {
-    "Fields": [ "BaseRateFactors" ],
-    "nameUI": [ "Base Rate Factor" ]
+    "KnownFields": [ "BaseRateFactors" ],
+    "nameUI": [ "Base Rate Factor", "VA000029 Base Rate Factor" ]
   },
   "IsAccidentPreventionFactors": {
-    "Fields": [ "Accident Prevention" ],
-    "nameUI": [ "Accident Prevention Factor" ]
+    "KnownFields": [ "Accident Prevention" ],
+    "nameUI": [ "Accident Prevention Factor" ],
+    "CustomCalculation": true
+
   },
   "ClassCodeFactors": {
-    "Fields": [ "Class Code" ],
+    "KnownFields": [ "Class Code" ],
     "nameUI": [ "Class Code Factor" ]
   },
   "CoveredAutosFactors": {
-    "Fields": [ "Covered Autos" ],
+    "KnownFields": [ "Covered Autos" ],
     "nameUI": [ "Covered Autos Factor" ]
   },
   "RadiusFactors": {
-    "Fields": [ "Radius" ],
+    "KnownFields": [ "Radius" ],
     "nameUI": [ "Radius Factor" ]
   },
   "VehicleAgeFactors": {
-    "Fields": [ "Vehicle Age" ],
+    "KnownFields": [ "Vehicle Age" ],
     "nameUI": [ "Vehicle Age Factor" ]
   },
   "FleetSizeFactors": {
-    "Fields": [ "Fleet Size" ],
+    "KnownFields": [ "Fleet Size" ],
     "nameUI": [ "Fleet Size Factor" ]
   },
   "OrganizationTypeFactors": {
-    "Fields": [ "Organization Type" ],
+    "KnownFields": [ "Organization Type" ],
     "nameUI": [ "Organization Type Factor" ]
   },
   "MotorCarrierFilingTypeFactors": {
-    "Fields": [ "Motor Carrier Filing Type" ],
+    "KnownFields": [ "Motor Carrier Filing Type" ],
     "nameUI": [ "Motor Carrier Filing Type Factor" ]
   },
   "InsuranceScoreTierFactors": {
-    "Fields": [ "Insurance Score Tier" ],
+    "KnownFields": [ "Insurance Score Tier" ],
     "nameUI": [ "Insurance Score Tier Factor" ]
   },
   "TerritoryFactors": {
-    "Fields": [ "Territory" ],
+    "KnownFields": [ "Territory" ],
     "nameUI": [ "Territory Factor" ]
   },
   "ClassCode_RadiusFactors": {
-    "Fields": [ "Class Code", "Radius" ],
+    "KnownFields": [ "Class Code", "Radius" ],
     "nameUI": [ "Class Code Radius Factor", "Class Code_Radius Factor" ]
   },
   "ClassCode_MotorCarrierFilingTypeFactors": {
-    "Fields": [ "Class Code", "Motor Carrier Filing Type" ],
+    "KnownFields": [ "Class Code", "Motor Carrier Filing Type" ],
     "nameUI": [ "Class Code Motor Carrier Filing Type Factor", "Class Code_Motor Carrier Filing Type Factor" ]
   },
   "ClassCode_OrganizationTypeFactors": {
-    "Fields": [ "Class Code", "Organization Type" ],
+    "KnownFields": [ "Class Code", "Organization Type" ],
     "nameUI": [ "Class Code_Organization Type Factor" ]
   },
   "BillingType_IsEFT_PaymentPlanFactors": {
-    "Fields": [ "Billing Type", "Payment Plan", "EFT" ],
+    "KnownFields": [ "Billing Type", "Payment Plan", "EFT" ],
     "nameUI": [ "Billing Type EFT Payment Plan Factor" ]
   },
   "SizeTypeFactors": {
-    "Fields": [ "Vehicle Type", "GVW/GCW" ],
+    "KnownFields": [ "Vehicle Type", "GVW/GCW" ],
     "nameUI": [ "Size Type Factor" ]
   },
   "BusinessExperienceFactors": {
-    "Fields": [ "Business Experience" ],
+    "KnownFields": [ "Business Experience" ],
     "nameUI": [ "Business Experience Factor" ]
   },
   "SizeType_VehicleAgeFactors": {
-    "Fields": [ "Vehicle Type", "GVW/GCW", "Vehicle Age" ],
+    "KnownFields": [ "Vehicle Type", "GVW/GCW", "Vehicle Age" ],
     "nameUI": [ "Size Type Vehicle Age Factor" ]
 
   },
   "MotorCarrierFilingType_SizeTypeFactors": {
-    "Fields": [ "Vehicle Type Description", "GVW/GCW", "Motor Carrier Filing Type" ],
+    "KnownFields": [ "Vehicle Type Description", "GVW/GCW", "Motor Carrier Filing Type" ],
     "nameUI": [ "Motor Carrier Filing Type Size Type Factor" ]
 
   },
   "SizeType_TerritoryFactors": {
-    "Fields": [ "Vehicle Type", "GVW/GCW", "Territory" ],
+    "KnownFields": [ "Vehicle Type", "GVW/GCW", "Territory" ],
     "nameUI": [ "Size Type Territory Factor" ]
 
   },
   "Radius_TerritoryFactors": {
-    "Fields": [ "Radius", "Territory" ],
+    "KnownFields": [ "Radius", "Territory" ],
     "nameUI": [ "Radius Territory Factor" ]
 
   },
   "ClassCode_TerritoryFactors": {
-    "Fields": [ "Class Code", "Territory" ],
+    "KnownFields": [ "Class Code", "Territory" ],
     "nameUI": [ "Class Code Territory Factor" ]
 
   },
   "ClassCode_FleetSizeFactors": {
-    "Fields": [ "Class Code", "Fleet Size" ],
+    "KnownFields": [ "Class Code", "Fleet Size" ],
     "nameUI": [ "Class Code Fleet Size Factor" ]
 
   },
   "FleetSize_SizeTypeFactors": {
-    "Fields": [ "Fleet Size", "Vehicle Type Description", "GVW/GCW" ],
+    "KnownFields": [ "Fleet Size", "Vehicle Type Description", "GVW/GCW" ],
     "nameUI": [ "Fleet Size Size Type Factor" ]
 
   },
   "ClassCode_SizeTypeFactors": {
-    "Fields": [ "Class Code", "Vehicle Type", "GVW/GCW" ],
+    "KnownFields": [ "Class Code", "Vehicle Type", "GVW/GCW" ],
     "nameUI": [ "Class Code Size Type Factor" ]
 
   },
   "DeductibleFactors": {
-    "Fields": [ "Deductible" ],
+    "KnownFields": [ "Deductible" ],
     "nameUI": [ "Deductible Factor" ]
   },
   "InspectionCountFactors": {
-    "Fields": [ "Inspection Count" ],
+    "KnownFields": [ "Inspection Count" ],
     "nameUI": [ "Inspection Count Factor" ]
   },
   "IsCombinedDeductibleFactors": {
-    "Fields": [ "Combined Deductible" ],
+    "KnownFields": [ "Combined Deductible" ],
     "nameUI": [ "Combined Deductible Factor" ]
   },
   "IsPreferredTruckingFactors": {
-    "Fields": [ "Preferred Trucking" ],
+    "KnownFields": [ "Preferred Trucking" ],
     "nameUI": [ "Preferred Trucking Factor" ]
   },
   "IsTeamDrivingFactors": {
-    "Fields": [ "Team Driving" ],
+    "KnownFields": [ "Team Driving" ],
     "nameUI": [ "Team Driving Factor" ]
   },
   "OutOfServiceViolationRatioFactors": {
-    "Fields": [ "Out Of Service Violation Ratio" ],
+    "KnownFields": [ "Out Of Service Violation Ratio" ],
     "nameUI": [ "Out Of Service Violation Ratio Factor" ]
   },
+  "Stated Value": {
+    "KnownFields": [ "Stated Value" ],
+    "nameUI": [ "Stated Value" ]
+
+  },
   "StatedValueFactors": {
-    "Fields": [ "Stated Value" ],
+    "KnownFields": [ "Stated Value" ],
     "nameUI": [ "Stated Value Factor" ]
   },
   "TotalBASICViolationWeightFactors": {
-    "Fields": [ "Total BASIC Violation Weight" ],
-    "nameUI": [ "Total BASIC Violation Weight Factor", "Total BASIC Violation Weight Factor" ]
+    "KnownFields": [ "Total BASIC Violation Weight" ],
+    "nameUI": [ "Total BASIC Violation Weight Factor", "Total Basic Violation Weight Factor" ]
   },
   "ClassCode_StatedValueFactors": {
-    "Fields": [ "Class Code", "Stated Value" ],
+    "KnownFields": [ "Class Code", "Stated Value" ],
     "nameUI": [ "Class Code_Stated Value Factor" ]
   },
   "Deductible_InsuranceScoreTierFactors": {
-    "Fields": [ "Deductible", "Insurance Score Tier" ],
+    "KnownFields": [ "Deductible", "Insurance Score Tier" ],
     "nameUI": [ "Deductible_Insurance Score Tier Factor" ]
   },
   "Deductible_StatedValueFactors": {
-    "Fields": [ "Deductible", "Stated Value" ],
+    "KnownFields": [ "Deductible", "Stated Value" ],
     "nameUI": [ "Deductible_Stated Value Factor" ]
   },
   "FleetSize_InsuranceScoreTierFactors": {
-    "Fields": [ "Fleet Size", "Insurance Score Tier" ],
-    "nameUI": [ "Fleet Size_Insurance Score Tier Factor" ]
+    "KnownFields": [ "Fleet Size", "Insurance Score Tier" ],
+    "nameUI": [ "Fleet Size_Insurance Score Tier Factor", "Fleet Size Insurance Score Tier Factor" ]
   },
   "InspectionCount_TotalBASICViolationWeightFactors": {
-    "Fields": [ "Inspection Count", "Total BASIC Violation Weight" ],
-    "nameUI": [ "Inspection Count_Total BASIC Violation Weight Factor" ]
+    "KnownFields": [ "Inspection Count", "Total BASIC Violation Weight" ],
+    "nameUI": [ "Inspection Count_Total BASIC Violation Weight Factor", "Inspection Count Total BASIC Violation Weight Factor" ]
   },
   "SizeType_StatedValueFactors": {
-    "Fields": [ "Vehicle Type", "GVW/GCW", "Stated Value" ],
-    "nameUI": [ "Size Type_Stated Value Factor" ]
+    "KnownFields": [ "Vehicle Type", "GVW/GCW", "Stated Value" ],
+    "nameUI": [ "Size Type_Stated Value Factor", "Size Type Stated Value Factor" ]
   },
   "IsVehicleLevelSafetyFeaturesFactors": {
-    "Fields": [ "Safety Features" ],
+    "KnownFields": [ "Safety Features" ],
     "nameUI": [ "Safety Features Factor" ]
   },
   "VehicleType_MinimumRatingValueFactors": {
-    "Fields": [ "Vehicle Type" ],
+    "KnownFields": [ "Vehicle Type" ],
     "nameUI": [ "Minimum Rating Value Factor" ]
   },
   "ClassCode_InsuranceScoreTierFactors": {
-    "Fields": [ "Class Code", "Insurance Score Tier" ],
+    "KnownFields": [ "Class Code", "Insurance Score Tier" ],
     "nameUI": [ "Class Code_Insurance Score Tier Factor" ]
   },
   "ClassCode_VehicleAgeFactors": {
-    "Fields": [ "Class Code", "Vehicle Age" ],
+    "KnownFields": [ "Class Code", "Vehicle Age" ],
     "nameUI": [ "Class Code_Vehicle Age Factor" ]
   },
   "AntiTheftCategoryFactors": {
-    "Fields": [ "Anti-Theft Category" ],
+    "KnownFields": [ "Anti-Theft Category" ],
     "nameUI": [ "Anti-Theft Category Factor" ]
   },
   "AutoCoverageTypeFactors": {
-    "Fields": [ "Auto Coverage Type" ],
+    "KnownFields": [ "Auto Coverage Type" ],
     "nameUI": [ "Auto Coverage Type Factor" ]
   },
   "FleetSize_InspectionCountFactors": {
-    "Fields": [ "Fleet Size", "Inspection Count" ],
+    "KnownFields": [ "Fleet Size", "Inspection Count" ],
     "nameUI": [ "Fleet Size_Inspection Count Factor" ]
   },
   "LimitFactors": {
-    "Fields": [ "Limit" ],
+    "KnownFields": [ "Limit" ],
     "nameUI": [ "Limit Factor" ]
   },
   "SeatingCapacityFactors": {
-    "Fields": [ "Seating Capacity" ],
+    "KnownFields": [ "Seating Capacity" ],
     "nameUI": [ "Seating Capacity Factor" ]
   },
   "FleetSize_SizeType_VehicleAgeFactors": {
-    "Fields": [ "Fleet Size", "Vehicle Type", "GVW/GCW", "Vehicle Age" ],
-    "nameUI": ["FleetSize_SizeType_VehicleAge Factor"]
-  }       
+    "KnownFields": [ "Fleet Size", "Vehicle Type", "GVW/GCW", "Vehicle Age" ],
+    "nameUI": [ "FleetSize_SizeType_VehicleAge Factor" ]
+  },
+  "Schedule Rating": {
+    "KnownFields": [ "Schedule Rating" ],
+    "nameUI": [ "Schedule Rating" ],
+    "CustomCalculation": true
+  },
+  "Policy Term Factor": {
+    "KnownFields": [ "Policy Term Factor" ],
+    "nameUI": [ "Policy Term Factor" ],
+    "CustomCalculation": true
+
+  }
 }

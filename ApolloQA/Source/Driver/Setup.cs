@@ -106,7 +106,7 @@ namespace ApolloQA.Source.Driver
                 }
 
             }
-            if (_scenarioContext.TestError != null)
+            if (_scenarioContext.TestError != null && !isNoBrowserFeature)
             {
                 if (isNoBrowserFeature == false)
                 {

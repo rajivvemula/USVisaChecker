@@ -17,7 +17,7 @@ namespace ApolloQA.Data.Rating
         public string TaxonomyName { get; private set; }
 
         //optiona, will only be loaded when constructed using the GetUsingAlgorithmCode function
-        public CoverageType coverage { get; private set; }
+        public Entity.CoverageType coverage { get; private set; }
 
         //set of different invokers to this class
         public static ClassCodeKeyword GetUsingClassCode(string classCode, String OptionalCoverage = null) => Get("vehicleClass.Code", classCode, OptionalCoverage);
@@ -95,7 +95,7 @@ namespace ApolloQA.Data.Rating
                 KeywordId = group["KeywordId"],
                 KeywordName = group["KeywordName"],
                 TaxonomyName = group["TaxonomyName"],
-                coverage = coverage == null ? null :new CoverageType(coverage)
+                coverage = coverage == null ? null :new Entity.CoverageType(coverage)
 
             };
 
@@ -135,7 +135,7 @@ namespace ApolloQA.Data.Rating
                 KeywordId = group["KeywordId"],
                 KeywordName = group["KeywordName"],
                 TaxonomyName = group["TaxonomyName"],
-                coverage = coverage == null ? null : new CoverageType(coverage)
+                coverage = coverage == null ? null : new Entity.CoverageType(coverage)
 
             };
 
@@ -144,18 +144,18 @@ namespace ApolloQA.Data.Rating
 
         private static List<int> BrokenTaxonomies = new List<int>()
         {
-            //BUG 33879
-            130
+            //BUG 34607
+            162
         };
         private static List<string> BrokenClassCodes = new List<string>()
         {
-            //BUG 33884
+/*            //BUG 33884
             "505",
-            "429"
+            "429"*/
         };
         private static List<int> BrokenKeywords = new List<int>()
         {
-            //BUG 33884
+/*            //BUG 33884
             1576, //Transportation - Livestock, Equine, or Animals
             2011, //Hazardous Spill Cleanup Services
             1563, //Oil Spill Cleanup
@@ -164,7 +164,7 @@ namespace ApolloQA.Data.Rating
             1537, //Orchestra
             1539, //Cinema
             1542  //Movie Film Studio
-
+*/
 
 
 

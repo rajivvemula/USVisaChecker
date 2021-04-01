@@ -38,7 +38,8 @@ namespace ApolloQA.Data.TestData
             {"CT-Authority", false },
             {"BorrowVehicles", false },
             {"USDOT", false },
-            {"USDOT#", "890991" },
+            {"USDOT#", 545167 },
+
             {"UseOwnerOperators", false },
             {"OnCall", false },
             {"PartyBus", false },
@@ -64,14 +65,19 @@ namespace ApolloQA.Data.TestData
             {"HoldHarmlessRequireCerts", false },
             {"FmscaOperating", false },
             {"FmscaOperatingTypes",  "Freight Forwarding"},
+            
             //
             //Vehicles
             //
-            {"Vehicles",                     "@SectionEntity" },
-            {"TransportTours",               false},
-            {"VehicleOwnedLeasedFinanced",   "Owned" },
-            {"VehicleTitleOwner",            "Business" },
-            {"VehicleDiffState",             false },
+            {"Vehicles",                    "@SectionEntity" },
+            {"TransportTours",              false},
+            {"VehicleOwnedLeasedFinanced",  "Owned" },
+            {"VehicleTitleOwner",           "Business" },
+            {"VehicleTitleOwnerIndividual", "Myself"},
+            {"VehicleDiffState",            false },
+            {"VehicleUse",                  "Delivery/Catering "    },
+            {"GoodsOrMaterialsRetail",      false},
+            {"GoodsOrMaterialsBlueCollar",  false },
             {"TrailerOwnedFinancedLeased",   "Owned" },
             {"TrailerDiffState",             false },
             {"TrailerTitleOwner",            "Business" },
@@ -80,10 +86,13 @@ namespace ApolloQA.Data.TestData
             //
             //Drivers
             //
-            {"ExcludeDriver",       false},
-            {"AccidentOrViolation", false },
-            {"CDL",                 "0" },
-            {"DefensiveDriving",    false },
+            {"ExcludeDriver",                   false},
+            {"AccidentOrViolation",             false },
+            {"IL-DefensiveDriving",             true },
+            {"IL-LastYearViolation",            false },
+            {"IL-Last3YearsLicenseSuspended",   false },
+            {"CDL",                             "0" },
+            {"DefensiveDriving",                false },
 
 
         };

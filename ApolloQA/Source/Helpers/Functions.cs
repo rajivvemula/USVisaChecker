@@ -17,6 +17,7 @@ using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
 using ApolloQA.Data.Rating;
+using ApolloQA.Data.Entity;
 
 namespace ApolloQA.Source.Helpers
 {
@@ -397,13 +398,39 @@ namespace ApolloQA.Source.Helpers
 
             var summary = quote.GetSummary();
             Log.Debug("Quote Id: " + quote.quoteEntity.Id);
-            Log.Debug("Rating Group Id (rating worksheet): " + summary?["ratingGroupId"]??"null");
+            Log.Debug("Rating Group Id (rating worksheet): \n" +$"{Environment.GetEnvironmentVariable("HOST")}/rating/ratings-worksheet/" + (summary?["ratingGroupId"]??"null") +"\n" );
             if (summary["errors"].Count()>0 || summary?["ratingResponses"] == null )
             {
                 Log.Critical(summary);
                 throw Functions.handleFailure($"Premium generation was unsuccessful Quote: {quote.quoteEntity.Id} Premium: " + summary?["ratingResponses"]);
             }
             return quote.quoteEntity;
+        }
+
+
+        public static dynamic GetCAB(int? usDotNumber)
+        {
+
+                string baseURL = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_BASEURL_SECRETNAME"));
+                string APIKEY = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_API_KEY_SECRETNAME"));
+
+                if (usDotNumber == null)
+                {
+                    return null;
+                }
+
+                var response = RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/checkDOT/{usDotNumber}?key={APIKEY}");
+
+                if (!(bool)response.found)
+                {
+                    Log.Debug("usDot" + usDotNumber + " returned invalid from CAB");
+                    return null;
+                }
+
+                return RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/{usDotNumber}?key={APIKEY}");
+         
+
+
         }
 
         public static void MarkTestCasePassed(int testCaseId) 

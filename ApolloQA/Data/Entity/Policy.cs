@@ -78,40 +78,9 @@ namespace ApolloQA.Data.Entity
         {
             return this.GetQuote().GetVehicles();
         }
-        public JArray getCoverages()
-        {
-            dynamic body = new JObject();
-            body.filters = new JObject();
-            body.filters["PolicyId"] = this.Id;
-            body.filters["EntityStatusComplexFilter"] = "{\"StatusIds\":[0,2]}";
-            body.loadChildren = true;
-
-            return RestAPI.POST("/policy/coverageoutput/search", body)["results"];
-        }
-        public List<String> getCoverageCodes(Vehicle risk)
-        {
-            var result = new List<String>();
-            foreach(var coverage in this.getCoverages())
-            {
-                dynamic body = new JObject();
-                body.filters = new JObject();
-                body.filters["CoverageOutputId"] = coverage["id"];
-                var risksAssociated = ((JArray)RestAPI.POST("/policy/CoverageOutputRisk/search", body)["results"]).Select(riskOutput => (int)riskOutput["riskId"]).ToList();
-                if(risksAssociated.Contains((int)risk.GetProperty("RiskId")))
-                {
-                    result.Add((String)coverage["associatedCoverage"]["coverageCode"]);
-                }
-            }
-            return result;
-
-        }
-        public List<String> getCoverageCodes()
-        {
-            return this.getCoverages().Select(coverage => (String)coverage["associatedCoverage"]["coverageCode"]).ToList<String>();
-
-        }
 
 
+   
         public Organization Organization
         { 
             
@@ -121,7 +90,7 @@ namespace ApolloQA.Data.Entity
                 {
                     return new Organization("PartyId", this.GetProperties().insuredPartyId.Value.ToString());
                 }
-                catch(Exception exception)
+                catch(Exception ex)
                 {
                     throw new Exception($"error constructing Organization with the following params 1=PartyId 2={this.GetProperties()?.insuredPartyId?.Value?.ToString()}");
                 }
@@ -159,6 +128,20 @@ namespace ApolloQA.Data.Entity
                 this["TimeTo"] = value.ToString("O");
             }
 
+        }
+        public string LatestRatingResponseGroupId
+        {
+            get
+            {
+               return this.GetProperty("LatestRatingResponseGroupId");
+            }
+        }
+        public JArray RatingGroup
+        {
+            get
+            {
+                return RestAPI.GET($"/rating/group/{LatestRatingResponseGroupId}");
+            }
         }
         public Boolean AccidentPreventionCredit
         {

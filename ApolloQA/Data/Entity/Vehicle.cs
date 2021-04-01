@@ -10,20 +10,39 @@ namespace ApolloQA.Data.Entity
 {
     public class Vehicle
     {
-        public readonly int Id;
+        public readonly long Id;
 
         public Vehicle(int Id)
         {
             this.Id = Id;
 
         }
+        public Vehicle(long Id)
+        {
+            this.Id = Id;
 
+        }
+        public override string ToString()
+        {
+      
+            return $"{YearOfManufacture} {Make}{ (String.IsNullOrEmpty(Model) ? "" : $" {Model}") }";
+        }
         public dynamic this[String propertyName] { get { return this.GetProperty(propertyName); }
         }
         public dynamic GetProperty(String propertyName)
         {
-            var property = this.GetProperties()[propertyName];
-            return property is DBNull ? null : property;
+            try
+            {
+                var property = this.GetProperties()[propertyName];
+                return property is DBNull ? null : property;
+            }
+            catch(KeyNotFoundException ex)
+            {
+                Log.Error($"Id: {this.Id}");
+                Log.Error(this.GetProperties().Select(it => $"{it.Key}, {it.Value}"));
+                throw ex;
+            }
+           
         }
         public Dictionary<String, dynamic> GetProperties()
         {
@@ -46,10 +65,37 @@ namespace ApolloQA.Data.Entity
 
         }
 
-        public String? ClassCode { get
+        public string Make
+        {
+            get
             {
-                return this["ClassCode"];
+                return this.GetProperty("Make");
+            }
+        }
+        public string Model
+        {
+            get
+            {
+                return this.GetProperty("Model");
+            }
+        }
 
+
+        private long? _RiskId;
+        public long RiskId
+        {
+            get
+            {
+                if (_RiskId == null)
+                {
+                    _RiskId = this.GetProperty("RiskId");
+                }
+                return (long)_RiskId;
+            }
+        }
+        public string ClassCode { get
+            {
+                return this.GetProperty("ClassCode");
             }
             set
             {
@@ -107,6 +153,13 @@ namespace ApolloQA.Data.Entity
             get
             {
                 return int.Parse(this.GetProperty("SeatingCapacity"));
+            }
+        }
+        public decimal? StatedValue
+        {
+            get
+            {
+                return this.GetProperty("StatedAmount");
             }
         }
 

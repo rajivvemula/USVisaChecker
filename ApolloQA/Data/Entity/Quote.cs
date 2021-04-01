@@ -5,6 +5,8 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using ApolloQA.Source.Helpers;
 using ApolloQA.Data.Entity.Storyboard;
+using ApolloQA.Data.Rating;
+
 namespace ApolloQA.Data.Entity
 {
     public class Quote
@@ -54,29 +56,43 @@ namespace ApolloQA.Data.Entity
             return property == null ? "" : property;
         }
 
-        //Policy caching for better performance
-        private Policy _Policy = null;
-        public Policy GetPolicy()
-        {
-            if(_Policy == null)
-            {
-                _Policy = new Policy((int)GetProperties().issuedPolicyId);
-            }
-            return _Policy;
-        }
 
+        private Policy _currentRatableObject;
         public Policy GetCurrentRatableObject()
         {
-           return new Policy(Tether.GetTether(this.Id).CurrentRatableObjectId);
+            if(_currentRatableObject == null)
+            {
+                _currentRatableObject= new Policy(Tether.GetTether(this.Id).CurrentRatableObjectId);
+            }
+            return _currentRatableObject;
         }
-        public JArray getCoverages()
-        {
-           return this.GetPolicy().getCoverages();
-        }
-        public List<String> getCoverageCodes(Vehicle risk)
-        {
-            return this.GetPolicy().getCoverageCodes(risk);
 
+
+        public IEnumerable<CoverageType> getCoverageTypes(Vehicle risk)
+        {
+            
+            var coverages = this.GetProperty("selectedCoverages");
+
+            foreach(var coverage in coverages)
+            {
+                var coverageType = new CoverageType((int)coverage.coverageTypeId);
+
+                if(coverageType.isVehicleLevel)
+                {
+                    foreach(var riskEntry in coverage.riskCoverages)
+                    {
+                        if (riskEntry.riskId == risk.RiskId)
+                        {
+                            yield return coverageType;
+                        }
+                    }
+                }
+                else
+                {
+                    yield return coverageType;
+                }
+
+            }
 
         }
         public dynamic GetVehicleTypeRisk()
@@ -95,12 +111,29 @@ namespace ApolloQA.Data.Entity
 
             return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
         }
+        public List<Driver> GetDrivers()
+        {
+            return ((JArray)GetDriverTypeRisk().risks).Select(risk => risk).ToList<dynamic>().Select(risk => new Driver(risk.risk.id.ToObject<int>())).ToList<Driver>();
+        }
 
         public dynamic GetSectionQuestions(string sectionName)
         {
             var sectionId = this.Storyboard.GetSection(sectionName).Id;
             return RestAPI.GET($"/quote/{this.Id}/sections/{sectionId}/questions");
         }
+
+        public dynamic GetQuestionResponse(string alias)
+        {
+            foreach(var response in this.GetProperty("questionResponses"))
+            {
+                if(response.questionAlias==alias)
+                {
+                    return ((JValue)response.response)?.Value;
+                }
+            }
+            return null;
+        }
+
 
         public Address PhysicalAddress
         {
@@ -148,7 +181,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return this.GetPolicy().CoveredAutos;
+                return this.GetCurrentRatableObject().CoveredAutos;
             }
         }
 
@@ -156,14 +189,14 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return this.GetPolicy().MotorCarrierFiling;
+                return this.GetCurrentRatableObject().MotorCarrierFiling;
             }
         }
         public Boolean AccidentPreventionCredit
         {
             get
             {
-                return this.GetPolicy().AccidentPreventionCredit;
+                return this.GetCurrentRatableObject().AccidentPreventionCredit;
             }
 
         }
@@ -171,21 +204,21 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return this.GetPolicy().BillingType;
+                return this.GetCurrentRatableObject().BillingType;
             }
         }
         public String PaymentPlan
         {
             get
             {
-                return this.GetPolicy().PaymentPlan;
+                return this.GetCurrentRatableObject().PaymentPlan;
             }
         }
         public String isEft
         {
             get
             {
-                return this.GetPolicy().isEft;
+                return this.GetCurrentRatableObject().isEft;
             }
 
         }
@@ -193,7 +226,91 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return this.GetPolicy().RadiusOfOperation;
+                return this.GetCurrentRatableObject().RadiusOfOperation;
+            }
+        }
+
+
+        private dynamic _CAB;
+        public dynamic GetCAB(bool Refresh)
+        {
+            _CAB = null;
+            return GetCAB();
+        }
+        public dynamic GetCAB()
+        {
+            if (_CAB == null)
+            {
+
+
+                string baseURL = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_BASEURL_SECRETNAME"));
+                string APIKEY = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_API_KEY_SECRETNAME"));
+
+                var usDot = GetQuestionResponse("USDOT#");
+                if (usDot == null)
+                {
+                    return null;
+                }
+                var response = RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/checkDOT/{usDot}?key={APIKEY}");
+
+                if (!(bool)response.found)
+                {
+                    Log.Debug("usDot" + usDot + " was returned invalid from CAB");
+                    return null;
+                }
+
+                _CAB = RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/{usDot}?key={APIKEY}");
+            }
+             
+            return _CAB;
+
+
+        }
+
+        public int InspectionCount
+        {
+            get
+            {
+               return GetCAB()?.events?.inspections?.insp?.tot ?? 0;
+            }
+        }
+        public decimal OutOfServiceViolationRatio
+        {
+            get
+            {
+                decimal OOSViolationCount  = (decimal?)GetCAB()?.events?.inspections?.OOS?.tot?.ToObject<decimal>() ?? 0;
+
+                decimal InspectionCount = this.InspectionCount;
+                                
+                if(GetCAB() ==null)
+                {
+                    return -2;
+                }
+                if(InspectionCount ==0)
+                {
+                    return -1;
+                }
+                else
+                {
+                   return Math.Round(OOSViolationCount / InspectionCount, 4, MidpointRounding.AwayFromZero);
+                }
+            }
+        }
+        public int TotalBASICViolationWeight
+        {
+            get
+            {
+                var basicWeights = ((JArray)GetCAB()?.BASICWeights);
+
+                if(basicWeights == null)
+                {
+                    return 0;
+                }
+                var weights = basicWeights.Select(it => (decimal)it["baseWeight"]).ToList();
+
+
+                return (int)Math.Floor(weights.Sum());
+
             }
         }
 

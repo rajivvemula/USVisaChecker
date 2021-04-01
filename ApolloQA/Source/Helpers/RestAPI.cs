@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using ApolloQA.Source.Driver;
+using System.Linq;
 
 namespace ApolloQA.Source.Helpers
 {
@@ -18,18 +19,25 @@ namespace ApolloQA.Source.Helpers
         {
             return GET(URL, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
-        public static dynamic GET(String URL, AuthenticationHeaderValue Authorization)
+        public static dynamic GET(String URL, AuthenticationHeaderValue Authorization, Dictionary<string, string> headers = null)
         {
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = Authorization;
+            client.DefaultRequestHeaders.Add("User-Agent", "Apollo Automation");
 
+            if (headers != null)
+            {
+                foreach(var header in headers)
+                {
+                    client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                }
+            }
             DateTime start = DateTime.Now;
-
             HttpResponseMessage response = client.GetAsync(processURL(URL)).Result;
-
             TimeSpan requestTime = DateTime.Now - start;
+
             timeSpans.Add(($"[GET] {URL}", requestTime.TotalSeconds));
 
             client.Dispose();
@@ -146,12 +154,11 @@ namespace ApolloQA.Source.Helpers
         private static dynamic ConsumeResponse(HttpResponseMessage response, string URL, dynamic body=null)
         {
 
+
             if(!response.IsSuccessStatusCode)
             {
                 Log.Critical(processURL(URL));
-                Log.Critical(body);
-                
-
+                Log.Critical(body); 
             }
             response.EnsureSuccessStatusCode();
             String dataObjects = response.Content.ReadAsStringAsync().Result;

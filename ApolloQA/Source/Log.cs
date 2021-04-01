@@ -48,18 +48,16 @@ namespace ApolloQA
             else if (severity.Level <= currentSev)
             {
 
-                if (text is JObject)
-                {
-                    Log.Write(severity, $"[{severity.Name}] {text.ToString()}");
-                }
-                else if (text is Dictionary<string, string>  || text is Dictionary<String, String>)
+
+                if (text is Dictionary<string, string>  || text is Dictionary<String, String>)
                 {
                     Log.Write(severity, ((Dictionary<String, String>)text).Select(entry => $"{entry.Key}:{entry.Value}"));
                    
                 }
                 else if(text is IEnumerable<String> || text is IEnumerable<string>)
                 {
-                    Log.Write(severity, string.Join(", ", (IEnumerable<String>)text ));
+                    
+                    Log.Write(severity, string.Join(", \n", (IEnumerable<String>)text ));
                 }
                 else
                 {

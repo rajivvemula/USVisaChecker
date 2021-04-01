@@ -91,7 +91,7 @@ namespace ApolloQA.StepDefinition.Quote
 
             var quote = new Data.Entity.Quote(int.Parse(IDstr));
 
-            var engine = new Data.Engine(quote);
+            var engine = new Data.Rating.Engine(quote);
 
             ratingResult = engine.Run().ToList<JObject>();
             TestRatingWorksheet();

@@ -154,6 +154,7 @@ namespace ApolloQA.Source.Helpers
                                  Convert.ToBase64String(
                                      System.Text.ASCIIEncoding.ASCII.GetBytes(
                                          string.Format("{0}:{1}", "", session["AZUREDEVOPS_PAT"]))));
+            
             }
 
             else if (Environment.GetEnvironmentVariable("AZUREDEVOPS_PAT") != null)
@@ -165,9 +166,6 @@ namespace ApolloQA.Source.Helpers
 
                 return null;
             }
-
-            
-
 
         }
     }

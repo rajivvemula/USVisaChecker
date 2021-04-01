@@ -1,4 +1,5 @@
-﻿Feature: Rating Tables
+﻿@NoBrowser
+Feature: Rating Tables
 
 @ratingTests
 Scenario: Test rating manual against PDF
@@ -9,7 +10,7 @@ Scenario: Test rating manual against PDF
 
 	Examples: 
 	| state |
-#	| IL    |
+	| IL    |
     | SC	|
 #	| AZ    |
 #	| GA    |
@@ -18,7 +19,7 @@ Scenario: Test rating manual against PDF
 #	| NV    |
 #	| TN    |
 #	| TX    |
-#	| CA    |
+	| CA    |
 #	| SC    |
 
 @ratingTests
