@@ -30,6 +30,7 @@ stages:
   jobs: 
   - job: RunAutomatedTest
     displayName: 'Run Automated Tests'
+    timeoutInMinutes: 120
     steps:
     - template: 'azure-run-steps.yml'
       parameters: 
@@ -46,6 +47,7 @@ stages:
       environment: automation_qaint
 
   - job: RunAutomatedTest
+    timeoutInMinutes: 120
     displayName: 'Run Automated Tests'
     steps:
     - template: 'azure-run-steps.yml'
@@ -63,6 +65,8 @@ stages:
       environment: automation_qa2
 
   - job: RunAutomatedTest
+    timeoutInMinutes: 120
+
     displayName: 'Run Automated Tests'
     steps:
     - template: 'azure-run-steps.yml'
@@ -80,6 +84,7 @@ stages:
        
   
   - job: RunAutomatedTest
+    timeoutInMinutes: 120
     displayName: 'Run Automated Tests'
     steps:
     - template: 'azure-run-steps.yml'
