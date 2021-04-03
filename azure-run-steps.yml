@@ -81,7 +81,10 @@ steps:
       force-field-proxy-ida-client-secret: $(force-field-proxy-ida-client-secret)
       force-field-proxy-ida-username: $(force-field-proxy-ida-username)
       force-field-proxy-ida-password: $(force-field-proxy-ida-password)
+      CabApi-BaseUrl: $(CabApi-BaseUrl)
+      CabApi-Key: $(CabApi-Key)
       ENVIRONMENT_FILE: "${{ parameters.environmentLabel }}.env.json"
+
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
