@@ -76,8 +76,15 @@ namespace ApolloQA.StepDefinition.Quote
                     }
                     else
                     {
+                        try
+                        {
+                            field.setValue(fieldType, fieldValue);
+                        }
+                        catch (Exception ex)
+                        {
+                        Log.Critical($"Field Type {fieldType} fieldValue: {fieldValue}");
+                        }
 
-                        field.setValue(fieldType, fieldValue);
                     }
                 }
             

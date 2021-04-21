@@ -7,6 +7,7 @@ using TechTalk.SpecFlow.Assist;
 using ApolloQA.Source.Helpers;
 using System.Linq;
 
+
 namespace ApolloQA.StepDefinition
 {
     [Binding]
@@ -50,6 +51,7 @@ namespace ApolloQA.StepDefinition
         public void WhenUserSelectsDropdownOptionAtIndex(string DropdownDisplayText, int index)
         {
             Shared.GetDropdownField(DropdownDisplayText).SelectMatDropdownOptionByIndex(index);
+
         }
 
         [When(@"user waits '(.*)' seconds")]
@@ -201,7 +203,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user selects (.*) coverage with (.*) deductible of (.*)")]
         public void WhenUserSelectsCoverageWithDeductibleOf(string CoverageDisplayText, string DeductibleTypeDisplayText, string DeductilbeAmountDisplayText)
         {
-            Shared.GetCoverageCheckbox(CoverageDisplayText).Click();
+            Shared.GetCoverageCheckbox(CoverageDisplayText).setMattCheckboxState(true);
             Shared.GetCoverageLimitButton(CoverageDisplayText, DeductibleTypeDisplayText).Click();
             Shared.GetCoverageLimitDropdown(CoverageDisplayText, DeductibleTypeDisplayText).SelectMatDropdownOptionByText(DeductilbeAmountDisplayText);
             new SharedSteps().WhenUserWaitsForSpinnerToLoad();

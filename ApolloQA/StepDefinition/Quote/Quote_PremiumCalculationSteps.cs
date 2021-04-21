@@ -66,7 +66,7 @@ namespace ApolloQA.StepDefinition.Quote
             string premiumMonthly = Quote_Summary.PremiumMonthly.GetElementText();
             string premiumYearly = Quote_Summary.PremiumYearly.GetElementText();
 
-            if (!int.TryParse(string.Join("", premiumMonthly.Where(Char.IsDigit)), out int monthlyResult) || monthlyResult < 100)
+            if (!int.TryParse(string.Join("", premiumMonthly.Substring(0, premiumMonthly.IndexOf("/month")).Where(Char.IsDigit)), out int monthlyResult) || monthlyResult < 100)
             {
                 Functions.handleFailure($"Monthly Premium was not calculated - Result: {premiumMonthly}"); 
             }

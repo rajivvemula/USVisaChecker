@@ -65,11 +65,13 @@ namespace ApolloQA.Source.Driver
         public static void Refresh()
         {
             Setup.driver.Navigate().Refresh();
+            WaitForSpinnerToDisappear();
         }
 
         public static void Back()
         {
             Setup.driver.Navigate().Back();
+            WaitForSpinnerToDisappear();
         }
 
         //
@@ -110,12 +112,17 @@ namespace ApolloQA.Source.Driver
             }
             catch (Exception ex)
             {
-                ex.HelpLink = $"Locator: {ElementLocator}";
                 Functions.handleFailure($"Locator: {ElementLocator}", ex, optional);
                 return false;
             }
 
             return true;
+        }
+        public static bool GetIsDisabled(By elementLocator)
+        {
+            var element = FindElementWaitUntilVisible(elementLocator);
+
+            return element.Displayed;
         }
 
         public static string GetAttribute(By ElementLocator, string attributeName)
@@ -231,8 +238,16 @@ namespace ApolloQA.Source.Driver
                 highlight(target);
             }
 
-            //upon scroll and highlight to the element, the element would become stale for clicking
-            target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
+            try
+            {
+                //upon scroll and highlight to the element, the element would become stale for clicking
+                target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
+            }
+            catch(Exception ex)
+            {
+                Log.Error($"Locator: {by}");
+                throw ex;
+            }
 
             return target;
         }
@@ -331,6 +346,34 @@ namespace ApolloQA.Source.Driver
             var radioButton =FindElementWaitUntilPresent(RadioButtonLocator);
 
             return radioButton.Selected;
+        }
+
+        //
+        // Checkbox
+        //
+
+        public static void SetMattCheckboxState(By MattCheckBoxLocator, bool state)
+        {
+            var mattCheckBox = FindElementWaitUntilVisible(MattCheckBoxLocator);
+
+
+            while (GetCheckboxState(By.Id(mattCheckBox.GetAttribute("id") + "-input")) != state)
+            {
+                mattCheckBox.Click();
+            }
+
+        }
+        public static bool GetMattCheckboxState(By MattCheckBoxLocator)
+        {
+            var mattCheckBox = FindElementWaitUntilClickable(MattCheckBoxLocator);
+            return GetCheckboxState(By.Id(mattCheckBox.GetAttribute("id") + "-input"));
+        }
+
+        public static bool GetCheckboxState(By CheckBoxInputLocator)
+        {
+            var CheckboxInput = FindElementWaitUntilVisible(CheckBoxInputLocator);
+
+            return CheckboxInput.Selected;
         }
 
 

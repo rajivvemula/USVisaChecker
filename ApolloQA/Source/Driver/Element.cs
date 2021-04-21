@@ -71,6 +71,7 @@ namespace ApolloQA.Source.Driver
         {
             return UserActions.GetAttribute(locator, attributeName);
         }
+        public bool IsDisabled => UserActions.GetIsDisabled(locator);
 
         public string GetElementText()
         {
@@ -296,6 +297,14 @@ namespace ApolloQA.Source.Driver
             return UserActions.IsRadioButtonSelected(locator);
         }
 
+
+        //
+        //Checkbox button
+        //
+        public void setMattCheckboxState(bool state)
+        {
+            UserActions.SetMattCheckboxState(locator, state);
+        }
 
         //
         // TABLE HANDLING

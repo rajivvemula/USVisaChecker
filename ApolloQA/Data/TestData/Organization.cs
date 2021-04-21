@@ -52,7 +52,7 @@ namespace ApolloQA.Data.TestData
         }
 
 
-        public void CreateOrganization()
+        public Entity.Organization CreateOrganization()
         {
             parser.interpreter.SetVariable("KeywordId", this.classCodeKeyword.KeywordId);
             parser.interpreter.SetVariable("IndustryClassTaxonomy", this.classCodeKeyword.TaxonomyName);
@@ -70,6 +70,7 @@ namespace ApolloQA.Data.TestData
             this.organization= new Entity.Organization((int)response.id);
             this.classCodeKeyword = organization.ClassCodeKeyword;
             hydrateTool();
+            return organization;
         }
         public void OrganizationAddAddress(string state = "IL")
         {

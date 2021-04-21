@@ -4,6 +4,7 @@ using TechTalk.SpecFlow;
 using ApolloQA.Source.Driver;
 using System.IO;
 using ApolloQA.Source.Helpers;
+using System.Threading;
 
 namespace ApolloQA.StepDefinition
 {

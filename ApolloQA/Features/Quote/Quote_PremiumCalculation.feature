@@ -25,27 +25,32 @@ Scenario: Rate Calculation New Quote
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
-	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000             |
+	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000 lbs         | 10000             |
 	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
-	And user selects answer to Is this vehicle owned, financed, or leased? as Leased
+	And user selects answer to Is this vehicle owned, financed, or leased? as Owned
+	And user selects answer to Who holds the vehicle title/registration? as The Business
+	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
+	And user selects Collision coverage with Deductible deductible of $5,000
+	And user selects Comprehensive coverage with Deductible deductible of $5,000
+	And user clicks 'Save Vehicle' Button
+	And user waits for spinner to load
+	And user clicks 'Vehicle' Button
+	When user adds a new Vehicle with the following relevant values
+	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
+	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000 lbs         | 10000             |
+	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
+	And user selects answer to Is this vehicle owned, financed, or leased? as Owned
+	And user selects answer to Who holds the vehicle title/registration? as The Business
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
 	And user clicks 'Save Vehicle' Button
 	And user waits for spinner to load
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
-	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000             |
+	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000 lbs         | 10000             |
 	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
-	And user selects answer to Is this vehicle owned, financed, or leased? as Leased
-	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
-	And user clicks 'Save Vehicle' Button
-	And user waits for spinner to load
-	And user clicks 'Vehicle' Button
-	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
-	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000             | 10000             |
-	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
-	And user selects answer to Is this vehicle owned, financed, or leased? as Leased
+	And user selects answer to Is this vehicle owned, financed, or leased? as Owned
+	And user selects answer to Who holds the vehicle title/registration? as The Business
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
 	And user clicks 'Save Vehicle' Button
 	And user waits for spinner to load
@@ -87,6 +92,8 @@ Scenario: Rate Calculation New Quote
 	#Answer Operations (Radius of Operation)
 	When user clicks 'Operations' Sidetab
 	And user selects answer to What is the furthest any of your vehicles travel in any one direction from their home base? as 50 miles or less
+	And user enters answer to How many auto insurance claims did your business file in the last 3 years? as 0
+
 	And user clicks 'Next' Button
 	And user waits for spinner to load
 	

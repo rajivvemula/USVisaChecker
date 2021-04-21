@@ -46,6 +46,7 @@ namespace ApolloQA.Source.Helpers
             UserActions.Refresh();
         }
 
+
         public static string ParseURL(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
             foreach (var param in parameters)
