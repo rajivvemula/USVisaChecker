@@ -26,7 +26,6 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
 	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000 lbs         | 10000             |
-	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
 	And user selects answer to Is this vehicle owned, financed, or leased? as Owned
 	And user selects answer to Who holds the vehicle title/registration? as The Business
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
@@ -38,7 +37,6 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
 	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000 lbs         | 10000             |
-	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
 	And user selects answer to Is this vehicle owned, financed, or leased? as Owned
 	And user selects answer to Who holds the vehicle title/registration? as The Business
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
@@ -48,7 +46,6 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
 	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000 lbs         | 10000             |
-	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
 	And user selects answer to Is this vehicle owned, financed, or leased? as Owned
 	And user selects answer to Who holds the vehicle title/registration? as The Business
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
@@ -62,7 +59,6 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Driver with the following relevant values
 	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number |
 	| Miguel     | Acosta    | 10/26/1996    | IL                    | random                 |
-	#And user enters answer to What is your Inspection Count? as 0
 	And user selects answer to Exclude Driver? as No
 	And user selects answer to Has this driver had an accident or violation in the past 3 years, or a conviction in the past 5 years? as No
 	And user clicks 'Save Driver' Button
@@ -72,7 +68,6 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Driver with the following relevant values
 	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number |
 	| Miguel2    | Acosta    | 10/26/1996    | IL                    | random                 |
-	#And user enters answer to What is your Inspection Count? as 0
 	And user selects answer to Exclude Driver? as No
 	And user selects answer to Has this driver had an accident or violation in the past 3 years, or a conviction in the past 5 years? as No
 	And user clicks 'Save Driver' Button
@@ -82,7 +77,6 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Driver with the following relevant values
 	| First Name | Last Name | Date of Birth | Drivers License State | Drivers License Number |
 	| Miguel3    | Acosta    | 10/26/1996    | IL                    | random                 |
-	#And user enters answer to What is your Inspection Count? as 0
 	And user selects answer to Exclude Driver? as No
 	And user selects answer to Has this driver had an accident or violation in the past 3 years, or a conviction in the past 5 years? as No
 	And user clicks 'Save Driver' Button
