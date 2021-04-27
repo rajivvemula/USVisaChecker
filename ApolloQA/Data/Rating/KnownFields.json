@@ -1,11 +1,13 @@
 ﻿{
-  "BaseRateFactors": {
-    "source": "BaseRateFactors"
-  },
-  "Accident Prevention": {
-    "source": "AccidentPrevention"
-  },
   "Class Code": {
+    "type": "string",
+    "source": "VehicleClassCode"
+  },
+  "ClassCode": {
+    "type": "string",
+    "source": "VehicleClassCode"
+  },
+  "Predominant Class Code": {
     "type": "string",
     "source": "VehicleClassCode"
   },
@@ -56,17 +58,23 @@
     "source": "DateTime.Now.Year - root.Organization.YearBusinessStarted"
   },
   "Limit": {
-    "source": "TBD"
+    "source": "Limit.selectedLimits[0]",
+    "type": "Currency"
   },
   "Seating Capacity": {
-    "source": "TBD"
+    "source": "Vehicle.SeatingCapacity"
   },
   //CAB response
   "Inspection Count": {
     "source": "root.InspectionCount"
   },
   "Deductible": {
-    "source": "TBD"
+    "source": "Limit.selectedDeductibles.Count > 0 ? Limit.selectedDeductibles[0] : 0"
+  },
+  //default to false as per BUG 31745
+  "Combined Deductible": {
+    "source": "false"
+
   },
   //Preferred Trucking refer to CL.15
   //US 12237
@@ -81,30 +89,54 @@
     "source": "root.OutOfServiceViolationRatio"
   },
   "Stated Value": {
-    "source": "Vehicle.StatedValue"
+    "source": "Vehicle.StatedValue??0"
   },
   //CAB response
   "Total BASIC Violation Weight": {
     "source": "root.TotalBASICViolationWeight"
   },
   "Safety Features": {
-    "source": "TBD"
-  },
-  "Minimum Rating Value": {
-    "source": "TBD"
+    "source": "Vehicle.SafetyFeatures"
   },
   "Anti-Theft Category": {
-    "source": "TBD"
+    "source": "Vehicle.AntiTheft"
   },
   "Auto Coverage Type": {
-    "source": "TBD"
+    "source": "\"Physical Damage - Comprehensive\""
   },
-  "Schedule Rating": {
-    "source": "ScheduleRating"
+  "Driver Rating Plan": {
+    "source": "AlgorithmAssignment.DriverRatingPlan"
   },
-  "Policy Term Factor": {
-    "source": "PolicyTermFactor"
+  "Driver Points": {
+    "source": "Driver.GetPoints(root, AlgorithmAssignment.DriverRatingPlan)"
+  },
+  "Driver Age": {
+    "source": "Driver.Age"
+  },
+  "Increased Limit Group": {
+    "source": "AlgorithmAssignment.IncreasedLimitGroup"
+  },
+  "Combined Single Limit": {
+    "source": "Limit.selectedLimits[0]",
+    "type": "Currency"
+  },
+  "Bodily Injury Limit Per Person": {
+    "source": "Limit.selectedLimits[0]",
+    "type": "Currency"
+  },
+  "Bodily Injury Limit Per Occurrence": {
+    "source": "Limit.selectedLimits[1]",
+    "type": "Currency"
+  },
+  "Property Damage Limit Per Occurrence": {
+    "source": "Limit.selectedLimits[2]",
+    "type": "Currency"
+  },
+  //default to false as per paula
+  "Is Stacking": {
+    "source": "false"
   }
+
 }
   
 

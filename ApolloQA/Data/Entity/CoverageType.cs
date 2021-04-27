@@ -14,13 +14,14 @@ namespace ApolloQA.Data.Entity
         public string Name { get; private set; }
         public long Id { get; private set; }
         public bool isVehicleLevel { get; private set; }
-
+        public int SortOrder { get; private set; }
 
         public CoverageType(int Id)
         {
             var coverage = Get("Id", Id);
             this.Id = coverage["Id"];
             this.Name = coverage["TypeName"];
+            this.SortOrder = coverage["SortOrder"];
             if(vehicleLevelCoverages.Contains(Name))
             {
                 isVehicleLevel = true;
@@ -40,6 +41,8 @@ namespace ApolloQA.Data.Entity
             var coverage = Get("TypeName", CoverageTypeName);
             this.Id = coverage["Id"];
             this.Name = coverage["TypeName"];
+            this.SortOrder = coverage["SortOrder"];
+
             if (vehicleLevelCoverages.Contains(Name))
             {
                 isVehicleLevel = true;
@@ -56,7 +59,7 @@ namespace ApolloQA.Data.Entity
                              );
             if(result.Count == 0)
             {
-               throw Functions.handleFailure($"Property: {property} & criteria:{criteria} did not return any results");
+               throw Functions.handleFailure($"Property: {property} & criteria:{criteria} did not return any results. see CoverageType.Persisted to achieve consistent namning across coverages types");
             }
 
             return result[0];
@@ -78,9 +81,30 @@ namespace ApolloQA.Data.Entity
             {"OTC", "Comprehensive" },
             {"Other Than Collision", "Comprehensive" },
             {"Med Pay", "Medical Payments" },
-
-
+            {"UM BIPD", "Vehicle Uninsured Motorists" },
+            {"UIM BIPD", "Vehicle Underinsured Motorists" }
         };
+
+
+        public class Limit
+        {
+            public string? selectedDeductibleName;
+            public List<int> selectedDeductibles;
+            public string? selectedLimitName;
+            public List<int> selectedLimits;
+            public CoverageType coverageType;
+
+            public Limit(CoverageType coverageType, string? selectedDeductibleName, List<int> selectedDeductibles, string? selectedLimitName, List<int> selectedLimits)
+            {
+                this.coverageType = coverageType;
+                this.selectedDeductibleName = selectedDeductibleName;
+                this.selectedDeductibles = selectedDeductibles;
+                this.selectedLimitName = selectedLimitName;
+                this.selectedLimits = selectedLimits;
+            }
+
+
+        }
 
     }
 }

@@ -144,24 +144,36 @@ namespace ApolloQA.Source.Helpers
         public static IEnumerable<Dictionary<String, String>> parseExcel(String filePath, int headerRow = 0)
         {
             var tasks = new List<Task<Dictionary<String, String>>>();
-            using (SpreadsheetDocument doc = SpreadsheetDocument.Open(filePath, false))
+            try
             {
-                WorkbookPart workbookPart = doc.WorkbookPart;
-                WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
-                Row[] sheetData = worksheetPart.Worksheet.Elements<SheetData>().First().Elements<Row>().ToArray<Row>();
 
-                var header = sheetData[0].Elements<Cell>().Select(cell => extractCellText(workbookPart, cell)).ToArray<string>();
-
-                for (int rowIndex = 1; rowIndex < sheetData.Length; rowIndex++)
+            
+                using (SpreadsheetDocument doc = SpreadsheetDocument.Open(filePath, false))
                 {
-                    tasks.Add(parseRow(workbookPart, header, sheetData[rowIndex]));
+                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
+                    Row[] sheetData = worksheetPart.Worksheet.Elements<SheetData>().First().Elements<Row>().ToArray<Row>();
+
+                    var header = sheetData[0].Elements<Cell>().Select(cell => extractCellText(workbookPart, cell)).ToArray<string>();
+
+                    for (int rowIndex = 1; rowIndex < sheetData.Length; rowIndex++)
+                    {
+                        tasks.Add(parseRow(workbookPart, header, sheetData[rowIndex], filePath));
+
+                    }
+
+
 
                 }
 
-
-
+                return tasks.Select(it => it.Result);
             }
-            return tasks.Select(it => it.Result);
+            catch(Exception ex)
+            {
+                Log.Debug($"File-> {filePath}");
+                throw ex;
+            }
+          
 
 
 
@@ -219,7 +231,7 @@ namespace ApolloQA.Source.Helpers
             return result;
         }
 
-        private static async Task<Dictionary<String, String>> parseRow(WorkbookPart workbookPart, string [] header, Row row)
+        private static async Task<Dictionary<String, String>> parseRow(WorkbookPart workbookPart, string [] header, Row row, string filePath)
         {
             var cells = row.Elements<Cell>().ToArray<Cell>();
 
@@ -235,7 +247,16 @@ namespace ApolloQA.Source.Helpers
                 {
                     cell = new Cell();
                 }
-                dict.Add(header[i], extractCellText(workbookPart, cell));
+                try
+                {
+                    dict.Add(header[i], extractCellText(workbookPart, cell));
+
+                }
+                catch(Exception ex)
+                {
+                    Log.Debug($"File-> {filePath}");
+                    throw ex;
+                }
             }
             return dict;
         }
@@ -299,14 +320,21 @@ namespace ApolloQA.Source.Helpers
 
         }
 
-        public static string GetValidIllinoisDriversLicenseNumber()
+        public static string GetValidDriverLicense(string state)
         {
             //not a great implementation but it works
 
             char[] chars =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
             Random r = new Random();
 
-            string licenseNo = "" + chars[r.Next(chars.Length)];
+
+            string licenseNo = "";
+            
+            if(state.ToUpper() == "IL")
+            {
+                licenseNo = ""+chars[r.Next(chars.Length)];
+
+            }
 
             licenseNo += (r.Next(100, 1000).ToString()) + (r.Next(1000, 10000).ToString()) + (r.Next(1000, 10000).ToString());
 
@@ -361,14 +389,23 @@ namespace ApolloQA.Source.Helpers
         {
             return GetQuotedQuoteThroughAPI(ClassCodeKeyword.GetUsingKeywordName("Accounting Services"));
         }
+        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword, string state)
+        {
+            return GetQuotedQuoteThroughAPI(classCodeKeyword, state, new List<CoverageType> { classCodeKeyword.coverage ?? new CoverageType("BIPD") });
+        }
         public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword)
         {
-            return GetQuotedQuoteThroughAPI(classCodeKeyword, new List<CoverageType> { classCodeKeyword.coverage ?? new CoverageType("BIPD") });
+            return GetQuotedQuoteThroughAPI(classCodeKeyword, "IL", new List<CoverageType> { classCodeKeyword.coverage ?? new CoverageType("BIPD") });
         }
-        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword, List<CoverageType> coverages)
+        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword, string state, List<CoverageType> coverages)
         {
             var org = new Data.TestData.Organization(classCodeKeyword);
-            var quote = new Data.TestData.Quote(org, coverages);
+
+            foreach(var cover in coverages)
+            {
+                Log.Debug("cover name: " + cover.Name);
+            }
+            var quote = new Data.TestData.Quote(org, state, coverages);
 
 
 

@@ -95,6 +95,45 @@ namespace ApolloQA.Data.Entity
             }
 
         }
+        public IEnumerable<CoverageType.Limit> getLimits(Vehicle risk)
+        {
+
+            var coverages = this.GetProperty("selectedCoverages");
+
+            foreach (var coverage in coverages)
+            {
+                var coverageType = new CoverageType((int)coverage.coverageTypeId);
+
+                if (coverageType.isVehicleLevel)
+                {
+                    foreach (var riskEntry in coverage.riskCoverages)
+                    {
+                        if (riskEntry.riskId == risk.RiskId)
+                        {
+                            var limit  = new CoverageType.Limit(coverageType,
+                                                    riskEntry.selectedDeductibleName.ToObject<string?>(),
+                                                    riskEntry.selectedDeductibles.ToObject<List<int>>(),
+                                                    riskEntry.selectedLimitName.ToObject<string?>(),
+                                                    riskEntry.selectedLimits.ToObject<List<int>>()
+                                                    );
+                            yield return limit;
+                        }
+                    }
+                }
+                else
+                {
+                    var limit = new CoverageType.Limit(coverageType,
+                                                    coverage.selectedDeductibleName.ToObject<string?>(),
+                                                    coverage.selectedDeductibles.ToObject<List<int>>(),
+                                                    coverage.selectedLimitName.ToObject<string?>(),
+                                                    coverage.selectedLimits.ToObject<List<int>>()
+                                                    );
+                    yield return limit;
+                }
+
+            }
+
+        }
         public dynamic GetVehicleTypeRisk()
         {
             int riskTypeId = 1;
@@ -147,6 +186,14 @@ namespace ApolloQA.Data.Entity
             get
             {
                 return int.Parse(this["governingStateId"]);
+            }
+        }
+
+        public string GoverningStateCode
+        {
+            get
+            {
+                return PhysicalAddress.StateCode;
             }
         }
 
@@ -314,5 +361,61 @@ namespace ApolloQA.Data.Entity
             }
         }
 
+        private JObject _ScheduleModifiers;
+        public JObject ScheduleModifiers
+        {
+            get
+            {
+                if(_ScheduleModifiers == null)
+                {
+                    _ScheduleModifiers = this.GetProperty("scheduleModifiers");
+
+                }
+                return _ScheduleModifiers;
+            }
+        }
+
+        public decimal SAFETYORGANIZATION
+        {
+            get {
+                return ((decimal?)ScheduleModifiers["SAFETYORGANIZATION"]["adjustmentPercentage"])??0;
+           }
+        }
+        public decimal CLASSIFICATION
+        {
+            get
+            {
+                return ((decimal?)ScheduleModifiers["CLASSIFICATION"]["adjustmentPercentage"]) ?? 0;
+            }
+        }
+        public decimal MANAGEMENT
+        {
+            get
+            {
+                return ((decimal?)ScheduleModifiers["MANAGEMENT"]["adjustmentPercentage"])??0;
+            }
+        }
+        public decimal EMPLOYEES
+        {
+            get
+            {
+                return ((decimal?)ScheduleModifiers["EMPLOYEES"]["adjustmentPercentage"]) ?? 0;
+            }
+        }
+        
+        public decimal EQUIPMENT
+        {
+            get
+            {
+                return ((decimal?)ScheduleModifiers["EQUIPMENT"]["adjustmentPercentage"])??0;
+            }
+        }
+        public decimal ExperienceModifier
+        {
+            get
+            {
+                return ((decimal?)this.GetProperty("experienceModifier")["adjustmentPercentage"])??0;
+            }
+        }
     }
 }

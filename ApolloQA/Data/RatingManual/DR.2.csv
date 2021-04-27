@@ -1,0 +1,13 @@
+Criteria for Rating,Fleet,Unity,Trucker,Livery,For Hire Public,Standard
+Violations,1,1,1,1,1,1
+Chargeable Accidents,3,3,3,3,3,3
+Conviction: in past 1 year,10,10,10,10,10,10
+Conviction: in 2nd or 3rd past year,8,8,8,8,8,8
+Conviction: in 4th or 5th past year,3,3,3,3,3,3
+Unverifiable MVR,6,6,6,6,6,6
+Drivers license from outside United States,6,6,6,6,6,0
+Drivers license State different than state of applicant or policyholder address,1,0,2,1,1,0
+CDL Experience: Less than 1 Year,4,0,4,2,4,2
+CDL Experience: 1 to 2 Years,1,0,1,1,1,1
+Unreported Driver Accident (points in addition to Chargeable Accident Points),2,0,2,2,2,0
+Unreported Driver Inspection,1,0,1,1,1,0

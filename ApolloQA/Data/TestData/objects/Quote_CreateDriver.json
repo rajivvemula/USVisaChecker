@@ -8,12 +8,11 @@
     }
   },
   "dateOfBirth": "1965-10-26T04:00:00.000Z",
-  "stateProvinceId": 1,
+  "stateProvinceId": "@GoverningStateId",
   "stateProvince": {
-    "code": "IL",
-    "name": "Illinois"
+    "code": "@StateCode"
   },
-  "licenseNo": "P12332423333",
+  "licenseNo": "@LicenseNumber",
   "riskPartyId": "@OrganizationPartyId",
   "statusId": 0
 

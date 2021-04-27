@@ -1,18 +1,106 @@
 {
+  "All": {
+    "columns": {
+      "Class Code_Fleet Size_Seating Capacity_Veh icle Age Factor": "Class Code_Fleet Size_Seating Capacity_Vehicle Age Factor",
+      "ClassCode_Territory Factor": "Class Code_Territory Factor",
+      "Size Type_Territory Factors": "Size Type_Territory Factor",
+      "SeatingCapacity_Territory Factor": "Seating Capacity_Territory Factor"
+    }
+  },
+  "IN": {
+    "TT.1": {
+      "columns": {
+        "ZIP": "Zip Code"
+      }
+    },
+    "VA00062.SeatingCapacity_TerritoryFactors": {
+      "columns": {
+        "SeatingCapacity_Territory": "Seating Capacity_Territory Factor"
+      }
+    },
+    "UM00026.IncreasedSplitLimitFactors": {
+      "columns": {
+        "Increased Split Limit Factor": "Increased Limit Factor"
+      }
+    }
+
+  },
+  "TN": {
+    "TT.1": {
+      "columns": {
+        "ZIP": "Zip Code"
+      }
+    },
+    "VA00062.SeatingCapacity_TerritoryFactors": {
+      "columns": {
+        "SeatingCapacity_Territory": "Seating Capacity_Territory Factor"
+      }
+    },
+    "UM00026.IncreasedSplitLimitFactors": {
+      "columns": {
+        "Increased Split Limit Factor": "Increased Limit Factor"
+      }
+    }
+
+  },
+  "MO": {
+    "VA00062.SeatingCapacity_TerritoryFactors": {
+      "columns": {
+        "SeatingCapacity_Territory": "Seating Capacity_Territory Factor"
+      }
+    },
+    "UM00026.IncreasedSplitLimitFactors": {
+      "columns": {
+        "Increased Split Limit Factor": "Increased Limit Factor"
+      }
+    }
+
+  },
+  "GA": {
+    "VA00043.InspectionCount_TotalBASICViolationWeightFactors": {
+      "columns": {
+        "Total BASIC Violation Weight Lower Bound": "Total Basic Violation Weight Lower Bound",
+        "Total BASIC Violation Weight Upper Bound": "Total Basic Violation Weight Upper Bound",
+        "Inspection Count_Total BASIC Violation Weight Factor": "Inspection Count_Total Basic Violation Weight Factor"
+      }
+    },
+    "VA00065.InspectionCount_TotalBASICViolationWeightFactors": {
+      "columns": {
+        "Total BASIC Violation Weight Lower Bound": "Total Basic Violation Weight Lower Bound",
+        "Total BASIC Violation Weight Upper Bound": "Total Basic Violation Weight Upper Bound",
+        "Inspection Count_Total BASIC Violation Weight Factor": "Inspection Count_Total Basic Violation Weight Factor"
+      }
+    }
+  },
+  "CA": {
+    "VA00043.InspectionCount_TotalBASICViolationWeightFactors": {
+      "columns": {
+        "Total BASIC Violation Weight Lower Bound": "Total Basic Violation Weight Lower Bound",
+        "Total BASIC Violation Weight Upper Bound": "Total Basic Violation Weight Upper Bound",
+        "Inspection Count_Total BASIC Violation Weight Factor": "Inspection Count_Total Basic Violation Weight Factor"
+      }
+    },
+    "VA00065.InspectionCount_TotalBASICViolationWeightFactors": {
+      "columns": {
+        "Total BASIC Violation Weight Lower Bound": "Total Basic Violation Weight Lower Bound",
+        "Total BASIC Violation Weight Upper Bound": "Total Basic Violation Weight Upper Bound",
+        "Inspection Count_Total BASIC Violation Weight Factor": "Inspection Count_Total Basic Violation Weight Factor"
+      }
+    }
+  },
   "SC": {
-    "VA00062.ClassCode_FleetSize_SeatingCapacity_VehicleAgeFactors": {
+    "VA00043.InspectionCount_TotalBASICViolationWeightFactors": {
       "columns": {
-        "Class Code_Fleet Size_Seating Capacity_Veh icle Age Factor": "Class Code_Fleet Size_Seating Capacity_Vehicle Age Factor"
+        "Total BASIC Violation Weight Lower Bound": "Total Basic Violation Weight Lower Bound",
+        "Total BASIC Violation Weight Upper Bound": "Total Basic Violation Weight Upper Bound",
+        "Inspection Count_Total BASIC Violation Weight Factor": "Inspection Count_Total Basic Violation Weight Factor"
       }
     },
-    "VA00083.ClassCode_FleetSize_SeatingCapacity_VehicleAgeFactors": {
+    "VA00065.InspectionCount_TotalBASICViolationWeightFactors": {
       "columns": {
-        "Class Code_Fleet Size_Seating Capacity_Veh icle Age Factor": "Class Code_Fleet Size_Seating Capacity_Vehicle Age Factor"
-      }
-    },
-    "VA00084.ClassCode_FleetSize_SeatingCapacity_VehicleAgeFactors": {
-      "columns": {
-        "Class Code_Fleet Size_Seating Capacity_Veh icle Age Factor": "Class Code_Fleet Size_Seating Capacity_Vehicle Age Factor"
+        "Total BASIC Violation Weight Lower Bound": "Total Basic Violation Weight Lower Bound",
+        "Total BASIC Violation Weight Upper Bound": "Total Basic Violation Weight Upper Bound",
+        "Inspection Count_Total BASIC Violation Weight Factor": "Inspection Count_Total Basic Violation Weight Factor"
       }
     }
   },

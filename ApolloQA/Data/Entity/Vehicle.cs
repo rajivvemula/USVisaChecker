@@ -152,7 +152,13 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return int.Parse(this.GetProperty("SeatingCapacity"));
+                var value = (string?) this.GetProperty("SeatingCapacity");
+
+                if(string.IsNullOrWhiteSpace(value))
+                {
+                    return 0; 
+                }
+                return int.Parse(value);
             }
         }
         public decimal? StatedValue
@@ -162,6 +168,19 @@ namespace ApolloQA.Data.Entity
                 return this.GetProperty("StatedAmount");
             }
         }
-
+        public bool AntiTheft
+        {
+            get
+            {
+                return this.GetProperty("Antitheft")??false;
+            }
+        }
+        public bool SafetyFeatures
+        {
+            get
+            {
+                return this.GetProperty("SafetyFeatures")??false;
+            }
+        }
     }
 }

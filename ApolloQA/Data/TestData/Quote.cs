@@ -21,12 +21,15 @@ namespace ApolloQA.Data.TestData
         List<JObject> vehicles = new List<JObject>();
         List<JObject> drivers = new List<JObject>();
 
+        string state;
+
         List<Entity.CoverageType> coverages;
         public Quote(int quoteId)
         {
             parser = new Parser();
             quoteEntity = new Entity.Quote(quoteId);
             organization = new Organization(quoteEntity.Organization, parser);
+
         }
         public Quote(Organization organization, List<Entity.CoverageType> coverageTypes) : this(organization, "IL", coverageTypes) { }
 
@@ -35,16 +38,22 @@ namespace ApolloQA.Data.TestData
             this.organization = organization;
             this.parser = organization.parser;
             this.coverages = coverageTypes;
+            this.state = state;
             CreateQuote(state);
         }
 
         private JObject CreateQuote(string state="IL")
         {
+            parser.interpreter.SetVariable("TomorrowDate", DateTime.Now.AddDays(1).ToString("O"));
+            parser.interpreter.SetVariable("YearLaterDate", DateTime.Now.AddDays(1).AddYears(1).ToString("O"));
+
             var body = parser.GetObject("QuoteCreate");
             var response = RestAPI.POST("/quote/create", body);
 
             parser.interpreter.SetVariable("ApplicationId", response.id);
             parser.interpreter.SetVariable("QuoteId", response.id);
+            parser.interpreter.SetVariable("StateCode", state);
+
 
             this.quoteEntity = new Entity.Quote((int)response.id);
 
@@ -76,7 +85,14 @@ namespace ApolloQA.Data.TestData
         {
             parser.interpreter.SetVariable("VinNumber", Functions.GetRandomVIN());
             parser.interpreter.SetVariable("ClassCode", organization.classCodeKeyword.ClassCode);
+
+            //Log.Debug("class code: " + organization.classCodeKeyword.ClassCode);
+
+
             var body = parser.GetObject("Quote_CreateVehicle");
+
+            //Log.Debug("create: " + body);
+
             var response = RestAPI.POST("/vehicle", body);
             parser.interpreter.SetVariable("VehicleRiskId", response.riskId);
             vehicles.Add(response);
@@ -92,6 +108,8 @@ namespace ApolloQA.Data.TestData
             var body = parser.GetObject("Quote_AddVehicle");
 
             ((JObject)((JArray)body)[0]["outputMetadata"]).Add("QuestionResponses", AnswersHydrator.Vehicles(quoteEntity, vehicles[0]));
+
+            //Log.Debug("add to quote: " + body);
 
             var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk", body);
 
@@ -126,6 +144,7 @@ namespace ApolloQA.Data.TestData
 
         public JObject CreateDriver()
         {
+            parser.interpreter.SetVariable("LicenseNumber", Functions.GetValidDriverLicense(state));
             var body = parser.GetObject("Quote_CreateDriver");
             var response = RestAPI.POST("/driver", body);
             parser.interpreter.SetVariable("DriverRiskId", response.riskId);
@@ -170,7 +189,7 @@ namespace ApolloQA.Data.TestData
                     body.Merge(parser.GetObject($"Quote_Coverages/{coverage.Name}"));
                 }
             }
-            
+            Log.Debug("coverage: "+body);
             var response = RestAPI.POST($"quote/{quoteEntity.Id}/limits", body);
 
             return response;

@@ -13,14 +13,13 @@ Scenario: Test rating manual against PDF
 	| IL    |
     | SC	|
 #	| AZ    |
-#	| GA    |
-#	| IN    |
-#	| MO    |
+	| GA    |
+	| IN    |
+	| MO    |
 #	| NV    |
-#	| TN    |
+	| TN    |
 #	| TX    |
 	| CA    |
-#	| SC    |
 
 @ratingTests
 Scenario: Test rating manual against CSV
@@ -35,13 +34,12 @@ Scenario: Test rating manual against CSV
     | SC	|
 #	| AZ    |
 #	| GA    |
-#	| IN    |
+	| IN    |
 #	| MO    |
 #	| NV    |
 #	| TN    |
 #	| TX    |
-#	| CA    |
-#	| SC    |
+	| CA    |
 
 
 #this is the string used to find all the tables within each state's manual
@@ -57,6 +55,7 @@ Scenario: Test rating manual against CSV
 #IN - 54-81, 85, 88, 90, 92, 94, 96-100, 102-105, 111, 116-2358
 #MO - 54-81, 85, 88, 90, 92, 94, 96-100, 102-105, 111, 116-2354
 #NV - 54-81, 85, 88, 90, 92, 94, 96-100, 102-105, 111, 116-1773
-#TN - 54-81, 85, 88, 90, 92, 94, 96-100, 102-105, 111, 116-2317
+#TN - 54-81, 85, 88, 90, 92, 94, 96-100, 102-105, 111, 116-2317   
+#     Special Tables: 267-277, 503-504, 545-561, 683-684, 685-687, 723-727, 792-793, 795-797, 1121-1123, 1181-1190, 1230-1241, 1332-1333, 1465-1467, 1480-1496, 1504-1505, 1547-1551, 1814-1815, 1926-1928
 #TX - 54, 81, 85, 88, 90, 90, 94, 96-100, 102-105, 111, 116-2535
 #

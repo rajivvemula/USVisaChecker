@@ -1,0 +1,35 @@
+{
+  "IL": {
+    "Uninsured Motorists BI": "UM00003",
+    "Underinsured Motorists BI": "UM00004",
+    "Uninsured Motorists PD": "UM00006",
+    "Hired Car BIPD - Truckers": "OR00001",
+    "Hired Car BIPD - All Other": "OR00002",
+    "Hired Car Physical Damage": "OR00003",
+    "Non-Owned BIPD": "OR00004",
+    "Trailer Interchange": "OR00005",
+    "Garagekeepers": "OR00006",
+    "Additional Insured - Named Entity": "OR00007",
+    "Additional Insured - Blanket": "OR00008",
+    "Waiver of Subrogation": "OR00009",
+    "Drive Other Car BIPD": "OR00011",
+    "Drive Other Car Collision": "OR00012",
+    "Drive Other Car Other Than Collision": "OR00013",
+    "Drive Other Car Medical Payments": "OR00014",
+    "Pollution": "OR00019"
+  },
+  "CA": {
+    "Uninsured Motorists BI": "UM00021",
+    "Underinsured Motorists BI": "UM00021",
+    "Uninsured Motorists PD": "UM00014"
+  },
+  "GA": {
+    "Uninsured Motorists BIPD": "UM00026"
+  },
+  "IN": {
+    "Uninsured Motorists BI": "UM00026",
+    "Underinsured Motorists BI": "UM00026"
+
+  }
+}
+

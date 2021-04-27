@@ -5,6 +5,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
+using System.IO;
 
 namespace ApolloQA.Data.Entity
 {
@@ -32,7 +33,10 @@ namespace ApolloQA.Data.Entity
         }
         public Dictionary<String, dynamic> GetProperties()
         {
-            return SQL.executeQuery("SELECT *  FROM [risk].[Driver] where Id = @Id;", (("@Id", $"{this.Id}")))[0];
+            return SQL.executeQuery(@"SELECT Driver.*, State.Code as StateCode 
+                                    FROM [risk].[Driver] Driver 
+                                    LEFT JOIN location.StateProvince State on State.Id = Driver.StateProvinceId
+                                    where Driver.Id = @Id;", (("@Id", $"{this.Id}")))[0];
         }
         public void SetProperties(params (String key, dynamic value)[] fields)
         {
@@ -77,6 +81,17 @@ namespace ApolloQA.Data.Entity
                 return this.GetProperty("DateOfBirth");
             }
         }
+        public int Age
+        {
+            get
+            {
+                int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+                int dob = int.Parse(DateOfBirth.ToString("yyyyMMdd"));
+                int age = (now - dob) / 10000;
+
+                return age;
+            }
+        }
         public string LicenseNo
         {
             get
@@ -105,6 +120,201 @@ namespace ApolloQA.Data.Entity
                 }
             }
             return null;
+        }
+
+        public List<Incident> GetAccidents(Quote quote)
+        {
+            var result = new List<Incident>();
+
+            var risk = ((JArray)quote.GetProperty("risks")).FirstOrDefault(it => it["riskId"].ToObject<long>() == this.RiskId);
+
+            var incidents = (JArray)risk["outputMetadata"]["DriverHistory"]["accidents"];
+
+
+            foreach(var incident in incidents)
+            {
+                result.Add(new Incident
+                                (
+                                    "Accident",
+                                    incident["date"].ToObject<DateTimeOffset>(),
+                                    incident["state"].ToString(),
+                                    incident["reason"].ToString(), 
+                                    this
+                                )
+                            );
+            }
+            return result;
+        }
+        public List<Incident> GetViolations(Quote quote)
+        {
+            var result = new List<Incident>();
+
+            var risk = ((JArray)quote.GetProperty("risks")).FirstOrDefault(it => it["riskId"].ToObject<long>() == this.RiskId);
+
+            var incidents = (JArray)risk["outputMetadata"]["DriverHistory"]["violations"];
+
+
+            foreach (var incident in incidents)
+            {
+                result.Add(new Incident
+                                (
+                                    "Violation",
+                                    incident["date"].ToObject<DateTimeOffset>(),
+                                    incident["state"].ToString(),
+                                    incident["reason"].ToString(),
+                                    this
+                                )
+                            );
+            }
+            return result;
+        }
+        public List<Incident> GetConvictions(Quote quote)
+        {
+            var result = new List<Incident>();
+
+            var risk = ((JArray)quote.GetProperty("risks")).FirstOrDefault(it => it["riskId"].ToObject<long>() == this.RiskId);
+
+            var incidents = (JArray)risk["outputMetadata"]["DriverHistory"]["convictions"];
+
+
+            foreach (var incident in incidents)
+            {
+                result.Add(new Incident
+                                (
+                                    "Conviction",
+                                    incident["date"].ToObject<DateTimeOffset>(),
+                                    incident["state"].ToString(),
+                                    incident["reason"].ToString(),
+                                    this
+                                )
+                            );
+            }
+            return result;
+        }
+        public int GetPoints(Quote quote, string DriverRatingPlan)
+        {
+            int resultPoints = 0;
+            List<Dictionary<string, string>> DR2 = Functions.parseCSV(Path.Join(Setup.SourceDir, "/Data/RatingManual/DR.2.csv"));
+
+            var year = 365;
+            var three_years = year * 3;
+            var five_years = year * 5;
+
+
+            foreach (var violation in GetViolations(quote))
+            {
+                
+                if((DateTime.Now - violation.Date).TotalDays< three_years)
+                {
+                    var row = DR2.Find(it => it["Criteria for Rating"] == "Violations");
+
+                    resultPoints += int.Parse(row[DriverRatingPlan]);
+                }
+            }
+
+            foreach (var accident in GetAccidents(quote))
+            {
+                if(accident.ReasonCode == "ANANF")
+                {
+                    continue;
+                }
+
+                if ((DateTime.Now - accident.Date).TotalDays < three_years)
+                {
+                    var row = DR2.Find(it => it["Criteria for Rating"] == "Chargeable Accidents");
+
+                    resultPoints += int.Parse(row[DriverRatingPlan]);
+                }
+            }
+           
+            foreach (var conviction in GetConvictions(quote))
+            {
+                Dictionary<string, string> row = null;
+                if ((DateTime.Now - conviction.Date).TotalDays < year)
+                {
+                    row = DR2.Find(it => it["Criteria for Rating"] == "Conviction: in past 1 year");
+                }
+                else if ((DateTime.Now - conviction.Date).TotalDays < three_years)
+                {                    
+                    row = DR2.Find(it => it["Criteria for Rating"] == "Conviction: in 2nd or 3rd past year");
+                }
+                else if ((DateTime.Now - conviction.Date).TotalDays < five_years)
+                {
+                    row = DR2.Find(it => it["Criteria for Rating"] == "Conviction: in 4th or 5th past year");
+                }
+                if(row == null)
+                {
+                    throw new Exception("Conviction row was not found in DR.2");
+                }
+                resultPoints += int.Parse(row[DriverRatingPlan]);
+
+            }
+
+           
+            if (this.GetProperty("StateCode") != quote.GoverningStateCode)
+            {
+                var row = DR2.Find(it => it["Criteria for Rating"] == "Drivers license State different than state of applicant or policyholder address");
+
+                resultPoints += int.Parse(row[DriverRatingPlan]);
+            }
+            
+            if(quote.GetQuestionResponse("CDL") is var CDL && CDL!= null && (string)CDL!="0")
+            {
+                Dictionary<string, string> row = null;
+
+                if (CDL == "1")
+                {
+                    row = DR2.Find(it => it["Criteria for Rating"] == "CDL Experience: Less than 1 Year");
+                }
+                else if (CDL == "2")
+                {
+                    row = DR2.Find(it => it["Criteria for Rating"] == "CDL Experience: 1 to 2 Years");
+                }
+
+                resultPoints += int.Parse(row[DriverRatingPlan]);
+
+
+            }
+
+            //needs implementation
+            //
+            //Unverifiable MVR 
+            //Unreported Driver Accident (points in addition to Chargeable Accident Points) 
+            //Unreported Driver Inspection
+            //Drivers license from outside United States
+
+            return resultPoints;
+
+        }
+
+
+
+
+
+
+        public class Incident
+        {
+            public string Type { get; }
+            public DateTimeOffset Date { get;  }
+            public string StateCode { get;  }
+            public string ReasonCode { get;  }
+            public Driver Driver { get;}
+
+            public Incident(string type, DateTimeOffset date, string stateCode, string reasonCode)
+            {
+                this.Type = type;
+                this.Date = date;
+                this.StateCode = stateCode;
+                this.ReasonCode = reasonCode;
+            }
+            public Incident(string type, DateTimeOffset date, string stateCode, string reasonCode, Driver driver)
+            {
+                this.Type = type;
+                this.Date = date;
+                this.StateCode = stateCode;
+                this.ReasonCode = reasonCode;
+                this.Driver = driver;
+            }
         }
 
 

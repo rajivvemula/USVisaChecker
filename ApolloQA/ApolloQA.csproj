@@ -6,9 +6,6 @@
 	<UserSecretsId>1f2a3f51-b841-4600-b502-0e1c7709bb0d</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Rating\Algorithms - Copy.feature.cs" />
-  </ItemGroup>
 
 
 	<ItemGroup>
@@ -67,6 +64,9 @@
 	<ItemGroup>
 	  <None Update="ApolloQAReportTemplate.cshtml">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="dev4.env.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="qaint.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -75,13 +75,13 @@ namespace ApolloQA.Data.TestData
             {"VehicleTitleOwner",           "Business" },
             {"VehicleTitleOwnerIndividual", "Myself"},
             {"VehicleDiffState",            false },
-            {"VehicleUse",                  "Delivery/Catering "    },
+            {"VehicleUse",                  "Delivery/Catering  "    },
             {"GoodsOrMaterialsRetail",      false},
             {"GoodsOrMaterialsBlueCollar",  false },
             {"TrailerOwnedFinancedLeased",   "Owned" },
             {"TrailerDiffState",             false },
             {"TrailerTitleOwner",            "Business" },
-
+            {"VehicleOwner1Address",         "@Address"} ,
 
             //
             //Drivers
@@ -250,10 +250,14 @@ namespace ApolloQA.Data.TestData
                 if (question.ContainsKey("id"))
                 {
                     obj.Add("questionId", question["id"].ToObject<long>());
+                    obj.Add("questionType", question["questionType"].ToObject<int>());
+
                 }
                 else
                 {
                     obj.Add("questionId", question["questionId"].ToObject<long>());
+                    obj.Add("questionType", (int)SQL.executeQuery($"SELECT QuestionType  FROM [question].[QuestionDefinition] where Id = {question["questionId"]};")[0]["QuestionType"]);
+
                 }
 
                 obj.Add("isHidden", question["isHidden"].ToObject<bool>());

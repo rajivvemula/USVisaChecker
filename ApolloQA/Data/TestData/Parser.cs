@@ -48,8 +48,19 @@ namespace ApolloQA.Data.TestData
                 //this here is extracting the actual variable name
                 string variableName = jsonString.Substring(startIndex, length);
 
+                //variableName = variableName.Trim('\\');
+
                 //using the interpreter, get the variable's stored value
-                object value = interpreter.Eval(variableName);
+                object value;
+                try
+                {
+                     value= interpreter.Eval(variableName);
+                }
+                catch(Exception ex)
+                {
+                    Log.Critical($"error evaluating Variable: {variableName}");
+                    throw ex;
+                }
 
                 //see interpreter here: https://github.com/davideicardi/DynamicExpresso
 

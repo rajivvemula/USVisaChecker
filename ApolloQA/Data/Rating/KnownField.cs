@@ -16,14 +16,14 @@ namespace ApolloQA.Data.Rating
         private static readonly dynamic KnownFields = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine($"{Setup.SourceDir}", $"Data/Rating/KnownFields.json")).ReadToEnd());
         
         public readonly string Name;
-        public readonly string Source;
-        public string TypeName;
+        public string Source;
+        public string? TypeName;
 
         public KnownField(string name, string source, string? typeName = null)
         {
             this.Name = name;
             this.Source = source;
-            TypeName = typeName;
+            this.TypeName = typeName;
 
         }
         public static KnownField GetKnownField(string name)
@@ -70,7 +70,7 @@ namespace ApolloQA.Data.Rating
         }
         public class Resolvable
         {
-            private KnownField KnownField;
+            public KnownField KnownField;
             private Engine Engine;
             public string Name
             {
@@ -87,7 +87,7 @@ namespace ApolloQA.Data.Rating
             public Type Type { get; set; }
             public dynamic Value { get; set; }
             public String parsedValue { get; set; }
-            public String TypeName => Type?.Name ?? "Null";
+            public String TypeName => KnownField?.TypeName ?? Type?.Name ?? "Null";
 
             public Resolvable(Engine engine, KnownField knownField)
             {
@@ -196,6 +196,13 @@ namespace ApolloQA.Data.Rating
                 }
                 return risk;
             }
+
+            private decimal BaseRateFactors
+            {
+                get {
+                    return decimal.Parse(this.Engine.getTable($"{this.Engine.interpreter.Eval("CoverageCode")}.BaseRateFactors")[0]["Base Rate Factor"]);
+                }
+            }
             private int VehicleClassCode
             {
                 get
@@ -205,26 +212,7 @@ namespace ApolloQA.Data.Rating
                 }
             }
 
-            private decimal ScheduleRating
-            {
-                get
-                {
-                    return 1;
-                }
-            }
-            private decimal PolicyTermFactor
-            {
-                get
-                {
-                    var ratableObj = this.Engine.root.GetCurrentRatableObject();
-                    var lifespan = ratableObj.TimeTo - ratableObj.TimeFrom;
-
-                    this.parsedValue = $"{lifespan.TotalDays} / 365";
-
-
-                    return decimal.Parse(lifespan.TotalDays.ToString()) / 365;
-                }
-            }
+            
             private int? Territory
             {
                 get
@@ -239,6 +227,7 @@ namespace ApolloQA.Data.Rating
                     }
                     var zip = SQL.executeQuery($"SELECT PostalCode FROM [location].[Address] where Id = {locationID}")[0]["PostalCode"];
                     var data = Engine.getTable("TT.1");
+                    
 
                     if (int.TryParse(data.Find(row => row["Zip Code"] == zip)?["Territory"], out int value))
                     { return value; }
@@ -320,13 +309,6 @@ namespace ApolloQA.Data.Rating
                     return 1;
                 }
             }
-            private decimal IncreasedLimitFactor
-            {
-                get
-                {
-                    return 1;
-                }
-            }
             private string BillingType{
                 get
                 {
@@ -349,7 +331,38 @@ namespace ApolloQA.Data.Rating
                     return false;
                 }
 
-            }            
+            }  
+            
+            private decimal DriverRatingFactor
+            {
+                get
+                {
+                    return 1;
+                }
+            }
+            private decimal FacultativeReInsuranceAdjustmentFactor
+            {
+                get
+                {
+                    return 1;
+                }
+            }
+            private decimal ExperienceRatingFactor
+            {
+                get
+                {
+                    return 1;
+                }
+            }
+            private decimal RenewalRateCapFactor
+            {
+                get
+                {
+                    return 1;
+                }
+            }
+
+
         }
     }   
     

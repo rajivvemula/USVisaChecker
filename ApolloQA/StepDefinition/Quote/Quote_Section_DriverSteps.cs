@@ -49,7 +49,7 @@ namespace ApolloQA.StepDefinition.Quote
                     switch (fieldDisplayName)
                     {
                         case "Drivers License Number":
-                            fieldValue = Functions.GetValidIllinoisDriversLicenseNumber();
+                            fieldValue = Functions.GetValidDriverLicense("IL");
                             break;
                         default:
                             Functions.handleFailure(new NotImplementedException($"Field {fieldDisplayName} random value hasn't been implemented"));

@@ -22,16 +22,9 @@ namespace ApolloQA.StepDefinition.Rating
         {
             var classCodeKeyword = ClassCodeKeyword.GetUsingAlgorithmCode(algorithmCode, state);
 
-            quote = Functions.GetQuotedQuoteThroughAPI(classCodeKeyword);
+            quote = Functions.GetQuotedQuoteThroughAPI(classCodeKeyword, state);
 
-            double totalTime = 0;
-            foreach(var timespan in RestAPI.timeSpans)
-            {
-                Log.Debug($"[{timespan.seconds.ToString("0.0000")}] [{timespan.key}]");
-                totalTime += timespan.seconds;
-            }
 
-            Log.Debug("Total Time spent on API " + totalTime.ToString("0.0000"));
         }
 
 
@@ -40,7 +33,7 @@ namespace ApolloQA.StepDefinition.Rating
         {
             var classCodeKeyword = ClassCodeKeyword.GetUsingKeywordName(Keyword);
 
-            Functions.GetQuotedQuoteThroughAPI(classCodeKeyword);
+            Functions.GetQuotedQuoteThroughAPI(classCodeKeyword, state);
 
            /* double totalTime = 0;
             foreach (var timespan in RestAPI.timeSpans)
@@ -49,7 +42,7 @@ namespace ApolloQA.StepDefinition.Rating
                 totalTime += timespan.seconds;
             }
 
-            Log.Debug("Total Time spent on API " + totalTime.ToString("0.0000"))*/;
+            Log.Debug("Total Time spent on API " + totalTime.ToString("0.0000"));*/
 
         }
 
@@ -58,16 +51,16 @@ namespace ApolloQA.StepDefinition.Rating
         {
             quote = new EntityQuote(QuoteId);
 
-            Log.Debug(quote.GetCAB());
 
 
         }
 
+
         [When(@"expected values are gathered")]
         public void WhenExpectedValuesAreGathered()
         {
-            Expected = new Engine(quote).Run().ToList<JObject>();
-          
+            Expected = new Engine(quote).Run();
+            Expected.ForEach(it => Log.Debug(it));
         }
 
         List<string> errors = new List<string>();
@@ -86,15 +79,13 @@ namespace ApolloQA.StepDefinition.Rating
                 var vehicle = new Vehicle(expectedResult["Vehicle"]["Id"].ToObject<int>());
 
                 var actualResult = (JObject)Actual[0]["results"].FirstOrDefault(it => it["entityKey"].ToString() == $"VehicleEntity|{vehicle.Id}" && 
-                                                                                     it["coverageName"].ToString() == expectedResult["CoverageCode"].ToString()
+                                                                                     it["coverageName"].ToString().ToLower().Contains(expectedResult["CoverageCode"].ToString().ToLower())
                                                                               );
 
                 if(actualResult == null)
                 {
-                    errors.Add($"Expected Results for Vehicle id: {vehicle.Id} | {vehicle.ToString()} & Coverage Code: { expectedResult["CoverageCode"]} were not found the worksheet");
-                    continue;
+                    throw new Exception($"Expected Results for Vehicle id: {vehicle.Id} | {vehicle} & Coverage Code: { expectedResult["CoverageCode"]} were not found the worksheet");
                 }
-
                 if (actualResult["premium"].ToObject<decimal>() != expectedResult["TotalPremium"].ToObject<decimal>())
                 {
                     errors.Add($"Expected Premium: { expectedResult["TotalPremium"]} does not equal actual Premium: {actualResult["premium"]} for Vehicle: {vehicle.ToString()} & Coverage Code: { expectedResult["CoverageCode"]}");
@@ -107,6 +98,15 @@ namespace ApolloQA.StepDefinition.Rating
                     var expectedFactor = item.Value;
                     var nameUI = ((JArray)expectedFactor["NameUI"]).ToObject<List<string>>();
 
+                    if(expectedFactor?["displayOnly"] is var displayOnly && displayOnly!= null && displayOnly.ToObject<bool>())
+                    {
+                        continue;
+                    }
+
+                    if(!nameUI.Any())
+                    {
+                        continue;
+                    }
                     var actualFactor = actualFactors.FirstOrDefault(actual => nameUI.Contains(actual["rule"]["Label"].ToString()));
 
                     if(actualFactor == null)
@@ -120,9 +120,9 @@ namespace ApolloQA.StepDefinition.Rating
 
                     if (nameUI.Contains("Policy Term Factor"))
                     {
-                        if (!mathOperation.Contains(((JArray)expectedFactor["KnownFields"])[0]["parsedValue"].ToString()))
+                        if (!mathOperation.Contains(expectedFactor["parsedValue"].ToString()))
                         {
-                            errors.Add($"Expected Factor Value for {item.Key} value: {((JArray)expectedFactor["KnownFields"])[0]["parsedValue"]} did not match value in {mathOperation}");
+                            errors.Add($"Expected Factor Value for {item.Key} value: {expectedFactor["parsedValue"]} did not match value in {mathOperation}");
                         }
 
 
@@ -130,12 +130,26 @@ namespace ApolloQA.StepDefinition.Rating
                     }
 
                     decimal factorValue;
+
+                    if(string.IsNullOrWhiteSpace(mathOperation))
+                    {
+                        errors.Add($"Expected Factor Value for factor {item.Key} value: {expectedFactor["Value"]} did not equal (blank)");
+                        continue;
+                    }
+
                     try
                     {
-                        string factorString = mathOperation.Substring(mathOperation.IndexOf("Factor:") + 8);
-                        factorString = factorString.Substring(0, factorString.IndexOf(')'));
+                        if (mathOperation.Contains("StatedValue"))
+                        {                            
+                            factorValue = decimal.Parse(mathOperation.Substring(mathOperation.IndexOf(":")+1).Trim().Trim(')'));
+                        }
+                        else
+                        {
+                            string factorString = mathOperation.Substring(mathOperation.IndexOf("Factor:") + 8);
+                            factorString = factorString.Substring(0, factorString.IndexOf(')'));
 
-                        factorValue = decimal.Parse(factorString);
+                            factorValue = decimal.Parse(factorString);
+                        }
                     }
                     catch
                     {
@@ -144,9 +158,9 @@ namespace ApolloQA.StepDefinition.Rating
                     }
 
                     
-                    if (factorValue != expectedFactor["factor"].ToObject<decimal>())
+                    if (factorValue != expectedFactor["Value"].ToObject<decimal>())
                     {
-                        errors.Add($"Expected Factor Value for factor {item.Key} value: {expectedFactor["factor"]} did not equal {factorValue}");
+                        errors.Add($"Expected Factor Value for factor {item.Key} value: {expectedFactor["Value"]} did not equal {factorValue}");
                     }
                    
                 }
@@ -155,7 +169,10 @@ namespace ApolloQA.StepDefinition.Rating
             }
             Log.Debug(errors);
 
-
+            if(errors.Find(it=> it.Contains("Expected Premium")) is var error && error!= null)
+            {
+                Functions.handleFailure(error);
+            }
 /*            foreach (var item in Expected)
             {
                 Log.Debug(item);

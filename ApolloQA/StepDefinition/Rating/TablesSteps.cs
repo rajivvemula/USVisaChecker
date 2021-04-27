@@ -41,17 +41,28 @@ namespace ApolloQA.StepDefinition.Rating
 
             foreach (var file in files)
             {
-                //ignoring any json files in the directory
-                if (file.Name.Contains(".json"))
+                //ignoring any json or temps files in the directory
+                if (file.Name.Contains(".json") || file.Name.Contains("~"))
                 {
                     continue;
                 }
                 var tableName = file.Name.Substring(0, file.Name.LastIndexOf('.'));
 
+                //ignoring algorithm tables
+                if(tableName.IndexOf('.') == -1)
+                {
+                    continue;
+                }
+
                 manual.Add(tableName, new JArray());
               
                 var persistedRows = (JArray)PersistedData?[state]?[tableName]?["rows"];
-                var persistedColumns = (JObject)PersistedData?[state]?[tableName]?["columns"];
+
+                var persistedColumns = (JObject)PersistedData["All"]["columns"].DeepClone();
+
+                //Log.Debug($"table name: {tableName}");
+                persistedColumns.Merge((JObject)PersistedData?[state]?[tableName]?["columns"]);
+
 
                 var table = getTable(state, tableName);
                 
@@ -101,7 +112,6 @@ namespace ApolloQA.StepDefinition.Rating
                 }               
 
             }
-            File.WriteAllText(testResultDir + "ParsedRatingTables.json", manual.ToString());
         }
         [Given(@"(.*) csv is parsed into json object")]
         public void GivenCsvIsParsedIntoJsonObject(string state)
@@ -109,6 +119,12 @@ namespace ApolloQA.StepDefinition.Rating
             this.state = state;
 
             var RatingTables = Functions.parseCSV(Path.Combine(Source.Driver.Setup.SourceDir, @$"Data\RatingManual\csv\{state}.csv"));
+
+
+            if (!Directory.Exists(testResultDir))
+            {
+                Directory.CreateDirectory(testResultDir);
+            }
 
             manual = new JObject();
 
@@ -165,18 +181,18 @@ namespace ApolloQA.StepDefinition.Rating
 
             foreach (var table in tables)
             {
-                if(ActualManual.ContainsKey(table["Name"]))
+               /* //Richard taking care of this bug, there are Dupplicate DR01 & DT.2
+                if (ActualManual.ContainsKey(table["Name"]) && (table["Name"]== "DR.2" || table["Name"] == "DT.2"))
                 {
                     continue;
-                }
+                }*/
                 ActualManual.Add(table["Name"], JArray.FromObject(GetTable((long)table["Id"])));
             }
 
-            File.WriteAllText(testResultDir + "SystemRatingTables.json", ActualManual.ToString());
 
         }
 
-        private JObject errors = new JObject() { { "dataSize", new JArray() }, { "missingTable", new JArray() }, { "missingColumn", new JArray() }, { "incorrectValue", new JArray() } };
+        private JObject errors = new JObject() { { "dataSize", new JObject() }, { "missingTable", new JArray() }, { "missingColumn", new JObject() }, { "incorrectValue", new JObject() } };
 
 
         [When(@"both manuals are compared")]
@@ -198,16 +214,52 @@ namespace ApolloQA.StepDefinition.Rating
                     continue;
                 }
 
+                
+
                 //table in the system
                 var actualTable = (JArray)ActualManual[table.Key];
                 //table in the source of truth manual
                 var expectedTable =(JArray) table.Value;
+
+                //check if the table has any content
+                if (actualTable.Count()==0)
+                {
+                    description["message"] = $"the System is missing content in table: {table.Key}";
+                    ((JArray)errors["missingTable"]).Add(description);
+
+                    continue;
+                }
 
                 //
                 // We want to sort both tables to make sure we're comparing correctly
                 //
                 sortTablesIdentically(ref expectedTable, ref actualTable, table.Key);
 
+                /*                if (expectedTable.Select(row => row.Count()).Min() -1 != actualTable.Select(row => row.Count()).Min())
+                                {
+                */
+                bool missingColumn = false;
+                foreach (var column in (JObject)expectedTable[0])
+                {
+                    if (column.Key == "Row")
+                    {
+                        continue;
+                    }
+                    if (!((JObject)actualTable[0]).ContainsKey(column.Key))
+                    {
+                        description["message"] = $"the System is missing expected Column [{column.Key}] at table {table.Key}";
+                        addError("missingColumn", table.Key, description.DeepClone());
+                        missingColumn = true;
+                    }
+
+                }
+                if(missingColumn)
+                {
+                    continue;
+                }
+
+                   /* continue;
+                }*/
 
                 var expectedRowCount = expectedTable.Count();
                 var actualRowCount = actualTable.Count();
@@ -220,69 +272,67 @@ namespace ApolloQA.StepDefinition.Rating
                     {
                         row.Remove("Row");
                     }
-                    
-                    
-                    var differences= JsonDifferentiator.Differentiate(actualTable, expectedTable);
+
+
+
+                    JArray differenc = this.IdentifyDifferences(expectedTable, actualTable , table.Key);
                     description["difference"] = new JObject() { { "missing", new JArray() }, { "additional", new JArray() } };
 
-
-                    //loop through the difference and identify missing or additional rows
-                    foreach (JObject difference in differences)
+                    if(actualTable.Count()<expectedTable.Count())
                     {
-                        if(difference.Properties().Where(it => it.Name.Contains('-')).Count()>1)
-                        {
-                            ((JArray)description["difference"]["additional"]).Add(difference);
+                        description["difference"]["missing"] = differenc;
 
-                        }
-                        if (difference.Properties().Where(it => it.Name.Contains('+')).Count() > 1)
-                        {
-                            ((JArray)description["difference"]["missing"]).Add(difference);
-
-                        }
                     }
+                    else
+                    {
+                        description["difference"]["additional"] = differenc;
+
+                    }
+
+                    /* var differences = JsonDifferentiator.Differentiate(actualTable, expectedTable);
+                     //loop through the difference and identify missing or additional rows
+                     foreach (JObject difference in differences)
+                     {
+                         if(difference.Properties().Where(it => it.Name.Contains('-')).Count() > 1)
+                         {
+                             ((JArray)description["difference"]["additional"]).Add(difference);
+
+                         }
+                         if (difference.Properties().Where(it => it.Name.Contains('+')).Count() > 1)
+                         {
+                             ((JArray)description["difference"]["missing"]).Add(difference);
+
+                         }
+                     }*/
+
                     description["message"] = $"Expected row Count: {expectedTable.Count()}     Actual row Count: {actualTable.Count()}";
 
-                    if(((JArray)description["difference"]["missing"]).Count >20 || ((JArray)description["difference"]["additional"]).Count > 20)
+                    if (differenc.Count > 30)
                     {
                         description["difference"]["missing"] = "Too Many Records";
                         description["difference"]["additional"] = "Too Many Records";
 
                     }
-                    ((JArray) errors["dataSize"]).Add(description);
+                    addError("dataSize", table.Key, description.DeepClone());
+
                     continue;
                 }
 
-                if(expectedTable.Select(row=> row.Count()).Min() != actualTable.Select(row => row.Count()).Min())
-                {
-                    foreach(var column in (JObject)expectedTable[0])
-                    {
-                        if(column.Key == "Row")
-                        {
-                            continue;
-                        }
-                        if(!((JObject)actualTable[0]).ContainsKey(column.Key))
-                        {
-                            description["message"] = $"the System is missing expected Column [{column.Key}] at table {table.Key}";
-                            ((JArray)errors["missingColumn"]).Add(description.DeepClone());
-                        }
-                       
-                    }
-                    
-                    continue;
-                }
+               
 
                 //loop through each row in the table from the source of truth manual
                 foreach ((JObject value, int index) expectedRow in expectedTable.Select((value,index) => (value, index)))
                 {
                     //in every iteraiton, load the row content as part of description in case there's an error
-                    description["row"]= expectedRow.value.DeepClone();
+                    description["ExpectedRow"]= expectedRow.value.DeepClone();
                     
                     //load the corresponding row from the system
                     var actualRow = (JObject)actualTable[expectedRow.index];
 
+                    description["ActualRow"] = actualRow.DeepClone();
 
                     //iterate through each column on the row from the source of truth manual
-                    foreach(var column in expectedRow.value)
+                    foreach (var column in expectedRow.value)
                     {
                         //There is an additional row in the source of truth manual denoting the row number in the csv file.
                         //so we will ignore this row
@@ -296,7 +346,8 @@ namespace ApolloQA.StepDefinition.Rating
                         {
                             
                             description["message"] = $"the System is missing expected Column [{column.Key}] at row {expectedRow.value["Row"]} at table {table.Key}";
-                            ((JArray)errors["missingColumn"]).Add(description.DeepClone());
+                            addError("missingColumn", table.Key, description.DeepClone());
+
                             continue;
                             
                         }
@@ -338,7 +389,7 @@ namespace ApolloQA.StepDefinition.Rating
                             if (expectedValue != actualValuePercent)
                             {
                                 description["message"] = $" percentage - the System is missing expected value {expectedValue} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValuePercent ?? "NULL"}";
-                                ((JArray)errors["incorrectValue"]).Add(description.DeepClone());
+                                addError("incorrectValue", table.Key, description.DeepClone());
                             }
                         }
                         //compare if the value is integer type
@@ -349,13 +400,13 @@ namespace ApolloQA.StepDefinition.Rating
                                 if (actualValue == null || expectedValueInt != actualValue?.ToObject<int>())
                                 {
                                     description["message"] = $" int - the System is missing expected value {expectedValueInt} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue ?? "NULL"}";
-                                    ((JArray)errors["incorrectValue"]).Add(description.DeepClone());
+                                    addError("incorrectValue", table.Key, description.DeepClone());
                                 }
                             }
                             catch
                             {
                                 description["message"] = $@" error parsing integer value from the system: {actualValue} the System is missing expected value {expectedValueInt} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key}";
-                                ((JArray)errors["incorrectValue"]).Add(description);
+                                addError("incorrectValue", table.Key, description.DeepClone());
                             }
                         }
                         //compare if the value is decimal type
@@ -366,38 +417,39 @@ namespace ApolloQA.StepDefinition.Rating
                                 if (expectedValueDec != actualValue.ToObject<decimal>())
                                 {
                                     description["message"] = $" decimal - the System is missing expected value {expectedValueDec} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue ?? "NULL"}";
-                                    ((JArray)errors["incorrectValue"]).Add(description.DeepClone());
+                                    addError("incorrectValue", table.Key, description.DeepClone());
                                 }
                             }
                             catch
                             {
                                 description["message"] = $@" error parsing decimal value from the system: {actualValue} the System is missing expected value {expectedValueDec} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key}";
-                                ((JArray)errors["incorrectValue"]).Add(description);
+                                addError("incorrectValue", table.Key, description.DeepClone());
                             }
                         }
                         //compare if the value is currency type
-                        /*else if (expectedValue.Contains('$'))
+                        else if (expectedValue.Contains('$'))
                         {
                             try
                             {
                                 if (decimal.Parse(expectedValue.Replace("$", string.Empty)) != actualValue.ToObject<decimal>())
                                 {
                                     description["message"] = $"money - the System is missing expected value {decimal.Parse(expectedValue.Replace("$", string.Empty))} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
-                                    ((JArray)errors["incorrectValue"]).Add(description.DeepClone());
+                                    addError("incorrectValue", table.Key, description.DeepClone());
                                 }
                             }
                             catch
                             {
                                 description["message"] = $@" error parsing currency value from the system: {actualValue} - the System is missing expected value {decimal.Parse(expectedValue.Replace("$", string.Empty))} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
-                                ((JArray)errors["incorrectValue"]).Add(description);
+                                addError("incorrectValue", table.Key, description.DeepClone());
                             }
-                        }*/
-                        /*//compare if the value + or infinite 
-                        else if(expectedValue =="+" )
+                        }
+                        //compare if the value + or infinite 
+                        else if (expectedValue == "+")
                         {
                             try
                             {
-                                if (int.MaxValue != actualValue.ToObject<int>())
+                                List<string> correctMax = new List<string>() { "+", int.MaxValue.ToString(), "9999999", "9999998" };
+                                if (!correctMax.Contains(actualValue.ToObject<string>()))
                                 {
                                     description["message"] = $" max value - the System is missing expected value {int.MaxValue} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
                                 }
@@ -405,15 +457,42 @@ namespace ApolloQA.StepDefinition.Rating
                             catch
                             {
                                 description["message"] = $@" error parsing '+' value from the system: {actualValue} - the System is missing expected value {int.MaxValue}(int.MaxValue) at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
-                                ((JArray)errors["incorrectValue"]).Add(description);
+                                addError("incorrectValue", table.Key, description.DeepClone());
                             }
-                        }*/
+                        }
+                        else if (expectedValue.ToLower() == "yes" || expectedValue.ToLower() == "no")
+                        {
+                            var expectedYes = new List<string> { "Yes","yes", "true", "True" };
+                            var expectedNo = new List<string> { "No", "no", "false", "False" };
+
+                            if(expectedValue.ToLower() == "yes" && !expectedYes.Contains(actualValue.ToString()))
+                            {
+                                description["message"] = $" boolean - the System is one of  expected value {string.Join(", ", expectedYes)} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
+                                addError("incorrectValue", table.Key, description.DeepClone());
+
+                            }
+                            if (expectedValue == "no" && !expectedNo.Contains(actualValue.ToString()))
+                            {
+                                description["message"] = $" boolean - the System is one of expected value {string.Join(", ", expectedNo)} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
+                                addError("incorrectValue", table.Key, description.DeepClone());
+
+                            }
+
+                        }
+                        else if(string.IsNullOrEmpty(expectedValue))
+                        {
+                            if(actualValue.ToString() != "0")
+                            {
+                                description["message"] = $" empty - the System is missing expected value 0 at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
+
+                            }
+                        }
                         //general comparison - Compares plain strings
                         else if(expectedValue != actualValue.ToString())
                         {
                             
                             description["message"] = $" general - the System is missing expected value {expectedValue} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
-                            ((JArray)errors["incorrectValue"]).Add(description.DeepClone());
+                            addError("incorrectValue", table.Key, description.DeepClone());
                         }
                      
                     }
@@ -422,9 +501,22 @@ namespace ApolloQA.StepDefinition.Rating
             }
 
         }
+
+        private void addError(string type, string tableName, JToken description)
+        {
+           if(! ((JObject)errors[type]).ContainsKey(tableName))
+           {
+                ((JObject)errors[type]).Add(tableName, new JArray());
+           }
+           ((JArray)errors[type][tableName]).Add(description);
+        }
+
         [Then(@"there shouldn't be any differences")]
         public void ThenThereShouldnTBeAnyDifferences()
         {
+            File.WriteAllText(testResultDir + "SystemRatingTables.json", ActualManual.ToString());
+            File.WriteAllText(testResultDir + "ParsedRatingTables.json", manual.ToString());
+
             //since errors are stored by catogories. we have to check each category.
             //if any category contains errors. this test fails
             bool error = false;
@@ -523,7 +615,17 @@ namespace ApolloQA.StepDefinition.Rating
 
             // out of both tables find the row with the least amount of columns
             int failSafeColCount = actualIndexedTable.Count == 0? 0: actualIndexedTable.Select(row => row.Count()).Min();
-            List<string> columnsToOrderBy = ((JObject)actualIndexedTable[0]).Properties().Select(it => it.Name).OrderBy(self => self).ToList();
+            List<string> columnsToOrderBy;
+
+            try
+            {
+                columnsToOrderBy = ((JObject)actualIndexedTable[0]).Properties().Select(it => it.Name).OrderBy(self => self).ToList();
+            }
+            catch(Exception ex)
+            {
+                Log.Error($"{tableKey} failed to order content: {actualIndexedTable}");
+                throw ex;
+            }
 
 
 
@@ -570,8 +672,8 @@ namespace ApolloQA.StepDefinition.Rating
             Directory.CreateDirectory(testResultDir + $@"\Sorted\actualTable");
             Directory.CreateDirectory(testResultDir + $@"\Sorted\expectedTable");
 
-            File.WriteAllText(testResultDir + $@"\Sorted\actualTable\{tableKey}.json", actualTable.ToString());
-            File.WriteAllText(testResultDir + $@"\Sorted\expectedTable\{tableKey}.json", expectedTable.ToString());
+            File.WriteAllText(testResultDir + $@"\Sorted\actualTable\{tableKey}.json", actualIndexedTable.ToString());
+            File.WriteAllText(testResultDir + $@"\Sorted\expectedTable\{tableKey}.json", expectedIndexedTable.ToString());
         }
 
 
@@ -583,23 +685,26 @@ namespace ApolloQA.StepDefinition.Rating
                 foreach (var column in row)
                 {
                     var value = column.Value.ToString();
-                    if (value == "+")
+                    if (value == "+" || value == "9999999" || value == "9999998")
                     {
                         row[column.Key] = int.MaxValue;
                     }
                     else if(value.Contains('$'))
                     {
-                        decimal decVal= decimal.Parse(string.Join("", value.Where(c => Char.IsDigit(c))));
-                        
-                        var decString = decVal.ToString("0.00000000");
-                        decString = decString.Remove(decString.Length - 6);
+                        int intVal= int.Parse(string.Join("", value.Where(c => Char.IsDigit(c))));
 
-                        row[column.Key] = decString;
+                        var intString = intVal.ToString();
+
+                        row[column.Key] = intString;
+                    }
+                    else if (int.TryParse(value.Replace(",", ""), out int intVal))
+                    {
+                        row[column.Key] = intVal.ToString();
                     }
                     else if (decimal.TryParse(value, out decimal decVal))
                     {
-                        var decString=  decVal.ToString("0.00000000");
-                        decString = decString.Remove(decString.Length - 6);
+                        var decString=  decVal.ToString("0.0000");
+                        //decString = decString.Remove(decString.Length - 4);
 
                         row[column.Key] = decString;
                     }
@@ -632,6 +737,136 @@ namespace ApolloQA.StepDefinition.Rating
                 resultingTable.Add(table[index]);
             }
             table= resultingTable;
+        }
+
+        public JArray IdentifyDifferences(JArray expectedTable, JArray actualTable, string tableKey)
+        {
+           //sortTablesIdentically(ref expectedTable, ref actualTable, tableKey);
+
+
+           var expectedIndexedTable = FormatTable((JArray)expectedTable.DeepClone());
+           var actualIndexedTable = FormatTable((JArray)actualTable.DeepClone());
+
+            // out of both tables find the row with the least amount of columns
+            int failSafeColCount = actualIndexedTable.Count == 0 ? 0 : actualIndexedTable.Select(row => row.Count()).Min();
+            List<string> columnNames;
+
+            try
+            {
+                columnNames = ((JObject)actualIndexedTable[0]).Properties().Select(it => it.Name).OrderBy(self => self).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{tableKey} failed to order content: {actualIndexedTable}");
+                throw ex;
+            }
+
+
+
+            //make sure our fail safe is in accordance to both tables
+            if (expectedIndexedTable.Select(row => row.Count()).Min() is int count && count < failSafeColCount)
+            {
+                failSafeColCount = count;
+                columnNames = ((JObject)expectedIndexedTable[0]).Properties().Select(it => it.Name).OrderBy(self => self).ToList();
+
+            }
+
+            //remove Row & Index columns
+            failSafeColCount -= columnNames.RemoveAll(col => col == "Row" || col == "index");
+
+
+
+            JArray missingRows = new JArray();
+            if (expectedIndexedTable.Count() > actualIndexedTable.Count())
+            {
+                foreach(var expectedRow in expectedIndexedTable)
+                {
+                    JObject matchingRow=null;
+                    foreach(var actualRow in actualIndexedTable)
+                    {
+                        bool match = true;
+
+                        int failSafeColumn = Math.Min(expectedRow.Count(), actualRow.Count());
+                        for (int i = 0; i < failSafeColCount; i++ )
+                        {
+                            var columnName = columnNames[i];
+                            var actualValue = actualRow[columnName].ToString();
+                            try
+                            {
+                                if (expectedRow[columnName].ToString() != actualValue)
+                                {
+                                    match = false;
+                                    break;
+                                }
+                            }
+                            catch(Exception ex)
+                            {
+                                Log.Error($"{tableKey} - error comparing actual: \n{actualRow} \n--- expected: \n{expectedRow}");
+                                throw ex;
+                            }
+                            
+                        }
+                        if(match)
+                        {
+                            matchingRow = (JObject)actualRow;
+                            break;
+                        }
+                    }
+
+                    if(matchingRow == null)
+                    {
+                        missingRows.Add(expectedRow);   
+                    }
+                   
+                }
+
+                return missingRows;
+            }
+
+            JArray additionalRows = new JArray();
+
+            foreach (var actualRow in actualIndexedTable)
+            {
+                JObject matchingRow = null;
+                foreach (var expectedRow in expectedIndexedTable)
+                {
+                    bool match = true;
+
+                    int failSafeColumn = Math.Min(expectedRow.Count(), actualRow.Count());
+                    for (int i = 0; i < failSafeColCount; i++)
+                    {
+                        var columnName = columnNames[i];
+                        var expectedValue = expectedRow[columnName].ToString();
+                        try
+                        {
+                            if (actualRow[columnName].ToString() != expectedValue)
+                            {
+                                match = false;
+                                break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error($"{tableKey} - error comparing actual: \n{actualRow} \n--- expected: \n{expectedRow}");
+                            throw ex;
+                        }
+
+                    }
+                    if (match)
+                    {
+                        matchingRow = (JObject)actualRow;
+                        break;
+                    }
+                }
+
+                if (matchingRow == null)
+                {
+                    additionalRows.Add(actualRow);
+                }
+
+            }
+            return additionalRows;
+            
         }
 
 

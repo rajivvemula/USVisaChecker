@@ -48,7 +48,7 @@ namespace ApolloQA.Features
 
                     if (displayName == "Drivers License Number" && value == "Random")
                     {
-                        value = Functions.GetValidIllinoisDriversLicenseNumber();
+                        value = Functions.GetValidDriverLicense("IL");
                         featureContext["Last Random " + displayName] = value;
                     }
 

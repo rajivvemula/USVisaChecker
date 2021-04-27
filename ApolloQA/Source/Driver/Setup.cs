@@ -91,6 +91,15 @@ namespace ApolloQA.Source.Driver
         [AfterScenario]
         public void AfterScenario(ScenarioContext _scenarioContext)
         {
+            double totalTime = 0;
+            foreach (var timespan in RestAPI.timeSpans)
+            {
+                Log.Debug($"[{timespan.seconds.ToString("0.0000")}] [{timespan.key}]");
+                totalTime += timespan.seconds;
+            }
+
+            Log.Debug("Total Time spent on API " + totalTime.ToString("0.0000"));
+
             IEnumerable<string> testCases = _scenarioContext.ScenarioInfo.Tags.Where(it => it.ToLower().StartsWith("tc:")).Select(it => it.Substring(3));
             List<int> testCaseids = new List<int>();
 
@@ -138,6 +147,8 @@ namespace ApolloQA.Source.Driver
                     }
                 }
             }
+
+
         }
         [BeforeFeature]
         public static void BeforeFeature(FeatureContext featureContext)
