@@ -114,7 +114,8 @@ namespace ApolloQA.Data.Entity
                                                     riskEntry.selectedDeductibleName.ToObject<string?>(),
                                                     riskEntry.selectedDeductibles.ToObject<List<int>>(),
                                                     riskEntry.selectedLimitName.ToObject<string?>(),
-                                                    riskEntry.selectedLimits.ToObject<List<int>>()
+                                                    riskEntry.selectedLimits.ToObject<List<int>>(),
+                                                    (JArray)riskEntry.questionResponses
                                                     );
                             yield return limit;
                         }
@@ -126,7 +127,8 @@ namespace ApolloQA.Data.Entity
                                                     coverage.selectedDeductibleName.ToObject<string?>(),
                                                     coverage.selectedDeductibles.ToObject<List<int>>(),
                                                     coverage.selectedLimitName.ToObject<string?>(),
-                                                    coverage.selectedLimits.ToObject<List<int>>()
+                                                    coverage.selectedLimits.ToObject<List<int>>(),
+                                                    (JArray)coverage.questionResponses
                                                     );
                     yield return limit;
                 }

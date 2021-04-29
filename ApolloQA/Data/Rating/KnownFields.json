@@ -135,6 +135,9 @@
   //default to false as per paula
   "Is Stacking": {
     "source": "false"
+  },
+  "Add On Coverage": {
+    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")"
   }
 
 }

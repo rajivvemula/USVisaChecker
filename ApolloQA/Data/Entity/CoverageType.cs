@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ApolloQA.Source.Helpers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ApolloQA.Data.Entity
 
@@ -93,16 +94,38 @@ namespace ApolloQA.Data.Entity
             public string? selectedLimitName;
             public List<int> selectedLimits;
             public CoverageType coverageType;
+            public JArray questionResponses;
 
-            public Limit(CoverageType coverageType, string? selectedDeductibleName, List<int> selectedDeductibles, string? selectedLimitName, List<int> selectedLimits)
+            public Limit(CoverageType coverageType, 
+                        string? selectedDeductibleName, 
+                        List<int> selectedDeductibles, 
+                        string? selectedLimitName,
+                        List<int> selectedLimits,
+                        JArray questionResponses
+                        )
             {
                 this.coverageType = coverageType;
                 this.selectedDeductibleName = selectedDeductibleName;
                 this.selectedDeductibles = selectedDeductibles;
                 this.selectedLimitName = selectedLimitName;
                 this.selectedLimits = selectedLimits;
+                this.questionResponses = questionResponses;
+
             }
 
+            public object? getQuestionResponse(string questionAlias)
+            {
+                var questionResponse = questionResponses.FirstOrDefault(it => it["questionAlias"].ToString() == questionAlias);
+
+                if(questionResponse==null)
+                {
+                    throw new Exception($"Question Response not found for alias: {questionAlias}");
+                }
+                else
+                {
+                    return ((JValue)questionResponse["response"])?.Value;
+                }
+            }
 
         }
 

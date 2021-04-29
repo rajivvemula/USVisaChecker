@@ -239,6 +239,19 @@
     "source": "IncreasedLimitFactor",
     "CustomCalculation": true
   },
+  "Increased Limits Factor": {
+    "KnownFields": [
+      "Increased Limit Group",
+      "Vehicle Type",
+      "GVW/GCW",
+      "Is Stacking",
+      "Fleet Size",
+      "Seating Capacity"
+    ],
+    "nameUI": [ "Increased Limit Factor" ],
+    "source": "IncreasedLimitFactor",
+    "CustomCalculation": true
+  },
   "Facultative Re-insurance Adjustment": {
     "KnownFields": [],
     "nameUI": [ "Facultative Re-insurance Adjustment" ],
@@ -331,7 +344,10 @@
     "nameUI": [ "UM Exposure Base" ],
     "source": "UMExposureBase",
     "CustomCalculation": true
+  },
+  "IsAddOnFactors": {
+    "KnownFields": [ "Add On Coverage" ],
+    "nameUI": [ "Add On Factor" ]
   }
-
 
 }
