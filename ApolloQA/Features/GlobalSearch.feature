@@ -14,7 +14,7 @@ Scenario Outline: TC 25643 Global Search - Search Items
 	| StatusDescription   |
 	| SourceSystem        |
 	| PolicyHolderName    |
-#broken?	| AgencyOrganization  |
+	| AgencyOrganization  |
 	| CarrierOrganization |
 	| AdjusterName        |
 	| TaxIdLastFour       |

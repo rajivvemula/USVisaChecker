@@ -104,7 +104,7 @@ namespace ApolloQA.StepDefinition
                     GlobalSearch.SearchInput.clearTextField();
                     GlobalSearch.SearchInput.setText("biBERK");
                     GlobalSearch.SearchResult.assertElementIsVisible();
-                    var agencyOrganization = GlobalSearch.SearchResultLabel().GetElementText();
+                    var agencyOrganization = GlobalSearch.SearchResultLabel(3).GetElementText();
                     Assert.TextContains(agencyOrganization, "biBERK");
                     break;
                 case "CARRIERORGANIZATION":
@@ -163,7 +163,7 @@ namespace ApolloQA.StepDefinition
                     var claim = Data.Entity.Claim.GetClaim();
                     GlobalSearch.SearchInput.setText($"{claim.ClaimNumber}");
                     GlobalSearch.SearchResult.assertElementIsVisible();
-                    var claimNumber = GlobalSearch.SearchResultLabel(2).GetElementText();
+                    var claimNumber = GlobalSearch.GetResultText($"Claim {claim.ClaimNumber}").GetElementText();
                     Assert.TextContains(claimNumber, $"Claim {claim.ClaimNumber}");
                     break;
                 default:
