@@ -147,7 +147,15 @@ namespace ApolloQA.Data.Rating
                             var _resolvable = _factor.GetResolvable(this);
                             _resolvable.Value = premium;
                             _resolvable.parsedValue = premium.ToString("C0");
-                            ((JObject)rateResults["Factors"]).Add(factorName, JObject.FromObject(_resolvable));
+
+                            if (((JObject)rateResults["Factors"]).ContainsKey(factorName))
+                            {
+                                ((JObject)rateResults["Factors"])[factorName] = JObject.FromObject(_resolvable);
+                            }
+                            else
+                            {
+                                ((JObject)rateResults["Factors"]).Add(factorName, JObject.FromObject(_resolvable));
+                            }
                             continue;
                         }
 

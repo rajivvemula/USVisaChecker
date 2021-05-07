@@ -20,6 +20,7 @@ namespace ApolloQA.StepDefinition.Rating
         [Given(@"quote for '(.*)' and '(.*)' is set to Quoted")]
         public void GivenQuoteForIsSetToQuoted(string state, string algorithmCode)
         {
+
             var classCodeKeyword = ClassCodeKeyword.GetUsingAlgorithmCode(algorithmCode, state);
 
             quote = Functions.GetQuotedQuoteThroughAPI(classCodeKeyword, state);
@@ -35,14 +36,6 @@ namespace ApolloQA.StepDefinition.Rating
 
             Functions.GetQuotedQuoteThroughAPI(classCodeKeyword, state);
 
-           /* double totalTime = 0;
-            foreach (var timespan in RestAPI.timeSpans)
-            {
-                Log.Debug($"[{timespan.seconds.ToString("0.0000")}] [{timespan.key}]");
-                totalTime += timespan.seconds;
-            }
-
-            Log.Debug("Total Time spent on API " + totalTime.ToString("0.0000"));*/
 
         }
 
@@ -60,7 +53,7 @@ namespace ApolloQA.StepDefinition.Rating
         public void WhenExpectedValuesAreGathered()
         {
             Expected = new Engine(quote).Run();
-            Expected.ForEach(it => Log.Debug(it));
+            Log.Debug($"{JArray.FromObject(Expected)}");
         }
 
         List<string> errors = new List<string>();

@@ -6,6 +6,7 @@ using Azure.Security.KeyVault.Secrets;
 using Azure.Core;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Azure.KeyVault;
+using Azure.Security.KeyVault.Secrets;
 
 namespace ApolloQA.Source.Helpers
 {
@@ -16,7 +17,7 @@ namespace ApolloQA.Source.Helpers
         {
             this.KEY_VAULT_URI = KEY_VAULT_URI;
         }
-        public String GetSecret(string secretName)
+        public String GetSecret(string secretName, bool optional)
         {
             if(String.IsNullOrWhiteSpace(KEY_VAULT_URI))
             {
@@ -36,11 +37,23 @@ namespace ApolloQA.Source.Helpers
                 }
                 catch(Exception ex)
                 {
-                    Functions.handleFailure("Error while retrieving secrets from azure KeyVault", ex);
+                    if (optional)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        Functions.handleFailure("Error while retrieving secrets from azure KeyVault", ex);
+                    } 
                 }
             }
 
             return secret ?? throw new Exception("Keyvault.GetSecret returned null");
         }
+        public String GetSecret(string secretName)
+        {
+            return GetSecret(secretName, false);
+        }
+        
     }
 }

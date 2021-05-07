@@ -152,7 +152,7 @@ namespace ApolloQA.Source.Driver
             }
             catch (Exception ex)
             {
-                Functions.handleFailure($"Element located {locator.ToString()} was not vissible in the UI", ex, optional);
+                Functions.handleFailure($"Element located {locator.ToString()} was not present in the HTML", ex, optional);
             }
             return false;
         }

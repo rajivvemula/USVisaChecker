@@ -189,7 +189,7 @@ namespace ApolloQA.Data.TestData
                     body.Merge(parser.GetObject($"Quote_Coverages/{coverage.Name}"));
                 }
             }
-            Log.Debug("coverage: "+body);
+            //Log.Debug("coverage: "+body);
             var response = RestAPI.POST($"quote/{quoteEntity.Id}/limits", body);
 
             return response;

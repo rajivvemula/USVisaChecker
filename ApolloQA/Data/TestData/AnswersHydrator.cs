@@ -73,15 +73,16 @@ namespace ApolloQA.Data.TestData
             {"TransportTours",              false},
             {"VehicleOwnedLeasedFinanced",  "Owned" },
             {"VehicleTitleOwner",           "Business" },
+            {"VehicleOwner1BusinessName",   "Miguel Acosta" },
             {"VehicleTitleOwnerIndividual", "Myself"},
             {"VehicleDiffState",            false },
-            {"VehicleUse",                  "Delivery/Catering  "    },
-            {"GoodsOrMaterialsRetail",      false},
-            {"GoodsOrMaterialsBlueCollar",  false },
+            {"VehicleUse",                  "Delivery/Catering"    },
+            {"GoodsOrMaterialsRetail",      true},
+            {"GoodsOrMaterialsBlueCollar",  true },
             {"TrailerOwnedFinancedLeased",   "Owned" },
             {"TrailerDiffState",             false },
             {"TrailerTitleOwner",            "Business" },
-            {"VehicleOwner1Address",         "@Address"} ,
+            {"VehicleOwner1Address",         "JSON{\"line1\":\"81 N 13th St\",\"line2\":null,\"minorMunicipality\":null,\"majorMunicipality\":\"Prospect Park\",\"postalCode\":\"07508\",\"addressTypeId\":300,\"addressType\":{\"code\":\"LOCATION\",\"name\":\"Location\",\"description\":null,\"timeFrom\":\"1901-01-01T00:00:00.000Z\",\"timeTo\":\"2999-01-01T00:00:00.000Z\",\"statusId\":0,\"updateDateTime\":\"2021-05-05T03:53:36.930Z\",\"updatedBy\":\"bbadmin\",\"updatedByPersonId\":null,\"insertDateTime\":\"2021-04-14T23:52:01.286Z\",\"insertedBy\":\"bbadmin\",\"insertedByPersonId\":-1,\"id\":300,\"resource\":\"LookupResource\"},\"stateProvinceId\":200,\"stateProvince\":{\"code\":\"NJ\",\"name\":\"New Jersey\",\"description\":null,\"statusId\":0,\"updatedBy\":null,\"updatedByPersonId\":null,\"insertDateTime\":\"0001-01-01T00:00:00.000Z\",\"insertedBy\":null,\"insertedByPersonId\":0,\"id\":200,\"resource\":\"StateProvinceResource\"},\"countryId\":0,\"country\":{\"code\":\"USA\",\"name\":\"United States\",\"description\":null,\"statusId\":0,\"updatedBy\":null,\"updatedByPersonId\":null,\"insertDateTime\":\"0001-01-01T00:00:00.000Z\",\"insertedBy\":null,\"insertedByPersonId\":0,\"id\":0,\"resource\":\"CountryResource\"},\"countyName\":\"Passaic\",\"countyFips\":\"34031\",\"smartyStreetDocumentId\":17410,\"smartyStreetDocumentIndex\":0,\"logicId\":null,\"version\":null,\"statusId\":0,\"updatedBy\":null,\"updatedByPersonId\":null,\"insertDateTime\":\"0001-01-01T00:00:00.000Z\",\"insertedBy\":null,\"insertedByPersonId\":0,\"resource\":\"AddressResource\"}"} ,
 
             //
             //Drivers
@@ -336,6 +337,7 @@ namespace ApolloQA.Data.TestData
 
                 if(sectionName == "Vehicles")
                 {
+                    var vehicle = entities[sectionName];
                     body["entityContext"] = new JObject()
                                             {
                                                 { "ApplicationRisk", new JObject()
@@ -348,10 +350,14 @@ namespace ApolloQA.Data.TestData
                                                                     }
                                                                 }
                                                             }
-                                                        }
+                                                        },
+                                                        { "riskId", vehicle["riskId"] },
+                                                        { "riskType", 1 },
+                                                        { "timeFrom", DateTime.Now.ToString("O") },
                                                     }
+                                                    
                                                 },
-                                                {"Vehicle",  entities[sectionName] }
+                                                {"Vehicle", vehicle }
                                             };
                 
                 }
@@ -366,6 +372,9 @@ namespace ApolloQA.Data.TestData
                     Thread.Sleep(1000);
                     response = RestAPI.POST("/questionresponse/statechanges", body);
                 }
+
+               
+
                 return response;
             }
             

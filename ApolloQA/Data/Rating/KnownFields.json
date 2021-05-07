@@ -95,6 +95,9 @@
   "Total BASIC Violation Weight": {
     "source": "root.TotalBASICViolationWeight"
   },
+  "Total Basic Violation Weight": {
+    "source": "root.TotalBASICViolationWeight"
+  },
   "Safety Features": {
     "source": "Vehicle.SafetyFeatures"
   },

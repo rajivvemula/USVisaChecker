@@ -140,7 +140,7 @@
     "nameUI": [ "Stated Value Factor" ]
   },
   "TotalBASICViolationWeightFactors": {
-    "KnownFields": [ "Total BASIC Violation Weight" ],
+    "KnownFields": [ "Total BASIC Violation Weight", "Total Basic Violation Weight" ],
     "nameUI": [ "Total BASIC Violation Weight Factor", "Total Basic Violation Weight Factor" ]
   },
   "ClassCode_StatedValueFactors": {
@@ -149,7 +149,7 @@
   },
   "Deductible_InsuranceScoreTierFactors": {
     "KnownFields": [ "Deductible", "Insurance Score Tier" ],
-    "nameUI": [ "Deductible_Insurance Score Tier Factor" ]
+    "nameUI": [ "Deductible_Insurance Score Tier Factor", "Deductible Insurance Score Tier Factor" ]
   },
   "Deductible_StatedValueFactors": {
     "KnownFields": [ "Deductible", "Stated Value" ],
@@ -160,7 +160,7 @@
     "nameUI": [ "Fleet Size_Insurance Score Tier Factor", "Fleet Size Insurance Score Tier Factor" ]
   },
   "InspectionCount_TotalBASICViolationWeightFactors": {
-    "KnownFields": [ "Inspection Count", "Total BASIC Violation Weight" ],
+    "KnownFields": [ "Inspection Count", "Total BASIC Violation Weight", "Total Basic Violation Weight" ],
     "nameUI": [ "Inspection Count_Total BASIC Violation Weight Factor", "Inspection Count Total BASIC Violation Weight Factor" ]
   },
   "SizeType_StatedValueFactors": {
@@ -193,7 +193,7 @@
   },
   "FleetSize_InspectionCountFactors": {
     "KnownFields": [ "Fleet Size", "Inspection Count" ],
-    "nameUI": [ "Fleet Size_Inspection Count Factor" ]
+    "nameUI": [ "Fleet Size_Inspection Count Factor", "Fleet Size Inspection Count Factor" ]
   },
   "LimitFactors": {
     "KnownFields": [ "Limit" ],

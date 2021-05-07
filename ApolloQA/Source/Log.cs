@@ -59,6 +59,15 @@ namespace ApolloQA
                     
                     Log.Write(severity, string.Join(", \n", (IEnumerable<String>)text ));
                 }
+                else if(text is IEnumerable)
+                {
+                    var str = new List<string>();
+                    foreach(var item in (IEnumerable)text)
+                    {
+                        str.Add(item.ToString());
+                    }
+                    Log.Write(severity, string.Join(", \n", str ));
+                }
                 else
                 {
                     Console.WriteLine($"[{severity.Name}] {text}");

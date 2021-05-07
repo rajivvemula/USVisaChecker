@@ -81,12 +81,12 @@ namespace ApolloQA.Data.Rating
             private readonly Engine Engine;
             public List<KnownField.Resolvable> KnownFields;
             public Dictionary<string, string> matchedRow;
-            public Dictionary<string,string> matchedNextRow;
+            public Dictionary<string, string> matchedNextRow;
             public bool interpolated = false;
             public bool displayOnly => Factor.displayOnly;
             public decimal Value { get; set; }
             public String parsedValue { get; set; }
-          
+
             public string Name
             {
                 get => Factor.Name;
@@ -113,7 +113,7 @@ namespace ApolloQA.Data.Rating
             private const string INTERPOLATIONUPPERMATCH = "Interpolation Upper Row Match";
             public JObject Resolve()
             {
-                
+
                 loadResolvedKnownFields();
 
                 if (CustomCalculation)
@@ -121,7 +121,7 @@ namespace ApolloQA.Data.Rating
                     var method = this.GetType().GetProperty(Factor.source, BindingFlags.NonPublic | BindingFlags.Instance);
 
 
-                    if(method == null)
+                    if (method == null)
                     {
                         throw new KeyNotFoundException($"Expecting Factor: {Factor.Name} source: {Factor.source} member in this Data.Rating.Factor.cs");
                     }
@@ -129,7 +129,7 @@ namespace ApolloQA.Data.Rating
                     {
                         this.Value = (decimal)method.GetGetMethod(true).Invoke(this, null);
                     }
-                    
+
                 }
                 else
                 {
@@ -137,18 +137,21 @@ namespace ApolloQA.Data.Rating
 
                     if (this.Factor.TableName != null)
                     {
-                        
+
                         factorTable = this.Engine.getTable(this.Factor.TableName.Replace("@CoverageCode", this.GetAlgorithmAssignment().CoverageCode));
                     }
                     else
-                    { 
+                    {
                         factorTable = this.Engine.getTable($"{GetAlgorithmAssignment().CoverageCode}.{Factor.Name}");
                     }
 
+                    //will collect all limit columns to calculate limits that are larger than what's listed in the manual
+                    Dictionary<string, List<int>> tableLimits = GetTableLimits(factorTable);
 
                     for (int rowIndex = 0; rowIndex < factorTable.Count; rowIndex++)
                     {
                         var row = factorTable[rowIndex];
+
                         Dictionary<string, bool> match = new Dictionary<string, bool>();
                         bool lowerBoundMatch = false;
                         bool upperBoundMatch = false;
@@ -175,13 +178,13 @@ namespace ApolloQA.Data.Rating
                                     throw new NullReferenceException($"The column [{columnToMatch}] was not matched to any field on Data/Rating/KnownFields.json");
                                 }
 
-                                
+
                                 if (knownField.TypeName == "Boolean")
                                 {
 
                                     knownField.parsedValue = ((bool)knownField.Value) ? "Yes" : "No";
                                 }
-                                else if(knownField.TypeName == "Currency")
+                                else if (knownField.TypeName == "Currency")
                                 {
                                     knownField.parsedValue = ((int)knownField.Value).ToString("C0");
                                 }
@@ -210,7 +213,9 @@ namespace ApolloQA.Data.Rating
                                     }
                                 }
 
+                                var columnIsLimit = column.Key.ToLower().Contains("limit");
 
+                               
                                 if (lowerBoundMatch || upperBoundMatch)
                                 {
                                     match.Add(column.Key, true);
@@ -220,7 +225,12 @@ namespace ApolloQA.Data.Rating
                                 }
                                 else if (column.Value != null && (column.Value == knownField.Value?.ToString() || column.Value == knownField.parsedValue))
                                 {
+                                    match.Add(column.Key, true);
+                                }
 
+                                //limits that exceed what's listed in the manual will count the highest limit possible as a match
+                                else if (columnIsLimit && tableLimits[column.Key].Count > 0 && int.Parse(string.Join("", column.Value.Where(char.IsDigit))) == tableLimits[column.Key].Max() && ((int)knownField.Value)>tableLimits[column.Key].Max())
+                                {
                                     match.Add(column.Key, true);
                                 }
                                 else
@@ -231,13 +241,15 @@ namespace ApolloQA.Data.Rating
                             }
 
 
+
+
                         }
                         if (!match.ContainsValue(false))
                         {
 
                             string factorColName = row.Keys.ToList<string>().Find(column => column.Contains("Factor"));
 
-                            if(factorColName == null)
+                            if (factorColName == null)
                             {
                                 throw new Exception($"Error finding Factor column in table {GetAlgorithmAssignment().CoverageCode}.{this.Name} \n columns: [{string.Join(", ", row.Keys)}]");
                             }
@@ -249,7 +261,6 @@ namespace ApolloQA.Data.Rating
                                 this.matchedRow = row;
                                 this.matchedNextRow = nextRow;
                                 this.interpolated = true;
-                               
 
                                 this.Value = (decimal.Parse(row[factorColName]) + decimal.Parse(nextRow[factorColName])) / 2;
                             }
@@ -284,6 +295,39 @@ namespace ApolloQA.Data.Rating
                 }
 
                 return JObject.FromObject(this);
+
+            }
+
+            private Dictionary<string, List<int>> GetTableLimits(List<Dictionary<string, string>> factorTable)
+            {
+                var result = new Dictionary<string, List<int>>();
+                var limitColumns = factorTable[0].Where(it => it.Key.ToLower().Contains("limit") && !it.Key.ToLower().Contains("factor")).Select(it => it.Key).ToList();
+
+                if(limitColumns.Count==0)
+                {
+                    return result;
+                }
+
+                limitColumns.ForEach(it => result.Add(it, new List<int>()));
+
+                foreach (var row in factorTable)
+                {
+                    foreach (var column in limitColumns)
+                    {
+                        var value = row[column];
+
+                        int.TryParse(string.Join("", value.Where(char.IsDigit)), out int intVal);
+
+                        if(intVal>0)
+                        {
+                            result[column].Add(intVal);
+                        }
+                    }
+
+                }
+                result = result.Select(it => new KeyValuePair<string, List<int>>(it.Key, it.Value.Distinct().ToList())).ToDictionary(kvp=> kvp.Key, kvp=> kvp.Value);
+
+                return result;
 
             }
 

@@ -19,6 +19,13 @@ steps:
     SecretsFilter: '*'
     RunAsPreJob: true
 
+- task: AzureKeyVault@1
+  inputs:
+    azureSubscription: 'Apollo - Dev'
+    KeyVaultName: 'xbibaoazckv-automationqa'
+    SecretsFilter: '*'
+    RunAsPreJob: true
+
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
@@ -50,8 +57,9 @@ steps:
       force-field-proxy-ida-tenant: $(force-field-proxy-ida-tenant)
       force-field-proxy-ida-client-id: $(force-field-proxy-ida-client-id)
       force-field-proxy-ida-client-secret: $(force-field-proxy-ida-client-secret)
-      force-field-proxy-ida-username: $(force-field-proxy-ida-username)
-      force-field-proxy-ida-password: $(force-field-proxy-ida-password)
+      ApolloUsername: $(ApolloUsername)
+      TestPassword1: $(TestPassword1)
+      TestPassword2: $(TestPassword2)
       CabApi-BaseUrl: $(CabApi-BaseUrl)
       CabApi-Key: $(CabApi-Key)
   inputs:
@@ -79,8 +87,9 @@ steps:
       force-field-proxy-ida-tenant: $(force-field-proxy-ida-tenant)
       force-field-proxy-ida-client-id: $(force-field-proxy-ida-client-id)
       force-field-proxy-ida-client-secret: $(force-field-proxy-ida-client-secret)
-      force-field-proxy-ida-username: $(force-field-proxy-ida-username)
-      force-field-proxy-ida-password: $(force-field-proxy-ida-password)
+      ApolloUsername: $(ApolloUsername)
+      TestPassword1: $(TestPassword1)
+      TestPassword2: $(TestPassword2)
       CabApi-BaseUrl: $(CabApi-BaseUrl)
       CabApi-Key: $(CabApi-Key)
       ENVIRONMENT_FILE: "${{ parameters.environmentLabel }}.env.json"

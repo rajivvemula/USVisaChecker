@@ -194,11 +194,14 @@ namespace ApolloQA.Source.Driver
 
         private static void invokeEnvironmentVariables(string JsonEnvironmentFileName )
         {
-
             JObject environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine(SourceDir, JsonEnvironmentFileName.ToLower())).ReadToEnd());
+            //automation specific keyvault
+            var KeyVault = new KeyVault(environmentVariables?["KEYVAULT_URI"]?.ToString());
+            
 
-            var keyVault = new KeyVault(environmentVariables?["KEY_VAULT_URI"]?.ToString());
-
+            //application under test's keyvault
+            var appKeyVault = new KeyVault(environmentVariables?["APP_KEYVAULT_URI"]?.ToString());
+            
             //
             //Loop through each variable, 
             //checks if the variable has already been set 
@@ -209,20 +212,25 @@ namespace ApolloQA.Source.Driver
             {
                 if (Environment.GetEnvironmentVariable(variable.Key) == null)
                 {
-                    Log.Info($"Setting {variable.Key} = {variable.Value}");
+                    //Log.Info($"Setting {variable.Key} = {variable.Value}");
                     Environment.SetEnvironmentVariable(variable.Key, variable.Value.ToString());
 
-                }
-                else
-                {
-                    Log.Info($"Using {variable.Key} = {Environment.GetEnvironmentVariable(variable.Key)}");
                 }
 
                 //if the variable is a secret name we will load the secret as an environment variable if it does not already exist
                 if (variable.Key.Contains("SECRETNAME") && Environment.GetEnvironmentVariable(variable.Value.ToString()) == null)
                 {
-                    Log.Info($"Setting {variable.Value.ToString()} = SECRET VALUE");
-                    Environment.SetEnvironmentVariable(variable.Value.ToString(), keyVault.GetSecret(variable.Value.ToString()));
+                    var secretName = variable.Value.ToString();
+
+                    //Log.Debug(secretName);
+                    if(KeyVault.GetSecret(secretName, true) is var secretValue && !string.IsNullOrWhiteSpace(secretValue))
+                    {
+                        Environment.SetEnvironmentVariable(secretName, secretValue);
+                    }
+                    else
+                    {
+                        Environment.SetEnvironmentVariable(secretName, appKeyVault.GetSecret(secretName));
+                    }
                 }
                 
             }

@@ -1,9 +1,9 @@
 ﻿@NoBrowser
 Feature: Algorithms
 
-@ratingTests @State_TN
+@ratingTests
 Scenario: Test Rating Algorithm Static Quote
-	Given quote with Id 11062 is loaded
+	Given quote with Id 13985 is loaded
 	When expected values are gathered
 	Then expected values should match the system output
 
@@ -35,9 +35,6 @@ Scenario: Test Rating Algorithm
 	| GA    | VA00065   |
 	| GA    | VA00043   |
 	| GA    | VA00050   |
-
-	|IN|UM00026|
-
 
 @ratingTests @SC
 Scenario: SC - Test Rating Algorithm 
