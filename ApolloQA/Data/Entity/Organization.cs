@@ -123,6 +123,11 @@ namespace ApolloQA.Data.Entity
             
         }
 
+        public void SetProperty(String propertyName, dynamic value)
+        {
+            SQL.executeQuery($"UPDATE party.Organization SET {propertyName} = @value WHERE Id={this.Id}", (("@value", value)));
+        }
+
         public int PartyId
         {
             get
@@ -188,6 +193,11 @@ namespace ApolloQA.Data.Entity
             get
             {
                 return this["taxId"];
+            }
+
+            set
+            {
+                SetProperty("TaxId", value);
             }
         }
         public String Description
@@ -286,9 +296,6 @@ namespace ApolloQA.Data.Entity
                 
             }
         }
-
-
-       
 
     }
 }
