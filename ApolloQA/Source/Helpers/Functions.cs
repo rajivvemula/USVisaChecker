@@ -385,6 +385,14 @@ namespace ApolloQA.Source.Helpers
            return new Random().Next(max);
             
         }
+        public static Data.Entity.Organization CreateNewOrganization()
+        {
+            return new Data.TestData.Organization(ClassCodeKeyword.GetUsingKeywordName("Accounting Services")).organization;
+        }
+        public static Data.Entity.Organization CreateNewOrganization(string keyword)
+        {
+            return new Data.TestData.Organization(ClassCodeKeyword.GetUsingKeywordName(keyword)).organization;
+        }
         public static Data.Entity.Quote GetQuotedQuoteThroughAPI()
         {
             return GetQuotedQuoteThroughAPI(ClassCodeKeyword.GetUsingKeywordName("Accounting Services"));
