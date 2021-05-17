@@ -36,7 +36,7 @@ namespace ApolloQA.Components
 
             dropdownField.Click();
 
-            IWebElement theSelection = UserActions.FindElementWaitUntilClickable(By.XPath("//mat-option/span[normalize-space(text())='" + value + "']"), UserActions.DEFAULT_WAIT_SECONDS);
+            IWebElement theSelection = UserActions.FindElementWaitUntilClickable(By.XPath("//mat-option/span[normalize-space(text())=\"" + value + "\"]"), UserActions.DEFAULT_WAIT_SECONDS);
 
             try
             {
