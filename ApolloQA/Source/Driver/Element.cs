@@ -89,35 +89,63 @@ namespace ApolloQA.Source.Driver
 
         public bool assertElementContainsText(string text, bool optional = false)
         {
-            string elementText = this.GetElementText();
-
-            if (Assert.TextContains(elementText, text, true))
+            string elementText;
+            int i = 0;
+            do
             {
-                return true;
-            }
+                elementText = this.GetElementText();
+
+                if (Assert.TextContains(elementText, text, true))
+                {
+                    return true;
+                }
+                i++;
+                Thread.Sleep(1000);
+
+            } while (i < UserActions.DEFAULT_WAIT_SECONDS);
 
             Functions.handleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText}  did not contain expected \ntext: {text}"), optional);
             return false;
         }
         public bool assertElementTextEquals(string text, bool optional = false)
         {
-            string elementText = this.GetElementText();
-            if (Assert.AreEqual(elementText, text, true))
+            string elementText;
+            int i = 0;
+            do
             {
-                return true;
-            }
+                elementText = this.GetElementText();
 
-            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {text}"), optional);
+                if (Assert.AreEqual(elementText, text, true))
+                {
+                    return true;
+                }
+                i++;
+                Thread.Sleep(1000);
+
+            } while (i < UserActions.DEFAULT_WAIT_SECONDS);
+            
+
+            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText ?? "null"} did not equal expected\ntext: {text?? "null"}"), optional);
             return false;
         }
 
         public bool assertElementInnerTextEquals(string text, bool optional = false)
         {
-            string innerText = this.GetInnerText();
-            if (Assert.AreEqual(innerText, text, true))
+            string innerText;
+            int i = 0;
+            do
             {
-                return true;
-            }
+                innerText = this.GetInnerText();
+
+                if (Assert.AreEqual(innerText, text, true))
+                {
+                    return true;
+                }
+                i++;
+                Thread.Sleep(1000);
+
+            } while (i < UserActions.DEFAULT_WAIT_SECONDS);
+
 
             Functions.handleFailure(new Exception($"Element {locator.ToString()} \ninner text: {innerText} did not equal expected\n      text: {text}"), optional);
             return false;
