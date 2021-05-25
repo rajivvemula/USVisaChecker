@@ -45,7 +45,7 @@ namespace ApolloQA.Pages
         public static Element NotInsuredAddAddressButton = new Element("(//button//*[contains(text(), ' Add Address ')])[2]");
 
         // Vehicle Information
-        public static Element VehicleOnPolicyButton = new Element("//mat-radio-button//*[contains(text(), ' Vehicle on Policy ')]");
+        public static Element VehicleOnPolicyButton = new Element("//mat-radio-button//*[contains(text(), 'Vehicle on Policy')]");
         public static Element SelectVehicleOnPolicyDropdown = new Element("//mat-select[@name='vehicleOnPolicyId']");
         public static Element VinNumberInput = new Element("//input[@name='vehicleVin']");
         public static Element MakeInput = new Element("//input[@name='vehicleMake']");

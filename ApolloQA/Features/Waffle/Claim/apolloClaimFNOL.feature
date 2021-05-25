@@ -1,5 +1,5 @@
 ﻿#TODO
-Feature: apolloClaimFNOL
+Feature: FNOL
 
 @tc:29860
 Scenario: Creates FNOL successfully
