@@ -1,7 +1,7 @@
 ﻿Feature: CreateQuote
 
 
-@tc:17022 @tc:17024 @tc:17027 @tc:17974 @tc:17028
+@tc:17022 @tc:17024 @tc:17027 @tc:17974 @tc:17028 @tc:37651
 Scenario Outline: Create quote using a newly created organization
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
@@ -15,7 +15,8 @@ Scenario Outline: Create quote using a newly created organization
 	Then User checks Governing <State> are correctly matching
 	
     Examples:
-	| State | 
+	| State |
+	| IL    |
 	| AZ    |
 	| NV    |
 	| SC    |
