@@ -393,6 +393,13 @@ namespace ApolloQA.Source.Helpers
         {
             return new Data.TestData.Organization(ClassCodeKeyword.GetUsingKeywordName(keyword)).organization;
         }
+        public static void  AddAddressToOrganization(Data.Entity.Organization Org, string state)
+        {
+            var OrgData = new Data.TestData.Organization(Org);
+            OrgData.OrganizationAddAddress(state);
+                
+      }
+
         public static Data.Entity.Quote GetQuotedQuoteThroughAPI()
         {
             return GetQuotedQuoteThroughAPI(ClassCodeKeyword.GetUsingKeywordName("Accounting Services"));

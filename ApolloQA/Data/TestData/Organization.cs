@@ -18,6 +18,7 @@ namespace ApolloQA.Data.TestData
         public Parser parser;
         public List<Address> addresses = new List<Address>();
         public ClassCodeKeyword classCodeKeyword;
+
         public Organization(Entity.Organization org)
         {
             organization = org;
@@ -54,6 +55,7 @@ namespace ApolloQA.Data.TestData
 
         public Entity.Organization CreateOrganization()
         {
+            
             parser.interpreter.SetVariable("KeywordId", this.classCodeKeyword.KeywordId);
             parser.interpreter.SetVariable("IndustryClassTaxonomy", this.classCodeKeyword.TaxonomyName);
             parser.interpreter.SetVariable("IndustryClassTaxonomyId", this.classCodeKeyword.IndustryClassTaxonomyId);
