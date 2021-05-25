@@ -20,7 +20,7 @@ Scenario Outline: Automate Test Policy
 
 
 
-
+@tc:37622
 Scenario: Reinstate a Policy
     Given user is successfully logged into biberk
     When User Navigates to Policy Cancelled
