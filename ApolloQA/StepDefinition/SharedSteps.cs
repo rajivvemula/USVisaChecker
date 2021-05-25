@@ -7,7 +7,6 @@ using TechTalk.SpecFlow.Assist;
 using ApolloQA.Source.Helpers;
 using System.Linq;
 
-
 namespace ApolloQA.StepDefinition
 {
     [Binding]
@@ -23,12 +22,8 @@ namespace ApolloQA.StepDefinition
                 {
                     Shared.toastrMessage.assertElementNotPresent();
                 }
-
-
                 button.Click();
             }
-           
-
         }
 
         [When(@"user clicks (.*) Dropdown")]
@@ -36,11 +31,13 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetDropdownField("Physical Address").Click();
         }
+
         [When(@"user selects dropdown (.*) option equaling (.*)")]
         public void WhenUserSelectsDropdownOption(string DropdownDisplayText, string OptionDisplayText)
         {
             Shared.GetDropdownField(DropdownDisplayText).SelectMatDropdownOptionByText(OptionDisplayText);
         }
+
         [When(@"user selects dropdown (.*) option containing (.*)")]
         public void WhenUserSelectsDropdownOptionContaining(string DropdownDisplayText, string OptionDisplayText)
         {
@@ -50,8 +47,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user selects dropdown (.*) option at index (.*)")]
         public void WhenUserSelectsDropdownOptionAtIndex(string DropdownDisplayText, int index)
         {
-            Shared.GetDropdownField(DropdownDisplayText).SelectMatDropdownOptionByIndex(index);
-
+                Shared.GetDropdownField(DropdownDisplayText).SelectMatDropdownOptionByIndex(index);
         }
 
         [When(@"user waits '(.*)' seconds")]
@@ -59,7 +55,6 @@ namespace ApolloQA.StepDefinition
         {
             System.Threading.Thread.Sleep(int.Parse(seconds) * 1000);
         }
-
 
         public static Address previouslyEnteredAddress;
         [When(@"user enters the following address")]
@@ -105,7 +100,6 @@ namespace ApolloQA.StepDefinition
             Shared.GetIconButton(iconButton).Click();
         }
 
-
         [When(@"user clicks '(.*)' right menu Button")]
         public void WhenUserClicksRightMenuButton(string rightMenuButton)
         {
@@ -131,14 +125,12 @@ namespace ApolloQA.StepDefinition
             Shared.SpinnerLoad.assertElementNotPresent();
         }
 
-
         [When(@"user waits for spinner to dissappear for (.*) seconds")]
         public void WhenUserWaitsForSpinnerToDissappearForSeconds(int waitTime)
         {
             Shared.SpinnerLoad.assertElementIsVisible(2, true);
             Shared.SpinnerLoad.assertElementNotPresent(waitTime);
         }
-
 
         [When(@"user clicks '(.*)' Sidetab")]
         public void WhenUserClicksSidetab(string sidetab)
@@ -163,12 +155,12 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetToast().assertElementTextEquals(toastValue);
         }
+
         [Then(@"Toast containing (.*) is visible")]
         public void ThenToastContainingIsVisible(string message)
         {
             Shared.GetToastContaining(message).assertElementIsVisible();
         }
-
 
         [Then(@"Grid contains: (.*)")]
         public void ThenGridContains(string gridValue)
@@ -198,7 +190,6 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetQuestionTextField(QuestionDisplayText).setText(AnswerText);
         }
-
 
         [When(@"user selects (.*) coverage with (.*) deductible of (.*)")]
         public void WhenUserSelectsCoverageWithDeductibleOf(string CoverageDisplayText, string DeductibleTypeDisplayText, string DeductilbeAmountDisplayText)
@@ -241,7 +232,80 @@ namespace ApolloQA.StepDefinition
         public void ThenTableShouldContainEntries()
         {
             Assert.IsTrue(Shared.Table.parseUITable().Count() > 1);
+        }
 
+        [When(@"user sets answer to Is this vehicle owned, financed, or leased\? as '(.*)'")]
+        public void WhenUserSetsAnswerToIsThisVehicleOwnedFinancedOrLeasedAs(string ownership)
+        {
+            string question = "Is this vehicle owned, financed, or leased?";
+            string question2 = "Who holds the vehicle title/registration?";
+            switch (ownership.ToUpper())
+            {
+                case "OWNED":
+                    Shared.GetQuestionAnswer(question, "Owned").Click();
+                    try {
+                        Shared.GetQuestionAnswer(question2, "The Business").Click();
+                        Shared.genericResponse.setText("TestName1");
+                    }
+                    catch {
+                        Shared.GetQuestionAnswer(question2, "Myself").Click();
+                        Shared.genericResponse.setText("TestName1");
+                        Shared.genericResponse2.setText("TestName2");
+                    }
+                    break;
+                case "FINANCED":
+                    Shared.GetQuestionAnswer(question, "Financed").Click();
+                    Shared.genericResponse.setText("TestName1");
+                    break;
+                case "LEASED":
+                    Shared.GetQuestionAnswer(question, "Leased").Click();
+                    Shared.genericResponse.setText("TestName1");
+                    break;
+            }
+        }
+
+        [When(@"user sets Orgnaization Address")]
+        public void WhenUserSetsOrgnaizationAddress()
+        {
+            try{
+                Shared.GetDropdownField("Physical Address").SelectMatDropdownOptionContainingText(", IL,"); }
+            catch
+            {
+                Shared.GetButton("Add Address").Click();
+                Shared.GetInputField("Street Address Line 1").setText("207 S Washington St");
+                Shared.GetInputField("City").setText("Naperville");
+                Shared.GetDropdownField("State / Region").SelectMatDropdownOptionByText("IL");
+                Shared.GetInputField("Zip / Postal Code").setText("60540");
+                Shared.AddressFormSaveButton.Click();
+            }
+        }
+
+        [When(@"User Selects Name Insured from dropdown")]
+        public void WhenUserSelectsNameInsuredFromDropdown()
+        {
+            Shared.GetInputField("Named Insured").setText("E");
+            Shared.GetInputField("Named Insured").SelectMatDropdownOptionByIndex(Functions.GetRandomInteger(25));
+        }
+
+        [When(@"user enters tax Id number")]
+        public void WhenUserEntersTaxIdNumber()
+        {
+            do
+            { var genNumber = Functions.GetRandomInteger(1000000000).ToString();
+                Shared.GetInputField("Tax ID No").setText(genNumber);
+                Shared.GetInputField("Business Email Address").Click();
+            } while (Shared.GetInputField("Tax ID No").GetAttribute("aria-invalid").ToString() == "true");
+        }
+
+        [When(@"user completes address form")]
+        public void WhenUserCompletesAddressForm()
+        {
+            Shared.GetDropdownField("Address Type").SelectMatDropdownOptionByIndex(1);
+            Shared.GetInputField("Street Address Line 1").setText("207 S Washington St");
+            Shared.GetInputField("City").setText("Naperville");
+            Shared.GetDropdownField("State / Region").SelectMatDropdownOptionByText("IL");
+            Shared.GetInputField("Zip / Postal Code").setText("60540");
+            Shared.AddressFormSaveButton.Click();
         }
     }
 }
