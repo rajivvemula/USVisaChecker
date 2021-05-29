@@ -28,7 +28,7 @@ namespace ApolloQA.Source.Driver
                 //this is optional
                 try
                 {
-                    FindElementWaitUntilVisible(locator, 1);
+                    FindElementWaitUntilVisible(locator, 0);
                     WaitForElementToDisappear(locator, 120);
                 }
                 catch(Exception)
@@ -84,27 +84,46 @@ namespace ApolloQA.Source.Driver
             return textField.Text.Trim();
         }
 
+        private static List<DateTime> clickInfinityCount = new List<DateTime>();
         public static bool Click(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS, bool optional = false)
         {
             try
             {
                 try
                 {
-                    FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
-                }
-                catch (StaleElementReferenceException)
-                {
-                    Thread.Sleep(1000);
-                    FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
-
-                }
-                catch (ElementClickInterceptedException)
-                {
                     waitForPageLoad();
-
                     FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
                 }
-                catch(Exception ex)
+                catch (StaleElementReferenceException ex)
+                {
+                    Log.Debug("stale element caught");
+                    Thread.Sleep(900);
+                    if(clickInfinityCount.FindAll(it=> (DateTime.Now-it).TotalSeconds<6).Count<5)
+                    {
+                        clickInfinityCount.Add(DateTime.Now);
+                        Click(ElementLocator, wait_Seconds, optional);
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
+                catch (ElementClickInterceptedException ex)
+                {
+                    Log.Debug("click interception caught");
+                    Thread.Sleep(900);
+                    if (clickInfinityCount.FindAll(it => (DateTime.Now - it).TotalSeconds < 6).Count < 5)
+                    {
+                        clickInfinityCount.Add(DateTime.Now);
+                        Click(ElementLocator, wait_Seconds, optional);
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+
+                }
+                catch (Exception ex)
                 {
                     throw ex;
                 }

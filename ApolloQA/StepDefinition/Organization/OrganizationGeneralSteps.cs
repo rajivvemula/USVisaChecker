@@ -62,6 +62,7 @@ namespace ApolloQA.StepDefinition
         [When(@"user asserts for saved organization")]
         public void WhenUserAssertsForSavedOrganization()
         {
+            Shared.GetButton("Save").Click();
             // TODO : Issue with the save toastMessage
             var toastMessage = BusinessInformation.toastrMessage.GetInnerText();
             //Assert.TextContains(toastMessage, "created");

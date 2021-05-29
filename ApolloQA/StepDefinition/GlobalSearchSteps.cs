@@ -94,11 +94,25 @@ namespace ApolloQA.StepDefinition
                     GlobalSearch.SearchInput.clearTextField();
                     var OrgName = Organization.GetLatestOrganization();
                     GlobalSearch.SearchInput.setText($"{OrgName.Name}");
+                    var nameCheck = GlobalSearch.SearchInput.getTextFieldText();
+                    if (nameCheck.EndsWith(")") == true)
+                    {
+                        GlobalSearch.SearchInput.setText($"{OrgName.Name}".Substring(0, 18));
+                    }
                     GlobalSearch.SearchResult.assertElementIsVisible();
-                    var policyNameHolder = GlobalSearch.SearchResultLabel().GetElementText();
-                    Assert.TextContains(policyNameHolder, $"{OrgName.Name}");
-                    var policyHolderName = GlobalSearch.SearchResultDescription.GetElementText();
-                    Assert.TextContains(policyHolderName, "Organization");
+                    try
+                    {
+                        var OrgPolicy = GlobalSearch.SearchResultLabel().GetElementText();
+                        Assert.TextContains(OrgPolicy, "Policy");
+                    }
+                    catch
+                    {
+                        var policyNameHolder = GlobalSearch.SearchResultLabel().GetElementText();
+                        try { Assert.TextContains(policyNameHolder, $"{OrgName.Name}"); }
+                        catch { policyNameHolder.StartsWith($"{OrgName.Name.Substring(0, 1)}"); }
+                        var policyHolderName = GlobalSearch.SearchResultDescription.GetElementText();
+                        Assert.TextContains(policyHolderName, "Organization");
+                    }
                     break;
                 case "AGENCYORGANIZATION":
                     UserActions.Refresh();

@@ -79,7 +79,17 @@ namespace ApolloQA.Data.Entity
                 return this.GetProperty("Model");
             }
         }
-
+        public string? VinNumber
+        {
+            get
+            {
+                return this.GetProperty("VinNumber");
+            }
+            set
+            {
+                this.SetProperties(("VinNumber", value));
+            }
+        }
 
         private long? _RiskId;
         public long RiskId

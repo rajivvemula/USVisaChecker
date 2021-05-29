@@ -13,6 +13,10 @@ namespace ApolloQA.StepDefinition.Quote
     {
         public static Entity_Quote Quote;
         public Data.Entity.Organization _newOrg;
+
+        public static string feinRandom = Functions.GetRandomInteger(1000000).ToString();
+        public string feinNew = "1225" + feinRandom;
+
         [When(@"User create a new Org with (.*)")]
         public void WhenUserCreateANewOrgWith(string state)
         {
@@ -32,10 +36,7 @@ namespace ApolloQA.StepDefinition.Quote
             inputField.SelectMatDropdownOptionByText(_newOrg.Name);
             Shared.GetDropdownField("Organization Type").SelectMatDropdownOptionByText("Corporation");
             Shared.GetDropdownField("Tax ID Type").SelectMatDropdownOptionByText("FEIN");
-            string feinRandom = Functions.GetRandomInteger(1000000).ToString();
-            string feinNew = "1225" + feinRandom;
             Shared.GetField("Tax ID No", "input").setText(feinNew);
-
             Shared.GetField("Business Email Address", "input").setText("automate@biberk.com");
             Shared.GetField("Business Phone No", "input").setText("231-790-0000");
             Shared.GetField("Business Website", "input").setText("automate@biberk.com");
@@ -47,15 +48,16 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"User verifies quote details on Business Information Page")]
         public void ThenUserVerifiesQuoteDetailsOnBusinessInformationPage()
         {
-            Shared.GetField("Named Insured", "input").assertElementTextEquals(_newOrg.Name);
+            Shared.GetInputField("Named Insured").assertTextFieldTextEquals(_newOrg.Name);
             Shared.GetDropdownField("Tax ID Type").assertElementTextEquals("FEIN");
-            Shared.GetField("Tax ID No", "input").assertElementTextEquals("12-31232");
-
-            Shared.GetField("Business Email Address", "input").assertElementTextEquals("automate@biberk.com");
-            Shared.GetField("Business Phone No", "input").assertElementTextEquals("231-790-0000");
-            Shared.GetField("Business Website", "input").assertElementTextEquals("automate@biberk.com");
-            Shared.GetField("Year Business Started", "input").assertElementTextEquals("2011");
-            Shared.GetField("Year Ownership Started", "input").assertElementTextEquals("2012");
+            Shared.GetIconButton("visibility").Click();
+            var taxIdType = Shared.GetInputField("Tax ID No").getTextFieldText();
+            Assert.SoftAreEqual(taxIdType, feinNew);
+            Shared.GetInputField("Business Email Address").assertTextFieldTextEquals("automate@biberk.com");
+            Shared.GetInputField("Business Phone No").assertTextFieldTextEquals("231-790-0000");
+            Shared.GetInputField("Business Website").assertTextFieldTextEquals("automate@biberk.com");
+            Shared.GetInputField("Year Business Started").assertTextFieldTextEquals("2011");
+            Shared.GetInputField("Year Ownership Started").assertTextFieldTextEquals("2012");
         }
 
         [Then(@"User checks Governing (.*) are correctly matching")]

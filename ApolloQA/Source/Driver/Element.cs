@@ -322,6 +322,7 @@ namespace ApolloQA.Source.Driver
         //
         public Boolean IsRadioButtonSelected()
         {
+            Thread.Sleep(1000);
             return UserActions.IsRadioButtonSelected(locator);
         }
 
@@ -331,6 +332,7 @@ namespace ApolloQA.Source.Driver
         //
         public void setMattCheckboxState(bool state)
         {
+            Thread.Sleep(1000);
             UserActions.SetMattCheckboxState(locator, state);
         }
 
