@@ -118,11 +118,17 @@ namespace ApolloQA.Source.Driver
 
             return true;
         }
+        public static List<bool> GetIsDisabledBulk(By elementLocator)
+        {
+            var elements = FindElementsWaitUntilVisible(elementLocator);
+
+            return elements.Select(it=> !it.Enabled).ToList();
+        }
         public static bool GetIsDisabled(By elementLocator)
         {
             var element = FindElementWaitUntilVisible(elementLocator);
 
-            return element.Displayed;
+            return !element.Enabled;
         }
 
         public static string GetAttribute(By ElementLocator, string attributeName)

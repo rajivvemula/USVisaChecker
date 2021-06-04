@@ -73,6 +73,12 @@ namespace ApolloQA.Source.Driver
         }
         public bool IsDisabled => UserActions.GetIsDisabled(locator);
 
+        public List<bool> GetIsDisabledBulk() {
+
+            return UserActions.GetIsDisabledBulk(locator);
+
+        }
+
         public string GetElementText()
         {
             return UserActions.getElementText(locator);
