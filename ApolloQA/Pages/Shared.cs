@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 
@@ -125,6 +126,7 @@ namespace ApolloQA.Pages
 
         public static Element GetQuestionAnswer(string QuestionDisplayText, string AnswerDisplayText)
         {
+            Thread.Sleep(1000);
             return new Element($"//bh-question-singleselect[descendant::*[normalize-space(text())=\"{QuestionDisplayText}\"]] //mat-radio-button[descendant::*[normalize-space(text())=\"{AnswerDisplayText}\"]] |" +
                                $"//bh-question-boolean[descendant::*[normalize-space(text())=\"{QuestionDisplayText}\"]] //mat-radio-button[descendant::*[normalize-space(text())=\"{AnswerDisplayText}\"]]");
         }
@@ -157,8 +159,12 @@ namespace ApolloQA.Pages
         public static Element GridskipToLastButton => new Element("//a[@role='button' and @aria-label='go to last page']");
         public static Element LastGridItem => new Element("(//a[@class='nav-link'])[last()]");
         public static Element toastrMessage => new Element("//div[@class='toast-content']/descendant::*");
+        public static Element AddressFormSaveButton => new Element("//button[@class='mat-focus-indicator mat-raised-button mat-button-base mat-primary ng-star-inserted']");
+
+        //Vehicle Ownership Elements
         public static Element genericResponse => new Element("(//input[@name='response'])[1]");
         public static Element genericResponse2 => new Element("(//input[@name='response'])[2]");
-        public static Element AddressFormSaveButton => new Element("//button[@class='mat-focus-indicator mat-raised-button mat-button-base mat-primary ng-star-inserted']");
+
+
     }
 }

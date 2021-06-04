@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using TechTalk.SpecFlow.Assist;
 using ApolloQA.Source.Helpers;
 using System.Linq;
+using System.Threading;
 
 namespace ApolloQA.StepDefinition
 {
@@ -25,6 +26,17 @@ namespace ApolloQA.StepDefinition
                 button.Click();
             }
         }
+        [When(@"user takes a screenshot (.*)")]
+        public void WhenUserTakesAScreenshot(string filename)
+        {
+            ScreenShot.Info(filename);
+        }
+        [When(@"user takes a screenshot")]
+        public void WhenUserTakesAScreenshot()
+        {
+            ScreenShot.Info();
+        }
+
 
         [When(@"user clicks (.*) Dropdown")]
         public void WhenUserClicksOnPhysicalAddressDropdown(string DropdownDisplayName)
@@ -196,7 +208,14 @@ namespace ApolloQA.StepDefinition
         {
             Shared.GetCoverageCheckbox(CoverageDisplayText).setMattCheckboxState(true);
             Shared.GetCoverageLimitButton(CoverageDisplayText, DeductibleTypeDisplayText).Click();
-            Shared.GetCoverageLimitDropdown(CoverageDisplayText, DeductibleTypeDisplayText).SelectMatDropdownOptionByText(DeductilbeAmountDisplayText);
+            try
+            {
+                Shared.GetCoverageLimitDropdown(CoverageDisplayText, DeductibleTypeDisplayText).SelectMatDropdownOptionByText(DeductilbeAmountDisplayText);
+            }
+            catch
+            {
+                Shared.GetCoverageLimitDropdown(CoverageDisplayText, DeductibleTypeDisplayText).SelectMatDropdownOptionByText(DeductilbeAmountDisplayText);
+            }
             new SharedSteps().WhenUserWaitsForSpinnerToLoad();
         }
 

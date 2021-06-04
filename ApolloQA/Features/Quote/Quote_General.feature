@@ -10,8 +10,17 @@ Scenario: Create New Quote
 	#And user selects dropdown Line of Business option equaling Commercial Auto
 	And user selects dropdown Producer option at index 0	
 	And user Selects Policy Effective Date as Tomorrow
-	And user selects dropdown Named Insured option at index 0	
-	And user selects dropdown Physical Address option containing , IL,
+	When User Selects Name Insured from dropdown
+	And user selects dropdown Organization Type option equaling LLC
+	And user selects dropdown Tax ID Type option equaling FEIN
+	And user enters tax Id number
+	And user enters abcTest@example.com into Business Email Address field
+	And user enters 4843668104 into Business Phone No field
+	And user enters Accounting Services into Keyword field
+	And user selects dropdown Keyword option equaling Accounting Services
+	And user enters 2001 into Year Business Started field
+	And user enters 2003 into Year Ownership Started field
+	And user sets Orgnaization Address
 	And user clicks 'Next' Button
 	Then A new Quote should successfully be created
 	#BUG 30162

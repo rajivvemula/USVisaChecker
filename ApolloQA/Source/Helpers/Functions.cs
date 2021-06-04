@@ -398,7 +398,21 @@ namespace ApolloQA.Source.Helpers
             var OrgData = new Data.TestData.Organization(Org);
             OrgData.OrganizationAddAddress(state);
                 
-      }
+        }
+
+        public static Quote CreateNewQuote(string keyword, string state)
+        {
+            var org = new Data.TestData.Organization(ClassCodeKeyword.GetUsingKeywordName(keyword));
+            org.OrganizationAddAddress(state);
+
+            var quote = new Data.TestData.Quote(org, state);
+            return quote.quoteEntity;
+
+        }
+        public static Quote CreateNewQuote(string state)
+        {
+            return CreateNewQuote("Accounting Services", state);
+        }
 
         public static Data.Entity.Quote GetQuotedQuoteThroughAPI()
         {

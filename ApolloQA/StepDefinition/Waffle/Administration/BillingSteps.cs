@@ -26,7 +26,20 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
             QuoteNumberField.setText(ApplicationNumber);
 
             var options = QuoteNumberField.GetMatdropdownOptionsText();
-            QuoteNumberField.SelectMatDropdownOptionByIndex(options.Count()-1);
+
+            if(options.Count() == 1 && options.ElementAt(0).Trim()=="No results found")
+            {
+                Log.Debug("broken-> " + ApplicationNumber);
+                Functions.GetQuotedQuoteThroughAPI();
+                ApplicationNumber = this.GetValidApplicationNumber();
+                QuoteNumberField.setText(ApplicationNumber);
+ 
+            }
+
+            QuoteNumberField.SelectMatDropdownOptionContainingText(ApplicationNumber);
+
+
+
 
             //BUG 33878
             // QuoteNumberField.SelectMatDropdownOptionContainingText($"Quote {ApplicationNumber}");
@@ -185,6 +198,7 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
         public String GetValidApplicationNumber()
         {
             //Get all tether Ids that don't yet have a policy Number. this mean they are prior issued or broken
+            // This query needs to be updated to include "Risks.Vehicle.Vin IS NOT NULL" - unable to make payment where VIN == NULL
             var tetherCandidates = SQL.executeQuery("SELECT *  FROM [tether].[Tether] WHERE LineId = 7 and CurrentRatableObjectId>0 and PolicyNumber IS NULL order by Id desc ;");
 
             //gather the Ratable Object Ids on a list
@@ -208,6 +222,16 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
                    return GetValidApplicationNumber();
                 }
                 this.ratableObject = ratableValidCandidates[0];
+                var quote = new Data.Entity.Quote(this.ratableObject["ApplicationId"].ToObject<int>());
+                var vehicles = quote.GetVehicles();
+                foreach(var vehicle in vehicles)
+                {
+                    if(string.IsNullOrWhiteSpace(vehicle.VinNumber))
+                    {
+                        vehicle.VinNumber = Functions.GetRandomVIN();
+                    }
+                }
+                
             }
             else
             {

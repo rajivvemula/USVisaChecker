@@ -41,6 +41,13 @@ namespace ApolloQA.Data.TestData
             this.state = state;
             CreateQuote(state);
         }
+        public Quote(Organization organization, string state)
+        {
+            this.organization = organization;
+            this.parser = organization.parser;
+            this.state = state;
+            CreateQuote(state);
+        }
 
         private JObject CreateQuote(string state="IL")
         {
