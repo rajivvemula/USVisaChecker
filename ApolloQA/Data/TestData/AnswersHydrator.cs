@@ -110,7 +110,7 @@ namespace ApolloQA.Data.TestData
             //to store all possible questions within the specific section
             public JArray sectionQuestions;
 
-            public Entity.Storyboard.Section section;
+            public Entity.Question.Section section;
             public string sectionName;
             Dictionary<string, JObject> entities = new Dictionary<string, JObject>();
 

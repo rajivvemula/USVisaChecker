@@ -36,7 +36,7 @@ namespace ApolloQA.StepDefinition.Quote
 
                 var sectionID = int.Parse(urlPath.Substring(urlPath.IndexOf("section/") + 8, 4));
 
-                if(new Data.Entity.Storyboard.Section(sectionID).Name!="Summary")
+                if(new Data.Entity.Question.Section(sectionID).Name!="Summary")
                 {
                     STEPS.WhenUserClicksSidetab("Summary");
                     STEPS.WhenUserWaitsForSpinnerToDissappearForSeconds(120);

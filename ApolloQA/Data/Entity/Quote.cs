@@ -4,7 +4,7 @@ using System.Text;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using ApolloQA.Source.Helpers;
-using ApolloQA.Data.Entity.Storyboard;
+using ApolloQA.Data.Entity.Question;
 using ApolloQA.Data.Rating;
 
 namespace ApolloQA.Data.Entity
@@ -216,13 +216,13 @@ namespace ApolloQA.Data.Entity
             }
         }
 
-        public Storyboard.Storyboard Storyboard
+        public Question.Storyboard Storyboard
         {
             get
             {
                 //Log.Debug($"Get Storyboard for Quote ID: {this.Id}");
                 int storyBoardId = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id}").Result[0]["StoryboardId"];
-                return new Storyboard.Storyboard(storyBoardId);
+                return new Question.Storyboard(storyBoardId);
             }
         }
 

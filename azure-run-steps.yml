@@ -104,13 +104,13 @@ steps:
     testRunTitle: 'SmokeTest'
 
 
-- task: SpecFlowPlus@0
-  inputs:
-    projectFilePath: '$(System.DefaultWorkingDirectory)/ApolloQA'
-    projectName: 'ApolloQA'
-    projectLanguage: 'en'
-    bindingAssemblies: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/ApolloQA.dll'
-    testExecutionJson: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/TestExecution.json'
+# - task: SpecFlowPlus@0
+#   inputs:
+#     projectFilePath: '$(System.DefaultWorkingDirectory)/ApolloQA'
+#     projectName: 'ApolloQA'
+#     projectLanguage: 'en'
+#     bindingAssemblies: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/ApolloQA.dll'
+#     testExecutionJson: '$(Build.SourcesDirectory)/ApolloQA/bin/Debug/netcoreapp3.1/TestExecution.json'
 
     
 - task: CopyFiles@2

@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using System.Text;
 using ApolloQA.Source.Helpers;
-namespace ApolloQA.Data.Entity.Storyboard
+namespace ApolloQA.Data.Entity.Question
 {
-    public class Section
+    public class Question
     {
         public long Id;
 
-        public Section(int Id)
+        public Question(int Id)
         {
             this.Id = Id;
         }
-        public Section(long Id)
+        public Question(long Id)
         {
             this.Id = Id;
         }
-
+        public Question(string alias)
+        {
+            var id = SQL.executeQuery($"select Id from question.QuestionDefinition where Alias = 'WebForcedReferral' ;")[0]["Id"];
+            this.Id = id;
+        }
         public dynamic this[String propertyName]
         {
             get
@@ -35,7 +39,7 @@ namespace ApolloQA.Data.Entity.Storyboard
         }
         public dynamic GetProperties()
         {
-            return SQL.executeQuery("select * from question.QuestionSection where Id = @Id", ("@Id", this.Id))[0];
+            return SQL.executeQuery("select * from question.QuestionDefinition where Id = @Id", ("@Id", this.Id))[0];
         }
         public dynamic GetProperty(String propertyName)
         {
@@ -43,11 +47,18 @@ namespace ApolloQA.Data.Entity.Storyboard
             return property == null ? "" : property;
         }
 
-        public string Name
+        public string QuestionText
         {
             get
             {
-                return this["SectionName"];
+                return this.GetProperty("QuestionText");
+            }
+        }
+        public string Alias
+        {
+            get
+            {
+                return this.GetProperty("Alias");
             }
         }
 

@@ -5,7 +5,7 @@ using System.Text;
 using ApolloQA.Source.Helpers;
 using Newtonsoft.Json.Linq;
 
-namespace ApolloQA.Data.Entity.Storyboard
+namespace ApolloQA.Data.Entity.Question
 {
     public class Storyboard
     {
