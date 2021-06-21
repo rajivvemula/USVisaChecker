@@ -34,7 +34,7 @@ namespace ApolloQA.StepDefinition
                 case "ENTITYNAME":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    var policy = Policy.GetLatestPolicy();
+                    var policy = ApolloQA.Data.Entity.Policy.GetLatestPolicy();
                     GlobalSearch.SearchInput.setText($"Policy {policy.PolicyNumber}");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var EntityName = GlobalSearch.SearchResultLabel().GetElementText();
@@ -161,7 +161,7 @@ namespace ApolloQA.StepDefinition
                 case "VALIDPOLICYNUMBER":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    var PolNum = Policy.GetLatestPolicy();
+                    var PolNum = ApolloQA.Data.Entity.Policy.GetLatestPolicy(); 
                     GlobalSearch.SearchInput.setText($"{PolNum.PolicyNumber}");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var Entity = GlobalSearch.SearchResultLabel().GetElementText();

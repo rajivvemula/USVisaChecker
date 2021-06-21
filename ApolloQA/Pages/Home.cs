@@ -18,6 +18,7 @@ namespace ApolloQA.Pages
         public static Element notificationsButton = new Element("//*[contains(text(), 'notifications')]");
         public static Element menuAddButton = new Element("//mat-icon[contains(text(), 'add')]");
         public static Element userProfileButton = new Element("//mat-icon[contains(text(), 'person')]");
+        public static Element ellipsisButton = new Element("//mat-icon[contains(text(), 'more_vert')]");
         public static Element WaffleGridButton = new Element("//mat-icon[contains(text(), ' apps ')]");
     }
 }
