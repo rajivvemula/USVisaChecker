@@ -43,7 +43,7 @@ namespace ApolloQA.Data.Entity
         }
         public static Quote GetLatestQuote()
         {
-            return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c WHERE c.ApplicationStatusValue!= \"Issued\" ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
+            return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c WHERE c.ApplicationStatusValue  NOT IN (\"Issued\", \"Expired\", \"Cancelled\") ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
         }
 
         public dynamic GetProperties()
