@@ -18,7 +18,7 @@ namespace ApolloQA.Data.Entity.Question
         }
         public Question(string alias)
         {
-            var id = SQL.executeQuery($"select Id from question.QuestionDefinition where Alias = 'WebForcedReferral' ;")[0]["Id"];
+            var id = SQL.executeQuery($"select Id from question.QuestionDefinition where Alias = '{alias}' ;")[0]["Id"];
             this.Id = id;
         }
         public dynamic this[String propertyName]
