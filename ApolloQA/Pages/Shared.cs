@@ -130,6 +130,16 @@ namespace ApolloQA.Pages
             return new Element($"//bh-question-singleselect[descendant::*[normalize-space(text())=\"{QuestionDisplayText}\"]] //mat-radio-button[descendant::*[normalize-space(text())=\"{AnswerDisplayText}\"]] |" +
                                $"//bh-question-boolean[descendant::*[normalize-space(text())=\"{QuestionDisplayText}\"]] //mat-radio-button[descendant::*[normalize-space(text())=\"{AnswerDisplayText}\"]]");
         }
+
+        public static Element FindOperationQuestion(string QuestionDisplayText)
+        {
+            return new Element($"//bh-question-number[descendant::*[normalize-space(text())='{QuestionDisplayText}']] |" +
+                              ($"//bh-question-singleselect[descendant::*[normalize-space(text())=\"{QuestionDisplayText}\"]] |" +
+                              $"//bh-question-boolean[descendant::*[normalize-space(text())=\"{QuestionDisplayText}\"]] |" +
+                              $"//bh-question-multiselect[descendant::*[normalize-space(text())=\"{QuestionDisplayText}\"]] |" +
+                              $"//bh-question-boolean//form//*[contains(text(), '{QuestionDisplayText}')]"));
+        }
+
         public static Element GetQuestionTextField(string QuestionDisplayText)
         {
             return new Element($"//bh-question-number[descendant::*[normalize-space(text())='{QuestionDisplayText}']] //input |" +

@@ -13,6 +13,8 @@ namespace ApolloQA.StepDefinition
     [Binding]
     public class SharedSteps
     {
+        public static string BusinessKeyword = "";
+
         [When(@"user clicks '(.*)' Button")]
         public void WhenUserClicksButton(string buttonName)
         {
@@ -128,6 +130,10 @@ namespace ApolloQA.StepDefinition
         public void WhenUserEnterIntoField(string username, string fieldName)
         {
             Shared.GetField(fieldName, "input").setText(username);
+            if (fieldName == "Keyword")
+            {
+                BusinessKeyword = username;
+            }
         }
 
         [When(@"user waits for spinner to load")]
