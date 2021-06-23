@@ -1,6 +1,7 @@
 ﻿Feature: Quote_Modifiers
 
 #Combined Scenario
+@tc:39144
 Scenario Outline: Screen Test For Policy Modifiers Page
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
@@ -22,6 +23,7 @@ Scenario Outline: Screen Test For Policy Modifiers Page
 	| IL    |
 
 
+@tc:39144
 Scenario Outline: Test Modifiers page Values Are Saved
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page

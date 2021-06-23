@@ -13,7 +13,8 @@ Scenario Outline: Create quote using a newly created organization
 	When user clicks 'Business Information' Sidetab
 	Then User verifies quote details on Business Information Page
 	Then User checks Governing <State> are correctly matching
-	
+	 
+
     Examples:
 	| State |
 	| IL    |

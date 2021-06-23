@@ -1,8 +1,8 @@
 ﻿Feature: PolicyReadOnly
 
 
-
-Scenario Outline: Add two numbers
+@tc:39145
+Scenario Outline: Policy is Readonly
     Given user is successfully logged into biberk
     When User Navigates to Policy latest issued
     When user clicks on <Tab> Sidetab
@@ -27,14 +27,15 @@ Scenario Outline: Add two numbers
     | Additional Information (FEIN/SSN) |
     | Additional Information (Vehicle)  |
 
-
+@tc:39145
 Scenario:2 Verify address is editable in Business Information
     Given user is successfully logged into biberk
     When User Navigates to Policy latest issued
     When user clicks 'Business Information' Sidetab
     Then User selects different mailing address option
     Then User verifies that dropdown is interactable and contains Add Address Button
-
+    
+@tc:39145
 Scenario:3 Verify address is editable in Business Information
     Given user is successfully logged into biberk
     When User Navigates to Policy latest issued

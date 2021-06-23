@@ -11,9 +11,9 @@
 	retryCount="2"
 	/>
 
-	<Environment testThreadIsolation="SharedAppDomain"/>
+	<Environment testThreadIsolation="AppDomain"/>
 	
-	<Filter>!@ignore &amp; !@bugReported &amp; !@broken &amp; !@ratingTests</Filter>
+	<Filter>!@ignore &amp; !@bugReported &amp; !@broken &amp; !@ratingTests </Filter>
    <!--<Filter>@SmokeTest &amp; @Quote</Filter>
    -->
 

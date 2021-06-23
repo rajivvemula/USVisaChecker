@@ -8,7 +8,6 @@ using ApolloQA.Source.Helpers;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using Utf8Json.Formatters;
 using OpenQA.Selenium.Interactions;
 
 namespace ApolloQA.Source.Driver
@@ -97,7 +96,7 @@ namespace ApolloQA.Source.Driver
                 catch (StaleElementReferenceException ex)
                 {
                     Log.Debug("stale element caught");
-                    Thread.Sleep(900);
+                    //Thread.Sleep(500);
                     if(clickInfinityCount.FindAll(it=> (DateTime.Now-it).TotalSeconds<6).Count<5)
                     {
                         clickInfinityCount.Add(DateTime.Now);
@@ -111,8 +110,8 @@ namespace ApolloQA.Source.Driver
                 catch (ElementClickInterceptedException ex)
                 {
                     Log.Debug("click interception caught");
-                    Thread.Sleep(900);
-                    if (clickInfinityCount.FindAll(it => (DateTime.Now - it).TotalSeconds < 6).Count < 5)
+                    //Thread.Sleep(500);
+                    if (clickInfinityCount.FindAll(it => (DateTime.Now - it).TotalSeconds < 10).Count < 5)
                     {
                         clickInfinityCount.Add(DateTime.Now);
                         Click(ElementLocator, wait_Seconds, optional);
@@ -131,8 +130,15 @@ namespace ApolloQA.Source.Driver
             }
             catch (Exception ex)
             {
-                Functions.handleFailure($"Locator: {ElementLocator}", ex, optional);
-                return false;
+                if(optional)
+                {
+                    Functions.handleFailure($"Locator: {ElementLocator}", ex, optional);
+                    return false;
+                }
+                else
+                {
+                   throw Functions.handleFailure($"Locator: {ElementLocator}", ex, optional);
+                }
             }
 
             return true;
@@ -426,7 +432,7 @@ namespace ApolloQA.Source.Driver
         private static void highlight(IWebElement target)
         {
             JSExecutor.highlight(target);
-            Thread.Sleep(200);
+            Thread.Sleep(100);
             try
             {
                 JSExecutor.highlight(target, 0);
