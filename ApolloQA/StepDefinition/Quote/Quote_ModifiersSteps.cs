@@ -23,33 +23,43 @@ namespace ApolloQA.StepDefinition.Quote
             Quote_Modifier.MODClass.setText("5");
         }
 
-        [Then(@"User verifies the Upper Boundaries for IL")]
-        public void ThenUserVerifiesTheUpperBoundariesForIL()
+        [Then(@"User verifies the Upper Boundaries for (.*)")]
+        public void ThenUserVerifiesTheUpperBoundariesForIL(string state)
         {
-            foreach (var item in ModValues)
+            foreach (var item in ModifiersValues)
             {
-                Element MODFactor = new Element($"//mat-card[*/*/*/h2[text()='{item.Key}']] //div[@class='factor'][2] //input");
-                MODFactor.clearTextField();
-                MODFactor.setText(item.Value.ToString());
-                Element ModTotal = new Element($"//mat-card[*/*/*/h2[text()='{item.Key}']] //div[@class='factor'][3] ");
-                string ModTotalValue = ModTotal.GetInnerText();
-                Assert.TextContains(ModTotalValue, item.Value.ToString());
+                var row = GetStateModifier(state, item.ToUpper());
+                Log.Debug(row);
+                Element MODFactor = new Element($"//mat-card[*/*/*/h2[text()='{item}']] //div[@class='factor'][2] //input");
+                if (MODFactor.assertElementIsPresent(30))
+	            {           
+                    MODFactor.clearTextField();
+                    MODFactor.setText(row["Maximum Schedule Rating Credit"]);
+                    Element ModTotal = new Element($"//mat-card[*/*/*/h2[text()='{item}']] //div[@class='factor'][3]");
+                    string ModTotalValue = ModTotal.GetInnerText();
+                    Assert.TextContains(ModTotalValue.Remove(ModTotalValue.Length - 2, 1), row["Maximum Schedule Rating Credit"]);
+
+	            }
 
             }
         }
 
-        [Then(@"User verifies the Lower Boundaries for IL")]
-        public void ThenUserVerifiesTheLowerBoundariesForIL()
+        [Then(@"User verifies the Lower Boundaries for (.*)")]
+        public void ThenUserVerifiesTheLowerBoundariesForIL(string state)
         {
-            foreach (var item in ModValues)
+            foreach (var item in ModifiersValues)
             {
-                Element MODFactor = new Element($"//mat-card[*/*/*/h2[text()='{item.Key}']] //div[@class='factor'][2] //input");
-                MODFactor.clearTextField();
-                string newItemValue = item.Value.ToString();
-                MODFactor.setText(newItemValue);
-                Element ModTotal = new Element($"//mat-card[*/*/*/h2[text()='{item.Key}']] //div[@class='factor'][3]");
-                string ModTotalValue = ModTotal.GetInnerText();
-                Assert.TextContains(ModTotalValue, newItemValue);
+                var row = GetStateModifier(state, item.ToUpper());
+                Log.Debug(row);
+                Element MODFactor = new Element($"//mat-card[*/*/*/h2[text()='{item}']] //div[@class='factor'][2] //input");
+                 if (MODFactor.assertElementIsPresent(30))
+	            {     
+                    MODFactor.clearTextField();
+                    MODFactor.setText(row["Maximum Schedule Rating Credit"]);
+                    Element ModTotal = new Element($"//mat-card[*/*/*/h2[text()='{item}']] //div[@class='factor'][3]");
+                    string ModTotalValue = ModTotal.GetInnerText();
+                    Assert.TextContains(ModTotalValue.Remove(ModTotalValue.Length - 2, 1), row["Maximum Schedule Rating Credit"]);
+                }
             }
         }
 
@@ -85,12 +95,14 @@ namespace ApolloQA.StepDefinition.Quote
 
         }
 
-        [Then(@"User verifies the percentage values are displayed correctly")]
-        public void ThenUserVerifiesThePercentageValuesAreDisplayedCorrectly()
+        [Then(@"User verifies the percentage values are displayed correctly for (.*)")]
+        public void ThenUserVerifiesThePercentageValuesAreDisplayedCorrectlyForIL(string state)
         {
-            foreach (var item in ModValues)
+            foreach (var item in ModifiersValues)
             {
-                Element MODFactor = new Element($"//mat-card[*/*/*/h2[text()='{item.Key}']] //span[normalize-space(text())='(-{item.Value}% to {item.Value}%)']");
+                var row = GetStateModifier(state, item.ToUpper());
+                string NoDecimal = row["Maximum Schedule Rating Credit"].Remove(2, 3);
+                Element MODFactor = new Element($"//mat-card[*/*/*/h2[text()='{item}']] //span[normalize-space(text())='(-{NoDecimal} to {NoDecimal})']");
                 bool assertPresent = MODFactor.assertElementIsVisible();
 
                 Assert.IsTrue(assertPresent);
@@ -104,15 +116,14 @@ namespace ApolloQA.StepDefinition.Quote
             string totalCheck = Quote_Modifier.MODTotal.GetInnerText();
             Assert.TextContains(totalCheck, "25.000");
         }
-        public static Dictionary<string, int> ModValues = new Dictionary<string, int>()
-        {
-            {"Experience Rating", 25 },
-            {"Management", 40 },
-            {"Employees", 40 },
-            {"Equipment", 40 },
-            {"Safety Organization", 40 },
-            {"Classification", 40 }
 
-        };
+
+        string[] ModifiersValues = { "Management", "Employees", "Equipment", "Safety Organization", "Classification" };
+        public static dynamic GetStateModifier(string state, string category)
+        {
+            var st1Table = Data.Rating.Engine.getTable("ST.1", state);
+            var classificationRow = st1Table.Find(row => row["Schedule Rating Category"] == category);
+            return classificationRow;
+        }
     }
 }

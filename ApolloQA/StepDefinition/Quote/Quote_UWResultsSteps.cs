@@ -23,14 +23,13 @@ namespace ApolloQA.StepDefinition.Quote
             Shared.GetQuestionAnswer("What is the furthest any of your vehicles travel in any one direction from their home base?", "50 miles or less").Click();
             Shared.GetQuestionAnswer("Do you haul any non-owned goods for pay?", "Yes").Click();
         }
-
-        [Then(@"User verifies the Quote has a declined (.*) on UW Results")]
-        public void ThenUserVerifiesTheQuoteHasADeclinedDeclineOnUWResults(string reconm)
+        
+        [Then(@"User verifies the Quote has a declined status on UW Results")]
+        public void ThenUserVerifiesTheQuoteHasADeclinedStatusOnUWResults()
         {
             string statusText = ApolloQA.Pages.Quote.Quote_Summary.ClaimStatusOnUW.GetElementText();
-            Assert.TextContains(statusText, reconm);
+            Assert.TextContains(statusText, "Decline");
         }
-
         [When(@"User changes (.*)")]
         public void WhenUserChanges(string keywordText)
         {

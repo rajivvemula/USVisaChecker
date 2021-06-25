@@ -515,7 +515,7 @@ namespace ApolloQA.Source.Helpers
                 Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_FAIL);
 
             }
-        }        
+        }
 
     }
 }

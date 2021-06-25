@@ -14,13 +14,19 @@ Scenario Outline: Screen Test For Policy Modifiers Page
 	Then User verifies the Modifier Total percentage is correct
 	Then User verifies the Upper Boundaries for <State>
 	Then User verifies the Lower Boundaries for <State>
-	Then User verifies the percentage values are displayed correctly
+	Then User verifies the percentage values are displayed correctly for <State>
 	Then User verifies unable to click next when past max percentage boundary
 
 
 	Examples:
-	| State | 
+	| State |
 	| IL    |
+	| AZ    |
+	| NV    |
+	| GA    |
+	| CA    |
+	| IN    |
+	| TN    |
 
 
 @tc:39144
@@ -39,5 +45,11 @@ Scenario Outline: Test Modifiers page Values Are Saved
 	Then User verifies max values are retained for each modifier
 
 	Examples:
-	| State | 
+	| State |
 	| IL    |
+	| AZ    |
+	| NV    |
+	| GA    |
+	| CA    |
+	| IN    |
+	| TN    |
