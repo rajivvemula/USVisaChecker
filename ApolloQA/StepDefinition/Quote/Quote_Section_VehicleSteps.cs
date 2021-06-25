@@ -5,6 +5,8 @@ using ApolloQA.Source.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using ApolloQA.Source.Driver;
+using OpenQA.Selenium;
 
 namespace ApolloQA.StepDefinition.Quote
 {
@@ -28,66 +30,77 @@ namespace ApolloQA.StepDefinition.Quote
             }
         }
 
-        [When(@"user selects a Vehicle with the following relevant values")]
-        public void WhenUserSelectsAVehicleWithTheFollowingRelevantValues(Table table)
-        {
-
-            
-            
-        }
-
         [When(@"user adds a new Vehicle with the following relevant values")]
         public void WhenUserEntersANewVehicleWithTheFollowingRelevantValues(Table table)
         {
-                //additional rows will be ignored
-                var row = table.Rows[0];
-            
-                foreach(var column in row)
+            //additional rows will be ignored
+            var row = table.Rows[0];
+
+            foreach (var column in row)
+            {
+                Thread.Sleep(2000);
+                var fieldDisplayName = column.Key;
+                var fieldValue = column.Value;
+                var fieldType = FieldTypes[fieldDisplayName];
+
+                if (fieldValue.ToLower() == "random")
                 {
-                    var fieldDisplayName = column.Key;
-                    var fieldValue = column.Value;
-                    var fieldType = FieldTypes[fieldDisplayName];
-
-                    if(fieldValue.ToLower()=="random")
+                    switch (fieldDisplayName)
                     {
-                        switch(fieldDisplayName)
-                        {
-                            case "VIN":
-                                fieldValue = Functions.GetRandomVIN();
-                                break;
-                            default:
-                                Functions.handleFailure(new NotImplementedException($"Field {fieldDisplayName} random value hasn't been implemented"));
-                                break;
-                        }
-                    }
-                var field = Shared.GetField(fieldDisplayName, fieldType);
-
-                    if (fieldType == "Dropdown" && fieldValue.Contains(':'))
-                    {
-                        switch (fieldValue.Substring(0, fieldValue.IndexOf(':')))
-                        {
-                            case "index":
-                            field.SelectMatDropdownOptionByIndex(int.Parse(fieldValue.Substring(fieldValue.IndexOf(':')+1, 1)));
+                        case "VIN":
+                            fieldValue = Functions.GetRandomVIN();
                             break;
-                            default:
-                                Functions.handleFailure(new NotImplementedException($"Field {fieldDisplayName} custom value: {fieldValue} hasn't been implemented"));
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            field.setValue(fieldType, fieldValue);
-                        }
-                        catch (Exception ex)
-                        {
-                        Log.Critical($"Field Type {fieldType} fieldValue: {fieldValue}");
-                        }
-
+                        default:
+                            Functions.handleFailure(new NotImplementedException($"Field {fieldDisplayName} random value hasn't been implemented"));
+                            break;
                     }
                 }
-            
+                var field = Shared.GetField(fieldDisplayName, fieldType);
+                if (fieldType == "Dropdown" && fieldValue.Contains(':'))
+                {
+                    switch (fieldValue.Substring(0, fieldValue.IndexOf(':')))
+                    {
+                        case "index":
+                            field.SelectMatDropdownOptionByIndex(int.Parse(fieldValue.Substring(fieldValue.IndexOf(':') + 1, 1)));
+                            break;
+                        default:
+                            Functions.handleFailure(new NotImplementedException($"Field {fieldDisplayName} custom value: {fieldValue} hasn't been implemented"));
+                            break;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        if (fieldDisplayName == "Body Category")
+                        {
+                            Element dropdown = new Element(By.XPath("//mat-select[@formcontrolname='bodyCategoryTypeId']"));
+                            Element option = new Element(By.XPath($"//*[@class='mat-option-text'][contains(text(), '{fieldValue}')]"));
+                            Thread.Sleep(7000);
+                            try {
+                                bool error = dropdown.GetAttribute("aria-invalid").Contains("true");
+                                do {
+                                    field.setValue(fieldType, fieldValue);
+                                    dropdown.WaitUntilClickable();
+                                    field.setValue(fieldType, fieldValue);
+                                    dropdown.sendKeysTab();
+                                }
+                                while (error == true);
+                            }
+                            catch (Exception){
+                                option.WaitUntilClickable();
+                                field.setValue(fieldType, fieldValue);
+                            }
+                        }
+                        field.setValue(fieldType, fieldValue);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Critical($"Field Type {fieldType} fieldValue: {fieldValue}");
+                        throw ex;
+                    }
+                }
+            }            
         }
 
 

@@ -97,7 +97,7 @@ namespace ApolloQA.Source.Driver
                 {
                     Log.Debug("stale element caught");
                     //Thread.Sleep(500);
-                    if(clickInfinityCount.FindAll(it=> (DateTime.Now-it).TotalSeconds<6).Count<5)
+                    if(clickInfinityCount.FindAll(it=> (DateTime.Now-it).TotalSeconds<10).Count<5)
                     {
                         clickInfinityCount.Add(DateTime.Now);
                         Click(ElementLocator, wait_Seconds, optional);
@@ -313,6 +313,12 @@ namespace ApolloQA.Source.Driver
             var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
             textField.SendKeys(Keys.Control + "a");
             textField.SendKeys(Keys.Delete);
+        }
+
+        public static void sendKeysTab(By TextFieldLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        {
+            var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
+            textField.SendKeys(Keys.Tab);
         }
 
         // 

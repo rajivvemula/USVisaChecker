@@ -4,27 +4,8 @@ using System.Collections.Generic;
 
 namespace ApolloQA.Data.Entity.Question
 {
-    public class OperationsQuestions
+    public class OpQuestion_answers
     {
-        public static readonly Dictionary<String, String> TruckingLocalHauling = new Dictionary<String, String>() {
-
-            {"VehicleRadius","501 miles or more" },
-            {"FineArt", "No" },
-            {"ResidentialMoving", "No" },
-            {"TeamDriving", "No - one driver per haul" },
-            {"TravelToMexico", "No" },
-            {"ClaimCount", "Count" },
-            {"Haul", "Haul" },
-            {"Chains", "No" },
-            {"Biohazard", "No" },
-            {"BorrowVehicles", "No" },
-            {"UseOwnerOperators", "No" },
-            {"USDOT", "Yes" },
-            {"FmscaOperating", "No" },
-            {"USDOT#", $"DOT" },
-            {"IL-Authority", "No" },
-        };
-
         public static readonly Dictionary<string, string> TruckingLongDistance = new Dictionary<string, string>()
         {
             {"VehicleRadius","501 miles or more" },
@@ -32,21 +13,21 @@ namespace ApolloQA.Data.Entity.Question
             {"ResidentialMoving", "No" },
             {"TeamDriving", "No - one driver per haul" },
             {"TravelToMexico", "No" },
-            {"ClaimCount", "Count" },
-            {"Haul", "Haul" },
+            { "TrailerInterchangeAgreements", "No" },
+            {"ClaimCount", "1" },
+            {"Haul", "General Freight" },
             {"Chains", "No" },
             {"Biohazard", "No" },
             {"BorrowVehicles", "No" },
             {"UseOwnerOperators", "No" },
             {"USDOT", "Yes" },
+            {"USDOT#", $"DOT" },
             {"FmscaOperating", "No" },
-            {"USDOT#", "DOT" },
             {"IL-Authority", "No" },
         };
 
         public static readonly Dictionary<string, string> TowingServices = new Dictionary<string, string>()
         {
-
             {"OnCall", "No" },
             {"Salvage", "No we only provide towing or roadside assistance services." },
             {"VehicleRadius","501 miles or more" },
@@ -54,15 +35,16 @@ namespace ApolloQA.Data.Entity.Question
             {"ResidentialMoving", "No" },
             {"TeamDriving", "No - one driver per haul" },
             {"TravelToMexico", "No" },
-            {"ClaimCount", "Count" },
-            {"Haul", "Haul" },
-            {"Chains", "No" },
+            { "TrailerInterchangeAgreements", "No" },
+            {"ClaimCount", "1" },
+            {"Haul", "Motor Vehicles (Cars)" },
+            {"Chains", "Yes" },
             {"Biohazard", "No" },
             {"BorrowVehicles", "No" },
             {"UseOwnerOperators", "No" },
             {"USDOT", "Yes" },
-            {"FmscaOperating", "No" },
             {"USDOT#", "DOT" },
+            {"FmscaOperating", "No" },
             {"IL-Authority", "No" },
         };
 
@@ -73,6 +55,7 @@ namespace ApolloQA.Data.Entity.Question
             {"ServiceAccess", "Both on demand and pre-arranged" },
             {"VehicleRadius", "51 to 100 miles" },
             {"TravelToMexico", "No" },
+            { "TrailerInterchangeAgreements", "No" },
             {"ClaimCount", "1" },
             {"BorrowVehicles", "No" },
             {"UseOwnerOperators", "No" },
@@ -85,15 +68,15 @@ namespace ApolloQA.Data.Entity.Question
             {"ResidentialMoving", "No" },
             {"TeamDriving", "No - one driver per haul" },
             {"TravelToMexico", "No" },
-            {"ClaimCount", "Count" },
-            {"Haul", "Haul" },
+            {"ClaimCount", "1" },
+            {"Haul", "General Freight" },
             {"Chains", "No" },
             {"Biohazard", "No" },
             {"BorrowVehicles", "No" },
             {"UseOwnerOperators", "No" },
             {"USDOT", "Yes" },
-            {"FmscaOperating", "No" },
             {"USDOT#", "DOT" },
+            {"FmscaOperating", "No" },
             {"IL-Authority", "No" },
         };
     }

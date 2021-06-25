@@ -10,11 +10,11 @@ using TechTalk.SpecFlow;
 namespace ApolloQA.Features
 {
     [Binding]
-    public class CaseyTestSteps
+    public class SpecificTestSteps
     {
         FeatureContext featureContext;
 
-        public CaseyTestSteps(FeatureContext featureContext)
+        public SpecificTestSteps(FeatureContext featureContext)
         {
             this.featureContext = featureContext;
         }
@@ -164,12 +164,6 @@ namespace ApolloQA.Features
 
             Assert.IsTrue(modalTitle.Displayed);
         }
-
-        //[Then(@"toast message (.*) is displayed")]
-        //public void ThenToastMessageIsDisplayed(string message)
-        //{
-        //    IWebElement toast = UserActions.FindElementWaitUntilVisible(By.ClassName("toast-title"), 20);
-        //}
 
         [Then(@"Verify grid contains entry with column equals value")]
         public void ThenVerifyGridContainsEntryWithColumnEqualsValue(Table table)

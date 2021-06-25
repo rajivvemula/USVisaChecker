@@ -166,11 +166,7 @@ namespace ApolloQA.StepDefinition.Quote
                     {
                         Log.Debug($"Skipped: Name: {UI_Col_Name}  Math: {UI_Col_Math} \n");
                     }
-
-
-
                 }
-
             }
             if(failures.Any())
             {

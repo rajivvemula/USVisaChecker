@@ -281,6 +281,11 @@ namespace ApolloQA.Source.Driver
             return false;
         }
 
+        public void sendKeysTab(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
+        {
+            UserActions.sendKeysTab(locator);
+        }
+
         // 
         // Dropdown actions 
         // 

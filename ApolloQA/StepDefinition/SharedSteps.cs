@@ -19,7 +19,7 @@ namespace ApolloQA.StepDefinition
         public void WhenUserClicksButton(string buttonName)
         {
             var button = Shared.GetButton(buttonName);
-            if(!button.TryClick())
+            if (!button.TryClick())
             {
                 while (Shared.toastrMessage.assertElementIsPresent(3, true) == true)
                 {
@@ -28,6 +28,7 @@ namespace ApolloQA.StepDefinition
                 button.Click();
             }
         }
+
         [When(@"user takes a screenshot (.*)")]
         public void WhenUserTakesAScreenshot(string filename)
         {
@@ -38,7 +39,6 @@ namespace ApolloQA.StepDefinition
         {
             ScreenShot.Info();
         }
-
 
         [When(@"user clicks (.*) Dropdown")]
         public void WhenUserClicksOnPhysicalAddressDropdown(string DropdownDisplayName)
@@ -82,7 +82,6 @@ namespace ApolloQA.StepDefinition
 
                 Shared.GetField(fieldDisplayName, fieldType).setValue(fieldType, fieldValue);
            }
-
 
            IDictionary<String, String> fieldValues = new Dictionary<String, String>();
 
@@ -273,6 +272,38 @@ namespace ApolloQA.StepDefinition
                         Shared.genericResponse.setText("TestName1");
                     }
                     catch {
+                        Shared.GetQuestionAnswer(question2, "Myself").Click();
+                        Shared.genericResponse.setText("TestName1");
+                        Shared.genericResponse2.setText("TestName2");
+                    }
+                    break;
+                case "FINANCED":
+                    Shared.GetQuestionAnswer(question, "Financed").Click();
+                    Shared.genericResponse.setText("TestName1");
+                    break;
+                case "LEASED":
+                    Shared.GetQuestionAnswer(question, "Leased").Click();
+                    Shared.genericResponse.setText("TestName1");
+                    break;
+            }
+        }
+
+        [When(@"user sets answer to Is this trailer owned, financed, or leased\? as '(.*)'")]
+        public void WhenUserSetsAnswerToIsThisTrailerOwnedFinancedOrLeasedAs(string ownership)
+        {
+            string question = "Is this trailer owned, financed, or leased?";
+            string question2 = "Who holds the trailer title/registration?";
+            switch (ownership.ToUpper())
+            {
+                case "OWNED":
+                    Shared.GetQuestionAnswer(question, "Owned").Click();
+                    try
+                    {
+                        Shared.GetQuestionAnswer(question2, "The Business").Click();
+                        Shared.genericResponse.setText("TestName1");
+                    }
+                    catch
+                    {
                         Shared.GetQuestionAnswer(question2, "Myself").Click();
                         Shared.genericResponse.setText("TestName1");
                         Shared.genericResponse2.setText("TestName2");

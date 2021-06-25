@@ -170,6 +170,10 @@ namespace ApolloQA.Pages
         public static Element LastGridItem => new Element("(//a[@class='nav-link'])[last()]");
         public static Element toastrMessage => new Element("//div[@class='toast-content']/descendant::*");
         public static Element AddressFormSaveButton => new Element("//button[@class='mat-focus-indicator mat-raised-button mat-button-base mat-primary ng-star-inserted']");
+        public static Element USDOTNumber => new Element("(//input[@type='number' and @name='response'])[2]");
+        public static Element ClaimsCount => new Element("//bh-question-number//input");
+        public static Element CDL => new Element("//bh-question-singleselect");
+        public static Element OperationsListBox => new Element("//div[@role='listbox']");
 
         //Vehicle Ownership Elements
         public static Element genericResponse => new Element("(//input[@name='response'])[1]");

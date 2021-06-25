@@ -31,7 +31,6 @@ namespace ApolloQA.StepDefinition.Quote
             new NotImplementedException("Selecting a driver with defined values not yet implemented");
         }
 
-
         [When(@"user adds a new Driver with the following relevant values")]
         public void WhenUserAddsANewDriverWithTheFollowingRelevantValues(Table table)
         {
@@ -155,25 +154,14 @@ namespace ApolloQA.StepDefinition.Quote
             Quote_Drivers_Page.ExpandedInfo.assertElementNotPresent();
         }
 
-        [When(@"user checks Quote info page buttons")]
-        public void WhenUserChecksQuoteInfoPageButtons()
+        [When(@"user answer CDL question")]
+        public void WhenUserAnswerCDLQuestion()
         {
-            //Quote_Create_Page.SubmitButton.assertElementNotPresent();
-            Quote_Create_Page.BusinessName.setText("A&M");
-            Quote_Create_Page.BusinessName.SelectMatDropdownOptionByText("A&M Organization Test");
-            var primary = Quote_Create_Page.SubmitButton.GetAttribute("class");
-            Assert.IsTrue(primary.Contains("mat-primary"));
-            var color = Quote_Create_Page.SubmitButton.GetAttribute("color");
-            Assert.AreEqual(color, "primary");
-        }
-
-        [Then(@"user checks Drivers grid page buttons")]
-        public void ThenUserChecksDriversGridPageButtons()
-        {
-            var gridbutton = Quote_Drivers_Page.GridNextButton.GetAttribute("color");
-            Assert.AreEqual(gridbutton, "primary");
-            var primary = Quote_Drivers_Page.GridNextButton.GetAttribute("class");
-            Assert.IsTrue(primary.Contains("mat-primary"));
+            var CDL = Shared.CDL.assertElementNotPresent(2, true);
+            if (CDL == false)
+            {
+                Shared.GetQuestionAnswer("Does this driver have a Commercial Driver's License (CDL)?", "Yes 3 or more years").Click();
+            }
         }
     }
 }
