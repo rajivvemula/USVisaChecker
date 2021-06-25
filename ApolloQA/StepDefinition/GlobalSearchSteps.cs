@@ -92,27 +92,11 @@ namespace ApolloQA.StepDefinition
                 case "POLICYHOLDERNAME":
                     UserActions.Refresh();
                     GlobalSearch.SearchInput.clearTextField();
-                    var OrgName = Organization.GetLatestOrganization();
-                    GlobalSearch.SearchInput.setText($"{OrgName.Name}");
+                    GlobalSearch.SearchInput.setText("Alex Towing Services");
                     var nameCheck = GlobalSearch.SearchInput.getTextFieldText();
-                    if (nameCheck.EndsWith(")") == true)
-                    {
-                        GlobalSearch.SearchInput.setText($"{OrgName.Name}".Substring(0, 18));
-                    }
-                    GlobalSearch.SearchResult.assertElementIsVisible();
-                    try
-                    {
-                        var OrgPolicy = GlobalSearch.SearchResultLabel().GetElementText();
-                        Assert.TextContains(OrgPolicy, "Policy");
-                    }
-                    catch
-                    {
-                        var policyNameHolder = GlobalSearch.SearchResultLabel().GetElementText();
-                        try { Assert.TextContains(policyNameHolder, $"{OrgName.Name}"); }
-                        catch { policyNameHolder.StartsWith($"{OrgName.Name.Substring(0, 1)}"); }
-                        var policyHolderName = GlobalSearch.SearchResultDescription.GetElementText();
-                        Assert.TextContains(policyHolderName, "Organization");
-                    }
+                    GlobalSearch.SearchResult.assertElementIsVisible();                  
+                    var Org = GlobalSearch.SearchResultLabel().GetElementText();
+                    Assert.TextContains(Org, "Alex Towing");
                     break;
                 case "AGENCYORGANIZATION":
                     UserActions.Refresh();
@@ -183,6 +167,14 @@ namespace ApolloQA.StepDefinition
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var claimNumber = GlobalSearch.SearchResultLabel().GetElementText();
                     Assert.TextContains(claimNumber, "Claim");
+                    break;
+                case "VALIDFNOLNUMBER":
+                    UserActions.Refresh();
+                    GlobalSearch.SearchInput.clearTextField();
+                    GlobalSearch.SearchInput.setText("Fnol");
+                    GlobalSearch.SearchResult.assertElementIsVisible();
+                    var FNOL = GlobalSearch.SearchResultLabel().GetElementText();
+                    Assert.TextContains(FNOL, "FNOL");
                     break;
                 default:
                     throw new Exception($"Search Text {SearchText} not found.");

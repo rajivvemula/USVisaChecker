@@ -22,6 +22,7 @@ Scenario Outline: TC 25643 Global Search - Search Items
 	| ValidPolicyNumber   |
 	| ValidQuoteNumber    |
 	| ValidClaimNumber    |
+	| ValidFnolNumber     |
 
 	
 	# bugReported - 32061
