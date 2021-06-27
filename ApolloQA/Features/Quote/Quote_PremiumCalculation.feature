@@ -4,7 +4,7 @@ Feature: Quote Premium Calculation
 	setup a quote with valid parameters
 	So that I can modify parameters during testing
 	
-@tc:29105 @tc:34153
+@tc:29105 @tc:34153 @ignore
 Scenario: Rate Calculation New Quote
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
