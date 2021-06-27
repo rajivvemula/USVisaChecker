@@ -4,7 +4,7 @@
 
 #This scenario is built to be expanded to as many keywords as possible
 
-@tc:39143
+@tc:39143 @ignore
 Scenario Outline: Automatic Decline Based on keyword
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
