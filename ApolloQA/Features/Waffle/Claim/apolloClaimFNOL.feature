@@ -1,4 +1,5 @@
 ﻿#TODO
+@broken
 Feature: FNOL
 
 @tc:29860
@@ -28,11 +29,8 @@ Scenario: Creates FNOL successfully
 	And user waits for spinner to load
 	Then claim should be successfully activated
 
-
-	
-
-@ignore
-Scenario: TC 25518 User able to search by policy number
+@tc:25518
+Scenario: User able to search by policy number
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
 	When user clicks 'Claim right menu' Button
@@ -49,8 +47,8 @@ Scenario: TC 25518 User able to search by policy number
 	When user clicks 'Continue anyway' Button
 	Then user asserts for Occurence cancel
 
-@ignore
-Scenario: TC 25541 Location field accepts 255 characters
+@tc:25541
+Scenario: Location field accepts 255 characters
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
 	When user clicks 'Claim right menu' Button
@@ -59,8 +57,8 @@ Scenario: TC 25541 Location field accepts 255 characters
 	And user enters 255 characters in Location description field
 	Then user verifies 256 characters in field is not accepted
 
-@ignore
-Scenario: TC 25541 Address dropdown provided and include correct Address fields
+@tc:25541
+Scenario: Address dropdown provided and include correct Address fields
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
 	When user clicks 'Claim right menu' Button
@@ -71,8 +69,8 @@ Scenario: TC 25541 Address dropdown provided and include correct Address fields
 	When user validates address dropdwon
 	Then user validates Address fields 
 
-@ignore
-Scenario Outline: TC 25638 Claim headers visible
+	@tc:25638
+Scenario Outline: Claim headers visible for each Page
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
 	When user clicks 'Claim right menu' Button
@@ -94,8 +92,8 @@ Scenario Outline: TC 25638 Claim headers visible
 		| Documents           |
 		| Activities          |
 
-@ignore
-Scenario: TC 25656, 25657 Claim headers visible
+@tc:25656 @tc:25657
+Scenario: Claim headers visible
 Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
 	When user clicks 'Claim right menu' Button

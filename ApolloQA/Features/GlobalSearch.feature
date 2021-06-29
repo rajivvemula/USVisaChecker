@@ -1,8 +1,7 @@
 ﻿Feature: GlobalSearch
 
-#TODO
-@tc:37621
-Scenario Outline: TC 25643 Global Search - Search Items
+@tc:37621 @tc:25643
+Scenario Outline: TC Global Search - Search Items
 	Given user is successfully logged into biberk
 	And user validates search for '<Criteria>'
 

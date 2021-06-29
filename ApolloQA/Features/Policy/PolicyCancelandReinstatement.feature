@@ -1,7 +1,6 @@
 ﻿Feature: PolicyCancelandReinstatement
 
-
-@testtask @tc:34163
+@tc:34163
 Scenario Outline: Automate Test Policy
     Given user is successfully logged into biberk
     When User Navigates to Policy latest
@@ -16,8 +15,6 @@ Scenario Outline: Automate Test Policy
         | Insured      | Substantial change in risk which increased risk of loss after policy issued or renewed. |
         | Insured      | Policy cancelled and reissued. - INTERNAL USE ONLY                                      |
         | Insured      | Loss or suspension of driver's license.                                                 |
-
-
 
 
 @tc:37622

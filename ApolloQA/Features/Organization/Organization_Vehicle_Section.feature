@@ -1,8 +1,7 @@
 ﻿Feature: Organization Vehicle Section
 
-
-# Broken - Defect 24781
-@bugReported
+@broken
+# Due to "Organization" development on hold, this is broken
 Scenario: Organization Vehicle add new
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
