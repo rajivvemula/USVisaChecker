@@ -1,7 +1,9 @@
-﻿Feature: Organization Driver Section
+﻿
+#dissabled in release 1
+@ignore
+Feature: Organization Driver Section
 
-@broken
-# Due to "Organization" development on hold, this is broken
+#tc:39422
 Scenario: Driver Add New
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
@@ -37,6 +39,7 @@ Scenario: Driver Add New
 
 # Broken - Defect 32288
 @bugReported
+#tc:39423
 Scenario: Driver delete
 	Given user is successfully logged into biberk
 	When user navigates to latest organization

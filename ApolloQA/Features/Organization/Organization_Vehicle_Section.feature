@@ -1,7 +1,9 @@
 ﻿Feature: Organization Vehicle Section
 
-@broken
-# Due to "Organization" development on hold, this is broken
+
+# Broken - Defect 24781
+@bugReported
+#TC:39424
 Scenario: Organization Vehicle add new
 	Given user is successfully logged into biberk
 	When user navigates to latest organization
@@ -59,6 +61,7 @@ Scenario: Organization Vehicle add new
 
 	# Broken - Defect 32287
 	@bugReported
+#TC:39425
 Scenario: Organization Vehicle Delete
 	Given user is successfully logged into biberk
 	When user navigates to latest organization

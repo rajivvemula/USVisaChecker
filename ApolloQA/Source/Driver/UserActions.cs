@@ -329,6 +329,16 @@ namespace ApolloQA.Source.Driver
         {
             Click(DropdownLocator);
             Click(By.XPath($"//mat-option[descendant::*[normalize-space(text())= '{optionDisplayText}']]"));
+
+            try
+            {
+                WaitForElementToDisappear(By.XPath($"//mat-option[descendant::*[normalize-space(text())= '{optionDisplayText}'] and not(mat-pseudo-checkbox)]"), 2);
+            }
+            catch(Exception)
+            {
+                Click(By.XPath($"//mat-option[descendant::*[normalize-space(text())= '{optionDisplayText}']]"));
+            }
+
         }
         public static void SelectMatDropdownOptionContainingText(By DropdownLocator, string optionDisplayText)
         {

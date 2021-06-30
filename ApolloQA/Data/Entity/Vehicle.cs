@@ -171,7 +171,7 @@ namespace ApolloQA.Data.Entity
                 return int.Parse(value);
             }
         }
-        public decimal? StatedValue
+        public decimal? StatedAmount
         {
             get
             {

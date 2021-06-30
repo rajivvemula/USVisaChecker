@@ -376,6 +376,26 @@ namespace ApolloQA.Data.Rating
                     return decimal.Parse(string.Join("", value.Where(it=> Char.IsDigit(it))));
                 }
             }
+            private decimal VehicleTypeMinimumRatingValueFactor
+            {
+                get
+                {
+                    var vehicleType  = (string)this.KnownFields.First(it=> it.Name== "Vehicle Type").Value;
+                    
+                    var algorithmTable = this.Engine.getTable($"{GetAlgorithmAssignment().CoverageCode}.VehicleType_MinimumRatingValueFactors");
+
+                    var factor = algorithmTable.FirstOrDefault(it => it["Vehicle Type"] == vehicleType)["Minimum Rating Value Factor"];
+
+                    //Log.Debug(factor.Where(char.IsDigit));
+                    var minimumValue =  decimal.Parse(string.Join("", factor.Where(char.IsDigit)));
+
+                    var vehicleValue = (decimal)this.KnownFields.First(it => it.Name == "Stated Value").Value;
+
+                    return vehicleValue < minimumValue ? minimumValue : vehicleValue;
+
+
+                }
+            }
             private decimal PolicyTermFactor
             {
                 get
@@ -602,7 +622,7 @@ namespace ApolloQA.Data.Rating
 
                     if (limitCount == 0)
                     {
-                        throw new Exception($"Coverage {limit.coverageType.Name} had no limits selected");
+                        throw new Exception($"Coverage {limit.GetCoverageType().Name} had no limits selected");
 
                     }
                     if (isCombined == null)

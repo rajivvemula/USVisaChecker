@@ -172,7 +172,10 @@ namespace ApolloQA.Source.Driver
         {
             try
             {
-                Devops.markTestCases(TestCaseOutcome);
+                if(TestCaseOutcome.Count>0)
+                {
+                    Devops.markTestCases(TestCaseOutcome);
+                }
             }
             catch(Exception ex)
             {

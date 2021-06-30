@@ -18,6 +18,8 @@ using System.Globalization;
 using CsvHelper.Configuration;
 using ApolloQA.Data.Rating;
 using ApolloQA.Data.Entity;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 
 namespace ApolloQA.Source.Helpers
 {
@@ -186,7 +188,7 @@ namespace ApolloQA.Source.Helpers
             {
                 handleFailure($"File {filePath} does not exist");
             }
-            filePath = Path.IsPathFullyQualified(filePath) ? filePath : Path.GetFullPath(filePath);
+            filePath = System.IO.Path.IsPathFullyQualified(filePath) ? filePath : System.IO.Path.GetFullPath(filePath);
 
             Log.Debug(filePath);
 
@@ -418,6 +420,10 @@ namespace ApolloQA.Source.Helpers
         {
             return GetQuotedQuoteThroughAPI(ClassCodeKeyword.GetUsingKeywordName("Accounting Services"));
         }
+        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(string state)
+        {
+            return GetQuotedQuoteThroughAPI(ClassCodeKeyword.GetUsingKeywordName("Accounting Services"), state);
+        }
         public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword, string state)
         {
             return GetQuotedQuoteThroughAPI(classCodeKeyword, state, new List<CoverageType> { classCodeKeyword.coverage ?? new CoverageType("BIPD") });
@@ -430,10 +436,6 @@ namespace ApolloQA.Source.Helpers
         {
             var org = new Data.TestData.Organization(classCodeKeyword);
 
-            foreach(var cover in coverages)
-            {
-                Log.Debug("cover name: " + cover.Name);
-            }
             var quote = new Data.TestData.Quote(org, state, coverages);
 
 
@@ -463,7 +465,7 @@ namespace ApolloQA.Source.Helpers
             quote.AddPolicyCoverages();
 
 
-            var summary = quote.GetSummary();
+            var summary = quote.PostSummary();
             Log.Debug("Quote Id: " + quote.quoteEntity.Id);
             Log.Debug("Rating Group Id (rating worksheet): \n" +$"{Environment.GetEnvironmentVariable("HOST")}/rating/ratings-worksheet/" + (summary?["ratingGroupId"]??"null") +"\n" );
             if (summary["errors"].Count()>0 || summary?["ratingResponses"] == null )
@@ -473,6 +475,12 @@ namespace ApolloQA.Source.Helpers
             }
             return quote.quoteEntity;
         }
+
+        public static Data.Entity.Policy GetNewlyIssuedPolicy(string stateCode)
+        {
+            return GetQuotedQuoteThroughAPI(stateCode).PurchaseThis();
+        }
+
 
 
         public static dynamic GetCAB(int? usDotNumber)
@@ -499,7 +507,17 @@ namespace ApolloQA.Source.Helpers
 
 
         }
-
+        public static string parsePDF(string path)
+        {
+            PdfReader reader = new PdfReader(path);
+            string text = string.Empty;
+            for (int page = 1; page <= reader.NumberOfPages; page++)
+            {
+                text += PdfTextExtractor.GetTextFromPage(reader, page);
+            }
+            reader.Close();
+            return text;
+        }
         public static void MarkTestCasePassed(int testCaseId) 
         {
             if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))

@@ -11,20 +11,50 @@ namespace ApolloQA.Data.Entity
 {
     public class Quote
     {
-        public readonly int Id;
+        public readonly long Id;
 
         public Quote(int Id) {
             this.Id = Id;
         }
-        public Quote(string property,  int value)
+        public Quote(long Id)
         {
-            this.Id = (int)Cosmos.GetQuery("Application", $"SELECT * FROM c Where c.{property}={value} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"];
+            this.Id = Id;
+        }
+        public Quote(string property, int value)
+        {
+            this.Id = (int)Cosmos.GetQuery("Application", $"SELECT * FROM c Where c.{property}={value} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"];
 
         }
         public Quote(string property, string value)
         {
-            this.Id = (int)Cosmos.GetQuery("Application", $"SELECT * FROM c Where c.{property}='{value}' ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"];
+            this.Id = (int)Cosmos.GetQuery("Application", $"SELECT * FROM c Where c.{property}='{value}' ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"];
 
+        }
+        public Quote(JObject quoteProps)
+        {
+            this.Id = quoteProps["Id"].ToObject<long>();
+            this._properties = quoteProps;
+        }
+        private JObject _properties = null;
+
+        public Quote CacheProps()
+        {
+            this._properties =  Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").ElementAt(0);
+
+            return this;
+        }
+        public dynamic GetProperties()
+        {
+            if (_properties != null)
+            {
+                return _properties;
+            }
+            return Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").ElementAt(0);
+        }
+        public dynamic GetProperty(String propertyName)
+        {
+            var property = this.GetProperties()[propertyName];
+            return property;
         }
         public dynamic this[String propertyName]
         {
@@ -43,45 +73,80 @@ namespace ApolloQA.Data.Entity
         }
         public static Quote GetLatestQuote()
         {
-            return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c WHERE c.ApplicationStatusValue  NOT IN (\"Issued\", \"Expired\", \"Cancelled\") ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
+            return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c WHERE c.ApplicationStatusValue  NOT IN (\"Issued\", \"Expired\", \"Cancelled\") ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
         }
 
-        public dynamic GetProperties()
+
+
+        public Policy PurchaseThis()
         {
-            return RestAPI.GET($"/quote/{this.Id}");
-        }
-        public dynamic GetProperty(String propertyName)
-        {
-            var property = this.GetProperties()[propertyName];
-            return property == null ? "" : property;
+            var body = new JObject()
+            {
+                { "amount", 100 },
+                { "checkDate", DateTime.Now},
+                { "entityId", this.Tether.Id },
+                { "entityTypeId", 15000},
+                { "isAppliedToCollections", null},
+                { "memo", "113456"},
+                { "partyId", this.Organization.Id},
+                { "paymentMethodTypeId", 4}
+            };
+            var response = RestAPI.POST("payment", body);
+
+            if(response.isSuccess!=true)
+            {
+                throw Functions.handleFailure(response);
+            }
+
+            return GetCurrentRatableObject();
+
         }
 
+
+        public Tether Tether
+        {
+            get
+            {
+                return new Tether(this.GetProperty("TetherId").ToObject<long>());
+            }
+        }
 
         private Policy _currentRatableObject;
         public Policy GetCurrentRatableObject()
         {
             if(_currentRatableObject == null)
             {
-                _currentRatableObject= new Policy(Tether.GetTether(this.Id).CurrentRatableObjectId);
+                var ratableObjectId = Tether.GetTether(this.Id).CurrentRatableObjectId;
+                if(ratableObjectId == null)
+                {
+                    return null;
+                }
+                _currentRatableObject = new Policy(ratableObjectId?? throw new ArgumentNullException());
             }
             return _currentRatableObject;
+        }
+
+        public Policy? GetRatableObject()
+        {
+            var ratableObjectId = SQL.executeQuery($"SELECT RatableObjectId FROM tether.TetherApplicationRatableObject where ApplicationId = {this.Id}")[0]["RatableObjectId"];
+            return ratableObjectId is DBNull ? null : new Policy(ratableObjectId);
         }
 
 
         public IEnumerable<CoverageType> getCoverageTypes(Vehicle risk)
         {
             
-            var coverages = this.GetProperty("selectedCoverages");
+            var coverages = this.GetProperty("SelectedCoverages");
 
             foreach(var coverage in coverages)
             {
-                var coverageType = new CoverageType((int)coverage.coverageTypeId);
+                var coverageType = new CoverageType((int)coverage.CoverageTypeId);
 
                 if(coverageType.isVehicleLevel)
                 {
-                    foreach(var riskEntry in coverage.riskCoverages)
+                    foreach(var riskEntry in coverage.RiskCoverages)
                     {
-                        if (riskEntry.riskId == risk.RiskId)
+                        if (riskEntry.RiskId == risk.RiskId)
                         {
                             yield return coverageType;
                         }
@@ -98,24 +163,24 @@ namespace ApolloQA.Data.Entity
         public IEnumerable<CoverageType.Limit> getLimits(Vehicle risk)
         {
 
-            var coverages = this.GetProperty("selectedCoverages");
+            var coverages = this.GetProperty("SelectedCoverages");
 
             foreach (var coverage in coverages)
             {
-                var coverageType = new CoverageType((int)coverage.coverageTypeId);
+                var coverageType = new CoverageType((int)coverage.CoverageTypeId);
 
                 if (coverageType.isVehicleLevel)
                 {
-                    foreach (var riskEntry in coverage.riskCoverages)
+                    foreach (var riskEntry in coverage.RiskCoverages)
                     {
-                        if (riskEntry.riskId == risk.RiskId)
+                        if (riskEntry.RiskId == risk.RiskId)
                         {
                             var limit  = new CoverageType.Limit(coverageType,
-                                                    riskEntry.selectedDeductibleName.ToObject<string?>(),
-                                                    riskEntry.selectedDeductibles.ToObject<List<int>>(),
-                                                    riskEntry.selectedLimitName.ToObject<string?>(),
-                                                    riskEntry.selectedLimits.ToObject<List<int>>(),
-                                                    (JArray)riskEntry.questionResponses
+                                                    riskEntry.SelectedDeductibleName.ToObject<string?>(),
+                                                    riskEntry.SelectedDeductibles.ToObject<List<int>>(),
+                                                    riskEntry.SelectedLimitName.ToObject<string?>(),
+                                                    riskEntry.SelectedLimits.ToObject<List<int>>(),
+                                                    (JArray)riskEntry.QuestionResponses
                                                     );
                             yield return limit;
                         }
@@ -124,11 +189,11 @@ namespace ApolloQA.Data.Entity
                 else
                 {
                     var limit = new CoverageType.Limit(coverageType,
-                                                    coverage.selectedDeductibleName.ToObject<string?>(),
-                                                    coverage.selectedDeductibles.ToObject<List<int>>(),
-                                                    coverage.selectedLimitName.ToObject<string?>(),
-                                                    coverage.selectedLimits.ToObject<List<int>>(),
-                                                    (JArray)coverage.questionResponses
+                                                    coverage.SelectedDeductibleName.ToObject<string?>(),
+                                                    coverage.SelectedDeductibles.ToObject<List<int>>(),
+                                                    coverage.SelectedLimitName.ToObject<string?>(),
+                                                    coverage.SelectedLimits.ToObject<List<int>>(),
+                                                    (JArray)coverage.QuestionResponses
                                                     );
                     yield return limit;
                 }
@@ -165,7 +230,7 @@ namespace ApolloQA.Data.Entity
 
         public dynamic GetQuestionResponse(string alias)
         {
-            foreach(var response in this.GetProperty("questionResponses"))
+            foreach(var response in this.GetProperty("QuestionResponses"))
             {
                 if(response.questionAlias==alias)
                 {
@@ -174,20 +239,35 @@ namespace ApolloQA.Data.Entity
             }
             return null;
         }
-
+        public dynamic SetQuestionResponse(string alias)
+        {
+            foreach (var response in this.GetProperty("QuestionResponses"))
+            {
+                if (response.questionAlias == alias)
+                {
+                    return ((JValue)response.response)?.Value;
+                }
+            }
+            return null;
+        }
+        public JObject PostSummary()
+        {
+            var response = RestAPI.POST($"quote/{this.Id}/summary", "");
+            return response;
+        }
 
         public Address PhysicalAddress
         {
             get
             {
-                return new Address(((JToken)this["physicalAddressId"]).ToObject<long>());
+                return new Address(((JToken)this["PhysicalAddressId"]).ToObject<long>());
             }
         }
         public int GoverningStateId
         {
             get
             {
-                return int.Parse(this["governingStateId"]);
+                return int.Parse(this["GoverningStateId"]);
             }
         }
 
@@ -204,15 +284,17 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return _ApplicationNumber ??= GetProperty("applicationNumber");
+                return _ApplicationNumber ??= GetProperty("ApplicationNumber");
             }
         } 
+
+        private Organization _organization { get; set; }
         public Organization Organization
         {
 
             get
             {
-                return new Organization((int)this.GetProperty("insuredId"));               
+                return _organization ??= new Organization((int)this.GetProperty("InsuredId"));               
             }
         }
 
@@ -221,8 +303,7 @@ namespace ApolloQA.Data.Entity
             get
             {
                 //Log.Debug($"Get Storyboard for Quote ID: {this.Id}");
-                int storyBoardId = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id}").Result[0]["StoryboardId"];
-                return new Question.Storyboard(storyBoardId);
+                return new Question.Storyboard(this.GetProperty("StoryboardId").ToObject<int>());
             }
         }
 
@@ -370,7 +451,7 @@ namespace ApolloQA.Data.Entity
             {
                 if(_ScheduleModifiers == null)
                 {
-                    _ScheduleModifiers = this.GetProperty("scheduleModifiers");
+                    _ScheduleModifiers = RestAPI.GET($"/quote/{this.Id}")["scheduleModifiers"];
 
                 }
                 return _ScheduleModifiers;
@@ -416,7 +497,7 @@ namespace ApolloQA.Data.Entity
         {
             get
             {
-                return ((decimal?)this.GetProperty("experienceModifier")["adjustmentPercentage"])??0;
+                return ((decimal?)RestAPI.GET($"/quote/{this.Id}")["experienceModifier"]["adjustmentPercentage"])??0;
             }
         }
     }

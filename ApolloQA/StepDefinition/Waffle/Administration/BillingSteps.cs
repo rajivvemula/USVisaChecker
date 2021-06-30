@@ -213,15 +213,15 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
                                                                     AND c.RatableObjectStatusValue= 'Quoted'
                                                                     AND c.Billing.Premium !=null
                                                                     AND c.Billing.Premium !=0
-                                                                    ORDER BY c.Id DESC").Result;
+                                                                    ORDER BY c.Id DESC");
             
 
-                if(ratableValidCandidates.Count ==0)
+                if(!ratableValidCandidates.Any())
                 {
                    Functions.GetQuotedQuoteThroughAPI();
                    return GetValidApplicationNumber();
                 }
-                this.ratableObject = ratableValidCandidates[0];
+                this.ratableObject = ratableValidCandidates.ElementAt(0);
                 var quote = new Data.Entity.Quote(this.ratableObject["ApplicationId"].ToObject<int>());
                 var vehicles = quote.GetVehicles();
                 foreach(var vehicle in vehicles)

@@ -112,6 +112,9 @@ namespace ApolloQA.StepDefinition.Rating
                 }               
 
             }
+
+            File.WriteAllText(testResultDir + "ParsedRatingTables.json", manual.ToString());
+
         }
         [Given(@"(.*) csv is parsed into json object")]
         public void GivenCsvIsParsedIntoJsonObject(string state)
@@ -515,7 +518,6 @@ namespace ApolloQA.StepDefinition.Rating
         public void ThenThereShouldnTBeAnyDifferences()
         {
             File.WriteAllText(testResultDir + "SystemRatingTables.json", ActualManual.ToString());
-            File.WriteAllText(testResultDir + "ParsedRatingTables.json", manual.ToString());
 
             //since errors are stored by catogories. we have to check each category.
             //if any category contains errors. this test fails

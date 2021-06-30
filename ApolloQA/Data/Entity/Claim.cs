@@ -18,13 +18,13 @@ namespace ApolloQA.Data.Entity
 
         public Claim(string property, int value)
         {
-            this.Id = (int)Cosmos.GetQuery("Claim", $"SELECT * FROM c Where c.{property}={value} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"];
+            this.Id = (int)Cosmos.GetQuery("Claim", $"SELECT * FROM c Where c.{property}={value} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"];
 
         }
 
         public Claim(string property, string value)
         {
-            this.Id = (int)Cosmos.GetQuery("Claim", $"SELECT * FROM c Where c.{property}='{value}' ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"];
+            this.Id = (int)Cosmos.GetQuery("Claim", $"SELECT * FROM c Where c.{property}='{value}' ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"];
 
         }
 
@@ -47,7 +47,7 @@ namespace ApolloQA.Data.Entity
 
         public static Claim GetClaim()
         {
-            return new Claim((int)Cosmos.GetQuery("Claim", "SELECT * FROM c ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
+            return new Claim((int)Cosmos.GetQuery("Claim", "SELECT * FROM c ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
         }
 
         public dynamic GetProperties()
