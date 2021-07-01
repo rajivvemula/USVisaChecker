@@ -1,5 +1,5 @@
-﻿Feature: Quote_Keyword_Decline
-#This scenario is built to be expanded to as many keywords as possible
+﻿Feature: Quote Section UWResults
+o as many keywords as possible
 
 @tc:39143
 Scenario Outline: Automatic Decline Based on keyword

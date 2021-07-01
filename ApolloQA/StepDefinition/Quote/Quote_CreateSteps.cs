@@ -9,7 +9,7 @@ using TechTalk.SpecFlow;
 namespace ApolloQA.StepDefinition.Quote
 {
     [Binding]
-    public class CreateQuoteSteps
+    public class Quote_CreateSteps
     {
         public static Entity_Quote Quote;
         public Data.Entity.Organization _newOrg;

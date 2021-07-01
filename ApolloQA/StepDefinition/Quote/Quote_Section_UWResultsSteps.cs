@@ -8,7 +8,7 @@ using Entity_Quote = ApolloQA.Data.Entity.Quote;
 namespace ApolloQA.StepDefinition.Quote
 {
     [Binding]
-    public class Quote_UWResultsSteps
+    public class Quote_Section_UWResultsSteps
     {
         public static Entity_Quote Quote;
         public Data.Entity.Organization _newOrg;

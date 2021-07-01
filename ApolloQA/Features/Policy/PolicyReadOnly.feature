@@ -27,7 +27,7 @@ Scenario Outline: Policy is Readonly
     | Additional Information (Vehicle)  |
 
 @tc:39145
-Scenario:2 Verify address is editable in Business Information
+Scenario:Verify address is editable in Business Information
     Given user is successfully logged into biberk
     When User Navigates to Policy latest issued
     When user clicks 'Business Information' Sidetab
@@ -35,7 +35,7 @@ Scenario:2 Verify address is editable in Business Information
     Then User verifies that dropdown is interactable and contains Add Address Button
     
 @tc:39145
-Scenario:3 Verify address is editable in Business Information
+Scenario:Verify add contact is enabled
     Given user is successfully logged into biberk
     When User Navigates to Policy latest issued
     When user clicks 'Contacts' Sidetab
