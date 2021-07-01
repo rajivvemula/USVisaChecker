@@ -1,7 +1,7 @@
 ﻿Feature: PolicyCancelandReinstatement
 
 
-@testtask @tc:34163
+@tc:34163
 Scenario Outline: Automate Test Policy
     Given user is successfully logged into biberk
     When User Navigates to Policy latest

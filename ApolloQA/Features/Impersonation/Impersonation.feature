@@ -1,6 +1,6 @@
 ﻿Feature: Impersonation
 
-
+@tc:39608
 Scenario: Unable to select user to impersonate
 	Given user is successfully logged into biberk
 	When user clicks 'assignment_ind' Button
