@@ -86,6 +86,7 @@ Scenario: SC - Test Rating Algorithm
 	| SC    | VA00086   |
 	| SC    | VA00087   |
 	| SC    | VA00088   |
+
  @ratingTests @CA
 Scenario: CA - Test Rating Algorithm 
 	Given quote for '<State>' and '<Algorithm>' is set to Quoted
@@ -123,6 +124,7 @@ Scenario: CA - Test Rating Algorithm
 	| CA    | VA00055   |
 	| CA    | VA00074   |
 	| CA    | VA00089   |
+
 @ratingTests @GA
 Scenario: GA - Test Rating Algorithm 
 	Given quote for '<State>' and '<Algorithm>' is set to Quoted
@@ -235,8 +237,6 @@ Scenario: TN - Test Rating Algorithm
 	| TN    | VA00055   |
 	| TN    | VA00074   |
 
-
-
 	@ratingTests @State_MO
 Scenario: MO - Test Rating Algorithm 
 	Given quote for '<State>' and '<Algorithm>' is set to Quoted
@@ -273,6 +273,7 @@ Scenario: MO - Test Rating Algorithm
 	| MO    | VA00073   |
 	| MO    | VA00055   |
 	| MO    | VA00074   |
+
 @ratingTests
 Scenario: Find USDOT with matching criteria
 	Then USDOT with criteria is found 

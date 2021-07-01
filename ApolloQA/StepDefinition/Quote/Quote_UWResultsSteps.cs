@@ -24,11 +24,11 @@ namespace ApolloQA.StepDefinition.Quote
             Shared.GetQuestionAnswer("Do you haul any non-owned goods for pay?", "Yes").Click();
         }
         
-        [Then(@"User verifies the Quote has a declined status on UW Results")]
-        public void ThenUserVerifiesTheQuoteHasADeclinedStatusOnUWResults()
+        [Then(@"User verifies the Quote has a declined (.*) on UW Results")]
+        public void ThenUserVerifiesTheQuoteHasADeclinedStatusOnUWResults(string reconm)
         {
             string statusText = ApolloQA.Pages.Quote.Quote_Summary.ClaimStatusOnUW.GetElementText();
-            Assert.TextContains(statusText, "Decline");
+            Assert.TextContains(statusText, reconm);
         }
         [When(@"User changes (.*)")]
         public void WhenUserChanges(string keywordText)

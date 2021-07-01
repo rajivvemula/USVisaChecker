@@ -25,7 +25,7 @@ Scenario Outline: Add Policy Additional Interest to Qute - Individual
 	| Certificate Holder             |
 
 @tc:34151
-	Scenario Outline: Add Policy Additional Interest to Qute - Organization
+Scenario Outline: Add Policy Additional Interest to Qute - Organization
 	Given user is successfully logged into biberk
 	When user clicks 'Quote' Button
 	When User Navigates to Quote latest

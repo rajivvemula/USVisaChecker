@@ -172,8 +172,10 @@
     "nameUI": [ "Safety Features Factor", "Is Vehicle Level Safety Features Factor" ]
   },
   "VehicleType_MinimumRatingValueFactors": {
-    "KnownFields": [ "Vehicle Type" ],
-    "nameUI": [ "Minimum Rating Value Factor", "Maximum Stated Value" ]
+    "KnownFields": [ "Vehicle Type", "Stated Value" ],
+    "nameUI": [ "Minimum Rating Value Factor", "Maximum Stated Value" ],
+    "source": "VehicleTypeMinimumRatingValueFactor",
+    "CustomCalculation": true
   },
   "ClassCode_InsuranceScoreTierFactors": {
     "KnownFields": [ "Class Code", "Insurance Score Tier" ],

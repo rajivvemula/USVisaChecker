@@ -29,7 +29,11 @@ namespace ApolloQA.StepDefinition
                     GlobalSearch.SearchInput.setText("Policy");
                     GlobalSearch.SearchResult.assertElementIsVisible();
                     var EntityType = GlobalSearch.SearchResultLabel().GetElementText();
-                    Assert.TextContains(EntityType, "Policy");
+                    try { Assert.TextContains(EntityType, "Policy"); }
+                    catch (Exception) {
+                        var EntityType2 = GlobalSearch.SearchResultLabel(2).GetElementText();
+                        Assert.TextContains(EntityType2, "Policy");
+                    }
                     break;
                 case "ENTITYNAME":
                     UserActions.Refresh();

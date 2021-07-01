@@ -109,14 +109,14 @@ namespace ApolloQA.Data.Entity
 
         public dynamic GetQuestionResponse(Quote quote, string alias)
         {
-            var risks = (JArray)quote.GetProperty("risks");
-            var risk = risks.FirstOrDefault(it => it["riskId"].ToObject<long>() == this.RiskId);
+            var risks = (JArray)quote.GetProperty("Risks");
+            var risk = risks.FirstOrDefault(it => it["RiskId"].ToObject<long>() == this.RiskId);
 
-            foreach (JObject response in risk["outputMetadata"]["QuestionResponses"])
+            foreach (JObject response in risk["OutputMetaDataEntity"]["QuestionResponses"])
             {
-                if (response["questionAlias"].ToString() == alias)
+                if (response["QuestionAlias"].ToString() == alias)
                 {
-                    return ((JValue)response["response"]).Value;
+                    return ((JValue)response["Response"]).Value;
                 }
             }
             return null;
@@ -126,9 +126,9 @@ namespace ApolloQA.Data.Entity
         {
             var result = new List<Incident>();
 
-            var risk = ((JArray)quote.GetProperty("risks")).FirstOrDefault(it => it["riskId"].ToObject<long>() == this.RiskId);
+            var risk = ((JArray)quote.GetProperty("Risks")).FirstOrDefault(it => it["RiskId"].ToObject<long>() == this.RiskId);
 
-            var incidents = (JArray)risk["outputMetadata"]["DriverHistory"]["accidents"];
+            var incidents = (JArray)risk["OutputMetaDataEntity"]["DriverHistory"]["Accidents"];
 
 
             foreach(var incident in incidents)
@@ -136,9 +136,9 @@ namespace ApolloQA.Data.Entity
                 result.Add(new Incident
                                 (
                                     "Accident",
-                                    incident["date"].ToObject<DateTimeOffset>(),
-                                    incident["state"].ToString(),
-                                    incident["reason"].ToString(), 
+                                    incident["Date"].ToObject<DateTimeOffset>(),
+                                    incident["State"].ToString(),
+                                    incident["Reason"].ToString(), 
                                     this
                                 )
                             );
@@ -149,9 +149,9 @@ namespace ApolloQA.Data.Entity
         {
             var result = new List<Incident>();
 
-            var risk = ((JArray)quote.GetProperty("risks")).FirstOrDefault(it => it["riskId"].ToObject<long>() == this.RiskId);
+            var risk = ((JArray)quote.GetProperty("Risks")).FirstOrDefault(it => it["RiskId"].ToObject<long>() == this.RiskId);
 
-            var incidents = (JArray)risk["outputMetadata"]["DriverHistory"]["violations"];
+            var incidents = (JArray)risk["OutputMetaDataEntity"]["DriverHistory"]["Violations"];
 
 
             foreach (var incident in incidents)
@@ -159,9 +159,9 @@ namespace ApolloQA.Data.Entity
                 result.Add(new Incident
                                 (
                                     "Violation",
-                                    incident["date"].ToObject<DateTimeOffset>(),
-                                    incident["state"].ToString(),
-                                    incident["reason"].ToString(),
+                                    incident["Date"].ToObject<DateTimeOffset>(),
+                                    incident["State"].ToString(),
+                                    incident["Reason"].ToString(),
                                     this
                                 )
                             );
@@ -172,9 +172,9 @@ namespace ApolloQA.Data.Entity
         {
             var result = new List<Incident>();
 
-            var risk = ((JArray)quote.GetProperty("risks")).FirstOrDefault(it => it["riskId"].ToObject<long>() == this.RiskId);
+            var risk = ((JArray)quote.GetProperty("Risks")).FirstOrDefault(it => it["RiskId"].ToObject<long>() == this.RiskId);
 
-            var incidents = (JArray)risk["outputMetadata"]["DriverHistory"]["convictions"];
+            var incidents = (JArray)risk["OutputMetaDataEntity"]["DriverHistory"]["Convictions"];
 
 
             foreach (var incident in incidents)
@@ -182,9 +182,9 @@ namespace ApolloQA.Data.Entity
                 result.Add(new Incident
                                 (
                                     "Conviction",
-                                    incident["date"].ToObject<DateTimeOffset>(),
-                                    incident["state"].ToString(),
-                                    incident["reason"].ToString(),
+                                    incident["Date"].ToObject<DateTimeOffset>(),
+                                    incident["State"].ToString(),
+                                    incident["Reason"].ToString(),
                                     this
                                 )
                             );

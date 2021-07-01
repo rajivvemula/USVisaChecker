@@ -89,7 +89,7 @@
     "source": "root.OutOfServiceViolationRatio"
   },
   "Stated Value": {
-    "source": "Vehicle.StatedValue??0"
+    "source": "Vehicle.StatedAmount?? 0"
   },
   //CAB response
   "Total BASIC Violation Weight": {

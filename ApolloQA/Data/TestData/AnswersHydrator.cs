@@ -365,12 +365,12 @@ namespace ApolloQA.Data.TestData
                 dynamic response;
                 try
                 {
-                    response = RestAPI.POST("/questionresponse/statechanges", body);
+                    response = RestAPI.POST("/questionresponse/questionstatechanges", body);
                 }
                 catch
                 {
                     Thread.Sleep(1000);
-                    response = RestAPI.POST("/questionresponse/statechanges", body);
+                    response = RestAPI.POST("/questionresponse/questionstatechanges", body);
                 }
 
                

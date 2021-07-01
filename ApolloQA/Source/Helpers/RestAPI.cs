@@ -158,9 +158,39 @@ namespace ApolloQA.Source.Helpers
             if(!response.IsSuccessStatusCode)
             {
                 Log.Critical(processURL(URL));
-                Log.Critical(body); 
+                Log.Critical(body);
+                try
+                {
+                    Log.Critical(response.Content.ReadAsStringAsync().Result);
+
+                }
+                catch(Exception)
+                {
+
+                }
             }
             response.EnsureSuccessStatusCode();
+            if (response.Content.Headers.TryGetValues("content-type", out var contentType) && contentType.Contains("application/pdf"))
+            {
+
+                var filename = response.Content.Headers.GetValues("content-disposition")
+                                                        .ElementAtOrDefault(0)
+                                                        .Split(";")[1]
+                                                        .Substring(10)
+                                                        .Trim('"');
+                using (var file = System.IO.File.Create(filename))
+                { 
+                    var contentStream = response.Content.ReadAsStreamAsync().Result; // get the actual content stream
+                    contentStream.CopyTo(file); // copy that stream to the file stream
+
+                    Log.Debug($"file for API request [/{URL}] \n location: " + file.Name);
+                    response.Dispose();
+                    return file.Name;
+
+                }
+
+            }
+
             String dataObjects = response.Content.ReadAsStringAsync().Result;
             response.Dispose();
 

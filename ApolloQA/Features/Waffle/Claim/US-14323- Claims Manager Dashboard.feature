@@ -1,14 +1,12 @@
-﻿@demo
+﻿@broken
 Feature: US-14323- Claims Manager Dashboard
 	As a claims manager, 
 	I will be able to view my dashboard which will allow me to view my work as well as a snapshot of my employees work.
 
-@broken
-#TODO
-Scenario:TC01 Verify Adjusters Claim Grid FNOL
+Scenario:Verify Adjusters Claim Grid FNOL
 	Given user is successfully logged into biberk
 	When user clicks ' apps ' icon Button
-	When user clicks Claim right menu button
+	When user clicks 'Claim' right menu Button
 	Then Grid column label is displayed
 	| Key | Value             |
 	| 1   | Date Reported     |
@@ -19,10 +17,10 @@ Scenario:TC01 Verify Adjusters Claim Grid FNOL
 	| 6   | Policy No.        |
 	| 7   | Date of Loss      |
 
-#scenario is not mutually exclusive
-@broken
-#TODO
-Scenario: TC02 Verify Adjusters Claim Grid Statistics
+Scenario:Verify Adjusters Claim Grid Statistics
+	Given user is successfully logged into biberk
+	When user clicks ' apps ' icon Button
+	When user clicks 'Claim' right menu Button
 	Then Grid column label is displayed
 	| Key | Value            |
 	| 1   | Adjuster         |

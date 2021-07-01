@@ -17,6 +17,11 @@ namespace ApolloQA.Data.Entity
         public bool isVehicleLevel { get; private set; }
         public int SortOrder { get; private set; }
 
+        public override string ToString()
+        {
+            return this.Name;
+        }
+
         public CoverageType(int Id)
         {
             var coverage = Get("Id", Id);
@@ -60,7 +65,7 @@ namespace ApolloQA.Data.Entity
                              );
             if(result.Count == 0)
             {
-               throw Functions.handleFailure($"Property: {property} & criteria:{criteria} did not return any results. see CoverageType.Persisted to achieve consistent namning across coverages types");
+               throw Functions.handleFailure($"Property: {property} & criteria: {criteria} did not return any results. see CoverageType.Persisted to achieve consistent namning across coverages types");
             }
 
             return result[0];
@@ -93,7 +98,8 @@ namespace ApolloQA.Data.Entity
             public List<int> selectedDeductibles;
             public string? selectedLimitName;
             public List<int> selectedLimits;
-            public CoverageType coverageType;
+            private CoverageType coverageType;
+            public long coverageTypeId => coverageType.Id;
             public JArray questionResponses;
 
             public Limit(CoverageType coverageType, 
@@ -113,6 +119,10 @@ namespace ApolloQA.Data.Entity
 
             }
 
+            public CoverageType GetCoverageType()
+            {
+                return this.coverageType;
+            }
             public object? getQuestionResponse(string questionAlias)
             {
                 var questionResponse = questionResponses.FirstOrDefault(it => it["questionAlias"].ToString() == questionAlias);

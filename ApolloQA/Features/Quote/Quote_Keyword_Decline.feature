@@ -1,7 +1,4 @@
 ﻿Feature: Quote_Keyword_Decline
-
-
-
 #This scenario is built to be expanded to as many keywords as possible
 
 @tc:39143

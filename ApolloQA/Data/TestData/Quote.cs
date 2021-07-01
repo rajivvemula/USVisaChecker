@@ -202,10 +202,9 @@ namespace ApolloQA.Data.TestData
             return response;
         }
 
-        public JObject GetSummary()
+        public JObject PostSummary()
         {
-            var response = RestAPI.POST($"quote/{quoteEntity.Id}/summary", "");
-            return response;
+            return quoteEntity.PostSummary();
         }
     }
 }

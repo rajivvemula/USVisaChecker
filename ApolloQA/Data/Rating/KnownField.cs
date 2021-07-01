@@ -176,7 +176,7 @@ namespace ApolloQA.Data.Rating
 
             private JObject GetRisk(long riskId)
             {
-                return ((JArray)this.Engine.root["risks"]).ToObject<List<dynamic>>().Find(risk => risk["riskId"] == riskId);
+                return ((JArray)this.Engine.root["Risks"]).ToObject<List<dynamic>>().Find(risk => risk["RiskId"] == riskId);
             }
 
             private JObject GetCurrentVehicleRisk()
@@ -207,7 +207,7 @@ namespace ApolloQA.Data.Rating
             {
                 get
                 {
-                    var classCode = GetCurrentVehicleRisk()["vehicleClassCode"].ToObject<int>();
+                    var classCode = GetCurrentVehicleRisk()["VehicleClassCode"].ToObject<int>();
                     return classCode;
                 }
             }
@@ -219,7 +219,7 @@ namespace ApolloQA.Data.Rating
                 {
                     var risk = GetCurrentVehicleRisk();
 
-                    var locationID = risk["outputMetadata"]["VehicleDriverLocation"]?["locationId"];
+                    var locationID = risk["OutputMetaDataEntity"]["VehicleDriverLocation"]?["LocationId"];
                     if (locationID == null)
                     {
                         //Log.Debug("Location ID null " + risk.ToString());

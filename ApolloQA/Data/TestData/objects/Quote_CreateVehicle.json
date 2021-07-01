@@ -16,6 +16,7 @@
   "grossVehicleWeight": "5000",
   "additionalModifications": "none",
   "statedAmount": "5000",
+  "estimatedCurrentValue": 10000,
   "antitheft": null,
   "safetyFeatures": null,
   "inspectionCount": null,

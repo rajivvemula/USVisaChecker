@@ -49,6 +49,10 @@ namespace ApolloQA.StepDefinition.Quote
                 if (fieldType == "Input")
                 {
                     var field = Pages.Shared.GetInputField(displayName);
+                    if (displayName == "Tax ID No")
+                    {
+                        Shared.EyeMask.Click();
+                    }
                     actualValue = field.getTextFieldText();
                 }
                 else
@@ -102,7 +106,7 @@ namespace ApolloQA.StepDefinition.Quote
         public static Dictionary<String, String> Display_PropsNames = new Dictionary<String, String>()
         {
 
-            { "Business Name",              "Name" },
+            { "Named Insured",              "Name" },
             { "DBA",                        "DBA"},
             { "Organization Type",          "TypeName"},
             { "Tax ID Type",                "TaxIdType" },

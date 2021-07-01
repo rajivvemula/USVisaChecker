@@ -12,8 +12,16 @@ namespace ApolloQA.Data.Entity
 {
     public class Policy
     {
+        public enum EntityStatusEnum
+        {
+            Active = 0,
+            Deleted = 1,
+            Draft = 2,
+            Archive = 3
+        }
         public readonly long Id;
 
+        public readonly int EntityTypeId = 100;
         public Policy(int Id)
         {
             this.Id = Id;
@@ -24,6 +32,12 @@ namespace ApolloQA.Data.Entity
             this.Id = Id;
 
         }
+        public Policy(JObject policyProps)
+        {
+            this.Id = policyProps["Id"].ToObject<long>();
+            this._properties = policyProps;
+        }
+        private JObject _properties = null;
         public dynamic this[String propertyName]
         {
             get {
@@ -48,33 +62,37 @@ namespace ApolloQA.Data.Entity
 
         public dynamic GetProperties()
         {
-            return Cosmos.GetQuery("RatableObject", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").Result[0];
+            if(_properties !=null)
+            {
+                return _properties;
+            }
+            return Cosmos.GetQuery("RatableObject", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").ElementAt(0);
         }
         public dynamic GetProperty(String propertyName)
         {
             var property = this.GetProperties()[propertyName];
-            return property == null ? "" : property;
+            return property;
         }
 
         public static Policy GetLatestPolicy()
         {
-            return new Policy((int)Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
+            return new Policy((int)Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
         }
 
 
         public static Policy GetLatestCancelledPolicy()
         {
-            return new Policy((int)Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Cancelled\" ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result[0]["Id"]);
+            return new Policy((int)Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Cancelled\" ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
         }
 
         public static Policy GetClaimPolicy()
         {
-            return new Policy((int)Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" OFFSET 0 LIMIT 1").Result[0]["Id"]);
+            return new Policy((int)Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
         }
 
         public Quote GetQuote()
         {
-            return new Quote(GetProperties()["quoteId"].ToObject<int>());
+            return new Quote(GetProperties()["ApplicationId"].ToObject<int>());
         }
         public dynamic GetVehicleTypeRisk()
         {
@@ -84,8 +102,36 @@ namespace ApolloQA.Data.Entity
         {
             return this.GetQuote().GetVehicles();
         }
+        public List<Quote> GetDraftEndorsements()
+        {
+            var endorsements = SQL.executeQuery(@"SELECT *
+                               FROM[tether].[TetherApplicationRatableObject] 
+                               where TetherId = @TetherId AND StatusId=@StatusId; ", ("@TetherId", Tether.Id), ("@StatusId", EntityStatusEnum.Draft)  );
 
 
+            try
+            {
+                return endorsements.Select(it => new Quote(it["ApplicationId"])).ToList();
+            }
+            catch(Exception ex)
+            {
+                Log.Debug($"PolicyId: {this.Id} TetherId: {Tether.Id}  failed to GetEndorsements");
+                endorsements.ForEach(it => Log.Debug($"{{ {it} }},"));
+
+                throw ex;
+            }
+        }
+
+
+
+
+        public Tether Tether
+        {
+            get
+            {
+                return new Tether(this.GetProperty("TetherId").ToObject<long>());
+            }
+        }
    
         public Organization Organization
         { 
@@ -134,6 +180,16 @@ namespace ApolloQA.Data.Entity
                 this["TimeTo"] = value.ToString("O");
             }
 
+        }
+
+        public DateTime? CancellationDate
+        {
+            get
+            {
+                var cancellationDate = this.GetProperty("CancellationDate");
+               
+                return cancellationDate ?? Convert.ToDateTime((string)cancellationDate);
+            } 
         }
         public string LatestRatingResponseGroupId
         {

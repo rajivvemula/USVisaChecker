@@ -6,8 +6,6 @@
 	<UserSecretsId>1f2a3f51-b841-4600-b502-0e1c7709bb0d</UserSecretsId>
   </PropertyGroup>
 
-
-
 	<ItemGroup>
 		<PackageReference Include="Azure.Core" Version="1.15.0" />
 		<PackageReference Include="Azure.Extensions.Configuration.Secrets" Version="1.0.0-preview.1" />
@@ -17,6 +15,7 @@
 		<PackageReference Include="DocumentFormat.OpenXml" Version="2.12.0" />
 		<PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
 		<PackageReference Include="DynamicExpresso.Core" Version="2.3.3" />
+		<PackageReference Include="iTextSharp" Version="5.5.13.2" />
 		<PackageReference Include="JsonDiffer" Version="0.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
@@ -50,18 +49,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Data\SC_RatingTables\*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Update="Features\Rating\Keywords.feature.cs">
-	    <DependentUpon>Keywords.feature</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Update="ApolloQAReportTemplate.cshtml">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
@@ -78,7 +65,7 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="StepDefinition\Rating\persistedData.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="uat.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

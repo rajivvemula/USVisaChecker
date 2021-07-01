@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,10 +11,11 @@ namespace ApolloQA.Source.Helpers
     public class Cosmos
     {
         
-        public static CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("COSMOS_TARGETURL_SECRETNAME")), Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("COSMOS_APIKEY_SECRETNAME")));
+        public static CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("COSMOS_TARGETURL_SECRETNAME")), 
+                                                             Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("COSMOS_APIKEY_SECRETNAME")));
 
 
-        public static async Task<List<dynamic>> GetQuery(string containerA, string queryA)
+        public static IEnumerable<dynamic> GetQuery(string containerA, string queryA)
         {
             var database = client.GetDatabase("apollo");
             var container = database.GetContainer(containerA);
@@ -22,18 +24,18 @@ namespace ApolloQA.Source.Helpers
             {
                 while (feedIterator.HasMoreResults)
                 {
-                    FeedResponse<dynamic> response = await feedIterator.ReadNextAsync();
+                    FeedResponse<dynamic> response = feedIterator.ReadNextAsync().Result;
+
                     foreach (var item in response)
                     {
-                        result.Add(item);
-                      
+                        yield return item;
+
                     }
                 }
             }
-            return result;
+
 
         }
-
 
         public static void setProperty(string containerA, string identifierQuery,  string key, dynamic value)
         {
@@ -43,7 +45,7 @@ namespace ApolloQA.Source.Helpers
 
             Log.Debug(containerA);
 
-            List<dynamic> recordsToUpdate = GetQuery(containerA, identifierQuery).Result;
+            List<dynamic> recordsToUpdate = GetQuery(containerA, identifierQuery).ToList();
 
             foreach(var record in recordsToUpdate)
             {

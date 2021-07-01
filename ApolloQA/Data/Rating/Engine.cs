@@ -103,15 +103,15 @@ namespace ApolloQA.Data.Rating
                 */
 
                 var limits = root.getLimits(vehicle);
-                limits = limits.OrderBy(it => it.coverageType.SortOrder);
+                limits = limits.OrderBy(it => it.GetCoverageType().SortOrder);
 
                 foreach (var limit in limits)
                 {
 
-                    Log.Debug($"Current Coverage: {limit.coverageType.Name}"); 
+                    Log.Debug($"Current Coverage: {limit.GetCoverageType().Name}"); 
                     
                     interpreter.SetVariable("Limit", limit);
-                    AlgorithmAssignment algorithmAssignment = getAlgorithmAssignment(limit.coverageType, KnownField.GetKnownField("Class Code").Resolve(this).ToString());
+                    AlgorithmAssignment algorithmAssignment = getAlgorithmAssignment(limit.GetCoverageType(), KnownField.GetKnownField("Class Code").Resolve(this).ToString());
                     interpreter.SetVariable("AlgorithmAssignment", algorithmAssignment);
                     string coverageCode = algorithmAssignment.CoverageCode;
 /*                    if (string.IsNullOrWhiteSpace(coverageCode))

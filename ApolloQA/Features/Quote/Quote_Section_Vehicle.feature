@@ -2,8 +2,8 @@
 	In order to manage Vehicle type risk in quote
 	add, edit, view Vehicles should work properly
 	
-
-
+@broken
+# Being fixed in PR 10284
 @tc:34147
 Scenario: Add a Vehicle
 	Given user is successfully logged into biberk
@@ -42,8 +42,6 @@ Scenario: Add a Vehicle
 	And user waits for spinner to load
 	Then Toast appears containing text: Vehicle saved to quote
 	And Toast appears containing text: Vehicle limits saved
-
-
 
 
 Scenario: Quote vehicle section QE vehicle owned

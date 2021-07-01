@@ -49,10 +49,10 @@ namespace ApolloQA
             {
 
 
-                if (text is Dictionary<string, string>  || text is Dictionary<String, String>)
+                if (text is Dictionary<string, object> || text is Dictionary<String, object>)
                 {
-                    Log.Write(severity, ((Dictionary<String, String>)text).Select(entry => $"{entry.Key}:{entry.Value}"));
-                   
+                    Log.Write(severity, ((Dictionary<String, object>)text).Select(entry => $"{entry.Key}:{entry.Value}"));
+
                 }
                 else if(text is IEnumerable<String> || text is IEnumerable<string>)
                 {
@@ -82,7 +82,7 @@ namespace ApolloQA
             {
                 if(!parameter.key.StartsWith('@'))
                 {
-                    throw new Exception($"Parameter key: {parameter.key} should start with @");
+                    throw new Exception($"Parameter key: [{parameter.key}] should start with '@'");
                 }
                 if (parameter.value is IEnumerable)
                 {

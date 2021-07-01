@@ -148,6 +148,20 @@ namespace ApolloQA
                 return false;
             }
         }
+        public static bool IsTrue(bool? condition, string message, bool optional = false)
+        {
+
+            if (condition.HasValue && condition.Value == true)
+            {
+                success($"Condition {condition}");
+                return true;
+            }
+            else
+            {
+                Functions.handleFailure(new Exception($"{message}"), optional);
+                return false;
+            }
+        }
 
         /// <summary>
         /// checks whether the given condition was false,<br></br>

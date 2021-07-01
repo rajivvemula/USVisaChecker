@@ -1,6 +1,5 @@
 ﻿Feature: PolicyReadOnly
 
-
 @tc:39145
 Scenario Outline: Policy is Readonly
     Given user is successfully logged into biberk

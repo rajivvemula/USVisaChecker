@@ -7,12 +7,12 @@ namespace ApolloQA.Pages
     {
         public static string URL_PATH = "/quote/{quoteID}";
 
-        public static string GetURL(int quoteID) => Functions.ParseURL(URL_PATH, ("quoteID", quoteID.ToString()));
-        public static void Navigate(int quoteID) => UserActions.Navigate(GetURL(quoteID));
+        public static string GetURL(long quoteID) => Functions.ParseURL(URL_PATH, ("quoteID", quoteID.ToString()));
+        public static void Navigate(long quoteID) => UserActions.Navigate(GetURL(quoteID));
 
         public static string URL_PATH_SECTION = "/quote/{quoteID}/section/{sectionID}";
-        public static string GetURL(int quoteID, long sectionID) => Functions.ParseURL(URL_PATH_SECTION, ("quoteID", quoteID.ToString()), ("sectionID", sectionID.ToString()));
-        public static void Navigate(int quoteID, long sectionID) => UserActions.Navigate(GetURL(quoteID, sectionID));
+        public static string GetURL(long quoteID, long sectionID) => Functions.ParseURL(URL_PATH_SECTION, ("quoteID", quoteID.ToString()), ("sectionID", sectionID.ToString()));
+        public static void Navigate(long quoteID, long sectionID) => UserActions.Navigate(GetURL(quoteID, sectionID));
 
 
         public static Element GetHeaderField(string DisplayName)

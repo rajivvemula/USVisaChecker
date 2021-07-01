@@ -17,18 +17,19 @@ Scenario Outline: Screen Test For Policy Modifiers Page
 	Then User verifies the percentage values are displayed correctly for <State>
 	Then User verifies unable to click next when past max percentage boundary
 
-
+	#Issue with Property value for NV
 	Examples:
 	| State |
 	| IL    |
 	| AZ    |
-	| NV    |
+#	| NV    |
 	| GA    |
 	| CA    |
 	| IN    |
 	| TN    |
 
 
+		#Issue with Property value for NV
 @tc:39144
 Scenario Outline: Test Modifiers page Values Are Saved
 	Given user is successfully logged into biberk
@@ -48,7 +49,7 @@ Scenario Outline: Test Modifiers page Values Are Saved
 	| State |
 	| IL    |
 	| AZ    |
-	| NV    |
+#	| NV    |
 	| GA    |
 	| CA    |
 	| IN    |

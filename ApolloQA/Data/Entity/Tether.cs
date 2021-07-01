@@ -63,11 +63,22 @@ namespace ApolloQA.Data.Entity
                 return GetLatestTether();
             }
         }
-        public static Tether GetTether(int QuoteId)
+        public static Tether GetTether(long QuoteId)
         {
-            var tetherCandidates = SQL.executeQuery($"SELECT TOP (1) * FROM [tether].[Tether] where CurrentApplicationId ={QuoteId} order by Id desc");
+            var tetherCandidates = SQL.executeQuery(@$"SELECT TOP (1) [tether].[Tether].Id
+                                                    FROM [tether].[Tether] 
+                                                    LEFT JOIN [tether].[TetherApplicationRatableObject] on [tether].[Tether].Id = [tether].[TetherApplicationRatableObject].TetherId
+                                                    where CurrentApplicationId = {QuoteId} OR ApplicationId = {QuoteId} ;");
 
-            return new Tether(tetherCandidates[0]["Id"]);
+            try
+            {
+                return new Tether(tetherCandidates[0]["Id"]);
+            }
+            catch(Exception ex)
+            {
+                Log.Critical($"Error retrieving Tether for ApplicationId: {QuoteId}");
+                throw ex;
+            }
         }
 
         public readonly long Id;
@@ -102,8 +113,8 @@ namespace ApolloQA.Data.Entity
             }
         }
 
-        private long _CurrentRatableObjectId { get; set; }
-        public long CurrentRatableObjectId
+        private long? _CurrentRatableObjectId { get; set; }
+        public long? CurrentRatableObjectId
         {
             get { return _CurrentRatableObjectId; }
             private set
@@ -111,7 +122,7 @@ namespace ApolloQA.Data.Entity
                 _CurrentRatableObjectId = value;
             }
         }
-        public Policy CurrentPolicy => new Policy(CurrentRatableObjectId);
+        public Policy CurrentPolicy => new Policy( CurrentRatableObjectId?? throw new ArgumentNullException());
         
 
         public DateTimeOffset EffectiveDate { get; set; }
