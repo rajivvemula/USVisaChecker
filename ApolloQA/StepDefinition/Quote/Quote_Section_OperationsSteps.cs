@@ -84,8 +84,8 @@ namespace ApolloQA.StepDefinition.Quote
                         {
                             Shared.GetQuestionAnswer(questionText, "No").Click();
                         }
-                        try { Shared.FindOperationQuestion(questionText).assertElementIsVisible(5); }
-                        catch { Shared.FindOperationQuestion(party).assertElementIsVisible(3); }
+                        try { Shared.FindOperationQuestion(questionText).assertElementIsVisible(10); }
+                        catch { Shared.FindOperationQuestion(party).assertElementIsVisible(5); }
                     }
                     break;
                 case "Brine Hauling: Under 300 Miles":
@@ -117,7 +117,7 @@ namespace ApolloQA.StepDefinition.Quote
                     {
                         string answer = entry.Value;
                         string questionText = new Question($"{entry.Key}").QuestionText;
-                        try { Shared.GetQuestionAnswer(questionText, answer).Click(2); ; }
+                        try { Shared.GetQuestionAnswer(questionText, answer).Click(10); ; }
                         catch
                         {
                             if (questionText == "How many auto insurance claims did your business file in the last 3 years?")
@@ -143,7 +143,7 @@ namespace ApolloQA.StepDefinition.Quote
                         string answer = entry.Value;
                         string questionText = new Question($"{entry.Key}").QuestionText;
                         Shared.FindOperationQuestion(questionText).assertElementIsVisible();
-                        try { Shared.GetQuestionAnswer(questionText, answer).Click(2); }
+                        try { Shared.GetQuestionAnswer(questionText, answer).Click(10); }
                         catch
                         {
                             if (questionText == "How many auto insurance claims did your business file in the last 3 years?")
@@ -168,7 +168,7 @@ namespace ApolloQA.StepDefinition.Quote
                     {
                         string answer = entry.Value;
                         string questionText = new Question($"{entry.Key}").QuestionText;
-                        try { Shared.GetQuestionAnswer(questionText, answer).Click(2); }
+                        try { Shared.GetQuestionAnswer(questionText, answer).Click(10); }
                         catch
                         {
                             if (questionText == "How many auto insurance claims did your business file in the last 3 years?")

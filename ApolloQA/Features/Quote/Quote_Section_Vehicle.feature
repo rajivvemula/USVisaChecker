@@ -2,8 +2,6 @@
 	In order to manage Vehicle type risk in quote
 	add, edit, view Vehicles should work properly
 	
-@broken
-# Being fixed in PR 10284
 @tc:34147
 Scenario: Add a Vehicle
 	Given user is successfully logged into biberk

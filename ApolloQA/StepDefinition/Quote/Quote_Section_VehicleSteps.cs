@@ -38,7 +38,7 @@ namespace ApolloQA.StepDefinition.Quote
 
             foreach (var column in row)
             {
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
                 var fieldDisplayName = column.Key;
                 var fieldValue = column.Value;
                 var fieldType = FieldTypes[fieldDisplayName];
@@ -72,27 +72,11 @@ namespace ApolloQA.StepDefinition.Quote
                 {
                     try
                     {
-                        if (fieldDisplayName == "Body Category")
+                        if (fieldDisplayName == "Body Category" | fieldDisplayName == "Body Subcategory" | fieldDisplayName == "Gross Vehicle Weight")
                         {
-                            Element dropdown = new Element(By.XPath("//mat-select[@formcontrolname='bodyCategoryTypeId']"));
-                            Element option = new Element(By.XPath($"//*[@class='mat-option-text'][contains(text(), '{fieldValue}')]"));
-                            Thread.Sleep(7000);
-                            try {
-                                bool error = dropdown.GetAttribute("aria-invalid").Contains("true");
-                                do {
-                                    field.setValue(fieldType, fieldValue);
-                                    dropdown.WaitUntilClickable();
-                                    field.setValue(fieldType, fieldValue);
-                                    dropdown.sendKeysTab();
-                                }
-                                while (error == true);
-                            }
-                            catch (Exception){
-                                option.WaitUntilClickable();
-                                field.setValue(fieldType, fieldValue);
-                            }
+                            SelectSpecificDropdown(fieldDisplayName, fieldType, fieldValue);
                         }
-                        field.setValue(fieldType, fieldValue);
+                        else { field.setValue(fieldType, fieldValue); }
                     }
                     catch (Exception ex)
                     {
@@ -102,7 +86,47 @@ namespace ApolloQA.StepDefinition.Quote
                 }
             }            
         }
-
+        private static string element = "";
+        private static void SelectSpecificDropdown(string fieldDisplayName, String fieldType, string fieldValue)
+        {
+            switch (fieldDisplayName)
+            {
+                case "Body Category":
+                    element = "bodyCategoryTypeId";
+                    break;
+                case "Body Subcategory":
+                    element = "bodySubCategoryTypeId";
+                    break;
+                case "Gross Vehicle Weight":
+                    element = "grossVehicleWeight";
+                    break;
+            }
+            Element dropdown = new Element(By.XPath($"//mat-select[@formcontrolname='{element}']"));
+            var field = Shared.GetField(fieldDisplayName, fieldType);
+            try {
+                while (dropdown.GetInnerText() != fieldValue)
+                {
+                    try
+                    {
+                        dropdown.WaitUntilClickable();
+                        dropdown.sendKeysDown();
+                        Thread.Sleep(500);
+                    }
+                    catch (Exception)
+                    {
+                        Thread.Sleep(5000);
+                        dropdown.WaitUntilClickable();
+                        dropdown.sendKeysDown();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(1500);
+                dropdown.WaitUntilClickable();
+                field.setValue(fieldType, fieldValue);
+            }
+        }
 
         private static readonly Dictionary<String, String> FieldTypes = new Dictionary<String, String>() { 
             
@@ -120,9 +144,6 @@ namespace ApolloQA.StepDefinition.Quote
             {"Additional Modifications", "Input" },
             {"Underwriter Value", "Input" }
         };
-
-
-
 
         [When(@"user selects (.*) Button")]
         public void WhenUserSelectsButton(string button)

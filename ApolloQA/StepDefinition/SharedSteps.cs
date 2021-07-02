@@ -361,7 +361,7 @@ namespace ApolloQA.StepDefinition
             Shared.GetInputField("City").setText("Naperville");
             Shared.GetDropdownField("State / Region").SelectMatDropdownOptionByText("IL");
             Shared.GetInputField("Zip / Postal Code").setText("60540");
-            Shared.AddressFormSaveButton.Click();
+            Shared.AddressFormSaveButton.TryClick();
         }
     }
 }

@@ -4,6 +4,7 @@ using ApolloQA.Source.Driver;
 using ApolloQA.Source.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.StepDefinition.Quote
@@ -113,6 +114,7 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"User verifies max values are retained for each modifier")]
         public void ThenUserVerifiesMaxValuesAreRetainedForEachModifier()
         {
+            Thread.Sleep(5000);
             string totalCheck = Quote_Modifier.MODTotal.GetInnerText();
             Assert.TextContains(totalCheck, "25.000");
         }

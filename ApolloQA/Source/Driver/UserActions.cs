@@ -6,8 +6,6 @@ using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using ApolloQA.Source.Helpers;
 using System.Linq;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
 using OpenQA.Selenium.Interactions;
 
 namespace ApolloQA.Source.Driver
@@ -321,6 +319,12 @@ namespace ApolloQA.Source.Driver
             textField.SendKeys(Keys.Tab);
         }
 
+        public static void sendKeysDown(By TextFieldLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        {
+            var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
+            textField.SendKeys(Keys.ArrowDown);
+        }
+
         // 
         // Dropdown actions 
         // 
@@ -348,6 +352,7 @@ namespace ApolloQA.Source.Driver
 
         public static void SelectMatDropdownOptionByIndex(By DropdownLocator, int LogicalIndex)
         {
+            Thread.Sleep(2000);
             Click(DropdownLocator);
             Click(By.XPath($"//mat-option[{LogicalIndex + 1}]"));
         }
@@ -403,7 +408,7 @@ namespace ApolloQA.Source.Driver
         {
             var mattCheckBox = FindElementWaitUntilVisible(MattCheckBoxLocator);
 
-
+            Thread.Sleep(5000);
             while (GetCheckboxState(By.Id(mattCheckBox.GetAttribute("id") + "-input")) != state)
             {
                 mattCheckBox.Click();

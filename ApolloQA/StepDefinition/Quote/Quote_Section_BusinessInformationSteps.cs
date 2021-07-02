@@ -51,7 +51,7 @@ namespace ApolloQA.StepDefinition.Quote
                     var field = Pages.Shared.GetInputField(displayName);
                     if (displayName == "Tax ID No")
                     {
-                        Shared.EyeMask.Click();
+                        Shared.GetIconButton("visibility").Click();
                     }
                     actualValue = field.getTextFieldText();
                 }

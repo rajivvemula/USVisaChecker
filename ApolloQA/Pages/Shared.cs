@@ -174,7 +174,6 @@ namespace ApolloQA.Pages
         public static Element ClaimsCount => new Element("//bh-question-number//input");
         public static Element CDL => new Element("//bh-question-singleselect");
         public static Element OperationsListBox => new Element("//div[@role='listbox']");
-        public static Element EyeMask => new Element("//mat-icon[contains(text(), 'visibility')]");
 
         //Vehicle Ownership Elements
         public static Element genericResponse => new Element("(//input[@name='response'])[1]");

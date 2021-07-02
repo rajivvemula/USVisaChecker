@@ -54,10 +54,12 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"A new Quote should successfully be created")]
         public void ThenANewQuoteShouldSuccessfullyBeCreated()
         {
-            var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
-            Assert.TextContains(toastMessage, "created");
-
-            quote = new Entity_Quote("ApplicationNumber", string.Join("", toastMessage.Where(Char.IsDigit)));
+            if (Quote_Create_Page.toastMessage.assertElementIsVisible(30, true))
+            {
+                var toastMessage = Quote_Create_Page.toastMessage.GetInnerText();
+                Assert.TextContains(toastMessage, "created");
+                quote = new Entity_Quote("ApplicationNumber", string.Join("", toastMessage.Where(Char.IsDigit)));
+            }
             Functions.MarkTestCasePassed(17022);
             Functions.MarkTestCasePassed(17024);
             Functions.MarkTestCasePassed(17974);

@@ -4,7 +4,7 @@ Feature: Quote Premium Calculation
 	setup a quote with valid parameters
 	So that I can modify parameters during testing
 	
-@tc:29105 @tc:34153 @ignore
+@tc:29105 @tc:34153
 Scenario: Rate Calculation New Quote
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
@@ -73,8 +73,6 @@ Scenario: Rate Calculation New Quote
 	And user selects Comprehensive coverage with Deductible deductible of $5,000
 	And user clicks 'Save Vehicle' Button
 	And user waits for spinner to load
-	Then Toast appears containing text: Vehicle saved to quote
-	And Toast appears containing text: Vehicle limits saved
 
 	#	User Adds 3 Drivers
 	When user clicks 'Drivers' Sidetab
@@ -117,7 +115,7 @@ Scenario: Rate Calculation New Quote
 	And user select Policy Coverages according to Keyword
 	And user clicks 'Next' Button
 	And user waits for spinner to load 
-	Then Toast appears containing text: Coverages saved.
+	Then Toast containing Coverages saved. is visible
 	#Summary
 	When user clicks 'Summary' Sidetab
 	And user waits '10' seconds

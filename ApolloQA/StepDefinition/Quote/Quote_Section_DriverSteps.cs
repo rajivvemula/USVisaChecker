@@ -157,7 +157,7 @@ namespace ApolloQA.StepDefinition.Quote
         [When(@"user answer CDL question")]
         public void WhenUserAnswerCDLQuestion()
         {
-            var CDL = Shared.CDL.assertElementNotPresent(2, true);
+            var CDL = Shared.CDL.assertElementNotPresent(10, true);
             if (CDL == false)
             {
                 Shared.GetQuestionAnswer("Does this driver have a Commercial Driver's License (CDL)?", "Yes 3 or more years").Click();
