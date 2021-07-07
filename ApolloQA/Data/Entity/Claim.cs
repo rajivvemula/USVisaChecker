@@ -45,14 +45,14 @@ namespace ApolloQA.Data.Entity
             }
         }
 
-        public static Claim GetClaim()
+        public static Claim GetLatestClaim()
         {
             return new Claim((int)Cosmos.GetQuery("Claim", "SELECT * FROM c ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
         }
 
         public dynamic GetProperties()
         {
-            return RestAPI.GET($"/claim/{this.Id}");
+            return Cosmos.GetQuery("Claim", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").ElementAt(0);
         }
         public dynamic GetProperty(String propertyName)
         {
@@ -69,5 +69,12 @@ namespace ApolloQA.Data.Entity
             }
         }
 
+        public bool isFNOL
+        {
+            get
+            {
+                return GetProperty("ClaimStateId") == 0 ? true : false;
+            }
+        }
     }
 }

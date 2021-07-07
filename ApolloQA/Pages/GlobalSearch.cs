@@ -7,7 +7,7 @@ namespace ApolloQA.Pages
     {
         public static Element SearchInput => new Element("//input[@data-placeholder='Search here']");
         public static Element SearchResult => new Element("(//div[@class='outer-info ng-star-inserted'])[1]");
-        public static Element GetResultText(string text="") => new Element($"//mat-option[descendant::*[text()='{text}']]");
+        public static Element GetResultText(string text="") => new Element($"//mat-option[descendant::*[contains(text(), '{text}')]]");
 
         public static Element SearchResultLabel(int position=1) => new Element($"(//div[@class='outer-info ng-star-inserted'])[{position}] //div[@class='line-label']");
 

@@ -7,6 +7,8 @@ using TechTalk.SpecFlow.Assist;
 using ApolloQA.Source.Helpers;
 using System.Linq;
 using System.Threading;
+using ApolloQA.Source.Driver;
+using OpenQA.Selenium;
 
 namespace ApolloQA.StepDefinition
 {
@@ -14,6 +16,8 @@ namespace ApolloQA.StepDefinition
     public class SharedSteps
     {
         public static string BusinessKeyword = "";
+        private Element button2 = new Element(By.XPath("(//mat-icon[normalize-space(text())='apps'])[2]"));
+        private Element navList = new Element(By.XPath("//mat-nav-list"));
 
         [When(@"user clicks '(.*)' Button")]
         public void WhenUserClicksButton(string buttonName)
@@ -29,11 +33,34 @@ namespace ApolloQA.StepDefinition
             }
         }
 
+        [When(@"user clicks '(.*)' icon Button")]
+        public void WhenUserClicksIconButton(string iconButton)
+        {
+            if (iconButton == "apps")
+            {
+                try { Shared.GetIconButton(iconButton).Click(3, optional: true);
+                    navList.assertElementIsVisible(3);
+                }
+                catch (Exception)
+                {
+                    while (navList.assertElementNotPresent(3, true))
+                    {
+                        try { button2.Click();
+                            Thread.Sleep(500);
+                        }
+                        catch (Exception) { Shared.GetIconButton(iconButton).Click(); } 
+                    }
+                }
+            }
+            else { Shared.GetIconButton(iconButton).Click(); }
+        }
+
         [When(@"user takes a screenshot (.*)")]
         public void WhenUserTakesAScreenshot(string filename)
         {
             ScreenShot.Info(filename);
         }
+
         [When(@"user takes a screenshot")]
         public void WhenUserTakesAScreenshot()
         {
@@ -61,13 +88,13 @@ namespace ApolloQA.StepDefinition
         [When(@"user selects dropdown (.*) option at index (.*)")]
         public void WhenUserSelectsDropdownOptionAtIndex(string DropdownDisplayText, int index)
         {
-                Shared.GetDropdownField(DropdownDisplayText).SelectMatDropdownOptionByIndex(index);
+            Shared.GetDropdownField(DropdownDisplayText).SelectMatDropdownOptionByIndex(index);
         }
 
         [When(@"user waits '(.*)' seconds")]
         public void WhenUserWaitsSeconds(string seconds)
         {
-            System.Threading.Thread.Sleep(int.Parse(seconds) * 1000);
+            Thread.Sleep(int.Parse(seconds) * 1000);
         }
 
         public static Address previouslyEnteredAddress;
@@ -107,15 +134,10 @@ namespace ApolloQA.StepDefinition
             Shared.GetButton("Use selected").Click(3, true);
         }
 
-        [When(@"user clicks '(.*)' icon Button")]
-        public void WhenUserClicksIconButton(string iconButton)
-        {
-            Shared.GetIconButton(iconButton).Click();
-        }
-
         [When(@"user clicks '(.*)' right menu Button")]
         public void WhenUserClicksRightMenuButton(string rightMenuButton)
         {
+            Shared.GetRightSideTab(rightMenuButton).WaitUntilClickable();
             Shared.GetRightSideTab(rightMenuButton).Click();
         }
 

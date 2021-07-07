@@ -56,14 +56,11 @@ namespace ApolloQA.StepDefinition
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
             var policy = Data.Entity.Tether.GetLatestTether().CurrentPolicy;
-
             if (policy.TimeFrom.CompareTo(DateTime.Today) > -2)
             {
                 policy.TimeFrom =policy.TimeFrom.AddDays(-2);
                 policy.TimeTo = policy.TimeTo.AddDays(-2);
             }
-
-
             Occurrence.policyNumberField.setText($"{policy.PolicyNumber}");
             GlobalSearch.SearchResultLabel().assertElementContainsText($"{policy.PolicyNumber}");
             Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
@@ -77,7 +74,6 @@ namespace ApolloQA.StepDefinition
             Occurrence.dateOfLossField.setText(Loss);
             Occurrence.timeOFLossField.setText(Time);
         }
-
 
         [When(@"user enters Location information")]
         public void WhenUserEntersLocationInformation()
@@ -211,7 +207,6 @@ namespace ApolloQA.StepDefinition
         [Then(@"user completes Loss Details information")]
         public void ThenUserCompletesLossDetailsInformation()
         {
-            //LossDetails.CoverageTypeDropdown.SelectMatDropdownOptionByText("Comprehensive");
             LossDetails.CauseOfLossDropdown.SelectMatDropdownOptionByText("Hail");
             LossDetails.FaultIndicatorDropdown.SelectMatDropdownOptionByText("No Fault");
             LossDetails.ClaimsAdjusterDropdown.SelectMatDropdownOptionByIndex(1, out string claimAdjuster);
@@ -239,7 +234,6 @@ namespace ApolloQA.StepDefinition
             this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
             Log.Info($"Expected: Claim Saved. Result: " + toastMessage + "");
         }
-
 
         [When(@"user validates address dropdwon")]
         public void WhenUserValidatesAddressDropdwon()
@@ -272,22 +266,16 @@ namespace ApolloQA.StepDefinition
             switch (button.ToLower())
             {
                 case "recovery":
-                    try { Shared.GetButton("Continue anyway").Click();
-                        Shared.GetLeftSideTab(" Recovery ").Click();
-                    }
-                    catch { Shared.GetLeftSideTab(" Recovery ").Click(); }
+                    Shared.GetButton("Continue anyway").Click(3, true);
+                    Shared.GetLeftSideTab("Recovery").Click();
                     break;
                 case "salvage":
-                    try { Shared.GetButton("Continue anyway").Click();
-                        ClaimsFNOLGrid.SalvageButton.Click();
-                    }
-                    catch { ClaimsFNOLGrid.SalvageButton.Click(); }
+                    Shared.GetButton("Continue anyway").Click(3, true);
+                    ClaimsFNOLGrid.SalvageButton.Click();
                     break;
                 case "subrogation":
-                    try { Shared.GetButton("Continue anyway").Click();
-                        ClaimsFNOLGrid.SubrogationButton.Click();
-                    }
-                    catch { ClaimsFNOLGrid.SubrogationButton.Click(); }
+                    Shared.GetButton("Continue anyway").Click(3, true);
+                    ClaimsFNOLGrid.SubrogationButton.Click();
                     break;
             }
         }
@@ -295,11 +283,9 @@ namespace ApolloQA.StepDefinition
         [Then(@"claim header is visible on '(.*)'")]
         public void ThenClaimHeaderIsVisibleOnFor(string page)
         {
-            Shared.GetLeftSideTab( page ).Click();
-            try { Shared.GetButton("Continue anyway").Click();
-                ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible();
-            }
-            catch { ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible(); }
+            Shared.GetLeftSideTab(page).Click();
+            Shared.GetButton("Continue anyway").Click(3, true);
+            ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible();
         }
 
         [Then(@"user asserts of claims header")]
@@ -307,6 +293,5 @@ namespace ApolloQA.StepDefinition
         {
             ClaimsFNOLGrid.ClaimHeader.assertElementIsVisible();
         }
-
     }
 }

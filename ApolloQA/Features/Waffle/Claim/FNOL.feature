@@ -1,11 +1,9 @@
-﻿#TODO
-@broken
-Feature: FNOL
+﻿Feature: FNOL
 
 @tc:29860
 Scenario: Creates FNOL successfully
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon Button
+	When user clicks 'apps' icon Button
 	When user clicks 'Claim' right menu Button
 	When user clicks 'New FNOL' Button
 	And user waits for spinner to load
@@ -32,8 +30,8 @@ Scenario: Creates FNOL successfully
 @tc:25518
 Scenario: User able to search by policy number
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon Button
-	When user clicks 'Claim right menu' Button
+	When user clicks 'apps' icon Button
+	And user clicks 'Claim' right menu Button
 	When user clicks 'New FNOL' Button
 	And user waits for spinner to load
 	And user selects 'Yes' this occurrence related to an existing claim
@@ -50,8 +48,8 @@ Scenario: User able to search by policy number
 @tc:25541
 Scenario: Location field accepts 255 characters
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon Button
-	When user clicks 'Claim right menu' Button
+	When user clicks 'apps' icon Button
+	And user clicks 'Claim' right menu Button
 	When user clicks 'New FNOL' Button
 	And user waits for spinner to load
 	And user enters 255 characters in Location description field
@@ -60,8 +58,8 @@ Scenario: Location field accepts 255 characters
 @tc:25541
 Scenario: Address dropdown provided and include correct Address fields
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon Button
-	When user clicks 'Claim right menu' Button
+	When user clicks 'apps' icon Button
+	And user clicks 'Claim' right menu Button
 	When user clicks 'New FNOL' Button
 	And user waits for spinner to load
 	And user selects 'Yes' this occurrence related to an existing claim
@@ -72,8 +70,8 @@ Scenario: Address dropdown provided and include correct Address fields
 	@tc:25638
 Scenario Outline: Claim headers visible for each Page
 	Given user is successfully logged into biberk
-	When user clicks ' apps ' icon Button
-	When user clicks 'Claim right menu' Button
+	When user clicks 'apps' icon Button
+	And user clicks 'Claim' right menu Button
 	When user clicks 'Adjuster Dashboard' Button
 	And user waits for spinner to load
 	When user selects open claim
@@ -83,20 +81,21 @@ Scenario Outline: Claim headers visible for each Page
 		| Page                |
 		| Occurrence          |
 		| Receipt Information |
-		| Loss Details        |
+		| Claim Loss Details  |
 		| Reserves            |
 		| Payment             |
 		| Recovery            |
 		| Medicare            |
 		| Contacts            |
 		| Documents           |
+		| View FNOL           |
 		| Activities          |
 
 @tc:25656 @tc:25657
 Scenario: Claim headers visible
 Given user is successfully logged into biberk
-	When user clicks ' apps ' icon Button
-	When user clicks 'Claim right menu' Button
+	When user clicks 'apps' icon Button
+	And user clicks 'Claim' right menu Button
 	When user clicks 'Adjuster Dashboard' Button
 	And user waits for spinner to load
 	When user selects open claim
@@ -107,7 +106,3 @@ Given user is successfully logged into biberk
 	When user selects Recovery button
 	When user selects Subrogation button
 	Then user asserts of claims header
-
-
-
-

@@ -30,8 +30,8 @@ namespace ApolloQA.StepDefinition.Claim
         {
             try
             {
-                Shared.GetButton(" First Party ").Click();
-                Shared.GetButton(" Property Damage ").Click();
+                Shared.GetButton("First Party").Click();
+                Shared.GetButton("Property Damage").Click();
             }
             catch
             {
@@ -86,6 +86,5 @@ namespace ApolloQA.StepDefinition.Claim
             catch { Assert.TextContains(toastMessage, "Error Saving Loss Details."); }
             Log.Info($"Expected: Loss Details Saved. Result: " + toastMessage + "");
         }
-
     }
 }

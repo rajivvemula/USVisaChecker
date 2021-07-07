@@ -11,8 +11,6 @@ namespace ApolloQA.StepDefinition
     [Binding]
     public sealed class BiberkLoginSteps
     {
-
-
         [Given(@"user is successfully logged into biberk")]
         public void GivenUserIsSuccessfullyLoggedIntoBiberk()
         {
@@ -26,9 +24,7 @@ namespace ApolloQA.StepDefinition
 
                 return;
             }
-
             GivenUserLandedBiBerkPageWithValidURL();
-
             Pages.Home.ApolloIcon.assertElementIsVisible(10, optional: true);
         }
 
