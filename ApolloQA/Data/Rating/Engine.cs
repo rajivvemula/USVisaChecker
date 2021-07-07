@@ -333,7 +333,8 @@ namespace ApolloQA.Data.Rating
                 var resolvable = factorObj.GetResolvable(this);
                 try
                 {
-                    result.Add(factor, resolvable.Resolve());
+                    var resolvedObj = resolvable.Resolve();
+                    result.Add(factor, resolvedObj);
 
                 }
                 catch(Exception ex)
