@@ -20,6 +20,7 @@ namespace ApolloQA.StepDefinition.Quote
         }
 
         private string DOT = Functions.GetRandomInteger(100000).ToString();
+        private string party = "bus or limousine services where alcohol is provided or expressly permitted?";
 
         [When(@"user verifies Operations questions")]
         public void WhenUserVerifiesOperationsQuestions()
@@ -72,14 +73,21 @@ namespace ApolloQA.StepDefinition.Quote
                     }
                     break;
                 case "Limousine Company":
-                    string party = "";
                     foreach (string entry in OpQuestionAliases.LimoCompany)
                     {
                         string questionText = new Question($"{entry}").QuestionText;
-                        if (questionText == "Do you offer \"party\" bus or limousine services where alcohol is provided or expressly permitted?")
+                        if (questionText == "Do you rent, hire, or borrow any vehicles?")
                         {
-                            party = "bus or limousine services where alcohol is provided or expressly permitted?";
+                            Shared.GetQuestionAnswer(questionText, "No").Click();
                         }
+                        try { Shared.FindOperationQuestion(questionText).assertElementIsVisible(5); }
+                        catch { Shared.FindOperationQuestion(party).assertElementIsVisible(3); }
+                    }
+                    break;
+                case "Bus Company":
+                    foreach (string entry in OpQuestionAliases.LimoCompany)
+                    {
+                        string questionText = new Question($"{entry}").QuestionText;
                         if (questionText == "Do you rent, hire, or borrow any vehicles?")
                         {
                             Shared.GetQuestionAnswer(questionText, "No").Click();
@@ -176,6 +184,29 @@ namespace ApolloQA.StepDefinition.Quote
                                 Shared.ClaimsCount.setText(answer);
                             }
 
+                            if (questionText == "Do you offer \"party\" bus or limousine services where alcohol is provided or expressly permitted?")
+                            {
+                                SpecialOperationsAnswer(answer).Click();
+                            }
+                        }
+                    }
+                    break;
+                case "Bus Company":
+                    foreach (KeyValuePair<string, string> entry in OpQuestion_answers.BusCompany)
+                    {
+                        string answer = entry.Value;
+                        string questionText = new Question($"{entry.Key}").QuestionText;
+                        try { Shared.GetQuestionAnswer(questionText, answer).Click(2); }
+                        catch
+                        {
+                            if (questionText == "How many auto insurance claims did your business file in the last 3 years?")
+                            {
+                                Shared.ClaimsCount.setText(answer);
+                            }
+                            if (questionText == "Enter the USDOT number")
+                            {
+                                Shared.USDOTNumber.setText(DOT);
+                            }
                             if (questionText == "Do you offer \"party\" bus or limousine services where alcohol is provided or expressly permitted?")
                             {
                                 SpecialOperationsAnswer(answer).Click();

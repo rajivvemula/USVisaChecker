@@ -269,7 +269,7 @@ namespace ApolloQA.StepDefinition
         [Given(@"user navigates to Administration (.*)")]
         public void GivenUserNavigatesToAdministration(string tabName)
         {
-            WhenUserClicksIconButton(" apps ");
+            WhenUserClicksIconButton("apps");
             WhenUserClicksRightMenuButton("Administration");
             Shared.GetHeaderButton("Billing").Click();
         }
@@ -307,6 +307,22 @@ namespace ApolloQA.StepDefinition
                     Shared.GetQuestionAnswer(question, "Leased").Click();
                     Shared.genericResponse.setText("TestName1");
                     break;
+            }
+            if (BusinessKeyword == "Bus Company")
+            {
+                if (Shared.GetDropdownField("Body Subcategory").GetInnerText() == "Bus")
+                {
+                    Shared.GetQuestionAnswer("What route(s) does this bus take?", "Regional/Charter - only city to city").Click();
+                    Shared.GetQuestionAnswer("How many passengers can this vehicle seat (exclude the driver)?", "41 - 60").Click();
+                }
+                else { Shared.GetQuestionAnswer("What route(s) does this bus take?", "Regional/Charter - only city to city").Click(); }
+            }
+            if (BusinessKeyword != "Bus Company")
+            {
+                if (Shared.GetDropdownField("Body Subcategory").GetInnerText() == "Bus")
+                {
+                    Shared.GetQuestionAnswer("How many passengers can this vehicle seat (exclude the driver)?", "41 - 60");
+                }
             }
         }
 

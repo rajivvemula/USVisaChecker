@@ -231,9 +231,15 @@ namespace ApolloQA.Features
         [Then(@"Toast appears containing text: (.*)")]
         public void ThenToastAppearsContainingText(string containsText)
         {
+            if (containsText == "Vehicle saved to quote" | containsText == "Vehicle saved to quote")
+            {
+                if (Shared.GetToast().assertElementNotPresent(3, true) == false)
+                {
+                    Toaster toaster1 = new Toaster(containsText);
+                    NUnit.Framework.Assert.IsTrue(toaster1.IsPresent(), "Unable to locate toast containing" + containsText);
+                }
+            }
             Toaster toaster = new Toaster(containsText);
-            //TODO :
-            //API response failure - revisit post release 1
             NUnit.Framework.Assert.IsTrue(toaster.IsPresent(), "Unable to locate toast containing" + containsText);
         }
     }

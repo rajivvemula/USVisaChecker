@@ -24,9 +24,10 @@ Scenario Outline: Operation Questions Exist for given Keywords
 
 
 	Examples: 
-	| Keyword                                             |
-	|Trucking: Local Hauling: less than 300 miles         |
-	|Towing Services                                      |
-	|Trucking: Long Distance Hauling: more than 300 miles |
-	|Limousine Company                                    |
-	|Brine Hauling: Under 300 Miles                       |
+	| Keyword                                              |
+	| Trucking: Local Hauling: less than 300 miles         |
+	| Towing Services                                      |
+	| Trucking: Long Distance Hauling: more than 300 miles |
+	| Limousine Company                                    |
+	| Brine Hauling: Under 300 Miles                       |
+	| Bus Company                                          |

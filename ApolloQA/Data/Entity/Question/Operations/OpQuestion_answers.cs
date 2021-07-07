@@ -61,6 +61,22 @@ namespace ApolloQA.Data.Entity.Question
             {"UseOwnerOperators", "No" },
         };
 
+        public static readonly Dictionary<string, string> BusCompany = new Dictionary<string, string>()
+        {
+            {"PartyBus", "No" },
+            {"DayCare", "No" },
+            {"ServiceAccess", "Both on demand and pre-arranged" },
+            {"VehicleRadius", "51 to 100 miles" },
+            {"TravelToMexico", "No" },
+            { "TrailerInterchangeAgreements", "No" },
+            {"ClaimCount", "1" },
+            {"BorrowVehicles", "No" },
+            {"UseOwnerOperators", "No" },
+            {"USDOT", "Yes" },
+            {"USDOT#", "DOT" },
+            {"FmscaOperating", "No" },
+        };
+
         public static readonly Dictionary<string, string> BrineHaulingLess300 = new Dictionary<string, string>()
         {
             {"VehicleRadius","501 miles or more" },

@@ -25,7 +25,7 @@ Scenario: Rate Calculation New Quote
 	And user clicks 'Next' Button
 	Then A new Quote should successfully be created	
 
-	#	User Adds 3 Vehicles and 1 Trailer
+	#	User Adds 1 Tractor Truck, 1 sedan, 1 bus, and 1 Trailer 
 	When user clicks 'Vehicles' Sidetab
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
@@ -42,8 +42,8 @@ Scenario: Rate Calculation New Quote
 	And user waits for spinner to load
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make			| Model  | Body Category        | Body Subcategory   | Gross Vehicle Weight     | Underwriter Value |
-	| random | 2020 | Freightliner  | M2 112 | Trucks			    | Truck Tractor      | 45001+ lbs               | 114002            |
+	| VIN    | Year | Make		| Model  | Body Category         | Body Subcategory   | Gross Vehicle Weight    | Underwriter Value |
+	| random | 2020 | Honda     | Accord | Cars, Pickup, or SUV  | Car - Sedan        | 5001 - 10000 lbs        | 19000             |
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
 	And user sets answer to Is this vehicle owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button
@@ -52,8 +52,8 @@ Scenario: Rate Calculation New Quote
 	And user waits for spinner to load
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight | Underwriter Value |
-	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000 lbs         | 10000             |
+	| VIN    | Year | Make  | Model  | Body Category  | Body Subcategory | Gross Vehicle Weight      | Underwriter Value |
+	| random | 2020 | Ford  | Bus200 | Other          | Bus              | 20001 - 30000 lbs         | 89000             |
 	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
 	And user sets answer to Is this vehicle owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button
@@ -127,6 +127,7 @@ Examples:
 | Trucking: Long Distance Hauling: more than 300 miles |
 | Towing Services                                      |
 | Limousine Company                                    |
+| Bus Company                                          |
 
 @broken
 #needs objects update for Tether and RatableObject
