@@ -1,18 +1,11 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using TechTalk.SpecFlow.Assist;
 using ApolloQA.Source.Driver;
-using OpenQA.Selenium.Chrome;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
@@ -25,29 +18,30 @@ namespace ApolloQA.Source.Helpers
 {
     class Functions
     {
-
         public static void ScrollToBottom()
         {
             UserActions.ScrollToBottom();
-
         }
+
         public static void ScrollToTop()
         {
             UserActions.ScrollToTop();
         }
+
         public static string GetCurrentURL()
         {
             return UserActions.GetCurrentURL();
         }
+
         public static string GetCurrentURLPath()
         {
             return new Uri(UserActions.GetCurrentURL()).PathAndQuery;
         }
+
         public static void refreshPage()
         {
             UserActions.Refresh();
         }
-
 
         public static string ParseURL(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
@@ -57,9 +51,9 @@ namespace ApolloQA.Source.Helpers
             }
             return ParseURL(URL_OR_PATH);
         }
+
         public static string ParseURL(string URL_OR_PATH)
         {
-
             if (URL_OR_PATH.StartsWith("http"))
             {
                 return URL_OR_PATH;
@@ -69,11 +63,10 @@ namespace ApolloQA.Source.Helpers
                 return ParseURL(Environment.GetEnvironmentVariable("HOST"), URL_OR_PATH);
             }
         }
+
         public static string ParseURL(string Host, string Path)
         {
-
             return Host + (Path.StartsWith('/') ? Path : "/" + Path);
-
         }
 
         //
@@ -96,8 +89,8 @@ namespace ApolloQA.Source.Helpers
                 }
             }
             return ex ?? new Exception(message);
-
         }
+
         public static System.Exception handleFailure(string message, Exception ex = null, bool optional = false, params (string key, dynamic value)[] parameters)
         {
             if (optional)
@@ -117,6 +110,7 @@ namespace ApolloQA.Source.Helpers
             return ex ?? new Exception(message);
 
         }
+
         public static System.Exception handleFailure(Exception ex, bool optional = false)
         {
             if (optional)
@@ -129,7 +123,6 @@ namespace ApolloQA.Source.Helpers
                 throw ex;
             }
             return ex;
-
         }
 
 
@@ -148,8 +141,6 @@ namespace ApolloQA.Source.Helpers
             var tasks = new List<Task<Dictionary<String, String>>>();
             try
             {
-
-            
                 using (SpreadsheetDocument doc = SpreadsheetDocument.Open(filePath, false))
                 {
                     WorkbookPart workbookPart = doc.WorkbookPart;
@@ -163,9 +154,6 @@ namespace ApolloQA.Source.Helpers
                         tasks.Add(parseRow(workbookPart, header, sheetData[rowIndex], filePath));
 
                     }
-
-
-
                 }
 
                 return tasks.Select(it => it.Result);
@@ -175,10 +163,6 @@ namespace ApolloQA.Source.Helpers
                 Log.Debug($"File-> {filePath}");
                 throw ex;
             }
-          
-
-
-
         }
         public static List<Dictionary<String, String>> parseCSV(String filePath, int headerRow = 0)
         {
@@ -203,7 +187,6 @@ namespace ApolloQA.Source.Helpers
                 };
                 using (var csvReader = new CsvReader(reader, config))
                 {
-
                     // calculate number of columns
                     csvReader.Read();
                     int i = 0;
@@ -220,7 +203,6 @@ namespace ApolloQA.Source.Helpers
 
                     while (csvReader.Read())
                     {
-                        
                         Dictionary<String, String> row = new Dictionary<String, String>();
                         for(int col =0; col < header.Count; col++)
                         {
@@ -236,7 +218,6 @@ namespace ApolloQA.Source.Helpers
         private static async Task<Dictionary<String, String>> parseRow(WorkbookPart workbookPart, string [] header, Row row, string filePath)
         {
             var cells = row.Elements<Cell>().ToArray<Cell>();
-
             var dict = new Dictionary<String, String>();
             for (int i = 0; i < header.Length; i++)
             {
@@ -252,7 +233,6 @@ namespace ApolloQA.Source.Helpers
                 try
                 {
                     dict.Add(header[i], extractCellText(workbookPart, cell));
-
                 }
                 catch(Exception ex)
                 {
@@ -319,23 +299,19 @@ namespace ApolloQA.Source.Helpers
             {
                 return GetRandomVIN();
             }
-
         }
 
         public static string GetValidDriverLicense(string state)
         {
             //not a great implementation but it works
-
             char[] chars =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
             Random r = new Random();
-
 
             string licenseNo = "";
             
             if(state.ToUpper() == "IL")
             {
                 licenseNo = ""+chars[r.Next(chars.Length)];
-
             }
 
             licenseNo += (r.Next(100, 1000).ToString()) + (r.Next(1000, 10000).ToString()) + (r.Next(1000, 10000).ToString());
@@ -384,22 +360,23 @@ namespace ApolloQA.Source.Helpers
 
         public static int GetRandomInteger(int max=100)
         {
-           return new Random().Next(max);
-            
+           return new Random().Next(max); 
         }
+
         public static Data.Entity.Organization CreateNewOrganization()
         {
             return new Data.TestData.Organization(ClassCodeKeyword.GetUsingKeywordName("Accounting Services")).organization;
         }
+
         public static Data.Entity.Organization CreateNewOrganization(string keyword)
         {
             return new Data.TestData.Organization(ClassCodeKeyword.GetUsingKeywordName(keyword)).organization;
         }
+
         public static void  AddAddressToOrganization(Data.Entity.Organization Org, string state)
         {
             var OrgData = new Data.TestData.Organization(Org);
-            OrgData.OrganizationAddAddress(state);
-                
+            OrgData.OrganizationAddAddress(state);   
         }
 
         public static Quote CreateNewQuote(string keyword, string state)
@@ -409,36 +386,38 @@ namespace ApolloQA.Source.Helpers
 
             var quote = new Data.TestData.Quote(org, state);
             return quote.quoteEntity;
-
         }
+
         public static Quote CreateNewQuote(string state)
         {
             return CreateNewQuote("Accounting Services", state);
         }
 
-        public static Data.Entity.Quote GetQuotedQuoteThroughAPI()
+        public static Quote GetQuotedQuoteThroughAPI()
         {
             return GetQuotedQuoteThroughAPI(ClassCodeKeyword.GetUsingKeywordName("Accounting Services"));
         }
-        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(string state)
+
+        public static Quote GetQuotedQuoteThroughAPI(string state)
         {
             return GetQuotedQuoteThroughAPI(ClassCodeKeyword.GetUsingKeywordName("Accounting Services"), state);
         }
-        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword, string state)
+
+        public static Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword, string state)
         {
             return GetQuotedQuoteThroughAPI(classCodeKeyword, state, new List<CoverageType> { classCodeKeyword.coverage ?? new CoverageType("BIPD") });
         }
-        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword)
+
+        public static Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword)
         {
             return GetQuotedQuoteThroughAPI(classCodeKeyword, "IL", new List<CoverageType> { classCodeKeyword.coverage ?? new CoverageType("BIPD") });
         }
-        public static Data.Entity.Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword, string state, List<CoverageType> coverages)
+
+        public static Quote GetQuotedQuoteThroughAPI(ClassCodeKeyword classCodeKeyword, string state, List<CoverageType> coverages)
         {
             var org = new Data.TestData.Organization(classCodeKeyword);
 
             var quote = new Data.TestData.Quote(org, state, coverages);
-
-
 
             /*Parallel.Invoke(
                 () => quote.CreateVehicle(),
@@ -452,7 +431,6 @@ namespace ApolloQA.Source.Helpers
             );
             quote.AddVehicleCoverage();*/
 
-
             quote.CreateVehicle();
             quote.AddVehicleToQuote();
             quote.AddVehicleCoverage();
@@ -463,7 +441,6 @@ namespace ApolloQA.Source.Helpers
             quote.AnswerOperationQuestions();
 
             quote.AddPolicyCoverages();
-
 
             var summary = quote.PostSummary();
             Log.Debug("Quote Id: " + quote.quoteEntity.Id);
@@ -481,11 +458,8 @@ namespace ApolloQA.Source.Helpers
             return GetQuotedQuoteThroughAPI(stateCode).PurchaseThis();
         }
 
-
-
         public static dynamic GetCAB(int? usDotNumber)
         {
-
                 string baseURL = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_BASEURL_SECRETNAME"));
                 string APIKEY = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_API_KEY_SECRETNAME"));
 
@@ -503,10 +477,8 @@ namespace ApolloQA.Source.Helpers
                 }
 
                 return RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/{usDotNumber}?key={APIKEY}");
-         
-
-
         }
+
         public static string parsePDF(string path)
         {
             PdfReader reader = new PdfReader(path);
@@ -518,6 +490,7 @@ namespace ApolloQA.Source.Helpers
             reader.Close();
             return text;
         }
+
         public static void MarkTestCasePassed(int testCaseId) 
         {
             if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))
@@ -534,6 +507,5 @@ namespace ApolloQA.Source.Helpers
 
             }
         }
-
     }
 }

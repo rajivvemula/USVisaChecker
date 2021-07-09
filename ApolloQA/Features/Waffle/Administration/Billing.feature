@@ -1,10 +1,8 @@
-﻿@broken 
-# Needs updates
-Feature: Billing
+﻿Feature: Billing
 	in order to issue a quote, user should make a payment
 
 
-@tc:34155
+@tc:34155 @tc:37741
 Scenario: Administration - Billing
 	Given user is successfully logged into biberk
 	And user navigates to Administration Billing
@@ -18,13 +16,12 @@ Scenario: Administration - Billing
 	| EFT               | Amount | Name on Account | Bank Routing Number | Account Number    | Checking | Saving |
 	| Check             | Amount | Check Number    | Date                |                   |          |        |
 
-@tc:34156 @tc:34187
+@tc:34187 @tc:37744 @tc:37745
 Scenario: Make a payment - Quote Issuance
 	Given user is successfully logged into biberk
 	And user navigates to Administration Billing
 	When user selects a valid quote to make a payment
-	#needs to be selected in quote object itself
-	#And user selects payment plan <payment plan>
+	And user selects payment plan <payment plan>
 	And user enters payment information with <method>
 	And user clicks 'Submit' Button
 	And user waits for spinner to load
@@ -35,12 +32,13 @@ Scenario: Make a payment - Quote Issuance
 	| Pay in Full         | EFT               |
 	| 12 Monthly Payments | Check             |
 
-@tc:34157
+
+@tc:34157 @tc:37746
 	Scenario: Document Generation upon policy issuance
 	Given user is successfully logged into biberk
 	And user navigates to Administration Billing
 	When user selects a valid quote to make a payment
-	#And user selects payment plan 12 Monthly Payments
+	And user selects payment plan 12 Monthly Payments
 	And user enters payment information with Check
 	And user clicks 'Submit' Button
 	And user waits for spinner to load
