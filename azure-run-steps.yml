@@ -107,7 +107,7 @@ steps:
     searchFolder: '$(System.DefaultWorkingDirectory)'
     testRunTitle: 'SmokeTest'
 
-
+#this fails due to not finding the FeatureData.json
 # - task: SpecFlowPlus@0
 #   inputs:
 #     projectFilePath: '$(System.DefaultWorkingDirectory)/ApolloQA'

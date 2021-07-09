@@ -145,11 +145,16 @@ Scenario: Form can be generated
 	| MCS90      | Endorsement for Motor Carrier Policies of Insurance for Public Liability                                            |
 	| MO5937     | - Missouri ID Card                                                                                                  |
 	
-	| PS3665     | Certificate of Mailing                                                                                              |
-	| SC4566a    | - South Carolina ID Card                                                                                            |
-	| TN4566a    | - Tennessee ID Card                                                                                                 |
-	| (E)C59q    | Notice of Cancellation, Nonrenewal or Declination - GA                                                              |
-	| IN4566a    | - Indiana ID Card                                                                                                   |
+	| PS3665  | Certificate of Mailing                                                          |
+	| SC4566a | - South Carolina ID Card                                                        |
+	| TN4566a | - Tennessee ID Card                                                             |
+	| (E)C59q | Notice of Cancellation, Nonrenewal or Declination - GA                          |
+	| IN4566a | - Indiana ID Card                                                               |
+	| B0005   | Mailing Cover Sheet                                                             |
+	| M5619   | Important Notice Aviso Importante                                               |
+	| M5731   | Hired Autos Endoresement                                                        |
+	| M5735   | Truckers Endorsement - Gross Receipts and Milage Premium Basis Definitions      |
+	| M5879   | In-Tow Coverage With Optional Garagekeepers Additional Coverage – Comprehensive |
 
 	# Arizona Not Implemented - algorithm for State not in QA
 	#| CA0175     | Arizona Changes                                                                                                     |
@@ -185,9 +190,9 @@ Scenario: Form can be generated
 	#| CA2336     | Texas Form F-1 Uniform Commercial Motor Vehicle Bodily Injury and Property Damage Liability Insurance Endorsement  |
 	#| ILN101     | Texas Notice to Insurance Claimants For Motor Vehicle Repairs                                                      |
 	#| FormF      | Uniform Motor Carrier Bodily Injury And Property Damage Liability Insurance Endorsement                            | 
-	#| TX4619     | - Texas ID Card                                                                                                     |
-
-
+	#| TX4619     | - Texas ID Card                                                                                                    |
+	#| BCA00      | - Texas Cargo Coverage Form                                                                                        |
+	#
 	# FL has no dev efforts yet : Defect raised for tracking - 38419
 	#| FL5476     | - Florida ID Card                                                                                                   |
 

@@ -82,7 +82,10 @@ namespace ApolloQA.StepDefinition.Forms
         [Then(@"form should be generated successfully")]
         public void ThenFormShouldBeGeneratedSuccessfully()
         {
-            Thread.Sleep(10000);
+            Log.Info($"Form Generated: \nDocumentName: {this.documentName} \nFormName: {this.form.name} \nCode: {this.form.code}");
+            Log.Info($"At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.policy.Id}/document");
+
+
             var body = new JObject()
             {   
                 {"filters", new JObject()
@@ -97,27 +100,42 @@ namespace ApolloQA.StepDefinition.Forms
                 { "sortOrder", 1 },
             };
 
-            JArray documents = RestAPI.POST("/documentmetadata/search", body).results;
 
-            Log.Debug($"Form Generated: \nDocumentName: {this.documentName} \nFormName: {this.form.name} \nCode: {this.form.code}");
-            Log.Debug($"At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.policy.Id}/document");
+
 
 
             //Log.Debug($"documents {documents}");
-
-            try
+            var counter = 0;
+            while(this.documentObj == null)
             {
-                this.documentObj = (JObject)documents.First(it => it["documentGenerationRequestId"].ToObject<int>() == documentGenerationRequestId);
-            }catch(InvalidOperationException ex)
+                counter++;
+                Thread.Sleep(counter * 3000);
+                JArray documents = RestAPI.POST("/documentmetadata/search", body).results;
+                this.documentObj = (JObject)documents.FirstOrDefault(it => it["documentGenerationRequestId"].ToObject<int>() == documentGenerationRequestId);
+                if(counter>5)
+                {
+                    break;
+                }
+            }
+            if(this.documentObj == null)
             {
                 Log.Debug(JObject.FromObject(this._body));
-                Log.Critical($"Doc: {name} Code: {code} was not generated");
-                throw ex;
+                throw new Exception($"Doc: {name} Code: {code} was not generated");
+            }
+                
+            
+            try
+            {
+                formFilePath = RestAPI.GET($"document/{documentObj["id"]}");
+            }
+            catch(Exception)
+            {
+                Thread.Sleep(5000);
+                formFilePath = RestAPI.GET($"document/{documentObj["id"]}");
             }
 
-            formFilePath = RestAPI.GET($"document/{documentObj["id"]}");
 
-           
+
 
         }
 

@@ -129,7 +129,7 @@ namespace ApolloQA.Data.Entity
 
                 if(questionResponse==null)
                 {
-                    throw new Exception($"Question Response not found for alias: {questionAlias}");
+                    return null;
                 }
                 else
                 {

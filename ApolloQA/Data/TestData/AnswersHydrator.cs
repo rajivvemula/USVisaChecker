@@ -189,26 +189,36 @@ namespace ApolloQA.Data.TestData
 
                     bool newResult = result.Where(it => it["questionId"].ToObject<int>() == answer["questionId"].ToObject<int>()).Count() == 0;
 
-                    if (((JValue)answer["response"]).Value != null && newResult)
+                    if (((JValue)answer["response"]).Value != null)
                     {
-                        result.Add(answer);
 
-                        var toRemove = currentAnswersState.Where(it => it["questionId"].ToObject<int>() == answer["questionId"].ToObject<int>());
+                        var toRemoveStateObject = currentAnswersState.Where(it => it["questionId"].ToObject<int>() == answer["questionId"].ToObject<int>());
+                        var toRemoveResultObject = result.Where(it => it["questionId"].ToObject<int>() == answer["questionId"].ToObject<int>());
 
-                        foreach (var removable in toRemove.ToList())
+                        foreach (var removable in toRemoveStateObject.ToList())
                         {
                             if (!currentAnswersState.Remove(removable))
                             {
                                 throw new Exception($"Failed to remove answer {removable} from {currentAnswersState}");
                             }
                         }
+                        foreach (var removable in toRemoveResultObject.ToList())
+                        {
+                            if (!result.Remove(removable))
+                            {
+                                throw new Exception($"Failed to remove answer {removable} from {result}");
+                            }
+                        }
 
+                        result.Add(answer);
                         currentAnswersState.Add(answer);
 
                     }
-                    else if(currentAnswersState.Where(it => it["questionId"].ToObject<int>() == answer["questionId"].ToObject<int>()).Count() == 0)
+                    else if(newResult)
                     {
+                        result.Add(answer);
                         currentAnswersState.Add(answer);
+
                     }
 
 

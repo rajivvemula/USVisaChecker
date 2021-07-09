@@ -225,7 +225,7 @@ namespace ApolloQA.StepDefinition.Quote
             {
                 String URL = driver.Url;
                 Shared.GetButton("Next").Click();
-                new SharedSteps().WhenUserWaitsForSpinnerToDissappearForSeconds(5);
+                new SharedSteps().WhenUserWaitsForSpinnerToDissappearForSeconds(30);
                 if (URL.EndsWith("section/9020"))
                 {
                     do
@@ -233,7 +233,7 @@ namespace ApolloQA.StepDefinition.Quote
                         var DOT2 = Functions.GetRandomInteger(100000).ToString();
                         Shared.USDOTNumber.setText("6" + $"{DOT2}");
                         Shared.GetButton("Next").Click();
-                        new SharedSteps().WhenUserWaitsForSpinnerToDissappearForSeconds(5);
+                        new SharedSteps().WhenUserWaitsForSpinnerToDissappearForSeconds(30);
                     }
                     while (driver.Url.EndsWith("section/9020"));
                 }

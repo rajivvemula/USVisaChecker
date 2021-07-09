@@ -116,7 +116,7 @@ namespace ApolloQA.Data.TestData
 
             ((JObject)((JArray)body)[0]["outputMetadata"]).Add("QuestionResponses", AnswersHydrator.Vehicles(quoteEntity, vehicles[0]));
 
-            //Log.Debug("add to quote: " + body);
+            //Log.Info("add vehicle to quote: " + body);
 
             var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk", body);
 
@@ -181,6 +181,7 @@ namespace ApolloQA.Data.TestData
         public JObject AnswerOperationQuestions()
         {
             var body = AnswersHydrator.Operations(quoteEntity);
+            //Log.Info($"operations Body: {body}");
             var response = RestAPI.POST($"quote/{quoteEntity.Id}/sections/{quoteEntity.Storyboard.GetSection("Operations").Id}/answers", body);
 
             return response;

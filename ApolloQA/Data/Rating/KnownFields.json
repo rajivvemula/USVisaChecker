@@ -69,7 +69,7 @@
     "source": "root.InspectionCount"
   },
   "Deductible": {
-    "source": "Limit.selectedDeductibles.Count > 0 ? Limit.selectedDeductibles[0] : 0"
+    "source": "Limit.selectedDeductibles != null && Limit.selectedDeductibles.Count > 0 ? Limit.selectedDeductibles[0] : 0"
   },
   //default to false as per BUG 31745
   "Combined Deductible": {
@@ -140,7 +140,7 @@
     "source": "false"
   },
   "Add On Coverage": {
-    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")"
+    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")?? No"
   }
 
 }

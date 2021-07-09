@@ -16,26 +16,26 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
 
         dynamic ratableObject;
         private string QuotedInsured = "";
-        private static Data.Entity.Quote theQuote = Functions.GetQuotedQuoteThroughAPI();
-        private int premium = theQuote.GetCurrentRatableObject()["Billing"]["Premium"];
-        private String QuotedQuote = theQuote.ApplicationNumber.ToString();
+        private Data.Entity.Quote theQuote = Functions.GetQuotedQuoteThroughAPI();
+        private int premium => theQuote.GetCurrentRatableObject()["Billing"]["Premium"];
+        private String QuotedQuote => theQuote.ApplicationNumber;
 
         [When(@"user selects a valid quote to make a payment")]
         public void GivenUserSelectsAValidQuoteToMakeAPayment()
         {
             var QuoteNumberField = Shared.GetInputField("Quote Number");
-            QuoteNumberField.setText(QuotedQuote);
+            QuoteNumberField.setText(theQuote.ApplicationNumber);
             var options = QuoteNumberField.GetMatdropdownOptionsText();
             QuotedInsured = theQuote.Organization.Name;
             while (options.Count() == 1 && options.ElementAt(0).Trim() == "No results found")
             {
                 Log.Debug("broken-> " + QuotedQuote);
                 Data.Entity.Quote aQuote = Functions.GetQuotedQuoteThroughAPI();
-                String aQuotedQuote = aQuote.ApplicationNumber.ToString();
+                String aQuotedQuote = aQuote.ApplicationNumber;
                 QuoteNumberField.setText(aQuotedQuote);
                 QuotedInsured = aQuote.Organization.Name;
             }
-            QuoteNumberField.SelectMatDropdownOptionContainingText($"Quote {QuotedQuote}");
+            QuoteNumberField.SelectMatDropdownOptionContainingText($"Quote {theQuote.ApplicationNumber}");
             sharedSteps.WhenUserWaitsForSpinnerToLoad();
         }
 

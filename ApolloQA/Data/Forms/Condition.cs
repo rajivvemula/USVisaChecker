@@ -47,7 +47,7 @@ namespace ApolloQA.Data.Form
          */
         private static List<dynamic> policies = Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" and c.StatusId < 3 ORDER BY c.Id DESC").ToList();
 
-        private static List<dynamic> quotes = Cosmos.GetQuery("Application", "SELECT * FROM c ORDER BY c.Id DESC").ToList();
+        private static List<dynamic> quotes = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id in ( {string.Join(", ",policies.Select(it=>it["ApplicationId"]))} ) ORDER BY c.Id DESC").ToList();
 
 
 
@@ -75,6 +75,9 @@ namespace ApolloQA.Data.Form
          */
         public Policy GetValidPolicy()
         {
+            Log.Info($"Policy count: {policies.Count}");
+            Log.Info($"Quote  count: {quotes.Count}");
+
             //1.) for each valid RatableObject (Policy) in the system (issued and not archived)
             //2.)    var policyOBJ is the cosmos object of the policy in context
             foreach (var policyOBJ in policies)
