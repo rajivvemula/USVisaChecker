@@ -71,9 +71,27 @@ namespace ApolloQA.Data.Entity
                 }
             }
         }
+
+
         public static Quote GetLatestQuote()
         {
             return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c WHERE c.ApplicationStatusValue  NOT IN (\"Issued\", \"Expired\", \"Cancelled\") ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
+        }
+
+
+        public static Quote GetLatestIssuedQuote()
+        {
+            return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c WHERE c.ApplicationStatusValue = \"Quoted\" ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
+        }
+
+        public static int GetNCFRequest(long tetherID)
+        {
+            return  Cosmos.GetQuery("NcfRequest", $"SELECT * FROM c WHERE c.TetherId = {tetherID} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"];
+        }
+
+        public static string GetNCFRResponse(long requestID)
+        {
+            return Cosmos.GetQuery("NcfResponse", $"SELECT * FROM c WHERE c.RequestId = {requestID} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["RawScore"];
         }
 
 
