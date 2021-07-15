@@ -154,7 +154,9 @@ Scenario: Form can be generated
 	| M5619   | Important Notice Aviso Importante                                               |
 	| M5731   | Hired Autos Endoresement                                                        |
 	| M5735   | Truckers Endorsement - Gross Receipts and Milage Premium Basis Definitions      |
-	| M5879   | In-Tow Coverage With Optional Garagekeepers Additional Coverage – Comprehensive |
+	
+	#BUG 39206 for M5879
+	#| M5879   | In-Tow Coverage With Optional Garagekeepers Additional Coverage – Comprehensive |
 
 	# Arizona Not Implemented - algorithm for State not in QA
 	#| CA0175     | Arizona Changes                                                                                                     |

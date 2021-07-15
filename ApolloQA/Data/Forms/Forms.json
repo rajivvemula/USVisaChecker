@@ -167,7 +167,7 @@
     "code": "MC1632",
     "name": "Form F",
     "condition": {
-      "stateCode": "CA",
+      "stateCode": "CA"
       //"questionResponses": { "PUC": "Yes" }
     }
   },
@@ -749,14 +749,14 @@
     "condition": {
       "materializedBillToday": true
     }
-      // Need Policy at least 30 Days old and/or a physicaly billing statement before this will work
+    // Need Policy at least 30 Days old and/or a physicaly billing statement before this will work
   },
 
   {
     "code": "B0002",
     "name": "Billing Statement Direct",
     "condition": {
-      "materializedBillToday":true
+      "materializedBillToday": true
     }
     // Need Policy at least 30 Days old and/or a physicaly billing statement before this will work
   },
@@ -1132,5 +1132,25 @@
     "condition": {
       "stateCode": "GA"
     }
+  },
+  {
+    "code": "M5619",
+    "name": "Important Notice Aviso Importante"
+  },
+  {
+    "code": "M5731",
+    "name": "Hired Autos Endoresement"
+  },
+  {
+    "code": "M5735",
+    "name": "Truckers Endorsement - Gross Receipts and Milage Premium Basis Definitions"
+  },
+  {
+    "code": "M5879",
+    "name": "In-Tow Coverage With Optional Garagekeepers Additional Coverage – Comprehensive"
+  },
+  {
+    "code": "B0005",
+    "name": "Mailing Cover Sheet"
   }
 ]
