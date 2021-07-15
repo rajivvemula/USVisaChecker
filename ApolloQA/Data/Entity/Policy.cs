@@ -89,6 +89,12 @@ namespace ApolloQA.Data.Entity
             return new Policy((int)Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
         }
 
+        public static Policy GetLatestAuthTransaction()
+        {
+            return new Policy((int)Cosmos.GetQuery("AuthorizeNetTransaction", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
+        }
+
+
         public Quote GetQuote()
         {
             return new Quote(GetProperties()["ApplicationId"].ToObject<int>());
