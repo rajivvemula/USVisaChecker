@@ -67,7 +67,6 @@ namespace ApolloQA.Features
                     AutocompleteInput autoInput = new AutocompleteInput(displayName);
                     autoInput.SetValue(value);
                 }
-
             }
         }
 
@@ -127,7 +126,6 @@ namespace ApolloQA.Features
                 {
                     Console.WriteLine("displayed value: " + displayedValue + "    expected: " + value);
                     Assert.AreEqual(displayedValue, value);
-
                 }
             }
         }
@@ -185,7 +183,6 @@ namespace ApolloQA.Features
                     NUnit.Framework.Assert.IsTrue(false, "Unable to locate value " + value + " in Grid column " + columnName);
                 else
                     Console.WriteLine("Successfully located " + columnName + " = " + value + " in Grid.");
-
             }
 
         }
@@ -210,7 +207,6 @@ namespace ApolloQA.Features
                     NUnit.Framework.Assert.IsTrue(false, "Unable to locate value " + value + " in Grid column " + columnName);
                 else
                     Console.WriteLine("Successfully located " + columnName + " = " + value + " in Grid and clicked option " + option);
-
             }
         }
 
@@ -231,16 +227,11 @@ namespace ApolloQA.Features
         [Then(@"Toast appears containing text: (.*)")]
         public void ThenToastAppearsContainingText(string containsText)
         {
-            if (containsText == "Vehicle saved to quote" | containsText == "Vehicle saved to quote")
+            if (Shared.GetToast().assertElementContainsText(containsText) == false)
             {
-                if (Shared.GetToast().assertElementNotPresent(3, true) == false)
-                {
-                    Toaster toaster1 = new Toaster(containsText);
-                    NUnit.Framework.Assert.IsTrue(toaster1.IsPresent(), "Unable to locate toast containing" + containsText);
-                }
+                Toaster toaster = new Toaster(containsText);
+                NUnit.Framework.Assert.IsTrue(toaster.IsPresent(), "Unable to locate toast containing" + containsText);
             }
-            Toaster toaster = new Toaster(containsText);
-            NUnit.Framework.Assert.IsTrue(toaster.IsPresent(), "Unable to locate toast containing" + containsText);
         }
     }
 }

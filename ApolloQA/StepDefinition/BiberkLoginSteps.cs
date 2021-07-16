@@ -37,11 +37,11 @@ namespace ApolloQA.StepDefinition
         [When(@"user enters username: (.*) and password: (.*)")]
         public void WhenUserEntersAnd(string username, string password)
         {
-            Log.Info($"Login in with {username}");
             Pages.Login.usernameField.setText(username, 120);
             
             Pages.Login.nextButton.Click();
-            Pages.Login.passwordField.setText(password);            
+            Pages.Login.passwordField.setText(password);
+            Log.Info($"Login in with {username}");
         }
 
         [When(@"user attempts to login")]

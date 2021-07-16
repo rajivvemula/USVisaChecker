@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace ApolloQA.StepDefinition.Waffle.Administration
@@ -16,27 +17,45 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
 
         dynamic ratableObject;
         private string QuotedInsured = "";
-        private Data.Entity.Quote theQuote = Functions.GetQuotedQuoteThroughAPI();
-        private int premium => theQuote.GetCurrentRatableObject()["Billing"]["Premium"];
-        private String QuotedQuote => theQuote.ApplicationNumber;
+        private static Data.Entity.Quote theQuote = Functions.GetQuotedQuoteThroughAPI();
+        private int premium = theQuote.GetCurrentRatableObject()["Billing"]["Premium"];
+        private String QuotedQuote = theQuote.ApplicationNumber.ToString();
+        private bool newQuote = false;
+        private static Data.Entity.Quote aQuote = Functions.GetQuotedQuoteThroughAPI();
+        private String aQuotedQuote = aQuote.ApplicationNumber.ToString();
 
         [When(@"user selects a valid quote to make a payment")]
         public void GivenUserSelectsAValidQuoteToMakeAPayment()
         {
             var QuoteNumberField = Shared.GetInputField("Quote Number");
-            QuoteNumberField.setText(theQuote.ApplicationNumber);
+            QuoteNumberField.setText(QuotedQuote);
             var options = QuoteNumberField.GetMatdropdownOptionsText();
             QuotedInsured = theQuote.Organization.Name;
-            while (options.Count() == 1 && options.ElementAt(0).Trim() == "No results found")
+            try
             {
-                Log.Debug("broken-> " + QuotedQuote);
-                Data.Entity.Quote aQuote = Functions.GetQuotedQuoteThroughAPI();
-                String aQuotedQuote = aQuote.ApplicationNumber;
-                QuoteNumberField.setText(aQuotedQuote);
-                QuotedInsured = aQuote.Organization.Name;
+                if (options.Count() == 1 && options.ElementAt(0).Trim() == "No results found")
+                {
+                    newQuote = true;
+                    Log.Debug("broken-> " + QuotedQuote);
+                    Shared.GetInputField("Quote Number").setText(aQuotedQuote);
+                    QuotedInsured = aQuote.Organization.Name;
+                    premium = aQuote.GetCurrentRatableObject()["Billing"]["Premium"];
+                }
+                if (newQuote == false) { QuoteNumberField.SelectMatDropdownOptionContainingText($"Quote {QuotedQuote}"); }
+                else { QuoteNumberField.SelectMatDropdownOptionContainingText($"Quote {aQuotedQuote}"); }
+                sharedSteps.WhenUserWaitsForSpinnerToLoad();
             }
-            QuoteNumberField.SelectMatDropdownOptionContainingText($"Quote {theQuote.ApplicationNumber}");
-            sharedSteps.WhenUserWaitsForSpinnerToLoad();
+            catch (Exception)
+            {
+                Log.Debug("Broken-> " + aQuotedQuote);
+                Data.Entity.Quote thirdQuote = Functions.GetQuotedQuoteThroughAPI();
+                QuotedQuote = thirdQuote.ApplicationNumber.ToString();
+                Shared.GetInputField("Quote Number").setText(QuotedQuote);
+                Shared.GetInputField("Quote Number").SelectMatDropdownOptionByText($"Quote {QuotedQuote}");
+                QuotedInsured = thirdQuote.Organization.Name;
+                premium = thirdQuote.GetRatableObject()["Billing"]["Premium"];
+                sharedSteps.WhenUserWaitsForSpinnerToLoad();
+            }
         }
 
         [Then(@"Named Insured field should be disabled and have valid value")]
@@ -83,10 +102,10 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
                 var methodButton = Pages.Shared.GetButton(row["Method"]);
                 methodButton.Click();
 
-                foreach(var column in row)
+                foreach (var column in row)
                 {
                     var fieldName = column.Value;
-                    if(column.Key.Contains("field") && !string.IsNullOrWhiteSpace(fieldName))
+                    if (column.Key.Contains("field") && !string.IsNullOrWhiteSpace(fieldName))
                     {
                         var fieldType = fieldTypes[fieldName];
 
@@ -118,20 +137,20 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
         [When(@"user selects payment plan (.*)")]
         public void WhenUserSelectsPaymentPlan(string paymentPlan)
         {
-            Shared.GetButton(PaymentPlan=paymentPlan);
+            Shared.GetButton(PaymentPlan = paymentPlan);
         }
 
         [When(@"user enters payment information with (.*)")]
         public void WhenEntersPaymentInformationWith(string paymentMethod)
         {
-            switch(paymentMethod)
+            switch (paymentMethod)
             {
                 case "Credit/Debit Card":
                     Shared.GetButton(paymentMethod).Click();
                     GetField("Amount").setText($"{(PaymentPlan == "Pay in Full" ? premium : Math.Round((decimal)premium / 12, 2))}");
-                    GetField("Name on Card").setText("Automation Payer "+Functions.GetRandomInteger());
+                    GetField("Name on Card").setText("Automation Payer " + Functions.GetRandomInteger());
                     GetField("Card Number").setText(Functions.getValidCreditCardNumber());
-                    GetField("Exp. Date (MM/YY)").setText("10"+"30");
+                    GetField("Exp. Date (MM/YY)").setText("10" + "30");
                     GetField("CVC").setText("123");
                     break;
 
@@ -189,22 +208,21 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
                                                                     AND c.Billing.Premium !=null
                                                                     AND c.Billing.Premium !=0
                                                                     ORDER BY c.Id DESC");
-                if(!ratableValidCandidates.Any())
+                if (!ratableValidCandidates.Any())
                 {
-                   Functions.GetQuotedQuoteThroughAPI();
-                   return GetValidApplicationNumber();
+                    Functions.GetQuotedQuoteThroughAPI();
+                    return GetValidApplicationNumber();
                 }
                 this.ratableObject = ratableValidCandidates.ElementAt(0);
                 var quote = new Data.Entity.Quote(this.ratableObject["ApplicationId"].ToObject<int>());
                 var vehicles = quote.GetVehicles();
-                foreach(var vehicle in vehicles)
+                foreach (var vehicle in vehicles)
                 {
-                    if(string.IsNullOrWhiteSpace(vehicle.VinNumber))
+                    if (string.IsNullOrWhiteSpace(vehicle.VinNumber))
                     {
                         vehicle.VinNumber = Functions.GetRandomVIN();
                     }
                 }
-                
             }
             else
             {
@@ -216,6 +234,18 @@ namespace ApolloQA.StepDefinition.Waffle.Administration
 
             //finally we get the Application Number of this tether object to return it
             return tether["ApplicationNumber"];
+        }
+
+        [Then(@"document table should have entries")]
+        public void ThenDocumentTableShouldHaveEntries()
+        {
+            try { Assert.IsTrue(Shared.Table.parseUITable().Count() > 1); }
+            catch (Exception)
+            {
+                Functions.refreshPage();
+                Thread.Sleep(500);
+                Assert.IsTrue(Shared.Table.parseUITable().Count() > 1);
+            }
         }
     }
 }

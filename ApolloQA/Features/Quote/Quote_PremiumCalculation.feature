@@ -4,7 +4,7 @@ Feature: Quote Premium Calculation
 	setup a quote with valid parameters
 	So that I can modify parameters during testing
 	
-@tc:29105 @tc:34153
+@tc:29105 @tc:34153 @tc:40354
 Scenario: Rate Calculation New Quote
 	Given user is successfully logged into biberk
 	When user navigates to Quote Page
@@ -31,7 +31,7 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make			| Model  | Body Category        | Body Subcategory   | Gross Vehicle Weight     | Underwriter Value |
 	| random | 2020 | Freightliner  | M2 111 | Trucks			    | Truck Tractor      | 45001+ lbs               | 114001            |
-	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
+	And user answers vehicle garaging location question as 'No'
 	And user sets answer to Is this vehicle owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button
 	And user completes address form
@@ -44,7 +44,7 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make		| Model  | Body Category         | Body Subcategory   | Gross Vehicle Weight    | Underwriter Value |
 	| random | 2020 | Honda     | Accord | Cars, Pickup, or SUV  | Car - Sedan        | 5001 - 10000 lbs        | 19000             |
-	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
+	And user answers vehicle garaging location question as 'No'
 	And user sets answer to Is this vehicle owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button
 	And user completes address form
@@ -54,7 +54,7 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make  | Model  | Body Category  | Body Subcategory | Gross Vehicle Weight      | Underwriter Value |
 	| random | 2020 | Ford  | Bus200 | Other          | Bus              | 20001 - 30000 lbs         | 89000             |
-	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
+	And user answers vehicle garaging location question as 'No'
 	And user sets answer to Is this vehicle owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button
 	And user completes address form
@@ -65,12 +65,15 @@ Scenario: Rate Calculation New Quote
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make	  | Model  | Body Category        | Body Subcategory                                  | Estimated Current Value |
 	| random | 2020 | e350z	  | M2     | Trailer		      | Other Enclosed Trailer (2001+ lbs load capacity)  | 19000                   |
-	And user selects answer to Is this trailer's parking address in a state different than your businesses' main state? as No
+	And user answers trailer garaging location question as 'No'
 	And user sets answer to Is this trailer owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button
 	And user completes address form
+	And user waits for spinner to load
 	And user selects Collision coverage with Deductible deductible of $5,000
+	And user waits for spinner to load
 	And user selects Comprehensive coverage with Deductible deductible of $5,000
+	And user waits for spinner to load
 	And user clicks 'Save Vehicle' Button
 	And user waits for spinner to load
 

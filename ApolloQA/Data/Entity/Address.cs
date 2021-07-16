@@ -91,12 +91,7 @@ namespace ApolloQA.Data.Entity
             this.PostalCode = address["postalCode"];
             this.CountryName = address["country"]["name"];
             this.Id = address["id"];
-
-
         }
-
-
-
 
 
         override
@@ -156,7 +151,5 @@ namespace ApolloQA.Data.Entity
                 return this.ToString();
             }
         }
-
-
     }
 }

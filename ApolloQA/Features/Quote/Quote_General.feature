@@ -11,14 +11,14 @@ Scenario: Left Nav Bar displays successfully
 	Then Left Nav Sections should be displayed successfully
 	| SectionName           |
 	| Business Information  |
-	| Contacts              |
 	| Vehicles              |
 	| Drivers               |
-	| Operations			|
+	| Operations            |
 	| Policy Coverages      |
 	| Modifiers             |
 	| Policy Addl Interests |
 	| Summary               |
+	| Contacts              |
 	| UW Results            |
 
 

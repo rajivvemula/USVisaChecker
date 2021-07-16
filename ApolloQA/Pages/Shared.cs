@@ -86,6 +86,7 @@ namespace ApolloQA.Pages
         }
 
         public static Element Table = new Element($"//ngx-datatable");
+        public static Element tableRow = new Element("//div[@class='datatable-row-center datatable-row-group ng-star-inserted']");
 
 
         // Grid Titles Verify

@@ -9,7 +9,6 @@ Scenario: Administration - Billing
 	When user selects a valid quote to make a payment
 	Then Named Insured field should be disabled and have valid value
 	And Total Premium field should be disabled and have valid value
-	#And Payment Plan can be updated successfully
 	And Make Payment Method form is displayed correctly
 	| Method            | field1 | field2          | field3              | field4            | field5   | field6 |
 	| Credit/Debit Card | Amount | Name on Card    | Card Number         | Exp. Date (MM/YY) | CVC      |        |
@@ -45,4 +44,4 @@ Scenario: Make a payment - Quote Issuance
 	Then user waits for Policy Issuance
 	When user waits '30' seconds
 	And user clicks 'Documents' Sidetab
-	Then table should have entries
+	Then document table should have entries

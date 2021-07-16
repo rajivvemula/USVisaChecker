@@ -10,7 +10,8 @@ Scenario Outline: Automatic Decline Based on keyword
 	When User changes <Keyword>
 	When user clicks 'Next' Button
 	When user clicks 'Summary' Sidetab
-	When user clicks 'UW Results' Sidetab
+	And user waits for spinner to load
+	When user clicks on UW Results Sidetab
 	Then User verifies the Quote has a declined <Status> on UW Results
 
 	Examples: 

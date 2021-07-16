@@ -57,13 +57,16 @@ namespace ApolloQA.StepDefinition.Quote
         [Then(@"user verifies Additional Interest Add successful")]
         public void ThenUserVerifiesAdditionalInterestAddSuccessful()
         {
-            var toastMessage = Occurrence.toastrMessage.GetInnerText();
+            new SharedSteps().WhenUserWaitsForSpinnerToLoad();
+            Shared.Table.WaitUntilClickable();
             try
             {
-                Assert.TextContains(toastMessage, "Additional Interest Saved");
+                new SharedSteps().ThenTableShouldContainEntries();
             }
-            catch { Assert.TextContains(toastMessage, "Error saving Additional Interest"); }
-            Log.Info($"Expected: Additional Interest Saved. Result: " + toastMessage + "");
+            catch (Exception)
+            {
+                Shared.tableRow.assertElementIsVisible();
+            }
         }
     }
 }

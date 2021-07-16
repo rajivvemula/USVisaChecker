@@ -8,6 +8,7 @@ using Entity_Organization = ApolloQA.Data.Entity.Organization;
 using ApolloQA.Source.Helpers;
 using ApolloQA.Components;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ApolloQA.StepDefinition.Quote
 {
@@ -63,7 +64,6 @@ namespace ApolloQA.StepDefinition.Quote
             Functions.MarkTestCasePassed(17022);
             Functions.MarkTestCasePassed(17024);
             Functions.MarkTestCasePassed(17974);
-
         }
 
         [Then(@"User should be redirected to the newly created Quote Business Information Section")]
@@ -116,12 +116,15 @@ namespace ApolloQA.StepDefinition.Quote
             foreach (var section in Quote_GeneralSteps.Quote.Storyboard.Sections)
             {
                 new SharedSteps().WhenUserWaitsForSpinnerToLoad();
+                while (Shared.SpinnerLoad.assertElementIsVisible(3, true)) {
+                    Thread.Sleep(300);
+                }
                 var sectionCTA = Shared.GetLeftSideTab(section.Name);
                 sectionCTA.Click();
-                try { Shared.GetButton(" Continue Anyway ").assertElementNotPresent(); }
+                try { Shared.GetButton("Continue Anyway").assertElementNotPresent(); }
                 catch
                 {
-                    Shared.GetButton(" Continue Anyway ").Click();
+                    Shared.GetButton("Continue Anyway").Click();
                 }
                 Assert.CurrentURLEquals(Quote_Page.GetURL(Quote_GeneralSteps.Quote.Id, section.Id));
             }

@@ -29,8 +29,7 @@ Scenario: Add a Vehicle
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make  | Model  | Body Category        | Body Subcategory | Gross Vehicle Weight     | Underwriter Value |
 	| random | 2020 | Honda | Accord | Cars, Pickup, or SUV | Car - Sedan      | 1 - 5000 lbs             | 10000             |
-	#And user selects answer to Is this vehicle used to transport customers on tours or to other activities? as No
-	And user selects answer to Is this vehicle's parking address in a state different than your businesses' main state? as No
+    And user answers vehicle garaging location question as 'No'
 	And user sets answer to Is this vehicle owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button
 	And user completes address form
@@ -38,8 +37,6 @@ Scenario: Add a Vehicle
 	And user selects Comprehensive coverage with Deductible deductible of $5,000
 	And user clicks 'Save Vehicle' Button
 	And user waits for spinner to load
-	Then Toast appears containing text: Vehicle saved to quote
-	And Toast appears containing text: Vehicle limits saved
 
 
 Scenario: Quote vehicle section QE vehicle owned

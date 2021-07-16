@@ -15,6 +15,7 @@ namespace ApolloQA.StepDefinition
     [Binding]
     public class SharedSteps
     {
+        public static string BusinessLocationState = "";
         public static string BusinessKeyword = "";
         private Element button2 = new Element(By.XPath("(//mat-icon[normalize-space(text())='apps'])[2]"));
         private Element navList = new Element(By.XPath("//mat-nav-list"));
@@ -362,13 +363,16 @@ namespace ApolloQA.StepDefinition
         public void WhenUserSetsOrgnaizationAddress()
         {
             try{
-                Shared.GetDropdownField("Physical Address").SelectMatDropdownOptionContainingText(", IL,"); }
+                Shared.GetDropdownField("Physical Address").SelectMatDropdownOptionContainingText(", IL,");
+                BusinessLocationState = "IL";
+            }
             catch
             {
                 Shared.GetButton("Add Address").Click();
                 Shared.GetInputField("Street Address Line 1").setText("207 S Washington St");
                 Shared.GetInputField("City").setText("Naperville");
                 Shared.GetDropdownField("State / Region").SelectMatDropdownOptionByText("IL");
+                BusinessLocationState = Shared.GetDropdownField("State / Region").GetInnerText();
                 Shared.GetInputField("Zip / Postal Code").setText("60540");
                 Shared.AddressFormSaveButton.Click();
             }
@@ -377,8 +381,15 @@ namespace ApolloQA.StepDefinition
         [When(@"User Selects Name Insured from dropdown")]
         public void WhenUserSelectsNameInsuredFromDropdown()
         {
+            int i = Functions.GetRandomInteger(500);
             Shared.GetInputField("Named Insured").setText("E");
-            Shared.GetInputField("Named Insured").SelectMatDropdownOptionByIndex(Functions.GetRandomInteger(25));
+            Thread.Sleep(800);
+            Element nameInsured = new Element($"(//*[@role='listbox'] //mat-option)[{i}]");
+            while (nameInsured.assertElementNotPresent(5, true))
+            {
+                Thread.Sleep(300);
+            }
+            nameInsured.Click();
         }
 
         [When(@"user enters tax Id number")]
@@ -400,6 +411,26 @@ namespace ApolloQA.StepDefinition
             Shared.GetDropdownField("State / Region").SelectMatDropdownOptionByText("IL");
             Shared.GetInputField("Zip / Postal Code").setText("60540");
             Shared.AddressFormSaveButton.TryClick();
+        }
+
+        [When(@"user answers vehicle garaging location question as '(.*)'")]
+        public void WhenUserAnswersVehicleGaragingLocationQuestionAs(string answer)
+        {
+                var state = GetBusinesslocationState();
+                Shared.GetQuestionAnswer($"Is this vehicle's parking address in a state other than {state}?", answer).Click();
+        }
+
+        [When(@"user answers trailer garaging location question as '(.*)'")]
+        public void WhenUserAnswersTrailerGaragingLocationQuestionAs(string answer)
+        {
+            var state = GetBusinesslocationState();
+            Shared.GetQuestionAnswer($"Is this trailer's parking address in a state other than {state}?", answer).Click();
+        }
+
+        private string GetBusinesslocationState()
+        {
+            var stateCode = BusinessLocationState;
+            return SQL.executeQuery($@"SELECT Name FROM [location].[StateProvince] Where Code='{stateCode}';")[0]["Name"];
         }
     }
 }
