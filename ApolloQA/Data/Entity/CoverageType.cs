@@ -125,15 +125,17 @@ namespace ApolloQA.Data.Entity
             }
             public object? getQuestionResponse(string questionAlias)
             {
-                var questionResponse = questionResponses.FirstOrDefault(it => it["questionAlias"].ToString() == questionAlias);
+                var questionResponse = questionResponses?.FirstOrDefault(it => it["QuestionAlias"].ToString() == questionAlias);
 
                 if(questionResponse==null)
                 {
+                    //Log.Debug("returned null");
                     return null;
                 }
                 else
                 {
-                    return ((JValue)questionResponse["response"])?.Value;
+                   // Log.Debug($"returned {questionResponse?["Response"] ?? "response is null"}");
+                    return ((JValue)questionResponse["Response"])?.Value;
                 }
             }
 

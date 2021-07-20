@@ -114,7 +114,7 @@ namespace ApolloQA.Data.Rating
                     }
                     catch (Exception ex)
                     {
-                        Log.Error("Field: " + KnownField);
+                        Log.Error("failed interpreting Field: " + KnownField);
                         throw Functions.handleFailure(ex);
                     }
                 }

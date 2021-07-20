@@ -140,7 +140,7 @@
     "source": "false"
   },
   "Add On Coverage": {
-    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")?? No"
+    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")?? \"No\""
   }
 
 }
