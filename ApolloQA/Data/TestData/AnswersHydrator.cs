@@ -261,18 +261,19 @@ namespace ApolloQA.Data.TestData
                 if (question.ContainsKey("id"))
                 {
                     obj.Add("questionId", question["id"].ToObject<long>());
-                    obj.Add("questionType", question["questionType"].ToObject<int>());
+                    //obj.Add("questionType", question["questionType"].ToObject<int>());
 
                 }
                 else
                 {
                     obj.Add("questionId", question["questionId"].ToObject<long>());
-                    obj.Add("questionType", (int)SQL.executeQuery($"SELECT QuestionType  FROM [question].[QuestionDefinition] where Id = {question["questionId"]};")[0]["QuestionType"]);
+                    //obj.Add("questionType", (int)SQL.executeQuery($"SELECT QuestionType  FROM [question].[QuestionDefinition] where Id = {question["questionId"]};")[0]["QuestionType"]);
 
                 }
 
                 obj.Add("isHidden", question["isHidden"].ToObject<bool>());
                 obj.Add("sectionId", section.Id);
+                obj.Add("questionAlias", alias);
 
 
                 //we are only going to answer questions that are not hidden in the UI
