@@ -3,12 +3,12 @@ Feature: Algorithms
 
 @ratingTests
 Scenario: Test Rating Algorithm Static Quote
-	Given quote with Id 13985 is loaded
+	Given quote with Id 13520 is loaded
 	When expected values are gathered
 	Then expected values should match the system output
 
 
-@ratingTests
+@ratingTestss
 Scenario: Test Rating Algorithm
 	Given quote for '<State>' and '<Algorithm>' is set to Quoted
 	When expected values are gathered
@@ -35,6 +35,45 @@ Scenario: Test Rating Algorithm
 	| GA    | VA00065   |
 	| GA    | VA00043   |
 	| GA    | VA00050   |
+
+@ratingTests @IL
+Scenario: IL - Test Rating Algorithm
+
+	Given quote for 'IL' and '<Algorithm>' is set to Quoted
+	When expected values are gathered
+	Then expected values should match the system output
+
+	Examples:
+	| Algorithm |
+	| VA00029   |
+	| VA00030   |
+	| VA00031   |
+	| VA00032   |
+	| VA00033   |
+	| VA00034   |
+	| VA00035   |
+	| VA00036   |
+	| VA00037   |
+	| VA00038   |
+	| VA00039   |
+	| VA00040   |
+	| VA00041   |
+	| VA00042   |
+	| VA00043   |
+	| VA00044   |
+	| VA00045   |
+	| VA00046   |
+	| VA00047   |
+	| VA00048   |
+	| VA00049   |
+	| VA00050   |
+	| VA00051   |
+	| VA00052   |
+	| VA00053   |
+	| VA00054   |
+	| VA00055   |
+	| VA00056   |
+
 
 @ratingTests @SC
 Scenario: SC - Test Rating Algorithm 
@@ -89,41 +128,40 @@ Scenario: SC - Test Rating Algorithm
 
  @ratingTests @CA
 Scenario: CA - Test Rating Algorithm 
-	Given quote for '<State>' and '<Algorithm>' is set to Quoted
+	Given quote for 'CA' and '<Algorithm>' is set to Quoted
 	When expected values are gathered
 	Then expected values should match the system output
 
 	Examples: 
-	| State | Algorithm |
-	| CA    | VA00058   |
-	| CA    | VA00059   |
-	| CA    | VA00060   |
-	| CA    | VA00061   |
-	| CA    | VA00062   |
-	| CA    | VA00063   |
-	| CA    | VA00064   |
-	| CA    | VA00065   |
-	| CA    | VA00066   |
-	| CA    | VA00067   |
-	| CA    | VA00068   |
-	| CA    | VA00069   |
-	| CA    | VA00041   |
-	| CA    | VA00042   |
-	| CA    | VA00043   |
-	| CA    | VA00044   |
-	| CA    | VA00070   |
-	| CA    | VA00071   |
-	| CA    | VA00072   |
-	| CA    | VA00048   |
-	| CA    | VA00049   |
-	| CA    | VA00050   |
-	| CA    | VA00051   |
-	| CA    | VA00052   |
-	| CA    | VA00053   |
-	| CA    | VA00073   |
-	| CA    | VA00055   |
-	| CA    | VA00074   |
-	| CA    | VA00089   |
+	|  Algorithm |
+	|   VA00058   |
+	|   VA00059   |
+	|   VA00060   |
+	|   VA00061   |
+	|   VA00062   |
+	|   VA00063   |
+	|   VA00064   |
+	|   VA00065   |
+	|   VA00066   |
+	|   VA00067   |
+	|   VA00068   |
+	|   VA00069   |
+	|   VA00041   |
+	|   VA00042   |
+	|   VA00043   |
+	|   VA00044   |
+	|   VA00070   |
+	|   VA00071   |
+	|   VA00072   |
+	|   VA00048   |
+	|   VA00049   |
+	|   VA00050   |
+	|   VA00051   |
+	|   VA00052   |
+	|   VA00053   |
+	|   VA00073   |
+	|   VA00055   |
+	|   VA00074   |
 
 @ratingTests @GA
 Scenario: GA - Test Rating Algorithm 
@@ -274,6 +312,42 @@ Scenario: MO - Test Rating Algorithm
 	| MO    | VA00055   |
 	| MO    | VA00074   |
 
-@ratingTests
+		@ratingTests @State_MO
+Scenario: TX - Test Rating Algorithm 
+	Given quote for 'TX' and '<Algorithm>' is set to Quoted
+	When expected values are gathered
+	Then expected values should match the system output
+
+	Examples: 
+	| Algorithm |
+	| VA00058   |
+	| VA00059   |
+	| VA00060   |
+	| VA00061   |
+	| VA00062   |
+	| VA00063   |
+	| VA00064   |
+	| VA00065   |
+	| VA00066   |
+	| VA00067   |
+	| VA00068   |
+	| VA00069   |
+	| VA00041   |
+	| VA00042   |
+	| VA00043   |
+	| VA00044   |
+	| VA00070   |
+	| VA00071   |
+	| VA00072   |
+	| VA00048   |
+	| VA00049   |
+	| VA00050   |
+	| VA00051   |
+	| VA00052   |
+	| VA00053   |
+	| VA00073   |
+	| VA00074   |
+
+@ignore
 Scenario: Find USDOT with matching criteria
 	Then USDOT with criteria is found 

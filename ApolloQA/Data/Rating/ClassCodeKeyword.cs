@@ -30,7 +30,7 @@ namespace ApolloQA.Data.Rating
         {
             //AT.1 table describes what algorithm is used depending on class code & coverage
             //AT.1 table varies by state
-            var AT1 = Engine.getTable("AT.1", stateCode);
+            var AT1 = Engine.GetTable("AT.1", stateCode, DateTime.Now.ToString("d"));
 
             //local variable to store the related coverage
             String coverage = null;
@@ -42,7 +42,7 @@ namespace ApolloQA.Data.Rating
             foreach(var row in AT1)
             {
                 //because algorithms start at the 4th index of each row of AT.1, our loop starts there
-                for (int i=4; i<row.Count; i++)
+                for (int i=0; i<row.Count; i++)
                 {
                     var column = row.ElementAt(i);
 

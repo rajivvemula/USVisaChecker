@@ -137,7 +137,6 @@ namespace ApolloQA.Data.Rating
 
                     if (this.Factor.TableName != null)
                     {
-
                         factorTable = this.Engine.getTable(this.Factor.TableName.Replace("@CoverageCode", this.GetAlgorithmAssignment().CoverageCode));
                     }
                     else
@@ -159,7 +158,10 @@ namespace ApolloQA.Data.Rating
                         {
                             KeyValuePair<string, string> column = row.ElementAt(columnIndex);
                             var columnToMatch = column.Key;
-
+                            if(columnToMatch.EndsWith("ID"))
+                            {
+                                continue;
+                            }
                             if (columnToMatch.Contains(LOWERBOUND))
                             {
                                 columnToMatch = column.Key.Replace(" " + LOWERBOUND, "");
@@ -178,33 +180,58 @@ namespace ApolloQA.Data.Rating
                                     throw new NullReferenceException($"The column [{columnToMatch}] was not matched to any field on Data/Rating/KnownFields.json");
                                 }
 
+                                /*if(knownField.Name == "Add On")
+                                {
+                                    Log.Debug(knownField.Value);
+                                    Log.Debug(column.Value);
+                                    throw new Exception();
+                                }*/
 
                                 if (knownField.TypeName == "Boolean")
                                 {
+                                    if(knownField.Value is string)
+                                    {
+                                        if(knownField.Value == "Yes")
+                                        {
+                                            knownField.parsedValue= "True";
+                                        }
+                                        else if(knownField.Value == "No")
+                                        {
+                                            knownField.parsedValue = "False";
 
-                                    knownField.parsedValue = ((bool)knownField.Value) ? "Yes" : "No";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        knownField.parsedValue = ((bool)knownField.Value) ? "Yes" : "No";
+                                    }
                                 }
                                 else if (knownField.TypeName == "Currency")
                                 {
-                                    knownField.parsedValue = ((int)knownField.Value).ToString("C0");
+                                    //knownField.parsedValue = ((int)knownField.Value).ToString("C0");
+                                    knownField.parsedValue = ((int)knownField.Value).ToString("0.0000000000");
+
                                 }
-                                if (column.Key.Contains(LOWERBOUND) && knownField.Type != null && (int)knownField.Value >= Functions.parseInt(column.Value))
+                                if (column.Key.Contains(LOWERBOUND) && knownField.Type != null && (decimal)knownField.Value >= decimal.Parse(column.Value))
                                 {
                                     lowerBoundMatch = true;
                                 }
                                 else if (column.Key.Contains(UPPERBOUND))
                                 {
-                                    var columnValue = column.Value == "+" ? int.MaxValue : Functions.parseInt(column.Value);
-                                    var nextRowLowerBound = rowIndex == factorTable.Count - 1 ? int.MinValue : Functions.parseInt(factorTable[rowIndex + 1][columnToMatch + $" {LOWERBOUND}"]);
+                                    var columnValue = column.Value == "9999999" ? decimal.MaxValue : decimal.Parse(column.Value);
 
-                                    if (knownField.Type != null && (int)knownField.Value <= columnValue)
+                                    Dictionary<string,string> nextLogicalRow = columnValue != decimal.MaxValue ? factorTable.FirstOrDefault(it => decimal.Parse(it[columnToMatch + $" {LOWERBOUND}"]) == columnValue + 1) : null;
+
+                                    var nextRowLowerBound = nextLogicalRow == null? 0 : decimal.Parse(nextLogicalRow[columnToMatch + $" {LOWERBOUND}"]);
+
+                                    if (knownField.Type != null && (decimal)knownField.Value <= columnValue)
                                     {
                                         upperBoundMatch = true;
                                     }
                                     //check for interpolation US 12209
-                                    else if (columnValue != int.MaxValue &&
+                                    else if (columnValue != decimal.MaxValue &&
                                             columnValue + 1 != nextRowLowerBound &&
-                                            knownField.Type != null && (int)knownField.Value < nextRowLowerBound
+                                            knownField.Type != null && (decimal)knownField.Value < nextRowLowerBound
                                            )
                                     {
 
@@ -215,7 +242,17 @@ namespace ApolloQA.Data.Rating
 
                                 var columnIsLimit = column.Key.ToLower().Contains("limit");
 
-                               
+
+
+                               /* if (knownField.TypeName == "Currency")
+                                {
+                                    Log.Debug($"column value: {column.Key}={column.Value}");
+                                    Log.Debug($"Knownfield value: {column.Key}={knownField.Value?.ToString()}");
+                                    Log.Debug($"Knownfield parsed: {column.Key}={knownField.parsedValue}");
+
+
+                                }
+*/
                                 if (lowerBoundMatch || upperBoundMatch)
                                 {
                                     match.Add(column.Key, true);
@@ -345,10 +382,10 @@ namespace ApolloQA.Data.Rating
                     {
                         resolvable.Resolve();
                     }
-                    catch(Exception ex)
+                    catch(Exception)
                     {
                         Log.Error($"Error Resolving KnownField {resolvable.Name}");
-                        throw ex;
+                        throw;
                     }
 
                     this.KnownFields.Add(resolvable);
@@ -367,13 +404,22 @@ namespace ApolloQA.Data.Rating
                     return decimal.Parse(this.Engine.getTable($"{this.Engine.interpreter.Eval("CoverageCode")}.BaseRateFactors")[0]["Base Rate Factor"]);
                 }
             }
+            private decimal BaseRateFactorPIP
+            {
+                get
+                {
+                    this.Factor.NameUI.Add($"{GetAlgorithmAssignment().CoverageCode} Base Rate Factor");
+                    return decimal.Parse(this.Engine.getTable($"{this.Engine.interpreter.Eval("CoverageCode")}.BaseRateFactor")[0]["Base Rate Factor"]);
+                }
+            }
+
             private decimal MinimumRatingValueFactors
             {
                 get
                 {
                     this.Factor.NameUI.Add($"{GetAlgorithmAssignment().CoverageCode} Minimum Rating Value");
                     var value = this.Engine.getTable($"{this.Engine.interpreter.Eval("CoverageCode")}.MinimumRatingValueFactors")[0]["Minimum Rating Value Factor"];
-                    return decimal.Parse(string.Join("", value.Where(it=> Char.IsDigit(it))));
+                    return decimal.Parse(value);
                 }
             }
             private decimal VehicleTypeMinimumRatingValueFactor
@@ -387,7 +433,7 @@ namespace ApolloQA.Data.Rating
                     var factor = algorithmTable.FirstOrDefault(it => it["Vehicle Type"] == vehicleType)["Minimum Rating Value Factor"];
 
                     //Log.Debug(factor.Where(char.IsDigit));
-                    var minimumValue =  decimal.Parse(string.Join("", factor.Where(char.IsDigit)));
+                    var minimumValue =  decimal.Parse(factor);
 
                     var vehicleValue = (decimal)this.KnownFields.First(it => it.Name == "Stated Value").Value;
 
@@ -534,15 +580,26 @@ namespace ApolloQA.Data.Rating
             {
                 get
                 {
-                    string[] CLASSIFICATION_NAMES = new string[] { "CLASSIFICATION", "CLASSIFICATION PECULIARITIES" };
-                    string[] EMPLOYEES_NAMES = new string[] { "EMPLOYEES" };
-                    string[] EQUIPMENT_NAMES = new string[] {  "EQUIPMENT" };
-                    string[] MANAGEMENT_NAMES = new string[] { "MANAGEMENT" };
-                    string[] SAFETYORGANIZATION_NAMES = new string[] { "SAFETYORGANIZATION", "SAFETY ORGANIZATION" };
+                    string[] CLASSIFICATION_NAMES = new string[] {  "CLASSIFICATION", "Classification", "CLASSIFICATION PECULIARITIES" };
+                    string[] EMPLOYEES_NAMES = new string[] { "EMPLOYEES" , "Employees" };
+                    string[] EQUIPMENT_NAMES = new string[] {  "EQUIPMENT", "Equipment" };
+                    string[] MANAGEMENT_NAMES = new string[] {  "MANAGEMENT", "Management" };
+                    string[] SAFETYORGANIZATION_NAMES = new string[] {  "SAFETYORGANIZATION", "Safety Organization", "SAFETY ORGANIZATION" };
 
                     List<string[]> categories = new List<string[]>() { CLASSIFICATION_NAMES, EMPLOYEES_NAMES, EQUIPMENT_NAMES, MANAGEMENT_NAMES, SAFETYORGANIZATION_NAMES };
 
-                    var table = this.Engine.getTable("ST.1");
+                    var table = SQL.executeQuery($@"SELECT 
+                                                    [ModifierType].[Name] as 'Schedule Rating Category', 
+                                                    Modifier.MaximumPercentRatingCredit as 'Maximum Schedule Rating Credit', 
+                                                    Modifier.MaximumPercentRatingDebit as 'Maximum Schedule Rating Debit'
+                                                    FROM [rating].[RatingModifier] Modifier
+                                                    LEFT JOIN [location].[StateProvince] StateProv on Modifier.StateProvinceId = StateProv.Id
+                                                    LEFT JOIN [rating].RatingModifierCategorySubtype ModifierType on ModifierType.Id = Modifier.RatingModifierCategorySubtypeId
+                                                    WHERE LineId =7 AND 
+                                                    StateProv.Code = '{this.Engine.GoverningStateCode}' AND
+                                                    ('{DateTime.Now.ToString("d")}' BETWEEN Modifier.TimeFrom AND Modifier.TimeTo)
+                                                    ;");
+
                     string credit = "Maximum Schedule Rating Credit";
                     string debit = "Maximum Schedule Rating Debit";
 
@@ -550,8 +607,9 @@ namespace ApolloQA.Data.Rating
 
                     foreach (string[] category in categories)
                     {
-                        var categoryRow = table.FirstOrDefault(it => category.Contains(it["Schedule Rating Category"]));
-                        var categoryBoundaries = new decimal[] { -decimal.Parse(categoryRow[credit].Trim('%').Trim()), decimal.Parse(categoryRow[debit].Trim('%').Trim()) };
+                        //Log.Debug(JToken.FromObject(table));
+                        var categoryRow = table.FirstOrDefault(it => category.Contains((string)it["Schedule Rating Category"]));
+                        var categoryBoundaries = new decimal[] { -categoryRow[credit], categoryRow[debit] };
 
                         var systemValue = (decimal)this.Engine.root[category[0]];
 
@@ -571,9 +629,9 @@ namespace ApolloQA.Data.Rating
 
                     }
 
-                    var totalRow = table.FirstOrDefault(it => it["Schedule Rating Category"] == "TOTAL");
+                    var totalRow = table.FirstOrDefault(it => it["Schedule Rating Category"] == "Maximum Percentage Allowed");
 
-                    var totalBoundaries = new decimal[] { -decimal.Parse(totalRow[credit].Trim('%').Trim()), decimal.Parse(totalRow[debit].Trim('%').Trim()) };
+                    var totalBoundaries = new decimal[] { -totalRow[credit], totalRow[debit] };
 
                     if (total < totalBoundaries[0])
                     {
@@ -593,9 +651,21 @@ namespace ApolloQA.Data.Rating
             {
                 get
                 {
-                    var table = this.Engine.getTable("ST.2");
-                    var lower = -decimal.Parse(table[0]["Maximum Experience Rating Credit"].Trim('%').Trim());
-                    var upper = decimal.Parse(table[0]["Maximum Experience Rating Credit"].Trim('%').Trim());
+                    var table = SQL.executeQuery($@"SELECT 
+                                                    [ModifierType].[Name] as 'Schedule Rating Category', 
+                                                    Modifier.MaximumPercentRatingCredit as 'Maximum Schedule Rating Credit', 
+                                                    Modifier.MaximumPercentRatingDebit as 'Maximum Schedule Rating Debit'
+                                                    FROM [rating].[RatingModifier] Modifier
+                                                    LEFT JOIN [location].[StateProvince] StateProv on Modifier.StateProvinceId = StateProv.Id
+                                                    LEFT JOIN [rating].RatingModifierCategorySubtype ModifierType on ModifierType.Id = Modifier.RatingModifierCategorySubtypeId
+                                                    WHERE LineId =7 AND 
+                                                    StateProv.Code = '{this.Engine.GoverningStateCode}' AND
+                                                    ('{DateTime.Now.ToString("d")}' BETWEEN Modifier.TimeFrom AND Modifier.TimeTo) AND
+                                                    [ModifierType].[Name] = 'Experience Rating'
+                                                    ;");
+
+                    var lower = -table[0]["Maximum Schedule Rating Credit"];
+                    var upper = table[0]["Maximum Schedule Rating Debit"];
                     var value = this.Engine.root.ExperienceModifier;
                     if (value < lower)
                     {
@@ -653,6 +723,7 @@ namespace ApolloQA.Data.Rating
                         this.Factor.CustomCalculation = false;
 
                         this.Resolve();
+
                         return this.Value;
                     }
                     else
@@ -732,7 +803,61 @@ namespace ApolloQA.Data.Rating
 
                 }
             }
+            private decimal BIPDPremium
+            {
+                get
+                {
+                    var ratingAlgorithm = this.Engine.latestResults.Find(it => it["CoverageName"].ToString()== "Bodily Injury Property Damage (BIPD)");
 
+                    try
+                    {
+                        return ratingAlgorithm["Factors"]["Manual Basic Limits Premium"]["Value"].ToObject<decimal>();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error($"BIPD Manual Basic Limits Premium was not found in rating object: {ratingAlgorithm}");
+                        throw ex;
+                    }
+
+                }
+            }
+            private decimal PIP_BIPDIncreasedLimit
+            {
+                get
+                {
+                    var ratingAlgorithm = this.Engine.latestResults.Find(it => it["CoverageName"].ToString() == "Bodily Injury Property Damage (BIPD)");
+
+                    try
+                    {
+                        return 1 / ratingAlgorithm["Factors"]["Increased Limit Factor"]["Value"].ToObject<decimal>();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error($"error retrieving BIPD Increased Limit Factor in rating object: {ratingAlgorithm}");
+                        throw ex;
+                    }
+                }
+            }
+            private decimal PIP_DriverRating
+            {
+                get
+                {
+                    var ratingAlgorithm = this.Engine.latestResults.Find(it => it["CoverageName"].ToString() == "Bodily Injury Property Damage (BIPD)");
+
+                    try
+                    {
+                        var DrivingRating = ratingAlgorithm["Factors"]["Driver Rating"]["Value"].ToObject<decimal>();
+                        return 1 + ((DrivingRating -1) * 0.5M);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error($"error retrieving BIPD Driver Rating Factor in rating object: {ratingAlgorithm}");
+                        throw ex;
+                    }
+                }
+            }
+
+            
 
 
         }

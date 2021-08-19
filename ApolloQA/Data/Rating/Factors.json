@@ -5,6 +5,12 @@
     "source": "BaseRateFactor",
     "CustomCalculation": true
   },
+  "BaseRateFactor": {
+    "KnownFields": [],
+    "nameUI": [ "Base Rate Factor" ],
+    "source": "BaseRateFactorPIP",
+    "CustomCalculation": true
+  },
   "IsAccidentPreventionFactors": {
     "KnownFields": [],
     "nameUI": [ "Accident Prevention Factor" ],
@@ -283,7 +289,8 @@
     "KnownFields": [],
     "nameUI": [ "Minimum Rating Value Factor", "VA00041 Minimum Rating Value Factor", "Maximum Stated Value" ],
     "source": "MinimumRatingValueFactors",
-    "CustomCalculation": true
+    "CustomCalculation": true,
+    "displayOnly": true
   },
   "Excess Limits Rating Factor": {
     "KnownFields": [ "Limit" ],
@@ -348,8 +355,34 @@
     "CustomCalculation": true
   },
   "IsAddOnFactors": {
-    "KnownFields": [ "Add On Coverage" ],
+    "KnownFields": [ "Add On Coverage", "Add On" ],
     "nameUI": [ "Add On Factor" ]
+  },
+  "Liability (BIPD) Manual Basic Limits Premium": {
+    "KnownFields": [],
+    "nameUI": [ "UM Exposure Base" ],
+    "source": "BIPDPremium",
+    "CustomCalculation": true
+  },
+  "PIP2.IncreasedLimitFactor": {
+    "KnownFields": [ "Benefits Limit" ],
+    "nameUI": [ "Increased Limit Factor" ],
+    "tableName": "PIP2.IncreasedLimitFactor"
+  },
+  "(1 / Increased Limit factor)": {
+    "KnownFields": [],
+    "nameUI": [ "BIPD Increased Limit Factor" ],
+    "source": "PIP_BIPDIncreasedLimit",
+    "CustomCalculation": true
+  },
+  "1+ ((Driving Rating ‐ 1)*0.5))": {
+    "KnownFields": [],
+    "nameUI": [ "Driver Rating Factor" ],
+    "source": "PIP_DriverRating",
+    "CustomCalculation": true
   }
+
+
+
 
 }

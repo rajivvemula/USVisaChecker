@@ -56,9 +56,10 @@ namespace ApolloQA.Source.Helpers
                 {
                     reader = command.ExecuteReader();
 
-                }catch(Exception ex)
+                }catch(Exception)
                 {
-                    Functions.handleFailure($"Query: \n{query}\n", ex);
+                    Log.Error($"Query: \n{query}\n");
+                    throw;
                 }
 
                 try

@@ -1,4 +1,5 @@
 ﻿using ApolloQA.Source.Helpers;
+using DynamicExpresso;
 using JsonDiffer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -49,14 +50,26 @@ namespace ApolloQA.StepDefinition.Rating
                 var tableName = file.Name.Substring(0, file.Name.LastIndexOf('.'));
 
                 //ignoring algorithm tables
-                if(tableName.IndexOf('.') == -1)
+                if (tableName.IndexOf('.') == -1 )
+                {
+                    continue;
+                }
+                //ignoring deleted tables
+                if (PersistedData["All"]["deleteTables"].ToObject<List<string>>().Contains(tableName))
                 {
                     continue;
                 }
 
-                manual.Add(tableName, new JArray());
+                var tableNameNoAlgorithm = tableName.Split(".")[1];
+                //ignoring deleted tables
+                
+
+                    manual.Add(tableName, new JArray());
               
-                var persistedRows = (JArray)PersistedData?[state]?[tableName]?["rows"];
+                var persistedRows = (JArray)PersistedData?["All"]?["rows"]?[tableName];
+               
+                persistedRows?.Merge(PersistedData?[state]?[tableName]?["rows"] ?? new JArray());
+
 
                 var persistedColumns = (JObject)PersistedData["All"]["columns"].DeepClone();
 
@@ -84,8 +97,13 @@ namespace ApolloQA.StepDefinition.Rating
                             }
                         }
                     }
-                    
-                  
+
+                    var deleteConditions = (JArray)PersistedData?["All"]?["rows"]?["deleteConditions"]?[tableNameNoAlgorithm];
+                    if (deleteConditions != null && TrueIfAnyCondition(tableName, row.value, deleteConditions))
+                    {
+                        //Log.Debug($"persist delete for a condition {state}, {tableName}");
+                        continue;
+                    }
 
                     if (persistedRows != null)
                     {
@@ -93,7 +111,7 @@ namespace ApolloQA.StepDefinition.Rating
 
                         if (persistedRow!=null)
                         {
-                            if (persistedRow?["delete"] != null)
+                            if (persistedRow?["delete"]?.ToObject<bool>() ?? false)
                             {
                                 Log.Debug($"persist delete {state}, {tableName}");
                                 continue;
@@ -109,13 +127,134 @@ namespace ApolloQA.StepDefinition.Rating
                     }
                     row.value.Add("Row", rowNumber);
                     ((JArray)manual[tableName]).Add(JObject.FromObject(row.value));
-                }               
+                }
+
+                var additionalLimits = (JArray)PersistedData?["All"]?["limits"]?[tableNameNoAlgorithm]?["additionalLimits"];
+                if(additionalLimits != null)
+                {
+                    var manualTable = (JArray)manual[tableName];
+
+                    var resultingTable = (JArray)manualTable.DeepClone();
+
+                    var limitNames = new string[3] {"Combined Single Limit", "Limit", "Property Damage Limit" };
+/*                    Log.Debug(manualTable[0]);
+                    Log.Debug(tableNameNoAlgorithm);
+                    Log.Debug(tableName);*/
+                    var limitName = manualTable[0].ToObject<Dictionary<string, string>>().Keys.First(key => limitNames.Contains(key));
+
+                  
+
+
+                    var firstLimitValue = ((JObject)manualTable[0])[limitName].ToString();
+
+                    var valueSetsToGenerateFor = ((JArray)manualTable).Where(row => row[limitName].ToString() == firstLimitValue);
+
+                    var columnsToGenerateFor = ((JObject)manualTable[0]).Properties().Select(prop => prop.Name);
+
+                    columnsToGenerateFor = columnsToGenerateFor.Where(columnName => columnName != "Row" && !columnName.ToLower().Contains("factor") && columnName != limitName);
+
+                    var currentLastRow = manualTable.Select(it => it["Row"].ToObject<int>()).Max();
+
+                    var factorColumnName = ((JObject)manualTable[0]).Properties().First(it => it.Name.Contains("Factor")).Name;
+
+                    var factor = PersistedData?["All"]["limits"][tableNameNoAlgorithm]?["factor"]?.ToString();
+
+                   
+
+                    foreach (JObject valueSet in valueSetsToGenerateFor)
+                    {
+                        foreach(var limitValue in additionalLimits)
+                        {
+                            generateRowForLimit(ref resultingTable, ref currentLastRow, valueSet, columnsToGenerateFor, limitName, limitValue.ToObject<int>(), factorColumnName, factor);
+                        }
+
+                    }
+                    if(!valueSetsToGenerateFor.Any())
+                    {
+                        foreach (var limitValue in additionalLimits)
+                        {
+                            generateRowForLimit(ref resultingTable, ref currentLastRow, (JObject)manualTable[0], columnsToGenerateFor, limitName, limitValue.ToObject<int>(), factorColumnName, factor);
+                        }
+                    }
+                    //Log.Debug($"addnl limits {tableName}");
+                    manual[tableName] = resultingTable;
+                }
 
             }
 
             File.WriteAllText(testResultDir + "ParsedRatingTables.json", manual.ToString());
 
         }
+        private bool TrueIfAnyCondition(string tableName, Dictionary<string, string> row, JArray conditions)
+        {
+            Interpreter interpreter = new Interpreter();
+            interpreter.SetVariable("row", row);
+            interpreter.SetVariable("tableName", tableName);
+
+            foreach (string condition in conditions)
+            {
+                try
+                {
+                    var result = (bool)interpreter.Eval(condition);
+                    if (result)
+                    {
+                        return true;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Log.Error(tableName);
+                    Log.Error(row);
+                    throw ex;
+                }
+               
+            }
+            return false;
+        }
+        private void generateRowForLimit(ref JArray table, ref int currentLastRow, JObject valueSetToGenerateFor, IEnumerable<string> columnsToGenerateFor, string limitName, int limitValue, string factorColumnName, string factor)
+        {
+            decimal parsedFactor = 1;
+            if (factor.ToLower() == "max")
+            {
+                var valueSetToGenerateFor_NoExtraColumns = JObject.FromObject(valueSetToGenerateFor.ToObject<Dictionary<string, string>>().Where(it => columnsToGenerateFor.Contains(it.Key)).ToDictionary(x => x.Key, x => x.Value));
+
+                List<JObject> rowsForValueSet = new List<JObject>();
+
+                foreach (JObject row in table)
+                {
+                    var currentValueSet = JObject.FromObject(row.ToObject<Dictionary<string, string>>().Where(it => columnsToGenerateFor.Contains(it.Key)).ToDictionary(x => x.Key, x => x.Value));
+
+                    if (JToken.DeepEquals(valueSetToGenerateFor_NoExtraColumns, currentValueSet))
+                    {
+                        rowsForValueSet.Add(row);
+                    }
+                }
+
+
+                var maxLimit = 0;
+
+
+                foreach (var row in rowsForValueSet)
+                {
+                    var rowLimit = int.Parse(string.Join("", row[limitName].ToString().Where(c => char.IsDigit(c))));
+                    if(maxLimit < rowLimit)
+                    {
+                        maxLimit = rowLimit;
+                        parsedFactor = row[factorColumnName].ToObject<decimal>();
+                    }
+                } 
+
+
+            }
+
+            var newlyGeneratedRow = (JObject)valueSetToGenerateFor.DeepClone();
+            newlyGeneratedRow[limitName] = limitValue;
+            newlyGeneratedRow[factorColumnName] = parsedFactor;
+            newlyGeneratedRow["Row"] = currentLastRow;
+            table.Add(newlyGeneratedRow);
+            currentLastRow++;
+        }
+
         [Given(@"(.*) csv is parsed into json object")]
         public void GivenCsvIsParsedIntoJsonObject(string state)
         {
@@ -169,17 +308,20 @@ namespace ApolloQA.StepDefinition.Rating
 
 
         private JObject ActualManual = new JObject();
-        [Given(@"tables are loaded from the system")]
-        public void ThenTablesAreParsedIntoJsonFormat()
+        [Given(@"tables are loaded from the system for date (.*)")]
+        public void ThenTablesAreParsedIntoJsonFormat(string date)
         {
-            var tables = SQL.executeQuery($@"SELECT RatingTable.Id, RatingTable.[Name], StateProv.Code
-                                FROM [rating].[ReferenceTable] RatingTable
-                                LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
-                                LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
-                                WHERE LineId =7 AND CarrierPartyId = 4 and StateProv.Code = '{state.ToUpper()}'
-                                GROUP BY  RatingTable.Id, RatingTable.[Name], StateProv.Code 
-                                ;");
-            
+            var dateTime = DateTime.Parse(date);
+            var tables = SQL.executeQuery($@"SELECT RatingTable.Id, RatingTable.[Name], StateProv.Code, RatingTable.TimeFrom, RatingTable.TimeTo
+                                            FROM [rating].[ReferenceTable] RatingTable
+                                            LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
+                                            LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
+                                            WHERE LineId =7 AND 
+                                            CarrierPartyId = 4 AND 
+                                            StateProv.Code = '{state}' AND
+                                            ('{dateTime.ToShortDateString()}' BETWEEN RatingTable.TimeFrom AND RatingTable.TimeTo)
+                                            GROUP BY  RatingTable.Id, RatingTable.[Name], StateProv.Code, RatingTable.TimeFrom,RatingTable.TimeTo
+                                            ;");
             //Task.Factory.StartNew(() => Parallel.ForEach(tables, table => ActualManual.Add(table["Name"], JArray.FromObject(GetTable((int)table["Id"]))))).Wait();
 
             foreach (var table in tables)
@@ -189,7 +331,7 @@ namespace ApolloQA.StepDefinition.Rating
                 {
                     continue;
                 }*/
-                ActualManual.Add(table["Name"], JArray.FromObject(GetTable((long)table["Id"])));
+                ActualManual.Add(table["Name"], JArray.FromObject(GetTable((long)table["Id"], table["Name"])));
             }
 
 
@@ -310,7 +452,7 @@ namespace ApolloQA.StepDefinition.Rating
 
                     description["message"] = $"Expected row Count: {expectedTable.Count()}     Actual row Count: {actualTable.Count()}";
 
-                    if (differenc.Count > 30)
+                    if (differenc.Count > 100)
                     {
                         description["difference"]["missing"] = "Too Many Records";
                         description["difference"]["additional"] = "Too Many Records";
@@ -362,28 +504,28 @@ namespace ApolloQA.StepDefinition.Rating
 
                         //to be used if percentage was a decimal
 
-                        /*if(expectedValue.Contains("%"))
+                        if (expectedValue.Contains("%") && expectedValue.Where(ch=> Char.IsLetter(ch)).Count()==0 )
                         {
-                            Decimal expectedValueDec = Decimal.Parse(expectedValue.Replace("%", "").Trim())/100;
+                            Decimal expectedValueDec = Decimal.Parse(expectedValue.Replace("%", "").Trim()) / 100;
 
                             try
                             {
                                 if (expectedValueDec != actualValue.ToObject<Decimal>())
                                 {
                                     description["message"] = $" percent - the System is missing expected value {expectedValueDec} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
-                                    ((JArray)errors["incorrectValue"]).Add(description);
+                                    addError("incorrectValue", table.Key, description.DeepClone());
                                 }
                             }
                             catch
                             {
                                 description["message"] = $@" error parsing actual percentage from the system: ${actualValue} percent - the System is missing expected value {expectedValueDec} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValue}";
-                                                            
-                                ((JArray)errors["incorrectValue"]).Add(description);
+
+                                addError("incorrectValue", table.Key, description.DeepClone());
                             }
-                        }*/
+                        }
 
                         //to be used if percentage is a string
-                        if (expectedValue.Contains("%"))
+                        /*if (expectedValue.Contains("%"))
                         {
                             //sometimes percentages are entered as 25 % we will ignore the space in between
                             var actualValuePercent = actualValue.ToString().Replace(" %", "%");
@@ -394,7 +536,7 @@ namespace ApolloQA.StepDefinition.Rating
                                 description["message"] = $" percentage - the System is missing expected value {expectedValue} at Column {column.Key}  at row {expectedRow.value["Row"]} at table {table.Key} \n Actual Value: {actualValuePercent ?? "NULL"}";
                                 addError("incorrectValue", table.Key, description.DeepClone());
                             }
-                        }
+                        }*/
                         //compare if the value is integer type
                         else if (int.TryParse(expectedValue, out int expectedValueInt))
                         {
@@ -545,7 +687,7 @@ namespace ApolloQA.StepDefinition.Rating
 
 
 
-        private IEnumerable<JObject> GetTable(long tableId)
+        private IEnumerable<JObject> GetTable(long tableId, string tableName)
         {
             var columns = SQL.executeQuery($@"SELECT AttributeName, AttributeColumn
                                               FROM [rating].ReferenceTableMap where ReferenceTableId={tableId};");
@@ -573,31 +715,27 @@ namespace ApolloQA.StepDefinition.Rating
                     try
                     {
                         var columnValue = row[column["AttributeColumn"]];
-
-                        //for corrupt duplicate columns
-                        /*if(rowObj.ContainsKey((String)column["AttributeName"]))
+                        var columnName = (String)column["AttributeName"];
+                        if (columnName.ToLower().Contains("sortorder"))
                         {
-                            column["AttributeName"] = column["AttributeName"] + " [DUPLICATE]";
-                        }*/
+                            continue;
+                        }
 
-                        rowObj.Add((String)column["AttributeName"], (columnValue is DBNull? "": columnValue) ?? "");
+                        rowObj.Add(columnName, (columnValue is DBNull? "": columnValue) ?? "");
                     }
                     catch(Exception ex)
                     {
-                        //for corrupt duplicate columns
-/*                        var knownErrors = new List<string>()
-                        {
-                        
-                        };
-                        if(knownErrors.Contains(column["AttributeName"]))
-                        {
-                            continue;
-                        }*/
+
                         Log.Debug("Row-> "+JObject.FromObject(row));
                         Log.Debug("column-> "+column["AttributeColumn"]);
                         Log.Debug($"table ID-> : {tableId} Att Name: {column["AttributeName"]} value:{row[column["AttributeColumn"]]} ");
                         throw ex;
                     }
+                }
+                var deleteConditions = PersistedData["All"]["rows"]["deleteConditionsFromSystem"]?[tableName.Split('.')[1]];
+                if (deleteConditions != null && TrueIfAnyCondition(tableName, rowObj.ToObject<Dictionary<string, string>>(), (JArray)deleteConditions))
+                {
+                    continue;
                 }
 
                 yield return rowObj;
@@ -871,7 +1009,30 @@ namespace ApolloQA.StepDefinition.Rating
             
         }
 
-
+        /**
+         *   There are certain Data that differs from both ends, instead of manipulating the data itself every time there is a new load. We are doing it on runtime
+         *   
+         *   note: delete means deleted from the object at runtime for comparison purposes!
+         *   
+         *  0.) State first property of the object or All which applies country wide
+         *      1.) deleteTables: tables to be deleted from the PDF(expected) manual during runtime
+         *      2.) columns: Key= represents columns to be replaced; Value= represents correct column name
+         *      3.) rows: to be applied to rows
+         *            3.1.) deleteCondition: set of conditions that when meet for a row of the given table, is deleted form the PDF(expected) manual
+         *                 3.1.1.) tableName: in which these conditions will be checked
+         *            3.2.) deleteConditionsFromSystem: set of conditions that when meet for a row of the given table, is deleted form the actual Manual 
+         *                 3.2.1.) tableName: in which these conditions will be checked
+         *            3.3.) talbeName: name of the table in which the rows will be replaced 
+         *                 3.3.1.) list of ros to be replaced, using the Row property to determine which position
+         *                 
+         *      4.) limits: limits to be added to the PDF(expected) manual during runtime
+         *            4.1.) tableName: name of the table in which to add these limits
+         *            4.2.) factor: factor to add to the Factor column for each of these limits (note: Max means add highest limit found in the table to each limit)
+         *            4.3.) limitName: Name of the column that these will be added on (if there is more than one limit column)
+         *            
+         *
+         *           
+         */
         private static JObject PersistedData = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine($"{Source.Driver.Setup.SourceDir}", @"StepDefinition\Rating\persistedData.json")).ReadToEnd());
     }
 }

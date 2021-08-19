@@ -145,12 +145,10 @@ Scenario: Form can be generated
 	| MCS90      | Endorsement for Motor Carrier Policies of Insurance for Public Liability                                            |
 	| MO5937     | - Missouri ID Card                                                                                                  |
 	
-	| PS3665  | Certificate of Mailing                                                          |
 	| SC4566a | - South Carolina ID Card                                                        |
 	| TN4566a | - Tennessee ID Card                                                             |
 	| (E)C59q | Notice of Cancellation, Nonrenewal or Declination - GA                          |
 	| IN4566a | - Indiana ID Card                                                               |
-	| B0005   | Mailing Cover Sheet                                                             |
 	| M5619   | Important Notice Aviso Importante                                               |
 	| M5731   | Hired Autos Endoresement                                                        |
 	| M5735   | Truckers Endorsement - Gross Receipts and Milage Premium Basis Definitions      |

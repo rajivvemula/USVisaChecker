@@ -140,7 +140,17 @@
     "source": "false"
   },
   "Add On Coverage": {
-    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")?? \"No\""
+    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")?? \"No\"",
+    "type": "Boolean"
+
+  },
+  "Add On": {
+    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")?? \"No\"",
+    "type": "Boolean"
+
+  },
+  "Benefits Limit": {
+    "source": "Limit.selectedLimits[0]"
   }
 
 }

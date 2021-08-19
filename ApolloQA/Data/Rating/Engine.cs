@@ -22,37 +22,83 @@ namespace ApolloQA.Data.Rating
         /// <returns>
         /// Returns specified table from the Rating Manual
         /// </returns>
-        public static List<Dictionary<String, String>> getTable(String tableName, string stateCode)
+        public static List<Dictionary<String, String>> GetAlorithm(String tableName)
         {
-            var table = Functions.parseExcel(Path.Combine(Source.Driver.Setup.SourceDir, @$"Data\RatingManual\{stateCode}\{tableName}.xlsx")).ToList();
-
-            var persistedColumns = (JObject)PersistedData["All"]["columns"].DeepClone();
-
-            persistedColumns.Merge((JObject)PersistedData?[stateCode.ToUpper()]?[tableName]?["columns"]);
-
-            if(table[0].Where(it=> persistedColumns.ContainsKey(it.Key)).Count()>0)
-            {
-                foreach (var row in table)
-                {
-                    foreach (var incorrectColumn in persistedColumns)
-                    {
-                        if (row.ContainsKey(incorrectColumn.Key))
-                        {
-                            row.Add(incorrectColumn.Value.ToString(), row[incorrectColumn.Key]);
-
-                            row.Remove(incorrectColumn.Key);
-                        }
-                    }
-                }
-            }
-
-           
+            
+            var table = Functions.parseExcel(Path.Combine(Source.Driver.Setup.SourceDir, @$"Data\RatingManual\Algorithms\{tableName}.xlsx")).ToList();
 
             return table;
         }
+        public static IEnumerable<Dictionary<String, String>> GetTable(String tableName, string stateCode, string effectiveDate)
+        {
+            string whereClause = $@"WHERE LineId =7 AND 
+                                    CarrierPartyId = 4 AND 
+                                    StateProv.Code = '{stateCode}' AND
+                                    ('{effectiveDate}' BETWEEN RatingTable.TimeFrom AND RatingTable.TimeTo) AND
+                                    RatingTable.Name = '{tableName}'";
+
+            var columns = SQL.executeQuery($@"SELECT tableColumn.AttributeName, tableColumn.AttributeColumn
+                                            FROM [rating].[ReferenceTable] RatingTable
+                                            LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
+                                            LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
+                                            LEFT JOIN [rating].ReferenceTableMap tableColumn on RatingTable.Id = tableColumn.ReferenceTableId
+                                            {whereClause} 
+                                            ;");
+
+            var sortOrderColumnRow = columns.Find(it => ((String)it["AttributeName"]).Contains("SortOrder"));
+
+            
+            var attributes = SQL.executeQuery($@"SELECT TableAttributes.*
+                                                FROM [rating].[ReferenceTable] RatingTable
+                                                LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
+                                                LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
+                                                LEFT JOIN [rating].[ReferenceTableAttribute] TableAttributes on RatingTable.Id = TableAttributes.ReferenceTableId
+                                                {whereClause} 
+                                                ;");
+            if(!columns.Any() || !attributes.Any())
+            {
+                throw new Exception("Table: "+ tableName + $" was not found for parameters: {whereClause}. ");
+            }
+
+            foreach (var row in attributes)
+            {
+                var rowDict = new Dictionary<string, string>();
+
+                foreach (var column in columns)
+                {
+                    try
+                    {
+                        var columnValue = row[column["AttributeColumn"]];
+                        var columnName = (String)column["AttributeName"];
+                        if (columnName.ToLower().Contains("sortorder"))
+                        {
+                            continue;
+                        }
+
+                        rowDict.Add(columnName, (columnValue is DBNull ? "" : (columnValue is string ? columnValue : columnValue.ToString()) ) ?? "");
+                    }
+                    catch (Exception ex)
+                    {
+
+                        Log.Error("Row-> " + JObject.FromObject(row));
+                        Log.Error("column-> " + column["AttributeColumn"]);
+                        Log.Error($"table Name-> : {tableName} Att Name: {column["AttributeName"]} value:{row[column["AttributeColumn"]]} ");
+                        throw ex;
+                    }
+                }
+
+                yield return rowDict;
+
+            }
+
+        }
         public List<Dictionary<String, String>> getTable(String tableName)
         {
-           return getTable(tableName, GoverningStateCode);
+           if(!tableName.Contains('.'))
+           {
+                return GetAlorithm(tableName);
+           }
+           return GetTable(tableName, GoverningStateCode, this.EffectiveDate.ToString("d")).ToList();
         }
 
         /// <summary>
@@ -66,6 +112,7 @@ namespace ApolloQA.Data.Rating
         public readonly Entity.Quote root;
 
         public readonly string GoverningStateCode;
+        public readonly DateTime EffectiveDate;
 
         /// <summary>
         /// Rating Engine to calculate premium using Known Field's values and mapping them to the Rating Manuals. <br/><br/>
@@ -76,6 +123,7 @@ namespace ApolloQA.Data.Rating
         {
             this.root = root;
             this.GoverningStateCode = root.GoverningStateCode;
+            this.EffectiveDate = root.GetCurrentRatableObject().TimeFrom;
             this.interpreter = new Interpreter();
             interpreter.Reference(typeof(JObject));
             interpreter.Reference(typeof(AlgorithmAssignment));
@@ -107,8 +155,8 @@ namespace ApolloQA.Data.Rating
 
                 foreach (var limit in limits)
                 {
-
-                    Log.Debug($"Current Coverage: {limit.GetCoverageType().Name}"); 
+                    var coverageType = limit.GetCoverageType();
+                    Log.Debug($"Current Coverage: {coverageType.Name}"); 
                     
                     interpreter.SetVariable("Limit", limit);
                     AlgorithmAssignment algorithmAssignment = getAlgorithmAssignment(limit.GetCoverageType(), KnownField.GetKnownField("Class Code").Resolve(this).ToString());
@@ -122,7 +170,7 @@ namespace ApolloQA.Data.Rating
                     interpreter.SetVariable("CoverageCode", coverageCode);
 
 
-                    var rateResults = new JObject() { {"CoverageCode", coverageCode } };
+                    var rateResults = new JObject() { { "CoverageCode", coverageCode }, { "CoverageName", coverageType.Name } };
 
                     loadResolvedAlgorithmFactors(coverageCode, vehicle, ref rateResults);
                     decimal premium = 0;
@@ -178,8 +226,8 @@ namespace ApolloQA.Data.Rating
                         }
                         catch(Exception ex)
                         {
-                            Log.Error($"couldn't find factor {factorName} was not present in Factors.json. Rate Results: {rateResults}");
-                            throw ex;
+                            throw Functions.handleFailure($"couldn't find factor {factorName} in Factors.json");
+                            
                         }
 
                         decimal factorValue;
@@ -223,7 +271,7 @@ namespace ApolloQA.Data.Rating
                                     throw new KeyNotFoundException($"Factor name: {factorNameNext} was not found in {rateResults} ");
                                 }
 
-
+                                 
                             }
                             catch (Exception ex)
                             {
@@ -337,11 +385,11 @@ namespace ApolloQA.Data.Rating
                     result.Add(factor, resolvedObj);
 
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
 
                     Log.Debug($"Error Resolving KnownFields for Factor: {resolvable.Name} for coverage code: {CoverageCode}");
-                    throw ex;
+                    throw;
                 }
 
             }
@@ -397,13 +445,14 @@ namespace ApolloQA.Data.Rating
 
                         if(string.IsNullOrEmpty(result.CoverageCode))
                         {
-                            if (((JObject)CoverageAlgorithms[GoverningStateCode]).TryGetValue(coverageType.Name, out var coverageCode))
+                            JToken coverageCode = null;
+                            if (((JObject)CoverageAlgorithms[GoverningStateCode])?.TryGetValue(coverageType.Name, out coverageCode)??false)
                             {
-                                result.CoverageCode = coverageCode.ToString();
+                                result.CoverageCode = coverageCode?.ToString();
                             }
                             else
                             {
-                                throw new Exception($"couldn't find algorithm Assignment for Coverage Type: {coverageType.Name} & Class Code: [{ClassCode}]");
+                                throw new Exception($"couldn't find algorithm Assignment for Coverage Type: {coverageType.Name} & Class Code: [{ClassCode}] on state {GoverningStateCode}\n please check Data/Rating/CoverageAlgorithms.json");
                             }
                         }
                     }

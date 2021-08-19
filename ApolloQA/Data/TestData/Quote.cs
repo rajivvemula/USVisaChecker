@@ -51,8 +51,8 @@ namespace ApolloQA.Data.TestData
 
         private JObject CreateQuote(string state="IL")
         {
-            parser.interpreter.SetVariable("TomorrowDate", DateTime.Now.AddDays(1).ToString("O"));
-            parser.interpreter.SetVariable("YearLaterDate", DateTime.Now.AddDays(1).AddYears(1).ToString("O"));
+            parser.interpreter.SetVariable("TomorrowDate", DateTime.Now.AddDays(30).ToString("O"));
+            parser.interpreter.SetVariable("YearLaterDate", DateTime.Now.AddDays(30).AddYears(1).ToString("O"));
 
             var body = parser.GetObject("QuoteCreate");
             var response = RestAPI.POST("/quote/create", body);

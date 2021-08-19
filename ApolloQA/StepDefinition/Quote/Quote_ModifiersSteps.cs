@@ -123,7 +123,17 @@ namespace ApolloQA.StepDefinition.Quote
         string[] ModifiersValues = { "Management", "Employees", "Equipment", "Safety Organization", "Classification" };
         public static dynamic GetStateModifier(string state, string category)
         {
-            var st1Table = Data.Rating.Engine.getTable("ST.1", state);
+            var st1Table = SQL.executeQuery($@"SELECT 
+                                                [ModifierType].[Name] as 'Schedule Rating Category', 
+                                                Modifier.MaximumPercentRatingCredit as 'Maximum Schedule Rating Credit', 
+                                                Modifier.MaximumPercentRatingDebit as 'Maximum Schedule Rating Debit'
+                                                FROM [rating].[RatingModifier] Modifier
+                                                LEFT JOIN [location].[StateProvince] StateProv on Modifier.StateProvinceId = StateProv.Id
+                                                LEFT JOIN [rating].RatingModifierCategorySubtype ModifierType on ModifierType.Id = Modifier.RatingModifierCategorySubtypeId
+                                                WHERE LineId =7 AND 
+                                                StateProv.Code = '{state}' AND
+                                                ('{DateTime.Now.ToString("d")}' BETWEEN Modifier.TimeFrom AND Modifier.TimeTo)
+                                                ;");
             var classificationRow = st1Table.Find(row => row["Schedule Rating Category"] == category);
             return classificationRow;
         }

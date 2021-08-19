@@ -218,7 +218,7 @@ namespace ApolloQA.Source.Helpers
         private static String _APIToken = null;
 
         private static String getAuthTokenAPI()
-        {
+        {          
             if (_APIToken == null)
             {
                 string TenantId = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("API_TENANT_ID_SECRETNAME"));

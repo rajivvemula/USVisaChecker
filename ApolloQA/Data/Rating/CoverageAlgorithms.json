@@ -29,6 +29,17 @@
   "IN": {
     "Uninsured Motorists BI": "UM00026",
     "Underinsured Motorists BI": "UM00026"
+  },
+  "TN": {
+    "Uninsured Motorists BIPD": "UM00026"
+  },
+  "TX": {
+    "Uninsured / Underinsured Motorists BIPD": "UM00026",
+    "Personal Injury Protection": "PIP1"
+  },
+  "MO": {
+    "Uninsured Motorists BI": "UM00026",
+    "Underinsured Motorists BI": "UM00026"
 
   }
 }

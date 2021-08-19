@@ -111,11 +111,12 @@ namespace ApolloQA.Data.Rating
                     try
                     {
                         resolvedValue = Engine.interpreter.Eval(KnownField.Source);
+                        //Log.Debug($"{this.KnownField.Name } resolved to {resolvedValue}");
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         Log.Error("failed interpreting Field: " + KnownField);
-                        throw Functions.handleFailure(ex);
+                        throw;
                     }
                 }
 

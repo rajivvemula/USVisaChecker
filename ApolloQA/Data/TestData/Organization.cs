@@ -63,6 +63,7 @@ namespace ApolloQA.Data.TestData
             //see Entity.Organization.GetNextValidName to learn more about mutex
             parser.interpreter.SetVariable("OrganizationName", Entity.Organization.GetNextValidName("Automation API org", out Mutex mutex));
 
+            Log.Debug("Keyword: "+this.classCodeKeyword.KeywordName);
             var body = parser.GetObject("OrgCreate");
             var response  = RestAPI.POST("apollo/organization", body);
 
