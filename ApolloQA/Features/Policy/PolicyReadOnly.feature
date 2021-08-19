@@ -23,7 +23,7 @@ Scenario Outline: Policy is Readonly
     | Modifiers                         |
     | Policy Addl Interests             |
     | Summary                           |
-    | Additional Information (FEIN/SSN) |
+#    | Additional Information (FEIN/SSN) | this has been removed - not visible 08/06 AC
     | Additional Information (Vehicle)  |
 
 @tc:39145

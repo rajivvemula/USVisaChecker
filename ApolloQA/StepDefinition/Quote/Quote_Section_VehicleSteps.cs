@@ -68,6 +68,21 @@ namespace ApolloQA.StepDefinition.Quote
                             break;
                     }
                 }
+                if (fieldDisplayName == "Make" | fieldDisplayName == "Model")
+                {
+                    Thread.Sleep(500);
+                    Element option = new Element("(//*[@class='mat-option-text'])[4]");
+                    try {
+                        field.WaitUntilClickable();
+                        field.SelectMatDropdownOptionByText(fieldValue.ToUpper());
+                    } catch (Exception)
+                    {
+                        field.WaitUntilClickable();
+                        option.TryClick();
+                        field.SelectMatDropdownOptionByText(fieldValue.ToUpper());
+                    }
+                    field.assertElementInnerTextEquals(fieldValue.ToUpper());
+                }
                 else
                 {
                     try
@@ -110,7 +125,7 @@ namespace ApolloQA.StepDefinition.Quote
                     {
                         dropdown.WaitUntilClickable();
                         dropdown.sendKeysDown();
-                        Thread.Sleep(500);
+                        Thread.Sleep(300);
                     }
                     catch (Exception)
                     {
@@ -132,8 +147,8 @@ namespace ApolloQA.StepDefinition.Quote
             
             {"VIN","Input" },
             {"Year", "Input" },
-            {"Make", "Input" },
-            {"Model", "Input" },
+            {"Make", "Dropdown" },
+            {"Model", "Dropdown" },
             {"Body Category", "Dropdown" },
             {"Body Subcategory", "Dropdown" },
             {"Seating Capacity", "Dropdown" },

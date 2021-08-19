@@ -29,8 +29,8 @@ Scenario: Rate Calculation New Quote
 	When user clicks 'Vehicles' Sidetab
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make			| Model  | Body Category        | Body Subcategory   | Gross Vehicle Weight     | Underwriter Value |
-	| random | 2020 | Freightliner  | M2 111 | Trucks			    | Truck Tractor      | 45001+ lbs               | 114001            |
+	| VIN    | Year | Make		   | Model  | Body Category        | Body Subcategory   | Gross Vehicle Weight     | Underwriter Value |
+	| random | 2020 | Freightliner | 114SD  | Trucks			   | Truck Tractor      | 45001+ lbs               | 114001            |
 	And user answers vehicle garaging location question as 'No'
 	And user sets answer to Is this vehicle owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button
@@ -52,8 +52,8 @@ Scenario: Rate Calculation New Quote
 	And user waits for spinner to load
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make  | Model  | Body Category  | Body Subcategory | Gross Vehicle Weight      | Underwriter Value |
-	| random | 2020 | Ford  | Bus200 | Other          | Bus              | 20001 - 30000 lbs         | 89000             |
+	| VIN    | Year | Make  | Model           | Body Category  | Body Subcategory | Gross Vehicle Weight      | Underwriter Value |
+	| random | 2020 | Ford  | Transit Connect | Other          | Bus              | 20001 - 30000 lbs         | 89000             |
 	And user answers vehicle garaging location question as 'No'
 	And user sets answer to Is this vehicle owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button
@@ -63,8 +63,8 @@ Scenario: Rate Calculation New Quote
 	When user clicks 'Vehicles' Sidetab
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
-	| VIN    | Year | Make	  | Model  | Body Category        | Body Subcategory                                  | Estimated Current Value |
-	| random | 2020 | e350z	  | M2     | Trailer		      | Other Enclosed Trailer (2001+ lbs load capacity)  | 19000                   |
+	| VIN    | Year | Make		   | Model    | Body Category  | Body Subcategory                                  | Estimated Current Value |
+	| random | 2020 | Tuff Boy Inc | Trailer  | Trailer		   | Other Enclosed Trailer (2001+ lbs load capacity)  | 19000                   |
 	And user answers trailer garaging location question as 'No'
 	And user sets answer to Is this trailer owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button

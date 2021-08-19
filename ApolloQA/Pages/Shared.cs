@@ -87,6 +87,7 @@ namespace ApolloQA.Pages
 
         public static Element Table = new Element($"//ngx-datatable");
         public static Element tableRow = new Element("//div[@class='datatable-row-center datatable-row-group ng-star-inserted']");
+        public static Element listBox = new Element("(//*[@role='listbox' and @tabindex='-1'] //mat-option)[1]");
 
 
         // Grid Titles Verify

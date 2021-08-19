@@ -149,7 +149,7 @@ namespace ApolloQA.StepDefinition.Policy
 
         public void CheckInputCheckox() {
 
-            var checkboxesList = new Element("//div [@class = 'mat-radio-outer-circle']").GetIsDisabledBulk();
+            var checkboxesList = new Element("//*[@class = 'mat-radio-outer-circle']").GetIsDisabledBulk();
             Log.Info(checkboxesList);
             checkboxesList.ForEach(x => Assert.IsFalse(x));
 
