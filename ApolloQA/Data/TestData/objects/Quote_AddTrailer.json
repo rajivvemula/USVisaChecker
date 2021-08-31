@@ -1,0 +1,12 @@
+[
+    {
+        "riskId": "@VehicleRiskId",
+        "riskType": 1,
+        "vehicleClassCode": "@ClassCode",
+        "outputMetadata": {
+            "VehicleLocation": { "locationId": "@PhysicalAddressId" },
+            "VehicleClassCode": "@ClassCode"
+            //QuestionResponses to be added from hydrator
+        }
+    }
+]

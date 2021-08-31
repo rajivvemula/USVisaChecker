@@ -9,13 +9,15 @@ using Newtonsoft.Json.Linq;
 namespace ApolloQA.Data.Entity
 
 {
-    //this function is to represent coverage types in the system
+    //this class is to represent coverage types in the system
     public class CoverageType
     {
         public string Name { get; private set; }
         public long Id { get; private set; }
         public bool isVehicleLevel { get; private set; }
         public int SortOrder { get; private set; }
+        public string Description { get; private set; }
+        
 
         public override string ToString()
         {
@@ -28,6 +30,7 @@ namespace ApolloQA.Data.Entity
             this.Id = coverage["Id"];
             this.Name = coverage["TypeName"];
             this.SortOrder = coverage["SortOrder"];
+            this.Description = coverage["Description"];
             if(vehicleLevelCoverages.Contains(Name))
             {
                 isVehicleLevel = true;
@@ -48,7 +51,7 @@ namespace ApolloQA.Data.Entity
             this.Id = coverage["Id"];
             this.Name = coverage["TypeName"];
             this.SortOrder = coverage["SortOrder"];
-
+            this.Description = coverage["Description"];
             if (vehicleLevelCoverages.Contains(Name))
             {
                 isVehicleLevel = true;

@@ -128,6 +128,41 @@ namespace ApolloQA.Data.TestData
             vehicles.Add(vehicle);
             return AddVehicleToQuote();
         }
+
+        //Add Trailer To Quote
+        public Entity.Vehicle CreateTrailer()
+        {
+            parser.interpreter.SetVariable("VinNumber", Functions.GetRandomVIN());
+            //Not sure on this, ask miguel how this works
+            parser.interpreter.SetVariable("ClassCode", organization.classCodeKeyword.ClassCode);
+
+            var body = parser.GetObject("Quote_CreateTrailer");
+            var response = RestAPI.POST("/vehicle", body);
+            parser.interpreter.SetVariable("VehicleRiskId", response.riskId);
+            vehicles.Add(response);
+            return new Entity.Vehicle((int)response.id);
+
+        }
+
+        public dynamic AddTrailerToQuote()
+        {
+            if (vehicles.Count < 1)
+            {
+                CreateVehicle();
+            }
+
+            var body = parser.GetObject("Quote_AddTrailer");
+
+            ((JObject)((JArray)body)[0]["outputMetadata"]).Add("QuestionResponses", AnswersHydrator.Vehicles(quoteEntity, vehicles[0]));
+
+            //Log.Debug("add to quote: " + body);
+
+            var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk", body);
+
+            return response;
+        }
+
+
         public dynamic AddVehicleCoverage()
         {
             return AddVehicleCoverage(vehicles[0]);

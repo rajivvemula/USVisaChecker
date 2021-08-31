@@ -178,6 +178,7 @@ namespace ApolloQA.Data.Entity
             }
 
         }
+
         public IEnumerable<CoverageType.Limit> getLimits(Vehicle risk)
         {
 
@@ -353,6 +354,13 @@ namespace ApolloQA.Data.Entity
             get
             {
                 return this.GetCurrentRatableObject().BillingType;
+            }
+        }
+        public int RatingPackageId
+        {
+            get
+            {
+                return this.GetCurrentRatableObject().RatingPackageID;
             }
         }
         public String PaymentPlan

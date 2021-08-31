@@ -438,6 +438,9 @@ namespace ApolloQA.Source.Helpers
             quote.CreateDriver();
             quote.AddDriverToQuote();
 
+            quote.CreateTrailer();
+            quote.AddTrailerToQuote();
+
             quote.AnswerOperationQuestions();
 
             quote.AddPolicyCoverages();

@@ -288,10 +288,6 @@ namespace ApolloQA.Data.Entity
         }
 
 
-
-
-
-
         public class Incident
         {
             public string Type { get; }

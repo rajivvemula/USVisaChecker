@@ -241,6 +241,16 @@ namespace ApolloQA.Data.Entity
                 return (String)this["RatingFactors"]["BillingType"];
             }
         }
+
+        public int RatingPackageID
+        {
+            get
+            {
+
+                //return (String)this["SelectedRatingPackageId"]["RatingPackageID"];
+                return int.Parse((String)this.GetProperty("SelectedRatingPackageId"));
+            }
+        }
         public String PaymentPlan
         {
             get

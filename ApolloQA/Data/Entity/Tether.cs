@@ -13,6 +13,8 @@ namespace ApolloQA.Data.Entity
             this.Id = Id;
             load();
         }
+
+
         public Tether(long Id)
         {
             this.Id = Id;

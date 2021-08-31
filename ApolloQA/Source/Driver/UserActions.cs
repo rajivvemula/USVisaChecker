@@ -503,10 +503,16 @@ namespace ApolloQA.Source.Driver
                                                       .FindElements(By.XPath($"(({datatableXpath} //datatable-body-row)[{rowIndex}] //datatable-body-cell)[{i + 1}]/descendant::*"))
                                                       .Select(child => child.Text).Distinct());
 
-                    rowDict.Add(columnNames[i], cellText.Trim());
+                    if (!rowDict.ContainsKey(columnNames[i]) && !rowDict.ContainsValue(cellText.Trim()))
+                    {
+                        rowDict.Add(columnNames[i], cellText.Trim());
+                    }
                 }
                 yield return rowDict;
             }
         }
+
+
+
     }
 }
