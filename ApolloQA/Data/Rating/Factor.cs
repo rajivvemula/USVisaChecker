@@ -519,7 +519,7 @@ namespace ApolloQA.Data.Rating
                         var factor = Factor.GetFactor("Individual Driver Rating Factor").GetResolvable(this.Engine);
 
                         factor.Resolve();
-
+                        Log.Debug($"Driver: {driver.LicenseNo} {factor.Value}");
                         driverFactors.Add(driver, factor);
 
                     }

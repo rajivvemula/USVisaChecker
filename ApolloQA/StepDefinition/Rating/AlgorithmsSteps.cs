@@ -77,7 +77,9 @@ namespace ApolloQA.StepDefinition.Rating
 
                 if(actualResult == null)
                 {
-                    throw new Exception($"Expected Results for Vehicle id: {vehicle.Id} | {vehicle} & Coverage Code: { expectedResult["CoverageCode"]} were not found the worksheet");
+                    //throw new Exception($"Expected Results for Vehicle id: {vehicle.Id} | {vehicle} & Coverage Code: { expectedResult["CoverageCode"]} were not found the worksheet");
+                    errors.Add($"Expected Results for Vehicle id: {vehicle.Id} | {vehicle} & Coverage Code: { expectedResult["CoverageCode"]} were not found the worksheet");
+                    continue;
                 }
                 if (actualResult["premium"].ToObject<decimal>() != expectedResult["TotalPremium"].ToObject<decimal>())
                 {
@@ -162,7 +164,7 @@ namespace ApolloQA.StepDefinition.Rating
             }
             Log.Debug(errors);
 
-            if(errors.Find(it=> it.Contains("Expected Premium")) is var error && error!= null)
+            if(errors.Find(it=> it.Contains("Expected Premium") || it.Contains("Expected Results")) is var error && error!= null)
             {
                 Functions.handleFailure(error);
             }

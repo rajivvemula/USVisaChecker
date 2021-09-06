@@ -41,6 +41,14 @@
     "Uninsured Motorists BI": "UM00026",
     "Underinsured Motorists BI": "UM00026"
 
+  },
+  "NV": {
+    "Uninsured / Underinsured Motorists BI": "UM00010"
+  },
+
+  "AZ": {
+    "Uninsured Motorists BI": "UM00011",
+    "Underinsured Motorists BI": "UM00012"
   }
 }
 

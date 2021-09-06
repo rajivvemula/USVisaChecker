@@ -78,9 +78,9 @@ namespace ApolloQA.Source.Helpers
             { Log.Info(message); }
             else
             {
-                Log.Error(message);
                 if (ex != null)
                 {
+                    Log.Error(message);
                     handleFailure(ex, optional);
                 }
                 else
@@ -119,7 +119,7 @@ namespace ApolloQA.Source.Helpers
             }
             else
             {
-                Log.Error(ex.Message);
+                //Log.Error(ex.Message);
                 throw ex;
             }
             return ex;
@@ -439,7 +439,7 @@ namespace ApolloQA.Source.Helpers
             quote.AddDriverToQuote();
 
             quote.CreateTrailer();
-            quote.AddTrailerToQuote();
+            //quote.AddTrailerToQuote();
 
             quote.AnswerOperationQuestions();
 
