@@ -46,10 +46,10 @@
     "source": "IsEft"
   },
   "Vehicle Type": {
-    "source": "Vehicle.TypeName"
+    "source": "Vehicle.TypeName.Replace(\"Semi-Trailer\", \"SemiTrailer\")"
   },
   "Vehicle Type Description": {
-    "source": "Vehicle.TypeName"
+    "source": "Vehicle.TypeName.Replace(\"Semi-Trailer\", \"SemiTrailer\")"
   },
   "GVW/GCW": {
     "source": "Vehicle.GrossVehicleWeight"

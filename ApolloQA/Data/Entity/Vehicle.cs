@@ -64,7 +64,10 @@ namespace ApolloQA.Data.Entity
             SQL.executeQuery($"UPDATE risk.Vehicle SET {keyValue} where Id=@Id;", fieldMap.Select(field => (field.Key, field.Value)).ToArray())    ;
 
         }
-
+        public bool IsNonPowered()
+        {
+           return  new List<string>{ "Trailer", "Semi-Trailer" }.Contains(this.TypeName);
+        }
         public string Make
         {
             get
@@ -145,6 +148,16 @@ namespace ApolloQA.Data.Entity
             get
             {
                return (String)SQL.executeQuery(@" SELECT Name 
+                                     FROM risk.VehicleType VT
+                                     LEFT JOIN risk.Vehicle V ON V.TypeId = VT.id
+                                     WHERE V.Id = @Id;", (("@Id", $"{this.Id}")))[0]["Name"];
+            }
+        }
+        public string TypeId
+        {
+            get
+            {
+                return (String)SQL.executeQuery(@" SELECT Id 
                                      FROM risk.VehicleType VT
                                      LEFT JOIN risk.Vehicle V ON V.TypeId = VT.id
                                      WHERE V.Id = @Id;", (("@Id", $"{this.Id}")))[0]["Name"];

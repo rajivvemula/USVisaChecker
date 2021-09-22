@@ -29,13 +29,28 @@ namespace ApolloQA.Data.Rating
 
             return table;
         }
-        public static IEnumerable<Dictionary<String, String>> GetTable(String tableName, string stateCode, string effectiveDate)
+        public static IEnumerable<Dictionary<String, String>> GetTable(String tableName, string stateCode, string? effectiveDate)
         {
-            string whereClause = $@"WHERE LineId =7 AND 
+
+            string whereClause;
+            
+            if(string.IsNullOrEmpty(effectiveDate))
+            {
+                whereClause = $@"WHERE LineId =7 AND 
+                                    CarrierPartyId = 4 AND 
+                                    StateProv.Code = '{stateCode}' AND
+                                    RatingTable.Name = '{tableName}'";
+            }
+            else
+            {
+
+                whereClause = $@"WHERE LineId =7 AND 
                                     CarrierPartyId = 4 AND 
                                     StateProv.Code = '{stateCode}' AND
                                     ('{effectiveDate}' BETWEEN RatingTable.TimeFrom AND RatingTable.TimeTo) AND
                                     RatingTable.Name = '{tableName}'";
+
+            }
 
             var columns = SQL.executeQuery($@"SELECT tableColumn.AttributeName, tableColumn.AttributeColumn
                                             FROM [rating].[ReferenceTable] RatingTable

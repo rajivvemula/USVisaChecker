@@ -352,7 +352,8 @@
     "KnownFields": [],
     "nameUI": [ "UM Exposure Base" ],
     "source": "UMExposureBase",
-    "CustomCalculation": true
+    "CustomCalculation": true,
+    "displayOnly":  true
   },
   "IsAddOnFactors": {
     "KnownFields": [ "Add On Coverage", "Add On" ],

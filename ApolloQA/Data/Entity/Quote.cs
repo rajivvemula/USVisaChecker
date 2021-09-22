@@ -205,8 +205,9 @@ namespace ApolloQA.Data.Entity
                         }
                     }
                 }
-                else
+                else if( !(risk.IsNonPowered() && coverageType.IsNonPoweredVehicle_Unapplicable()) )
                 {
+
                     var limit = new CoverageType.Limit(coverageType,
                                                     coverage.SelectedDeductibleName.ToObject<string?>(),
                                                     coverage.SelectedDeductibles.ToObject<List<int>>(),

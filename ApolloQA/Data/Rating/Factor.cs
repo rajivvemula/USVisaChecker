@@ -22,10 +22,10 @@ namespace ApolloQA.Data.Rating
         public bool CustomCalculation;
         public readonly string? source;
         public string? TableName;
-        public bool displayOnly = false;
+        public bool displayOnly;
 
 
-        public Factor(string name, IEnumerable<string> nameUI, IEnumerable<KnownField> knownFields, bool? CustomCalculation=false, string? source =null, string? tableName=null)
+        public Factor(string name, IEnumerable<string> nameUI, IEnumerable<KnownField> knownFields, bool? CustomCalculation=false, string? source =null, string? tableName=null, bool? displayOnly = false)
         {
             this.Name = name;
             this.NameUI = nameUI.ToList();
@@ -33,6 +33,7 @@ namespace ApolloQA.Data.Rating
             this.CustomCalculation = CustomCalculation ?? false;
             this.source = source;
             this.TableName = tableName;
+            this.displayOnly = displayOnly??false;
         }
         public static Factor GetFactor(string name)
         {
@@ -57,7 +58,8 @@ namespace ApolloQA.Data.Rating
                                             ((JArray)factor.Value.KnownFields).Select(it=>KnownField.GetKnownField(it.ToString())),
                                             (bool?)factor.Value.CustomCalculation,
                                             (string?)factor.Value.source,
-                                            (string?)factor.Value?.tableName
+                                            (string?)factor.Value?.tableName,
+                                            (bool?)factor.Value?.displayOnly
                                             ));
 
                 }
@@ -437,7 +439,8 @@ namespace ApolloQA.Data.Rating
 
                     var vehicleValue = (decimal)this.KnownFields.First(it => it.Name == "Stated Value").Value;
 
-                    return vehicleValue < minimumValue ? minimumValue : vehicleValue;
+                    this.Value = vehicleValue < minimumValue ? minimumValue : vehicleValue;
+                    return this.Value;
 
 
                 }
@@ -524,7 +527,7 @@ namespace ApolloQA.Data.Rating
 
                     }
 
-                    int powerUnitCount = this.Engine.root.GetVehicles().Count();
+                    int powerUnitCount = this.Engine.root.GetVehicles().Where(it=>it.IsNonPowered()).Count();
 
                     List<decimal> factors = driverFactors.Select(it => it.Value.Value).ToList<decimal>();
 

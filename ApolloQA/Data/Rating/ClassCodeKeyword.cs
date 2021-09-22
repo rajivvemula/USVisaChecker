@@ -30,7 +30,7 @@ namespace ApolloQA.Data.Rating
         {
             //AT.1 table describes what algorithm is used depending on class code & coverage
             //AT.1 table varies by state
-            var AT1 = Engine.GetTable("AT.1", stateCode, DateTime.Now.ToString("d"));
+            var AT1 = Engine.GetTable("AT.1", stateCode, null);
 
             //local variable to store the related coverage
             String coverage = null;

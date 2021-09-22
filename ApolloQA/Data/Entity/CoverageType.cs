@@ -74,6 +74,29 @@ namespace ApolloQA.Data.Entity
             return result[0];
         }
 
+        public bool IsNonPoweredVehicle_Unapplicable()
+        {
+            return DONT_APPLY_TO_NON_POWERED_VEHICLES.Contains(this.Name);
+        }
+
+        private static readonly List<string> DONT_APPLY_TO_NON_POWERED_VEHICLES = new List<string>
+        {
+            {UNINSURED_MOTORIST},
+            {UNDERINSURED_MOTORIST},
+
+            {UNINSURED_MOTORIST_BI},
+            {UNDERINSURED_MOTORIST_BI},
+
+            {UNINSURED_MOTORIST_PD},
+            {UNDERINSURED_MOTORIST_PD},
+
+            {UNINSURED_UNDERINSURED_BIPD},
+            {UNINSURED_BIPD},
+            {UNINSURED_UNDERINSURED_BI},
+            
+        };
+
+
         //List of vehicle level coverages
         //this list will be used to differentiate them
         private static readonly List<string> vehicleLevelCoverages = new List<string>
@@ -82,6 +105,30 @@ namespace ApolloQA.Data.Entity
             {"Comprehensive"}
         };
 
+
+        public const string BIPD = "Bodily Injury Property Damage (BIPD)";
+
+        public const string COLLISION = "Collision";
+
+        public const string COMPREHENSIVE = "Comprehensive";
+
+        public const string MEDICAL_PAYMENTS = "Medical Payments";
+
+        public const string UNINSURED_MOTORIST = "Vehicle Uninsured Motorists";
+        public const string UNDERINSURED_MOTORIST = "Vehicle Underinsured Motorists";
+
+        public const string UNINSURED_MOTORIST_BI = "Uninsured Motorists BI";
+        public const string UNDERINSURED_MOTORIST_BI = "Underinsured Motorists BI";
+
+
+        public const string UNINSURED_MOTORIST_PD = "Uninsured Motorists PD";
+        public const string UNDERINSURED_MOTORIST_PD = "Underinsured Motorists PD";
+
+        public const string UNINSURED_UNDERINSURED_BIPD = "Uninsured / Underinsured Motorists BIPD";
+
+        public const string UNINSURED_BIPD = "Uninsured Motorists BIPD";
+
+        public const string UNINSURED_UNDERINSURED_BI = "Uninsured / Underinsured Motorists BI";
 
         //Key = possible name in any source - Value= standard Name on Apollo System
         public static readonly Dictionary<string, string> Persisted = new Dictionary<string, string>()

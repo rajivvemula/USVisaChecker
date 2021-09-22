@@ -386,6 +386,45 @@ Scenario: NV - Test Rating Algorithm
 	| VA00055   |
 	| VA00056   |
 
+<<<<<<< HEAD
+		@ratingTests @NV
+Scenario: WI - Test Rating Algorithm
+
+	Given quote for 'WI' and '<Algorithm>' is set to Quoted
+	When expected values are gathered
+	Then expected values should match the system output
+
+	Examples: 
+	|  Algorithm |
+	|   VA00058   |
+	|   VA00059   |
+	|   VA00060   |
+	|   VA00061   |
+	|   VA00062   |
+	|   VA00063   |
+	|   VA00064   |
+	|   VA00065   |
+	|   VA00066   |
+	|   VA00067   |
+	|   VA00068   |
+	|   VA00069   |
+	|   VA00041   |
+	|   VA00042   |
+	|   VA00043   |
+	|   VA00044   |
+	|   VA00070   |
+	|   VA00071   |
+	|   VA00072   |
+	|   VA00048   |
+	|   VA00049   |
+	|   VA00050   |
+	|   VA00051   |
+	|   VA00052   |
+	|   VA00053   |
+	|   VA00073   |
+	|   VA00055   |
+	|   VA00074   |
+=======
 		@ratingTests @AZ
 Scenario: AZ - Test Rating Algorithm
 
@@ -423,6 +462,7 @@ Scenario: AZ - Test Rating Algorithm
 	| VA00054   |
 	| VA00055   |
 	| VA00056   |
+>>>>>>> 013dc6ae09a3ca9e6b80120e73ea70442ebbaed6
 
 
 @ignore

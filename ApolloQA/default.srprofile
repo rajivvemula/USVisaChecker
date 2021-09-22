@@ -8,12 +8,12 @@
 	testThreadCount="5"
 	testSchedulingMode="Sequential" 
 	retryFor="Failing"
-	retryCount="2"
+	retryCount="0"
 	/>
 
 	<Environment testThreadIsolation="AppDomain"/>
 	
-	<Filter>!@ignore &amp; !@bugReported &amp; !@broken &amp; !@ratingTests</Filter>
+	<Filter>!@ignore &amp; !@bugReported &amp; !@broken &amp; @ratingTests</Filter>
    <!--<Filter>@SmokeTest &amp; @Quote</Filter>
    -->
 

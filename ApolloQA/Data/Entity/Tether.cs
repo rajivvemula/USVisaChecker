@@ -26,6 +26,7 @@ namespace ApolloQA.Data.Entity
          
             var props = SQL.executeQuery($"SELECT * FROM [tether].[Tether] WHERE Id = {Id}")[0];
 
+
             foreach (var prop in props)
             {
                 try
@@ -34,12 +35,18 @@ namespace ApolloQA.Data.Entity
                     {
                         continue;
                     }
-                    this.GetType().GetProperty(prop.Key).SetValue(this, prop.Value is DBNull? null: prop.Value);
+                    var typeProp = this.GetType().GetProperty(prop.Key);
+
+                    if(typeProp !=null)
+                    {
+                        typeProp.SetValue(this, prop.Value is DBNull ? null : prop.Value);
+
+                    }
                 }
                 catch(Exception ex)
                 {
                     Log.Critical("Property Key: " + prop.Key + " Property Value: "+ prop.Value??"null");
-                    throw ex;
+                    throw;
                 }
             }
            
@@ -76,10 +83,10 @@ namespace ApolloQA.Data.Entity
             {
                 return new Tether(tetherCandidates[0]["Id"]);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 Log.Critical($"Error retrieving Tether for ApplicationId: {QuoteId}");
-                throw ex;
+                throw;
             }
         }
 
@@ -92,6 +99,8 @@ namespace ApolloQA.Data.Entity
                     _LineId = value;
                 } 
         }
+
+        public long SubLineId { get; set; }
 
         public long NamedInsuredId { get; set; }
 

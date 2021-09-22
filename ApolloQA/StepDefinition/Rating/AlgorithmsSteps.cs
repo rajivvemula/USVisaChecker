@@ -62,10 +62,6 @@ namespace ApolloQA.StepDefinition.Rating
         {
             this.Actual = quote.GetCurrentRatableObject().RatingGroup;
 
-            if(this.Actual.Count != this.Expected.Count())
-            {
-                
-            }
 
             foreach(JObject expectedResult in this.Expected)
             {
@@ -106,7 +102,7 @@ namespace ApolloQA.StepDefinition.Rating
 
                     if(actualFactor == null)
                     {
-                        errors.Add($"Expected Factor with Names: [{string.Join(", ", nameUI)}] was not found in the rating worksheet labels");
+                        errors.Add($"Expected Factor with Names: [{string.Join(", ", nameUI)}] was not found in the rating worksheet labels for {vehicle} & {expectedResult["CoverageCode"]}");
                         continue;
                     }
 
@@ -128,6 +124,11 @@ namespace ApolloQA.StepDefinition.Rating
 
                     if(string.IsNullOrWhiteSpace(mathOperation))
                     {
+                        if(expectedFactor["Value"].ToObject<decimal>() == 1)
+                        {
+                            continue;
+                        }
+
                         errors.Add($"Expected Factor Value for factor {item.Key} value: {expectedFactor["Value"]} did not equal (blank)");
                         continue;
                     }
