@@ -136,6 +136,16 @@ namespace ApolloQA.StepDefinition.Forms
 
 
 
+           
+            var data = new Dictionary<string, string>() { 
+                { "Name",  this.name.Trim().Trim('-') },
+                { "DocumentName", this.documentName },
+                { "PolicyId", this.policy.Id.ToString() },
+                { "URL", $"{Environment.GetEnvironmentVariable("HOST")}/policy/{this.policy.Id}/document/{documentObj["id"]}"}
+            };
+
+            Functions.WriteToCSV("FormData.csv", new List<Dictionary<string, string>>() { data });
+
 
         }
 

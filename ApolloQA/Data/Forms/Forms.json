@@ -93,7 +93,11 @@
 
   {
     "code": "(E)GU8860u",
-    "name": "Notice of Cancellation, Nonrenewal or Declination - IL"
+    "name": "Notice of Cancellation, Nonrenewal or Declination - IL",
+    "condition": {
+      "stateCode": "IL",
+      "canceled": true
+    }
   },
 
   {
@@ -144,7 +148,11 @@
 
   {
     "code": "(E)GU351n",
-    "name": "Notice of Cancellation, Nonrenewal or Declination - CA"
+    "name": "Notice of Cancellation, Nonrenewal or Declination - CA",
+    "condition": {
+      "stateCode": "CA",
+      "canceled": true
+    }
   },
 
   {
@@ -225,7 +233,11 @@
 
   {
     "code": "(E)GU407c",
-    "name": "Notice of Cancellation, Nonrenewal or Declination - TX"
+    "name": "Notice of Cancellation, Nonrenewal or Declination - TX",
+    "condition": {
+      "stateCode": "TX",
+      "canceled": true
+    }
   },
 
   {
@@ -325,7 +337,11 @@
 
   {
     "code": "(E)GU8694q",
-    "name": "Notice of Cancellation, Nonrenewal or Declination - MO"
+    "name": "Notice of Cancellation, Nonrenewal or Declination - MO",
+    "condition": {
+      "stateCode": "MO",
+      "canceled": true
+    }
   },
 
   {
@@ -390,7 +406,11 @@
 
   {
     "code": "(E)GU409h",
-    "name": "Notice of Cancellation, Nonrenewal or Declination - NV"
+    "name": "Notice of Cancellation, Nonrenewal or Declination - NV",
+    "condition": {
+      "stateCode": "NV",
+      "canceled": true
+    }
   },
 
   {
@@ -475,7 +495,11 @@
 
   {
     "code": "(E)GU547f",
-    "name": "Notice of Cancellation, Nonrenewal or Declination - SC"
+    "name": "Notice of Cancellation, Nonrenewal or Declination - SC",
+    "condition": {
+      "stateCode": "SC",
+      "canceled": true
+    }
   },
 
   {
@@ -604,7 +628,11 @@
 
   {
     "code": "(E)GU6214h",
-    "name": "Notice of Cancellation, Nonrenewal or Declination - IN"
+    "name": "Notice of Cancellation, Nonrenewal or Declination - IN",
+    "condition": {
+      "stateCode": "IN",
+      "canceled": true
+    }
   },
 
   {
@@ -667,7 +695,11 @@
 
   {
     "code": "(E)GU9532q",
-    "name": "Notice of Cancellation, Nonrenewal or Declination - AZ"
+    "name": "Notice of Cancellation, Nonrenewal or Declination - AZ",
+    "condition": {
+      "stateCode": "AZ",
+      "canceled": true
+    }
   },
 
   {
@@ -725,7 +757,11 @@
 
   {
     "code": "(E)C59q",
-    "name": "Notice of Cancellation, Nonrenewal or Declination - GA"
+    "name": "Notice of Cancellation, Nonrenewal or Declination - GA",
+    "condition": {
+      "stateCode": "GA",
+      "canceled": true
+    }
   },
 
   {

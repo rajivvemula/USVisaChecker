@@ -201,7 +201,7 @@ Scenario: GA - Test Rating Algorithm
 	| GA    | VA00074   |
 
 
-@ratingTests @State_IN
+@ratingTestsIgnore @State_IN
 Scenario: IN - Test Rating Algorithm 
 	Given quote for '<State>' and '<Algorithm>' is set to Quoted
 	When expected values are gathered
@@ -386,7 +386,6 @@ Scenario: NV - Test Rating Algorithm
 	| VA00055   |
 	| VA00056   |
 
-<<<<<<< HEAD
 		@ratingTests @NV
 Scenario: WI - Test Rating Algorithm
 
@@ -424,7 +423,6 @@ Scenario: WI - Test Rating Algorithm
 	|   VA00073   |
 	|   VA00055   |
 	|   VA00074   |
-=======
 		@ratingTests @AZ
 Scenario: AZ - Test Rating Algorithm
 
@@ -462,7 +460,6 @@ Scenario: AZ - Test Rating Algorithm
 	| VA00054   |
 	| VA00055   |
 	| VA00056   |
->>>>>>> 013dc6ae09a3ca9e6b80120e73ea70442ebbaed6
 
 
 @ignore

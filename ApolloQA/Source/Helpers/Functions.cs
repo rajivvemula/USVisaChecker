@@ -13,6 +13,8 @@ using ApolloQA.Data.Rating;
 using ApolloQA.Data.Entity;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using System.Text;
+using System.Threading;
 
 namespace ApolloQA.Source.Helpers
 {
@@ -125,7 +127,78 @@ namespace ApolloQA.Source.Helpers
             return ex;
         }
 
+        public static void WriteToCSV(string filePath, IEnumerable<Dictionary<string,string>> data)
+        {
 
+            if (Mutex.TryOpenExisting("MUTEX_WRITE_CSV", out Mutex mutex))
+            {
+                mutex.WaitOne();
+            }
+            else
+            {
+                mutex = new Mutex(true, "MUTEX_WRITE_CSV");
+            }
+
+            var fileExists = File.Exists(filePath);
+            var headers = data.ElementAt(0).Keys;
+            var fileWithHeader = new StringBuilder();
+
+            if (fileExists)
+            {
+                var existingFile = File.ReadAllText(filePath);
+                var headerRow = existingFile.Split("\n")[0];
+
+                if (existingFile.Trim().Trim('\n').Length <= 1)
+                {
+                    fileWithHeader.AppendLine(string.Join(",", headers));
+                }
+                else if (headerRow.Split(",").Count() != headers.Count)
+                {
+                    mutex.ReleaseMutex();
+                    throw new Exception($"Header count on existing file {headerRow.Split(",").Count()} does not match this row's count: {headers.Count}");
+                }
+
+                fileWithHeader.Append(existingFile);
+            }
+            else
+            {
+                fileWithHeader.AppendLine(string.Join(",", headers));
+            }
+
+            File.WriteAllText(filePath, fileWithHeader.ToString());
+
+
+            using (var writer = new StreamWriter(filePath, true))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                //var hasHeaderBeenWritten = false;
+                foreach (var row in data)
+                {
+                   /* if (!hasHeaderBeenWritten)
+                    {
+                        foreach (var pair in row)
+                        {
+                            csv.WriteField(pair.Key);
+                        }
+
+                        hasHeaderBeenWritten = true;
+
+                        csv.NextRecord();
+                    }*/
+
+                    foreach (var pair in row)
+                    {
+                        csv.WriteField(pair.Value);
+                    }
+
+                    csv.NextRecord();
+                }
+               
+            }
+
+            mutex.ReleaseMutex();
+
+        }
         public static Dictionary<string, string> TableToDictionary(TechTalk.SpecFlow.Table table)
         {
             var dictionary = new Dictionary<string, string>();
