@@ -199,7 +199,7 @@
 
   {
     "code": "M4458c",
-    "name": "Uninsured & Underinsured Motrist Coverage Selection/Rejection Form",
+    "name": "Texas Uninsured and Underinsured Motorist Coverage Selection Rejection Form",
     "condition": {
       "stateCode": "TX"
     }
@@ -209,8 +209,8 @@
     "code": "CA2109",
     "name": "Texas Uninsured Underinsured Motorists Coverage",
     "condition": {
-      "stateCode": "TX"
-      //"Coverage": "UM OR UIM selected"
+      "stateCode": "TX",
+      "coverageTypes": [ "Uninsured / Underinsured Motorists BIPD" ]
     }
   },
 
@@ -218,8 +218,8 @@
     "code": "CA2264",
     "name": "Texas Personal Injury Protection Endorsement",
     "condition": {
-      "stateCode": "TX"
-      //"Coverage": "PIP" - out of scope for R1
+      "stateCode": "TX",
+      "coverageTypes": [ "Personal Injury Protection" ]
     }
   },
 
@@ -244,8 +244,8 @@
     "code": "M5783",
     "name": "Texas Trailer Interchange Amendatory Endoresment",
     "condition": {
-      "stateCode": "TX"
-      //coverage : Trailer interchange
+      "stateCode": "TX",
+      "coverageTypes": [ "Trailer Interchange" ]
     }
   },
 
@@ -269,7 +269,8 @@
     "code": "M5415",
     "name": "Personal Injury Protection Coverage Rejection Form - Texas",
     "condition": {
-      "stateCode": "TX"
+      "stateCode": "TX",
+      "coverageTypes": [ "Personal Injury Protection" ]
       //coverage : PIP - out of scope for R1
     }
   },
@@ -350,7 +351,7 @@
     "condition": {
       "stateCode": "NV",
       "splitLimitBIPD": true,
-      "coverageTypes": [ "Uninsured Motorists BI" ]
+      "coverageTypes": [ "Uninsured / Underinsured Motorists BI" ]
     }
   },
 
@@ -392,7 +393,7 @@
     "name": "Nevada Uninsured Motorists Coverage",
     "condition": {
       "stateCode": "NV",
-      "coverageTypes": [ "Uninsured Motorists BI" ]
+      "coverageTypes": [ "Uninsured / Underinsured Motorists BI" ]
     }
   },
 
@@ -412,7 +413,13 @@
       "canceled": true
     }
   },
-
+  {
+    "code": "M5499",
+    "name": "Nevada Selection Rejection of Uninsured Motorist and Medical Payments Coverage",
+    "condition": {
+      "stateCode": "NV"
+    }
+  },
   {
     "code": "CA0150",
     "name": "South Carolina Changes",
@@ -664,7 +671,7 @@
     "name": "Arizona Uninsured Motorists Coverage",
     "condition": {
       "stateCode": "AZ",
-      "coverageTypes": [ "Vehicle Uninsured Motorists" ]
+      "coverageTypes": [ "Uninsured Motorists BI" ]
     }
   },
 
@@ -673,7 +680,7 @@
     "name": "Arizona Underinsured Motorists Coverage",
     "condition": {
       "stateCode": "AZ",
-      "coverageTypes": [ "Vehicle Underinsured Motorists" ]
+      "coverageTypes": [ "Underinsured Motorists BI" ]
     }
   },
 
@@ -689,7 +696,9 @@
     "code": "M5492",
     "name": "Arizona Uninsured and Underinsured Motorists Coverage Selection Form",
     "condition": {
-      "stateCode": "AZ"
+      "stateCode": "AZ",
+      "coverageTypes": [ "Underinsured Motorists BI", "Uninsured Motorists BI" ]
+
     }
   },
 
@@ -806,15 +815,24 @@
     "code": "B0004",
     "name": "Commercial Auto Quote Proposal"
   },
-
+  {
+    "code": "B0005",
+    "name": "Mailing Cover Sheet"
+  },
   {
     "code": "B0006",
     "name": "Rescission"
   },
-
+  {
+    "code": "B0007",
+    "name": "Proof of Mailing"
+  },
   {
     "code": "CA0240",
-    "name": "Suspension Of Insurance"
+    "name": "Suspension Of Insurance",
+    "condition":{
+      "canceled":true
+    }
   },
 
   {
@@ -1100,7 +1118,7 @@
 
   {
     "code": "TX4619",
-    "name": "- Texas ID Card",
+    "name": "Texas ID Card",
     "condition": {
       "stateCode": "TX"
     }
@@ -1108,7 +1126,7 @@
 
   {
     "code": "MO5937",
-    "name": "- Missouri ID Card",
+    "name": "Missouri ID Card",
     "condition": {
       "stateCode": "MO"
     }
@@ -1116,7 +1134,7 @@
 
   {
     "code": "NV5522",
-    "name": "- Nevada ID Card",
+    "name": "Nevada ID Card",
     "condition": {
       "stateCode": "NV"
     }
@@ -1124,7 +1142,7 @@
 
   {
     "code": "SC4566a",
-    "name": "- South Carolina ID Card",
+    "name": "South Carolina ID Card",
     "condition": {
       "stateCode": "SC"
     }
@@ -1132,7 +1150,7 @@
 
   {
     "code": "TN4566a",
-    "name": "- Tennessee ID Card",
+    "name": "Tennessee ID Card",
     "condition": {
       "stateCode": "TN"
     }
@@ -1140,7 +1158,7 @@
 
   {
     "code": "IN4566a",
-    "name": "- Indiana ID Card",
+    "name": "Indiana ID Card",
     "condition": {
       "stateCode": "IN"
     }
@@ -1148,7 +1166,7 @@
 
   {
     "code": "AZ5937",
-    "name": "- Arizona ID Card",
+    "name": "Arizona ID Card",
     "condition": {
       "stateCode": "AZ"
     }
@@ -1164,7 +1182,7 @@
 
   {
     "code": "GA5937",
-    "name": "- Georgia ID Card",
+    "name": "Georgia ID Card",
     "condition": {
       "stateCode": "GA"
     }
@@ -1175,7 +1193,10 @@
   },
   {
     "code": "M5731",
-    "name": "Hired Autos Endoresement"
+    "name": "Hired Autos Endoresement",
+    "condition": {
+      "endorsement": true
+    }
   },
   {
     "code": "M5735",
@@ -1186,7 +1207,90 @@
     "name": "In-Tow Coverage With Optional Garagekeepers Additional Coverage – Comprehensive"
   },
   {
-    "code": "B0005",
-    "name": "Mailing Cover Sheet"
+    "code": "BCA0002",
+    "name": "Texas Cargo Coverage Form",
+    "condition": {
+      "stateCode": "TX",
+      "coverageTypes": [ "Cargo Coverage" ]
+    }
+  },
+  {
+    "code": "ILU024",
+    "name": "Wisconsin Selection of Higher Uninsured Motorists Coverage Limits Notice of Availability and Selection of Underinsured Motorists Coverage Limits",
+    "condition": {
+      "stateCode": "WI"
+    }
+  },
+  {
+    "code": "(E)GU6639s",
+    "name": "Notice of Cancellation or Nonrenewal - WI",
+    "condition": {
+      "stateCode": "WI",
+      "canceled": true
+    }
+  },
+  {
+    "code": "WI4566a",
+    "name": "Wisconsin ID Card ",
+    "condition": {
+      "stateCode": "WI"
+    }
+  },
+  {
+    "code": "CA2103",
+    "name": "Wisconsin Uninsured Motorists Coverage",
+    "condition": {
+      "stateCode": "WI",
+      "coverageTypes":["Uninsured Motorists BI"]
+
+    }
+  },
+  {
+    "code": "CA2145",
+    "name": "Wisconsin Underinsured Motorists Coverage",
+    "condition": {
+      "stateCode": "WI",
+      "coverageTypes":["Underinsured Motorists BI"]
+
+    }
+  },
+  {
+    "code": "CA0117",
+    "name": "Wisconsin Changes",
+    "condition": {
+      "stateCode": "WI",
+      "endorsement": true
+    }
+  },
+  {
+    "code": "CA9924",
+    "name": "Wisconsin Auto Medical Payments Coverage",
+    "condition": {
+      "stateCode": "WI",
+      "coverageTypes": [ "Medical Payments" ]
+
+    }
+  },
+  {
+    "code": "IL0283",
+    "name": "Wisconsin Changes - Cancellation and Nonrenewal",
+    "condition": {
+      "stateCode": "WI"
+    }
+  },
+  {
+    "code":"ACR0025",
+    "name":"Accord 25 Certificate of Liability Insurance",
+    "condition": {
+      "stateCode": "TX"
+    }
+  },
+  {
+    "code":"MC1633",
+    "name":"Form E"
+  },
+  {
+    "code":"CA2304",
+    "name":"Rolling Stores"
   }
 ]

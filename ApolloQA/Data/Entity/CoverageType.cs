@@ -130,6 +130,8 @@ namespace ApolloQA.Data.Entity
 
         public const string UNINSURED_UNDERINSURED_BI = "Uninsured / Underinsured Motorists BI";
 
+        public const string CARGO = "Cargo Coverage";
+
         //Key = possible name in any source - Value= standard Name on Apollo System
         public static readonly Dictionary<string, string> Persisted = new Dictionary<string, string>()
         {

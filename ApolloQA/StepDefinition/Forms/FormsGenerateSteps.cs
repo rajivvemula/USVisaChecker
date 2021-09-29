@@ -9,6 +9,7 @@ using System.Threading;
 using System.Linq;
 using System.IO;
 using System.Text;
+using ApolloQA.Source.Driver;
 
 namespace ApolloQA.StepDefinition.Forms
 {
@@ -44,7 +45,7 @@ namespace ApolloQA.StepDefinition.Forms
         [When(@"user attempts to generate form")]
         public void WhenUserAttemptsToGenerateForm()
         {
-            this.documentName = $"AutomationForms ({Functions.GetRandomInteger(10000)})";
+            this.documentName = $"AutomationForms ({Functions.GetRandomInteger(10000)}) - {this.name.Trim('-').Trim()}";
             DocGenBody body = new DocGenBody()
             {
                 documentName = this.documentName,
@@ -57,15 +58,16 @@ namespace ApolloQA.StepDefinition.Forms
                     forms = new List<FormObj>() {
                         new FormObj()
                         {
-                            name = this.name,
                             edition = this.form.Edition,
+                            line ="Commercial Auto",
+                            name = this.name.Trim('-').Trim(),
                             sortOrder = 1
                         }
                     }
                 },
-                templateName = "generate-document",
-                workflowPlanName = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("GHOSTDRAFT_WORKFLOW_PLAN_SECRETNAME")),
-                workflowServiceName = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("GHOSTDRAFT_WORKFLOW_SERVICE_SECRETNAME")),
+                templateName = "generate-document-v2",
+               /* workflowPlanName = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("GHOSTDRAFT_WORKFLOW_PLAN_SECRETNAME")),
+                workflowServiceName = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("GHOSTDRAFT_WORKFLOW_SERVICE_SECRETNAME")),*/
 
 
             };
@@ -157,7 +159,125 @@ namespace ApolloQA.StepDefinition.Forms
             Assert.IsTrue(formFile.Length > 10);
         }
 
+        private static Dictionary<string, string> Code_Name = new Dictionary<string, string>();
 
+        [Given(@"current tested forms are loaded from Forms Generate Feature")]
+        public static void GivenCurrentTestedFormsAreLoadedFromFormsGenerateFeature()
+        {
+            string FILEPATH = Path.Combine(Setup.SourceDir, "Features\\Forms\\FormsGenerate.feature");
+
+            using (StreamReader sr = new StreamReader(FILEPATH))
+            {
+                string line;
+                // Read and display lines from the file until the end of
+                // the file is reached.
+                while ((line = sr.ReadLine()?.Trim()) != null)
+                {
+                    if (line.StartsWith("#|") || line.StartsWith('|'))
+                    {
+                        var temp = line.Substring(line.StartsWith('|') ? 1:2);
+                        var Code = temp.Substring(0, temp.IndexOf('|')).Trim();
+                        if(Code == "code")
+                        {
+                            Log.Debug("continue;");
+                            continue;
+                        }
+                        temp = temp.Substring(temp.IndexOf('|') + 1);
+                        var Name = temp.Substring(0, temp.IndexOf('|')).Trim();
+
+                        try
+                        {
+                            Code_Name.Add(Code, Name);
+
+                        }
+                        catch(Exception)
+                        {
+                            Log.Error($"Error adding form with Code: {Code} Name: {Name}");
+                            throw;
+                        }
+                    }
+
+                }
+            }
+
+            
+        }
+
+        private static Dictionary<string, string> missingFromScripts = new Dictionary<string, string>();
+        private static Dictionary<string, (string Feature, string System)> unmatchedName = new Dictionary<string, (string,string)>();
+
+
+        [When(@"compared to the forms in the system")]
+        public static void WhenComparedToTheFormsInTheSystem()
+        {
+            var systemForms =SQL.executeQuery(@$"SELECT Code, [Name], Id
+                                                FROM [document].[GhostDraftTemplateForm]
+                                                Where StatusId !=1
+                                                order by Id desc;");
+            
+            foreach (var SystemForm in systemForms)
+            {
+                var systemCode = SystemForm["Code"];
+                var systemName = SystemForm["Name"];
+
+
+                if(!Code_Name.ContainsKey(systemCode))
+                {
+                    missingFromScripts.Add(systemCode, systemName);
+                    continue;
+                }
+                var FeatureForm = Code_Name.First(it => it.Key == systemCode);
+                var featureFormName = FeatureForm.Value;
+
+                if (featureFormName != systemName)
+                {
+                    try
+                    {
+                        unmatchedName.Add((string)systemCode, ((string)systemName, (string)featureFormName));
+
+                    }
+                    catch(Exception)
+                    {
+                        Log.Debug($"Error Adding incorrect Name for \nCode: [{systemCode}] \nSystemName: [{systemName}] \nFeatureFormName: [{featureFormName}]");
+                        throw;
+                    }
+                }
+
+            }
+
+        }
+
+        [Then(@"output forms that are existing in the system but not in Forms Generate")]
+        public static void ThenOutputFormsThatAreExistingInTheSystemButNotInFormsGenerate()
+        {
+            if (missingFromScripts.Count > 0)
+                Log.Info("(blank)\n\n\n");
+                Log.Info("missing From Scripts:");
+
+            foreach (var item in missingFromScripts)
+            {
+                Log.Info($"Code: {item.Key}");
+                Log.Info($"Name: {item.Value}\n");
+
+            }
+            if (unmatchedName.Count > 0)
+                Log.Info("(blank)\n\n\n");
+                Log.Info("Unmatched Names:");
+
+            foreach (var item in unmatchedName)
+            {
+                Log.Info($"Code: {item.Key}");
+                Log.Info($"Name in Feature: {item.Value.Feature}");
+                Log.Info($"Name in System : {item.Value.System}\n");
+
+            }
+            if (missingFromScripts.Count>0 || unmatchedName.Count>0)
+            {
+                throw new Exception("The Form Generation feature is missing forms or mismatched names");
+            }
+           
+
+        }
     }
     public class DocGenBody
     {
@@ -167,8 +287,8 @@ namespace ApolloQA.StepDefinition.Forms
         public string templateName { get; set; }
         public string documentName { get; set; }
         public int insertedById { get; set; }
-        public string workflowServiceName { get; set; }
-        public string workflowPlanName { get; set; }
+       /* public string workflowServiceName { get; set; }
+        public string workflowPlanName { get; set; }*/
         public int lineId { get; set; }
         public RequestedForms requestedForms { get; set; }
     }
@@ -179,13 +299,14 @@ namespace ApolloQA.StepDefinition.Forms
     }
     public class FormObj
     {
+        public string edition { get; set; }
         public string line { get; set; }
         public string name { get; set; }
-        public string edition { get; set; }
         public int sortOrder { get; set; }
     }
 
-    
 
    
+
+
 }

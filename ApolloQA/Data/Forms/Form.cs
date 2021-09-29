@@ -23,7 +23,7 @@ namespace ApolloQA.Data.Form
         //public long Id => SQL.executeQuery($"SELECT Id FROM [document].[Form] WHERE code = {this.code}")[0]["Id"];
         public string Edition => SQL.executeQuery(@$"SELECT TOP(1) Edition
                                                       FROM [document].[GhostDraftTemplateForm] 
-                                                      where Code ='{code}' order by Id asc; ")[0]["Edition"];
+                                                      where Code ='{code}' order by Id desc; ")[0]["Edition"];
        
 
 
