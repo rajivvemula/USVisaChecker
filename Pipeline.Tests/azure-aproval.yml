@@ -1,0 +1,7 @@
+parameters: 
+  "environment": ""
+
+jobs: 
+  - deployment: '${{ parameters.environment }}'
+    environment: '${{ parameters.environment }}'
+    displayName: 'Aproval for ${{ parameters.environment }} automation run'

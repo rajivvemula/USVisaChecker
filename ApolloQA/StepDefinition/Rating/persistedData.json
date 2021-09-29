@@ -104,6 +104,7 @@
         ]
       },
       "IncreasedCombinedSingleLimitFactors": {
+        "limitName": "Combined Single Limit",
         "factor": "max",
         "additionalLimits": [
           1200000,
@@ -208,6 +209,7 @@
         ]
       },
       "IncreasedCombinedSingleLimitFactors": {
+        "limitName": "Combined Single Limit",
         "factor": "max",
         "additionalLimits": [
           1200000,

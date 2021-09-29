@@ -527,7 +527,7 @@ namespace ApolloQA.Data.Rating
 
                     }
 
-                    int powerUnitCount = this.Engine.root.GetVehicles().Where(it=>it.IsNonPowered()).Count();
+                    int powerUnitCount = this.Engine.root.GetVehicles().Where(it=>!it.IsNonPowered()).Count();
 
                     List<decimal> factors = driverFactors.Select(it => it.Value.Value).ToList<decimal>();
 
@@ -561,7 +561,16 @@ namespace ApolloQA.Data.Rating
 
                     }
 
-                    return Math.Round((aggregateFactor / powerUnitCount), 4);
+                    try
+                    {
+                        return Math.Round((aggregateFactor / powerUnitCount), 4);
+                    }
+                    catch(Exception)
+                    {
+                        Log.Error($"Error dividing {aggregateFactor}/{powerUnitCount}");
+                        Log.Error($"Vehicles returned {string.Join(", ",this.Engine.root.GetVehicles())}");
+                        throw;
+                    }
                 }
             }
             private decimal FacultativeReInsuranceAdjustmentFactor

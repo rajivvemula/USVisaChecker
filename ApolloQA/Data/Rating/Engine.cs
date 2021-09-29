@@ -33,13 +33,26 @@ namespace ApolloQA.Data.Rating
         {
 
             string whereClause;
-            
+
+            int lineId = 7;
+
             if(string.IsNullOrEmpty(effectiveDate))
             {
-                whereClause = $@"WHERE LineId =7 AND 
+
+                whereClause = $@"WHERE LineId ={lineId} AND 
                                     CarrierPartyId = 4 AND 
                                     StateProv.Code = '{stateCode}' AND
-                                    RatingTable.Name = '{tableName}'";
+                                    RatingTable.Name = '{tableName}' AND
+									RatingTable.Id = (
+										Select MAX(RatingTable.Id) 
+										FROM [rating].[ReferenceTable] RatingTable
+										LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
+                                        LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
+										WHERE LineId ={lineId} AND 
+										CarrierPartyId = 4 AND 
+										StateProv.Code = '{stateCode}' AND
+                                        RatingTable.Name = '{tableName}'
+									) ";
             }
             else
             {
@@ -47,8 +60,8 @@ namespace ApolloQA.Data.Rating
                 whereClause = $@"WHERE LineId =7 AND 
                                     CarrierPartyId = 4 AND 
                                     StateProv.Code = '{stateCode}' AND
-                                    ('{effectiveDate}' BETWEEN RatingTable.TimeFrom AND RatingTable.TimeTo) AND
-                                    RatingTable.Name = '{tableName}'";
+                                    RatingTable.Name = '{tableName}' AND
+                                    ('{effectiveDate}' BETWEEN RatingTable.TimeFrom AND RatingTable.TimeTo)";
 
             }
 

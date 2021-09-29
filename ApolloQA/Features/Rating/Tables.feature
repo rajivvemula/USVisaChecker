@@ -29,7 +29,6 @@ Feature: Rating Tables
 #
 #
 
-
 #this is the string used to find all the tables within each state's manual
 #1.) open the manual in Chrome 
 #2.) hit Ctrl+P 

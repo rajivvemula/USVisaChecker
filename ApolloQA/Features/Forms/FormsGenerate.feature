@@ -1,7 +1,7 @@
 ﻿@NoBrowser
 Feature: Forms Generate
 
-@formsTests @ignore
+@ignore
 Scenario: Check System for untested forms
 	Given current tested forms are loaded from Forms Generate Feature
 	When compared to the forms in the system

@@ -72,6 +72,7 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     testRunTitle: 'SmokeTest'
+    runSettingsFile: '$(Build.SourcesDirectory)/ApolloQA/forms.runsettings'
 
 - task: VSTest@2
   displayName: 'Running a Smoke Test'
@@ -106,6 +107,7 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     testRunTitle: 'SmokeTest'
+    runSettingsFile: '$(Build.SourcesDirectory)/ApolloQA/forms.runsettings'
 
 #this fails due to not finding the FeatureData.json
 # - task: SpecFlowPlus@0
