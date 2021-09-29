@@ -8,7 +8,7 @@
 	testThreadCount="5"
 	testSchedulingMode="Sequential" 
 	retryFor="Failing"
-	retryCount="2"
+	retryCount="0"
 	/>
 
 	<Environment testThreadIsolation="AppDomain"/>
