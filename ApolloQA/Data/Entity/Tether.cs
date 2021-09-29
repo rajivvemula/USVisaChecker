@@ -72,6 +72,14 @@ namespace ApolloQA.Data.Entity
                 return GetLatestTether();
             }
         }
+
+        public static Tether GetPastTether()
+        {
+            var tetherCandidate = SQL.executeQuery($"SELECT TOP (1) Id FROM [tether].[Tether] where PolicyNumber is not null and EffectiveDate < GETDATE() order by Id desc;");
+
+              return new Tether(tetherCandidate[0]["Id"]);
+        }
+
         public static Tether GetTether(long QuoteId)
         {
             var tetherCandidates = SQL.executeQuery(@$"SELECT TOP (1) [tether].[Tether].Id

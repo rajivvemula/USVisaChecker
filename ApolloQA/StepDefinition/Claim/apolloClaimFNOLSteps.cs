@@ -29,7 +29,7 @@ namespace ApolloQA.StepDefinition
         public string FireInvolved = "";
         public string ClaimAdjuster = "";
         public string VehicleOnPolicy = "";
-        public int ClaimID = 0;
+        public long ClaimID = 0;
 
         [When(@"user selects '(.*)' this occurrence related to an existing claim")]
         public void WhenUserSelectsThisOccurrenceRelatedToAnExistingClaim(string answer)
@@ -55,16 +55,10 @@ namespace ApolloQA.StepDefinition
         [When(@"user enters occurrence information for Policy")]
         public void WhenUserEntersOccurrenceInformationForPolicy()
         {
-            var policy = Data.Entity.Tether.GetLatestTether().CurrentPolicy;
-            if (policy.TimeFrom.CompareTo(DateTime.Today) > -2)
-            {
-                policy.TimeFrom =policy.TimeFrom.AddDays(-2);
-                policy.TimeTo = policy.TimeTo.AddDays(-2);
-            }
+            var policy = Data.Entity.Tether.GetPastTether().CurrentPolicy;
             Occurrence.policyNumberField.setText($"{policy.PolicyNumber}");
             GlobalSearch.SearchResultLabel().assertElementContainsText($"{policy.PolicyNumber}");
-            Occurrence.policyNumberField.SelectMatDropdownOptionByIndex(0, out string selectionPolicyNumber);
-            PolicyNumber = selectionPolicyNumber;
+            Occurrence.policyNumberField.SelectMatDropdownOptionContainingText($"{policy.PolicyNumber}");
             Log.Info($"Expected: {nameof(PolicyNumber)}={PolicyNumber}");
         }
 
@@ -231,7 +225,7 @@ namespace ApolloQA.StepDefinition
         {
             var toastMessage = Occurrence.toastrMessage.GetInnerText();
             Assert.SoftAreEqual(toastMessage, "Claim has been activated");
-            this.ClaimID = int.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
+            this.ClaimID = long.Parse(string.Join("", toastMessage.Where(Char.IsDigit)));
             Log.Info($"Expected: Claim Saved. Result: " + toastMessage + "");
         }
 

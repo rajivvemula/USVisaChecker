@@ -64,7 +64,7 @@ Scenario: Rate Calculation New Quote
 	And user clicks 'Vehicle' Button
 	When user adds a new Vehicle with the following relevant values
 	| VIN    | Year | Make		   | Model    | Body Category  | Body Subcategory                                  | Estimated Current Value |
-	| random | 2020 | Tuff Boy Inc | Trailer  | Trailer		   | Other Enclosed Trailer (2001+ lbs load capacity)  | 19000                   |
+	| random | 2020 | Tuff Boy Inc | Trailer  | Trailers	   | Other Enclosed Trailer (2001+ lbs load capacity)  | 19000                   |
 	And user answers trailer garaging location question as 'No'
 	And user sets answer to Is this trailer owned, financed, or leased? as 'Leased'
 	And user clicks 'Add Address' Button

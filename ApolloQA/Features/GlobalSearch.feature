@@ -13,15 +13,17 @@ Scenario Outline: TC Global Search - Search Items
 	| TypeDescription     |
 	| StatusDescription   |
 	| SourceSystem        |
-	| PolicyHolderName    |
-	| AgencyOrganization  |
-	| CarrierOrganization |
 	| AdjusterName        |
-	| TaxIdLastFour       |
 	| ValidPolicyNumber   |
 	| ValidQuoteNumber    |
 	| ValidClaimNumber    |
 	| ValidFnolNumber     |
+
+# Ignore - Organization changes currently underway - AC 09/02
+	#| AgencyOrganization  |
+	#| CarrierOrganization |
+	#| TaxIdLastFour       |
+	#| PolicyHolderName    |
 
 	
 	# bugReported - 32061

@@ -110,6 +110,7 @@ namespace ApolloQA.StepDefinition
                 case "TAXIDLASTFOUR":
                     UserActions.Refresh();
                     var org = Organization.GetLatestOrganization();
+                    Log.Debug(org.TaxId);
                     org.TaxId = ("33-" + Functions.GetRandomInteger(10000000).ToString());
                     GlobalSearch.SearchInput.clearTextField();
                     GlobalSearch.SearchInput.setText(org.TaxId);
