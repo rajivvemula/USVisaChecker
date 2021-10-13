@@ -271,7 +271,6 @@
     "condition": {
       "stateCode": "TX",
       "coverageTypes": [ "Personal Injury Protection" ]
-      //coverage : PIP - out of scope for R1
     }
   },
 
@@ -1031,7 +1030,10 @@
 
   {
     "code": "M5700",
-    "name": "Cargo Coverage In-Tow Endorsement"
+    "name": "Cargo Coverage In-Tow Endorsement",
+    "condition": {
+      "coverageTypes": ["Cargo Coverage"]
+    }
   },
 
   {

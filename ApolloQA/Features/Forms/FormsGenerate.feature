@@ -1,7 +1,7 @@
 ﻿@NoBrowser
 Feature: Forms Generate
 
-@ignore
+@formsTests @ignore
 Scenario: Check System for untested forms
 	Given current tested forms are loaded from Forms Generate Feature
 	When compared to the forms in the system
@@ -175,7 +175,7 @@ Scenario: Form can be generated
 	| CA0136     | Nevada Changes                                                                                                                                   |
 	| M5499      | Nevada Selection Rejection of Uninsured Motorist and Medical Payments Coverage                                                                   |
 	| NV5522     | Nevada ID Card                                                                                                                                   |
-	| M5415      | Personal Injury Protection Coverage Rejection Form - Texas                                                                                       |
+	| M5415      | Personal Injury Protection Coverage Rejection Form Texas                                                                                       |
 	| M4458c     | Texas Uninsured and Underinsured Motorist Coverage Selection Rejection Form                                                                      |
 	| M5160      | Texas Stated Amount Insurance                                                                                                                    |
 	| CA2109     | Texas Uninsured Underinsured Motorists Coverage                                                                                                  |
