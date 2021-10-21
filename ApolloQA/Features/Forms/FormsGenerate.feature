@@ -1,7 +1,7 @@
 ﻿@NoBrowser
 Feature: Forms Generate
 
-@formsTests @ignore
+@formsTests
 Scenario: Check System for untested forms
 	Given current tested forms are loaded from Forms Generate Feature
 	When compared to the forms in the system
@@ -15,7 +15,7 @@ Scenario: Check System for untested forms
 # 5.) it will retireve documents in the mentioned policy and look for the previously generated document
 # 6.) it will request the actual document, parse the PDF and make sure it's not blank or Empty
 
-@formsTests
+@formsTests 
 Scenario: Form can be generated
 	Given condition for form with code '<code>' and '<name>' is met
 	When user attempts to generate form
@@ -35,6 +35,7 @@ Scenario: Form can be generated
 	| (E)GU407c  | Notice of Cancellation, Nonrenewal or Declination - TX                                                                                           |
 	| (E)C59q    | Notice of Cancellation, Nonrenewal or Declination - GA                                                                                           |
 	| (E)GU9532q | Notice of Cancellation, Nonrenewal or Declination - AZ                                                                                           |
+	| (E)GU402d  | Notice of Cancellation, Nonrenewal, Declination - CO                                                                                             |
 	| (E)GU6639s | Notice of Cancellation or Nonrenewal - WI                                                                                                        |
 	# B0001 & B0002 failure expected due to statement generation. There has to be a physical statement for this to work
 	| B0001      | Billing Statement Auto Pay                                                                                                                       |
@@ -54,7 +55,6 @@ Scenario: Form can be generated
 	| CA0165     | Missouri Changes                                                                                                                                 |
 	| CA0238     | Reinstatement Of Insurance                                                                                                                       |
 	| CA0270     | Illinois Changes - Cancellation and Nonrenewal                                                                                                   |
-	| CA0305     | California Change Waiver of Collision Deductible                                                                                                 |
 	| CA0424     | California Auto Medical Payments Coverage                                                                                                        |
 	| CA0433     | Indiana Changes - Pollution Exclusion                                                                                                            |
 	| CA0434     | Indiana Changes Amendment of Definition of Pollutants                                                                                            |
@@ -136,7 +136,6 @@ Scenario: Form can be generated
 	| M5652      | Certificate Of Liability Insurance                                                                                                               |
 	| M5655      | Cargo Coverage Form                                                                                                                              |
 	| M5694      | Refrigeration Breakdown Coverage                                                                                                                 |
-	| M5700      | Cargo Coverage In-Tow Endorsement                                                                                                                |
 	| M5701      | Supplemental Declarations - Cargo Coverage                                                                                                       |
 	| M5739      | Illinois Changes                                                                                                                                 |
 	| M5747      | Supplemental Coverage Declarations                                                                                                               |
@@ -173,9 +172,8 @@ Scenario: Form can be generated
 	| M5088      | Nevada Changes – Cancellation And Nonrenewal                                                                                                     |
 	| CA2127     | Nevada Uninsured Motorists Coverage                                                                                                              |
 	| CA0136     | Nevada Changes                                                                                                                                   |
-	| M5499      | Nevada Selection Rejection of Uninsured Motorist and Medical Payments Coverage                                                                   |
 	| NV5522     | Nevada ID Card                                                                                                                                   |
-	| M5415      | Personal Injury Protection Coverage Rejection Form Texas                                                                                       |
+	| M5415      | Personal Injury Protection Coverage Rejection Form Texas                                                                                         |
 	| M4458c     | Texas Uninsured and Underinsured Motorist Coverage Selection Rejection Form                                                                      |
 	| M5160      | Texas Stated Amount Insurance                                                                                                                    |
 	| CA2109     | Texas Uninsured Underinsured Motorists Coverage                                                                                                  |
@@ -196,27 +194,26 @@ Scenario: Form can be generated
 	| CA0117     | Wisconsin Changes                                                                                                                                |
 	| CA9924     | Wisconsin Auto Medical Payments Coverage                                                                                                         |
 	| IL0283     | Wisconsin Changes - Cancellation and Nonrenewal                                                                                                  |
-
+	| M5908      | Colorado Uninsured Motorists Coverage - Bodily Injury                                                                                            |
+	| ILU063     | Colorado Rejection of Medical Payments Coverage                                                                                                  |
+	| ILU042     | Colorado Bodily Injury Uninsured Motorists Coverage SelectionRejection                                                                           |
+	| CO4932b    | Colorado ID Card                                                                                                                                 |
+	| CA2126     | Colorado Uninsured Motorists Coverage - Property Damage                                                                                          |
+	| CA0113     | Colorado Changes                                                                                                                                 |
+	| CA0440     | Colorado Auto Medical Payments Coverage                                                                                                          |
+	| IL0125     | Colorado Changes - Civil Union                                                                                                                   |
+	| IL0169     | Colorado Changes - Concealment, Misrepresntation, or Fraud                                                                                       |
+	| IL0228     | Colorado Changes - Cancellation and Nonrenewal                                                                                                   |
+	| ILN020     | Colorado Fraud Statement                                                                                                                         |  
 
 	#Ohio has not been implemented yet
 	#|OS32  | Endorsement To Liability Insurance Policy For Vehicles Operating with a Special Hauling Permit |  
 
 	# Colorado has not been implemented yet
-	#| (E)GU402d | Notice of Cancellation, Nonrenewal, Declination - CO                   |
-	#| M5908     | Colorado Uninsured Motorists Coverage - Bodily Injury                  |
-	#| ILU063    | Colorado Rejection of Medical Payments Coverage                        |
-	#| ILU042    | Colorado Bodily Injury Uninsured Motorists Coverage SelectionRejection |
-	#| CO4932b   | Colorado ID Card                                                       |
-	#| CA2126    | Colorado Uninsured Motorists Coverage - Property Damage                |
-	#| CA0113    | Colorado Changes                                                       |
-	#| CA0440    | Colorado Auto Medical Payments Coverage                                |
-	#| IL0125    | Colorado Changes - Civil Union                                         |
-	#| IL0169    | Colorado Changes - Concealment, Misrepresntation, or Fraud             |
-	#| IL0228    | Colorado Changes - Cancellation and Nonrenewal                         |
-	#| ILN020    | Colorado Fraud Statement                                               |
+
 	
 	# FL has no dev efforts yet : Defect raised for tracking - 38419
-	#| FL5476     | - Florida ID Card                                                                                                   |
+	#| FL5476     | Florida ID Card                                                                                                   |
 
 	#removed form BUG M5879
 	#| M5879   | In-Tow Coverage With Optional Garagekeepers Additional Coverage – Comprehensive |
@@ -232,3 +229,9 @@ Scenario: Form can be generated
 
 	#removed form BUG 40409
 	#| PS3665     | Certificate of Mailing                                                                                                                           |
+
+	#removed form BUG 51605
+	#| M5700      | Cargo Coverage In-Tow Endorsement                                                                                                                |
+
+	#removed form BUG 35894
+	#| CA0305     | California Change Waiver of Collision Deductible                                                                                                 |

@@ -381,7 +381,7 @@
 
   {
     "code": "M5088",
-    "name": "Nevada Changes � Cancellation And Nonrenewal",
+    "name": "Nevada Changes - Cancellation And Nonrenewal",
     "condition": {
       "stateCode": "NV"
     }
@@ -829,8 +829,8 @@
   {
     "code": "CA0240",
     "name": "Suspension Of Insurance",
-    "condition":{
-      "canceled":true
+    "condition": {
+      "canceled": true
     }
   },
 
@@ -1032,7 +1032,7 @@
     "code": "M5700",
     "name": "Cargo Coverage In-Tow Endorsement",
     "condition": {
-      "coverageTypes": ["Cargo Coverage"]
+      "coverageTypes": [ "Cargo Coverage" ]
     }
   },
 
@@ -1243,7 +1243,7 @@
     "name": "Wisconsin Uninsured Motorists Coverage",
     "condition": {
       "stateCode": "WI",
-      "coverageTypes":["Uninsured Motorists BI"]
+      "coverageTypes": [ "Uninsured Motorists BI" ]
 
     }
   },
@@ -1252,7 +1252,7 @@
     "name": "Wisconsin Underinsured Motorists Coverage",
     "condition": {
       "stateCode": "WI",
-      "coverageTypes":["Underinsured Motorists BI"]
+      "coverageTypes": [ "Underinsured Motorists BI" ]
 
     }
   },
@@ -1281,18 +1281,107 @@
     }
   },
   {
-    "code":"ACR0025",
-    "name":"Accord 25 Certificate of Liability Insurance",
+    "code": "ACR0025",
+    "name": "Accord 25 Certificate of Liability Insurance",
     "condition": {
       "stateCode": "TX"
     }
   },
   {
-    "code":"MC1633",
-    "name":"Form E"
+    "code": "MC1633",
+    "name": "Form E"
   },
   {
-    "code":"CA2304",
-    "name":"Rolling Stores"
+    "code": "CA2304",
+    "name": "Rolling Stores"
+  },
+  {
+    "code": "M5908",
+    "name": "Colorado Uninsured Motorists Coverage - Bodily Injury",
+    "condition": {
+      "stateCode": "CO",
+      "coverageTypes": [ "Uninsured Motorists BI" ]
+
+    }
+  },
+  {
+    "code": "ILU063",
+    "name": "Colorado Rejection of Medical Payments Coverage",
+    "condition": {
+      "stateCode": "CO"
+    }
+  },
+  {
+    "code": "ILU042",
+    "name": "Colorado Bodily Injury Uninsured Motorists Coverage SelectionRejection",
+    "condition": {
+      "stateCode": "CO"
+    }
+  },
+  {
+    "code": "CO4932b",
+    "name": "Colorado ID Card",
+    "condition": {
+      "stateCode": "CO"
+    }
+  },
+  {
+    "code": "CA2126",
+    "name": "Colorado Uninsured Motorists Coverage - Property Damage",
+    "condition": {
+      "stateCode": "CO",
+      "coverageTypes": [ "Uninsured Motorists PD" ]
+    }
+  },
+  {
+    "code": "CA0113",
+    "name": "Colorado Changes",
+    "condition": {
+      "stateCode": "CO"
+    }
+  },
+  {
+    "code": "CA0440",
+    "name": "Colorado Auto Medical Payments Coverage",
+    "condition": {
+      "stateCode": "CO"
+    }
+  },
+  {
+    "code": "IL0125",
+    "name": "Colorado Changes - Civil Union",
+    "condition": {
+      "stateCode": "CO"
+    }
+  },
+  {
+    "code": "IL0169",
+    "name": "Colorado Changes - Concealment, Misrepresntation, or Fraud",
+    "condition": {
+      "stateCode": "CO"
+    }
+  },
+  {
+    "code": "IL0228",
+    "name": "Colorado Changes - Cancellation and Nonrenewal",
+    "condition": {
+      "stateCode": "CO"
+    }
+  },
+  {
+    "code": "ILN020",
+    "name": "Colorado Fraud Statement",
+    "condition": {
+      "stateCode": "CO"
+    }
+  },
+  {
+    "code":"(E)GU402d",
+    "name": "Notice of Cancellation, Nonrenewal, Declination - CO",
+    "condition": {
+      "stateCode": "CO",
+      "canceled": true
+
+    }
   }
 ]
