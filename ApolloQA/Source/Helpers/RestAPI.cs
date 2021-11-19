@@ -1,27 +1,26 @@
-﻿using System;
-using System.Text;
-using OpenQA.Selenium;
+﻿using ApolloQA.Source.Driver;
 using Newtonsoft.Json;
+using OpenQA.Selenium;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Collections.Generic;
-using TechTalk.SpecFlow;
-using ApolloQA.Source.Driver;
-using System.Linq;
+using System.Text;
 
 namespace ApolloQA.Source.Helpers
 {
     public class RestAPI
     {
-
         public static List<(string key, double seconds)> timeSpans = new List<(string key, double seconds)>();
-        public static dynamic GET( String URL)
+
+        public static dynamic GET(String URL)
         {
             return GET(URL, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
+
         public static dynamic GET(String URL, AuthenticationHeaderValue Authorization, Dictionary<string, string> headers = null)
         {
-
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = Authorization;
@@ -29,7 +28,7 @@ namespace ApolloQA.Source.Helpers
 
             if (headers != null)
             {
-                foreach(var header in headers)
+                foreach (var header in headers)
                 {
                     client.DefaultRequestHeaders.Add(header.Key, header.Value);
                 }
@@ -42,15 +41,15 @@ namespace ApolloQA.Source.Helpers
 
             client.Dispose();
             return ConsumeResponse(response, URL);
-
         }
+
         public static dynamic POST(String URL, dynamic body)
         {
             return POST(URL, body, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
+
         public static dynamic POST(String URL, dynamic body, AuthenticationHeaderValue Authorization)
         {
-            
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -76,13 +75,12 @@ namespace ApolloQA.Source.Helpers
             TimeSpan requestTime = DateTime.Now - start;
             timeSpans.Add(($"[POST] {URL}", requestTime.TotalSeconds));
 
-
             client.Dispose();
             return ConsumeResponse(response, URL, body);
         }
+
         public static dynamic POST(String URL, AuthenticationHeaderValue Authorization, HttpContent content)
         {
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -96,19 +94,17 @@ namespace ApolloQA.Source.Helpers
             TimeSpan requestTime = DateTime.Now - start;
             timeSpans.Add(($"[POST] {URL}", requestTime.TotalSeconds));
 
-
             client.Dispose();
             return ConsumeResponse(response, URL, content);
         }
-
 
         public static dynamic PATCH(String URL, dynamic body)
         {
             return PATCH(URL, body, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
+
         public static dynamic PATCH(String URL, dynamic body, AuthenticationHeaderValue Authorization)
         {
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -133,17 +129,54 @@ namespace ApolloQA.Source.Helpers
             TimeSpan requestTime = DateTime.Now - start;
             timeSpans.Add(($"[PATCH] {URL}", requestTime.TotalSeconds));
 
+            client.Dispose();
+            return ConsumeResponse(response, URL, body);
+        }
+
+        public static dynamic PUT(string URL, dynamic body)
+        {
+            return PUT(URL, body, new AuthenticationHeaderValue("Bearer", getAuthToken()));
+        }
+
+        public static dynamic PUT(string URL, dynamic body, AuthenticationHeaderValue Authorization)
+        {
+            HttpClient client = new HttpClient()
+            {
+                BaseAddress = new Uri(processURL(URL))
+            };
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = Authorization;
+
+            string bodyString;
+            if (body is string)
+            {
+                bodyString = body;
+            }
+            else
+            {
+                bodyString = JsonConvert.SerializeObject(body);
+            }
+
+            HttpContent content = new StringContent(bodyString, Encoding.UTF8, "application/json");
+
+            DateTime start = DateTime.Now;
+
+            HttpResponseMessage response = client.PutAsync(processURL(URL), content).Result;
+
+            TimeSpan requestTime = DateTime.Now - start;
+            timeSpans.Add(($"[PUT] {URL}", requestTime.TotalSeconds));
 
             client.Dispose();
-            return ConsumeResponse(response, URL,body);
+            return ConsumeResponse(response, URL, body);
         }
+
         private static String processURL(String URL)
         {
             if (!URL.StartsWith("http"))
             {
                 if (!URL.StartsWith("/"))
                 {
-                    return Environment.GetEnvironmentVariable("SERVER_HOST") + "/"+URL;
+                    return Environment.GetEnvironmentVariable("SERVER_HOST") + "/" + URL;
                 }
                 return Environment.GetEnvironmentVariable("SERVER_HOST") + URL;
             }
@@ -151,44 +184,37 @@ namespace ApolloQA.Source.Helpers
             return URL;
         }
 
-        private static dynamic ConsumeResponse(HttpResponseMessage response, string URL, dynamic body=null)
+        private static dynamic ConsumeResponse(HttpResponseMessage response, string URL, dynamic body = null)
         {
-
-
-            if(!response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 Log.Critical(processURL(URL));
                 Log.Critical(body);
                 try
                 {
                     Log.Critical(response.Content.ReadAsStringAsync().Result);
-
                 }
-                catch(Exception)
+                catch (Exception)
                 {
-
                 }
             }
             response.EnsureSuccessStatusCode();
             if (response.Content.Headers.TryGetValues("content-type", out var contentType) && contentType.Contains("application/pdf"))
             {
-
                 var filename = response.Content.Headers.GetValues("content-disposition")
                                                         .ElementAtOrDefault(0)
                                                         .Split(";")[1]
                                                         .Substring(10)
                                                         .Trim('"');
                 using (var file = System.IO.File.Create(filename))
-                { 
+                {
                     var contentStream = response.Content.ReadAsStreamAsync().Result; // get the actual content stream
                     contentStream.CopyTo(file); // copy that stream to the file stream
 
                     Log.Debug($"file for API request [/{URL}] \n location: " + file.Name);
                     response.Dispose();
                     return file.Name;
-
                 }
-
             }
 
             String dataObjects = response.Content.ReadAsStringAsync().Result;
@@ -197,7 +223,8 @@ namespace ApolloQA.Source.Helpers
             try
             {
                 return JsonConvert.DeserializeObject<dynamic>(dataObjects);
-            }catch(JsonReaderException)
+            }
+            catch (JsonReaderException)
             {
                 return dataObjects;
             }
@@ -205,20 +232,18 @@ namespace ApolloQA.Source.Helpers
 
         private static String getAuthToken()
         {
-            if(Setup.isNoBrowserFeature)
+            if (Setup.isNoBrowserFeature)
             {
                 return getAuthTokenAPI();
             }
-            String currentUser= (String)((IJavaScriptExecutor)Driver.Setup.driver).ExecuteScript("return window.localStorage.getItem('currentUser')");
+            String currentUser = (String)((IJavaScriptExecutor)Driver.Setup.driver).ExecuteScript("return window.localStorage.getItem('currentUser')");
             return (String)JsonConvert.DeserializeObject<dynamic>(currentUser)["accessToken"];
-
         }
-
 
         private static String _APIToken = null;
 
         private static String getAuthTokenAPI()
-        {          
+        {
             if (_APIToken == null)
             {
                 string TenantId = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("API_TENANT_ID_SECRETNAME"));

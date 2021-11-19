@@ -13,7 +13,7 @@
 
 	<Environment testThreadIsolation="AppDomain"/>
 	
-	<Filter>@ratingTests</Filter>
+	<Filter>@ratingTests &amp; !@ignore</Filter>
    <!--<Filter>@SmokeTest &amp; @Quote</Filter>
    -->
 

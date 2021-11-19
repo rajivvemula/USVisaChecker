@@ -353,7 +353,7 @@
     "nameUI": [ "UM Exposure Base" ],
     "source": "UMExposureBase",
     "CustomCalculation": true,
-    "displayOnly":  true
+    "displayOnly": true
   },
   "IsAddOnFactors": {
     "KnownFields": [ "Add On Coverage", "Add On" ],
@@ -379,9 +379,113 @@
   "1+ ((Driving Rating ‐ 1)*0.5))": {
     "KnownFields": [],
     "nameUI": [ "Driver Rating Factor" ],
-    "source": "PIP_DriverRating",
+    "source": "HalfDriverRating",
     "CustomCalculation": true
+  },
+  "WrittenAgreementFactors": {
+    "KnownFields": [ "Written Agreement" ],
+    "nameUI": [ "Written Agreement Factor" ]
+  },
+  "CollisionType_OtherThanCollisionTypeFactors": {
+    "KnownFields": [ "Other Than Collision Type", "Collision Type" ],
+    "nameUI": [ "Collision Type Other Than Collision Type Factor" ]
+  },
+  "CollisionDeductible_OtherThanCollisionDeductible_LimitFactors": {
+    "KnownFields": [ "Other Than Collision Deductible", "Collision Deductible", "Limit" ],
+    "nameUI": [ "Collision Deductible Other Than Collision Deductible Limit Factor" ]
+  },
+  "Trailer Interchange Exposure Base": {
+    "KnownFields": [],
+    "nameUI": [ "Trailer Interchange Exposure Base" ],
+    "source": "TrailerInterchangeExposureBase",
+    "CustomCalculation": true
+  },
+  "Limit": {
+    "KnownFields": ["Limit"],
+    "nameUI": [ "Coverage Single Limit" ],
+    "source": "Limit",
+    "CustomCalculation": true
+  },
+  "CR1.BaseRateFactor":{
+    "KnownFields": ["State"],
+    "nameUI": [ "Base Rate Factor" ]
+  }, 
+  "CR2.IncreasedLimitFactor": {
+    "KnownFields": [ "Auto Liability Limit" ],
+    "nameUI": [ "Increased Limit Factor" ]
+  },
+  "CR3.DeductibleFactor":{
+    "KnownFields": [ "Deductible" ],
+    "nameUI": [ "Deductible Factor" ]
+  },
+  "CR4.CargoHauledFactor":{
+    "KnownFields": [ "Cargo that is Hauled" ],
+    "nameUI": [ "Cargo Hauled Factor" ],
+    "CustomCalculation": true,
+    "source": "CargoHauledFactor"
+  },
+  "CR5.CargoTruckFactor":{
+    "KnownFields": [ "GVW/GCW", "BodySubCategoryTypeId" ],
+    "nameUI": [ "Cargo Truck Factor" ],
+    "CustomCalculation": true,
+    "source": "CargoTruckFactor"
+  },
+  "CR6.CargoRadiusFactor":{
+    "KnownFields":["Radius"],
+    "nameUI": [ "Cargo Radius Factor" ],
+    "CustomCalculation": true,
+    "source": "CargoRadiusFactor"
+  },
+  "CR7.TheftCoverage":{
+    "KnownFields":["Theft Coverage"],
+    "nameUI": [ "Theft Excluded Coverage Factor" ]
+  },
+  "CR8.NamedPerilsCoverage":{
+    "KnownFields":["Named Perils Coverage"],
+    "nameUI": [ "Named Perils Coverage Factor" ]
+  },
+  "CR9.EarnedFreightCoverage":{
+    "KnownFields":["Earned Freight Coverage"],
+    "nameUI": [ "Earned Freight Coverage Factor" ]
+  }, 
+  "IT1.BaseRateFactor":{
+    "KnownFields": ["State"],
+    "nameUI": [ "Base Rate Factor" ]
+  },
+  "IT2.IncreasedLimitFactor": {
+    "KnownFields": [ "Auto Liability Limit" ],
+    "nameUI": [ "Increased Limit Factor", "Limit Factor" ]
+  },
+  "IT3.DeductibleFactor":{
+    "KnownFields": [ "Deductible" ],
+    "nameUI": [ "Deductible Factor" ]
+  },
+  "IT4.CustomerCargoCoverage":{
+    "KnownFields": [ "Customer Cargo Coverage" ],
+    "nameUI": [ "Customer Cargo Coverage" ]
+  },
+  "IT5.DrivertoVehicleRatio":{
+    "KnownFields": [ "Driver to Vehicle Ratio" ],
+    "nameUI": [ "Driver to Vehicle Ratio" ],
+    "CustomCalculation": true,
+    "source": "DrivertoVehicleRatio"
+  },
+  "IT6.HoursofOperationFactor":{
+    "KnownFields": [ "Hours of Operation" ],
+    "nameUI": [ "Hours of Operation" ]
+  },
+  "RR1.BaseRateFactor":{
+    "KnownFields": ["Downtime" ],
+    "nameUI": [ "Base Rate Factor" ],
+    "CustomCalculation":true,
+    "source":"BaseRateFactorRR1"
+  },
+  "RR2.StateFactor":{
+    "KnownFields": [ "State" ],
+    "nameUI": [ "State Factor" ]
   }
+
+
 
 
 

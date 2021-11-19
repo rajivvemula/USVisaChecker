@@ -175,14 +175,14 @@ namespace ApolloQA.Data.Rating
 
             }
 
-            private JObject GetRisk(long riskId)
+            private JObject GetRisk(long? riskId)
             {
                 return ((JArray)this.Engine.root["Risks"]).ToObject<List<dynamic>>().Find(risk => risk["RiskId"] == riskId);
             }
 
             private JObject GetCurrentVehicleRisk()
             {
-                var riskId = ((Entity.Vehicle)this.Engine.interpreter.Eval("Vehicle"))["RiskId"];
+                var riskId = ((Entity.Vehicle)this.Engine.interpreter.Eval("Vehicle"))?["RiskId"];
 
                 var risk = new JObject();
 
@@ -208,7 +208,8 @@ namespace ApolloQA.Data.Rating
             {
                 get
                 {
-                    var classCode = GetCurrentVehicleRisk()["VehicleClassCode"].ToObject<int>();
+
+                    var classCode = GetCurrentVehicleRisk()?["VehicleClassCode"]?.ToObject<int>() ?? 0;
                     return classCode;
                 }
             }
@@ -360,6 +361,30 @@ namespace ApolloQA.Data.Rating
                 get
                 {
                     return 1;
+                }
+            }
+            private int DrivertoVehicleRatio
+            {
+                get
+                {
+                    
+                    var VehicleCount = this.Engine.root.GetVehicles().Count; 
+                    var DriverCount = this.Engine.root.GetDrivers().Count;
+
+                    return Functions.GetRatio(DriverCount, VehicleCount);
+
+
+
+
+                }
+            }
+
+            private string State
+            {
+                get
+                {
+                    this.parsedValue = this.Engine.root.GoverningStateName;
+                    return this.Engine.root.GoverningStateCode;
                 }
             }
 

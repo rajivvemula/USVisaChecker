@@ -26,6 +26,15 @@ namespace ApolloQA.Data.Entity
                                      Where Code='{StateCode}';")[0]["Id"];
             }
         }
+        public string StateName
+        {
+            get
+            {
+                return SQL.executeQuery(@$"SELECT Name  
+                                     FROM [location].[StateProvince]
+                                     Where Code='{StateCode}';")[0]["Name"];
+            }
+        }
 
         public Address(String Street1, String Street2, String City, String StateCode, String PostalCode, String CountryName)
         {

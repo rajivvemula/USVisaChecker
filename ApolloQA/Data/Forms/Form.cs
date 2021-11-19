@@ -12,27 +12,42 @@ namespace ApolloQA.Data.Form
 {
     public class Form
     {
-        public static readonly JArray Forms = JsonConvert.DeserializeObject<JArray>(File.ReadAllText(Path.Combine($"{Source.Driver.Setup.SourceDir}", "Data/Forms/Forms.json")));
+        public static readonly List<Form> Forms = JsonConvert.DeserializeObject<List<Form>>(File.ReadAllText(Path.Combine($"{Source.Driver.Setup.SourceDir}", "Data/Forms/Forms.json")));
 
         public string name;
         public string code;
         public Condition condition;
         public string displayTitle;
 
-        //doesn't seem to be needed.
-        //public long Id => SQL.executeQuery($"SELECT Id FROM [document].[Form] WHERE code = {this.code}")[0]["Id"];
-        public string Edition => SQL.executeQuery(@$"SELECT TOP(1) Edition
-                                                      FROM [document].[GhostDraftTemplateForm] 
-                                                      where Code ='{code}' order by Id desc; ")[0]["Edition"];
-       
+        private long? _Id = null;
+        public long Id
+        {
+            get
+            {
+                return _Id ??= (long)SQL.executeQuery($"SELECT Id FROM [document].[Form] WHERE code = {this.code}")[0]["Id"] ;
 
+            }
+        }
+
+        private string _Edition = null;
+        public string Edition
+        {
+            get
+            {
+                return _Edition ??= SQL.executeQuery(@$"SELECT TOP(1) Edition
+                                                FROM [document].[GhostDraftTemplateForm] 
+                                                where Code ='{code}' order by Id desc; ")[0]["Edition"];
+
+            }
+        }
 
        
-        public Form(string name, string code, JToken condition, string? displayTitle)
+        public Form(string name, string code, Condition condition, string? displayTitle)
         {
             this.name = name;
             this.code = code;
-            this.condition = condition?.ToObject<Condition>() ?? new Condition();
+            //this.condition = condition?.ToObject<Condition>() ?? new Condition();
+            this.condition = condition;
             this.displayTitle = displayTitle;
         }
 
@@ -40,16 +55,17 @@ namespace ApolloQA.Data.Form
         //static funciton in order to access any form using it's code (forms' unique identifier)
         public static Form GetForm(string code)
         {
-            var form = (JObject)Forms.FirstOrDefault(it => it["code"]?.ToString() == code);
+            var form = Forms.FirstOrDefault(it => it.code == code);
 
             if (form == null)
             {
                 throw new KeyNotFoundException($"Form with code {code} was not found in ./Data/Forms/Forms.json");
             }
-            return new Form(form.GetValue("name")?.ToString(),
-                            form.GetValue("code")?.ToString(), 
-                            form.GetValue("condition"),
-                            form.GetValue("displayTitle")?.ToString());
+            if(form.condition == null)
+            {
+                form.condition = new Condition();
+            }
+            return form;
         }
 
     }

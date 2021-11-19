@@ -1,7 +1,7 @@
-@NoBrowser 
+@NoBrowser @ignore
 Feature: Algorithms - Keywords
 
-@ignore @ratingTests
+@ignore @ratingTestsignore
 Scenario: Generate Feature File
 	When user loads all Keywords from the DB
 	Then All Keywords are added to this file for <state>
@@ -11,7 +11,7 @@ Scenario: Generate Feature File
 	| IL    |
 	| SC    |
 
-@testRatingKeywords @ratingTests
+@testRatingKeywords @ratingTestsignore @ignore
 Scenario: Test Rating Keyword
 	Given quote for Keyword '<Keyword>' in <State> is set to Quoted
 

@@ -1,61 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ApolloQA.Source.Helpers;
+using System;
 using System.Linq;
-using System.Text;
-using ApolloQA.Source.Helpers;
+
 namespace ApolloQA.Data.Entity
 {
     public class Tether
     {
-
         public Tether(int Id)
         {
             this.Id = Id;
-            load();
+            Load();
         }
-
 
         public Tether(long Id)
         {
             this.Id = Id;
-            load();
+            Load();
         }
 
-        private void load()
+        public void Load()
         {
-         
             var props = SQL.executeQuery($"SELECT * FROM [tether].[Tether] WHERE Id = {Id}")[0];
-
 
             foreach (var prop in props)
             {
                 try
                 {
-                    if(prop.Key == "Id")
+                    if (prop.Key == "Id")
                     {
                         continue;
                     }
-                    var typeProp = this.GetType().GetProperty(prop.Key);
-
-                    if(typeProp !=null)
-                    {
-                        typeProp.SetValue(this, prop.Value is DBNull ? null : prop.Value);
-
-                    }
+                    this.GetType().GetProperty(prop.Key).SetValue(this, prop.Value is DBNull ? null : prop.Value);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    Log.Critical("Property Key: " + prop.Key + " Property Value: "+ prop.Value??"null");
-                    throw;
+                    Log.Critical("Property Key: " + prop.Key + " Property Value: " + prop.Value ?? "null");
+                    throw ex;
                 }
             }
-           
         }
 
         private void SetProperty(string propertyName, object value)
         {
             SQL.executeQuery($"UPDATE [tether].[Tether] SET {propertyName}=@value WHERE Id = {this.Id} ", ("@value", value));
-
         }
 
         public static Tether GetLatestTether()
@@ -77,13 +64,13 @@ namespace ApolloQA.Data.Entity
         {
             var tetherCandidate = SQL.executeQuery($"SELECT TOP (1) Id FROM [tether].[Tether] where PolicyNumber is not null and EffectiveDate < GETDATE() order by Id desc;");
 
-              return new Tether(tetherCandidate[0]["Id"]);
+            return new Tether(tetherCandidate[0]["Id"]);
         }
 
         public static Tether GetTether(long QuoteId)
         {
             var tetherCandidates = SQL.executeQuery(@$"SELECT TOP (1) [tether].[Tether].Id
-                                                    FROM [tether].[Tether] 
+                                                    FROM [tether].[Tether]
                                                     LEFT JOIN [tether].[TetherApplicationRatableObject] on [tether].[Tether].Id = [tether].[TetherApplicationRatableObject].TetherId
                                                     where CurrentApplicationId = {QuoteId} OR ApplicationId = {QuoteId} ;");
 
@@ -91,7 +78,7 @@ namespace ApolloQA.Data.Entity
             {
                 return new Tether(tetherCandidates[0]["Id"]);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 Log.Critical($"Error retrieving Tether for ApplicationId: {QuoteId}");
                 throw;
@@ -101,14 +88,17 @@ namespace ApolloQA.Data.Entity
         public readonly long Id;
 
         private int _LineId { get; set; }
-        public int LineId {
+
+        public int LineId
+        {
             get { return _LineId; }
-            private set {
-                    _LineId = value;
-                } 
+            private set
+            {
+                _LineId = value;
+            }
         }
 
-        public long SubLineId { get; set; }
+        public int SubLineId { get; set; }
 
         public long NamedInsuredId { get; set; }
 
@@ -123,6 +113,7 @@ namespace ApolloQA.Data.Entity
         public long? AgentId { get; set; }
 
         private long _CurrentApplicationId { get; set; }
+
         public long CurrentApplicationId
         {
             get { return _CurrentApplicationId; }
@@ -133,6 +124,7 @@ namespace ApolloQA.Data.Entity
         }
 
         private long? _CurrentRatableObjectId { get; set; }
+
         public long? CurrentRatableObjectId
         {
             get { return _CurrentRatableObjectId; }
@@ -141,8 +133,8 @@ namespace ApolloQA.Data.Entity
                 _CurrentRatableObjectId = value;
             }
         }
-        public Policy CurrentPolicy => new Policy( CurrentRatableObjectId?? throw new ArgumentNullException());
-        
+
+        public Policy CurrentPolicy => new Policy(CurrentRatableObjectId ?? throw new ArgumentNullException());
 
         public DateTimeOffset EffectiveDate { get; set; }
 
@@ -168,6 +160,8 @@ namespace ApolloQA.Data.Entity
 
         public DateTimeOffset? UpdateDateTime { get; set; }
 
+        public DateTimeOffset? CurrentApplicationExpirationDate { get; set; }
+
         public string UpdatedBy { get; set; }
 
         public long? UpdatedByPersonId { get; set; }
@@ -177,6 +171,5 @@ namespace ApolloQA.Data.Entity
         public string SourceSystemKey { get; set; }
 
         public int StatusId { get; set; }
-
     }
 }

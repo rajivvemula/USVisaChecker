@@ -3,10 +3,14 @@ using ApolloQA.Source.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ApolloQA.Data.Form
 {
@@ -41,15 +45,142 @@ namespace ApolloQA.Data.Form
             this.vehicle = vehicle;
         }
 
+
+
+
+
         /**
          * retrieve all valid policies and all quotes in order to find a matching policy for any condition object
          * note: static because is used across any condition (thus any form)
          */
-        private static List<dynamic> policies = Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" and c.StatusId < 3 ORDER BY c.Id DESC").ToList();
+        private static Entities<Policy> policies = new Entities<Policy>($"./Conditions/{nameof(policies)}.json");
 
-        private static List<dynamic> quotes = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id in ( {string.Join(", ",policies.Select(it=>it["ApplicationId"]))} ) ORDER BY c.Id DESC").ToList();
+        private static Entities<Quote> quotes = new Entities<Quote>($"./Conditions/{nameof(quotes)}.json");
 
+        public class Entities<T> : List<T>
+        {
+            public string filePath;
 
+            public Entities(string filePath) : base()
+            {
+                this.filePath = filePath;
+                if(!File.Exists(filePath))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                    File.Create(filePath).Close();
+                }
+                this.Load();
+            }
+
+            public new void Add(T _item)
+            {
+                base.Add(_item);
+                this.Write();
+            }
+
+            public void Load()
+            {
+                var arr = JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(filePath));
+                if(arr != null && arr.Count > this.Count)
+                {
+                    var existingIds = this.Select(it => (long)((dynamic)it).Id);
+
+                    foreach (dynamic item in arr)
+                    {
+                        if(!existingIds.Contains((long)item.Id))
+                        {
+                            item.CacheProps();
+                            base.Add((T)item);
+                        }
+
+                    }
+                }
+            }
+
+            private void Write()
+            {
+                var mutex = new Mutex(false, "Condition.Entities");
+                mutex.WaitOne();
+                try
+                {
+                    File.WriteAllText(this.filePath, JsonConvert.SerializeObject(this.Select(it => new Dictionary<string, long> { { "Id", (long)((dynamic)it).Id } })));
+                }
+                finally
+                {
+                    mutex.ReleaseMutex();
+                }
+            }
+
+           
+        }
+        
+        public void createRelevantPolicies()
+        {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
+            var states = Form.Forms.Select(it => it?.condition?.stateCode).Where(it=> it!=null).Distinct().ToArray();
+            //Log.Debug($"states {string.Join(", ", states) }");
+            var coverageTypes = new string[] {  CoverageType.BIPD,
+                                                CoverageType.COLLISION,
+                                                CoverageType.COMPREHENSIVE,
+                                                CoverageType.IN_TOW,
+                                                CoverageType.RENTAL_REIMBURSEMENT,
+                                                CoverageType.TRAILER_INTERCHANGE,
+            };
+            Parallel.ForEach(states, stateCode =>
+                {
+                    if(Mutex.TryOpenExisting($"createRelevantPolicies.{stateCode}", out Mutex mutex))
+                    {
+                        mutex.WaitOne();
+                        mutex.ReleaseMutex();
+                        return;
+                    }
+                    else
+                    {
+                        mutex = new Mutex(false, $"createRelevantPolicies.{stateCode}");
+                        mutex.WaitOne();
+                    }
+                    var quoteParam = new TestData.QuoteParam(stateCode, coverageTypes.Select(it=> new CoverageType(it)).ToList());
+
+                    quoteParam.QuoteQuentionAnswerParam.TXAuth._response = "true";
+                    quoteParam.QuoteQuentionAnswerParam.SC_Authority._response = "true";
+
+                    quoteParam.BIPD_SplitLimit();
+
+                    quoteParam.DriverParam.Drivers[0].DriverQuentionAnswerParam.CDL._response = "1";
+
+                    Quote quote;
+                    Policy policy;
+
+                    try
+                    {
+                        quote = quoteParam.RunThisThroughAPI();
+
+                    }
+                    catch
+                    {
+                        quote = quoteParam.RunThisThroughAPI();
+                    }
+
+                    try
+                    {
+                        policy = quote.PurchaseThis();
+                    }
+                    catch (Exception)
+                    {
+                        policy = quote.PurchaseThis();
+
+                    }
+
+                    quotes.Add(quote);
+                    policies.Add(policy);
+                    mutex.ReleaseMutex();
+                }
+            );
+            watch.Stop();
+            Log.Debug($"Took: {watch.Elapsed.TotalSeconds} Seconds");
+        }
 
         /// <summary>
         /// this function iterates through all valid policies in order to find one that matches this object's properties
@@ -73,104 +204,114 @@ namespace ApolloQA.Data.Form
          *  
          *  
          */
-        public Policy GetValidPolicy()
+        public Policy GetValidPolicy(bool LoadRelevantQuotes = false)
         {
+            if(LoadRelevantQuotes)
+            {
+                createRelevantPolicies();
+                policies.Load();
+                quotes.Load();
+            }
+
+           
             Log.Info($"Policy count: {policies.Count}");
             Log.Info($"Quote  count: {quotes.Count}");
-
             //1.) for each valid RatableObject (Policy) in the system (issued and not archived)
             //2.)    var policyOBJ is the cosmos object of the policy in context
-            foreach (var policyOBJ in policies)
-            {
-                //3.)   let match = true  (will be set to false on any mismatch with the policy in context and this object's properties)
-                var match = true;
-
-                //4.)    initialize the policy and quote objects usign the cosmos objects
-                var policy = new Policy(policyOBJ);
-                var quote = new Quote(quotes.FirstOrDefault(quote => quote["Id"].ToObject<long>() == policy.GetProperty("ApplicationId").ToObject<long>()));
-
-
-                //5.)    if StateCode was provided and if the governing state from the policy is not equal to the StateCode provided turn flag off and continue to the next iteration (policy)
-                if (!string.IsNullOrWhiteSpace(this.stateCode) && this.stateCode != quote.GoverningStateCode)
-                {
-                    match = false;
-                    if(!match)
-                    {
-                        continue;
-                    }
-                }
-                //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-                if (this.coverageTypes != null && this.coverageTypes.Any())
-                {
-                    this.CheckCoverageTypes(ref match, quote);
-                    if (!match)
-                    {
-                        continue;
-                    }
-                }
-                //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-                if (this.questionResponses != null && this.questionResponses.Any())
-                {
-                    this.CheckQuestionResponses(ref match, quote);
-                    if (!match)
-                    {
-                        continue;
-                    }
-                }
-                //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-                if (this.splitLimitBIPD)
-                {
-                    this.CheckSplitLimitBIPD(ref match, quote);
-                    if (!match)
-                    {
-                        continue;
-                    }
-                }
-                //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-                if (this.endorsement)
-                {
-                    this.checkEndorsement(ref match, policy);
-                    if (!match)
-                    {
-                        continue;
-                    }
-                }
-                //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-                if (this.materializedBillToday)
-                {
-                    this.checkMaterializedBillToday(ref match, policy);
-                    if (!match)
-                    {
-                        continue;
-                    }
-                }
-                //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-                if (this.canceled)
-                {
-                    this.checkCanceled(ref match, policy);
-                    if (!match)
-                    {
-                        continue;
-                    }
-                }
-                //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-                if (this.vehicle != null)
-                {
-                    this.checkVehicleProperties(ref match, quote);
-                    if (!match)
-                    {
-                        continue;
-                    }
-                }
-                //6.)    finally, if the match flag is still true, return the policy in context
-                if (match)
+            foreach (var policy in policies)
+            {             
+                if(checkIfPolicyMatches(policy))
                 {
                     return policy;
                 }
+            }
+            
+            return this.CreateQuoteForThis();
+
+            throw new NotImplementedException($"No policy was found in the system for {this} \nFunction to create quote for given condition needs to be implemented");
+        }
+
+        public bool checkIfPolicyMatches(Policy policy)
+        {
+            //3.)   let match = true  (will be set to false on any mismatch with the policy in context and this object's properties)
+            var match = true;
+
+            //4.)    initialize the policy and quote objects usign the cosmos objects
+            var quote = quotes.FirstOrDefault(quote => quote.Id == policy.GetProperty("ApplicationId").ToObject<long>());
+
+
+            //5.)    if StateCode was provided and if the governing state from the policy is not equal to the StateCode provided turn flag off and continue to the next iteration (policy)
+            if (!string.IsNullOrWhiteSpace(this.stateCode) && this.stateCode != quote.GoverningStateCode)
+            {
+                match = false;
+                return match;
 
             }
-            //return this.CreateQuoteForThis();
-            throw new NotImplementedException($"No policy was found in the system for {this} \nFunction to create quote for given condition needs to be implemented");
+            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
+            if (this.coverageTypes != null && this.coverageTypes.Any())
+            {
+                this.CheckCoverageTypes(ref match, quote);
+                if (!match)
+                {
+                    return match;
+                }
+            }
+            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
+            if (this.questionResponses != null && this.questionResponses.Any())
+            {
+                this.CheckQuestionResponses(ref match, quote);
+                if (!match)
+                {
+                    return match;
+                }
+            }
+            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
+            if (this.splitLimitBIPD)
+            {
+                this.CheckSplitLimitBIPD(ref match, quote);
+                if (!match)
+                {
+                    return match;
+                }
+            }
+            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
+            if (this.endorsement)
+            {
+                this.checkEndorsement(ref match, policy);
+                if (!match)
+                {
+                    return match;
+                }
+            }
+            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
+            if (this.materializedBillToday)
+            {
+                this.checkMaterializedBillToday(ref match, policy);
+                if (!match)
+                {
+                    return match;
+                }
+            }
+            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
+            if (this.canceled)
+            {
+                this.checkCanceled(ref match, policy);
+                if (!match)
+                {
+                    return match;
+                }
+            }
+            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
+            if (this.vehicle != null)
+            {
+                this.checkVehicleProperties(ref match, quote);
+                if (!match)
+                {
+                    return match;
+                }
+            }
+            //6.)    finally, return match which should be true
+            return match;
         }
 
 
@@ -180,18 +321,62 @@ namespace ApolloQA.Data.Form
         /// <returns></returns>
         private Policy CreateQuoteForThis()
         {
-            var quote = Functions.GetQuotedQuoteThroughAPI(stateCode);
-            var policy = quote.PurchaseThis();
+            TestData.QuoteParam quoteParam = coverageTypes.Any() ? new TestData.QuoteParam(stateCode, coverageTypes) : new TestData.QuoteParam(stateCode);
 
-
-            /*if (this.questionResponses != null && this.questionResponses.Any())
+            if(this.questionResponses != null)
             {
-                foreach(var questionResponse in questionResponses)
+                foreach (var questionAnswer in this.questionResponses)
                 {
-                    quote.GetQuestionResponse(questionResponse.Key);
+                    quoteParam.QuoteQuentionAnswerParam.SetAnswer(questionAnswer.Key, questionAnswer.Value);
+                }
+            }
+            if(splitLimitBIPD)
+            {
+                quoteParam.BIPD_SplitLimit();
+            }
+            if (this.vehicle != null)
+            {
+                var vehicleObject = quoteParam.VehicleParam.Vehicles[0].Object;
+
+                foreach (var prop in this.vehicle)
+                {
+                    vehicleObject.GetType().GetProperty(prop.Key).SetValue(vehicleObject, prop.Value, null);
 
                 }
-            }*/
+            }
+
+            var quote = quoteParam.RunThisThroughAPI();
+            var policy = quote.PurchaseThis();
+
+            if (this.endorsement)
+            {
+                var endorsement = policy.CreateDraftPolicyEndorsement();
+                if(policy.GetDraftEndorsements().Count ==0)
+                {
+                    throw new Exception("Endorsement Not Created Yet");
+                }
+                endorsement.CreateEndorsementHeader(policy.Id);
+                endorsement.PostSummary();
+                var ratableObject = endorsement.GetRatableObject();
+                Log.Debug("RatableObject Id: " + ratableObject.Id);
+            }
+            if (this.materializedBillToday)
+            {
+                throw new NotImplementedException();
+            }
+            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
+            if (this.canceled)
+            {
+                policy.Cancel();
+            }
+
+           
+
+            quote.CacheProps();
+            policy.CacheProps();
+            quotes.Add(quote);
+            policies.Add(policy);
+
             return policy;
         }
 
@@ -357,13 +542,17 @@ namespace ApolloQA.Data.Form
             return result.Trim(' ').Trim(';');
         }
 
-        private List<string> supportedStates = new List<string>()
+        public bool Equals(Condition condition)
         {
-            "IL", "SC", "CA", "GA", "MO", "IN", "TN"
-        };
+            if (condition == null)
+            {
+                return false;
+            }
+            var thisObj = JObject.FromObject(this);
+            var otherObj = JObject.FromObject(condition);
 
-        
-
+            return JToken.DeepEquals(thisObj, otherObj);
+        }
 
 
 

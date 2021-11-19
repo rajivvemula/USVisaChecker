@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace ApolloQA.Data.Rating
 {
@@ -35,11 +36,25 @@ namespace ApolloQA.Data.Rating
             this.TableName = tableName;
             this.displayOnly = displayOnly??false;
         }
+
         public static Factor GetFactor(string name)
         {
-            var _factor = GetFactors().Find(it => it.Name == name);
+            var factors = GetFactors();
 
-            if (_factor == null) { throw new KeyNotFoundException($"Factor: {name} did not exist in  DataFiles/Rating/Factors.json"); }
+            Factor _factor = factors.FirstOrDefault(it => it.Name == name);
+
+            if(_factor==null)
+            {
+                _factor = factors.FirstOrDefault(it=> it.Name == name.Substring(name.IndexOf('.') + 1));
+            }
+
+            if (_factor == null) { 
+                if(name.Contains('.'))
+                {
+                    Log.Critical($"FactorName: {name.Substring(name.IndexOf('.') + 1)} ");
+                }
+                throw new KeyNotFoundException($"Factor: {name} did not exist in  DataFiles/Rating/Factors.json"); 
+            }
 
             return _factor;
 
@@ -51,7 +66,8 @@ namespace ApolloQA.Data.Rating
             var _factors = new List<Factor>();
                 foreach (var factor in Factors)
                 {
-                    if (factor.Value.KnownFields == null) { throw new KeyNotFoundException($"Factor: \n{factor}\n did not have source property in DataFiles/Rating/Factors.json"); }
+                    if (factor.Value.KnownFields == null) 
+                    { throw new KeyNotFoundException($"Factor: \n{factor}\n contains incorrectly named properties in DataFiles/Rating/Factors.json"); }
 
                     _factors.Add(new Factor(factor.Name, 
                                             factor.Value.nameUI.ToObject<IEnumerable<string>>(), 
@@ -141,6 +157,10 @@ namespace ApolloQA.Data.Rating
                     {
                         factorTable = this.Engine.getTable(this.Factor.TableName.Replace("@CoverageCode", this.GetAlgorithmAssignment().CoverageCode));
                     }
+                    else if(this.Factor.Name.Contains('.'))
+                    {
+                        factorTable = this.Engine.getTable(this.Factor.Name);
+                    }
                     else
                     {
                         factorTable = this.Engine.getTable($"{GetAlgorithmAssignment().CoverageCode}.{Factor.Name}");
@@ -200,8 +220,12 @@ namespace ApolloQA.Data.Rating
                                         else if(knownField.Value == "No")
                                         {
                                             knownField.parsedValue = "False";
-
                                         }
+                                        else if(Boolean.TryParse(knownField.Value, out bool val))
+                                        {
+                                            knownField.parsedValue = val ? "Yes" : "No";
+                                        }
+                                        
                                     }
                                     else
                                     {
@@ -262,7 +286,7 @@ namespace ApolloQA.Data.Rating
                                     lowerBoundMatch = false;
                                     upperBoundMatch = false;
                                 }
-                                else if (column.Value != null && (column.Value == knownField.Value?.ToString() || column.Value == knownField.parsedValue))
+                                else if (column.Value != null && (column.Value?.ToLower() == knownField.Value?.ToString()?.ToLower() || column.Value?.ToLower() == knownField.parsedValue?.ToLower()))
                                 {
                                     match.Add(column.Key, true);
                                 }
@@ -333,10 +357,14 @@ namespace ApolloQA.Data.Rating
                     }
                 }
 
-                return JObject.FromObject(this);
+                return this.ToJObject();
 
             }
 
+            public JObject ToJObject()
+            {
+                return JObject.FromObject(this);
+            }
             private Dictionary<string, List<int>> GetTableLimits(List<Dictionary<string, string>> factorTable)
             {
                 var result = new Dictionary<string, List<int>>();
@@ -514,17 +542,20 @@ namespace ApolloQA.Data.Rating
                     var driverFactors = new Dictionary<Driver, Factor.Resolvable>();
                     foreach (var driver in this.Engine.root.GetDrivers())
                     {
-                        int points = driver.GetPoints(this.Engine.root, this.GetAlgorithmAssignment().DriverRatingPlan);
-                        Log.Debug("Points: " + points);
+                        if (bool.Parse(driver.GetQuestionResponse(this.Engine.root, "ExcludeDriver")) == false) 
+                        {
+                            int points = driver.GetPoints(this.Engine.root, this.GetAlgorithmAssignment().DriverRatingPlan);
+                            Log.Debug("Points: " + points);
 
-                        this.Engine.interpreter.SetVariable("Driver", driver);
+                            this.Engine.interpreter.SetVariable("Driver", driver);
 
-                        var factor = Factor.GetFactor("Individual Driver Rating Factor").GetResolvable(this.Engine);
+                            var factor = Factor.GetFactor("Individual Driver Rating Factor").GetResolvable(this.Engine);
 
-                        factor.Resolve();
-                        Log.Debug($"Driver: {driver.LicenseNo} {factor.Value}");
-                        driverFactors.Add(driver, factor);
+                            factor.Resolve();
+                            Log.Debug($"Driver: {driver.LicenseNo} {factor.Value}");
+                            driverFactors.Add(driver, factor);
 
+                        }
                     }
 
                     int powerUnitCount = this.Engine.root.GetVehicles().Where(it=>!it.IsNonPowered()).Count();
@@ -609,7 +640,7 @@ namespace ApolloQA.Data.Rating
                                                     LEFT JOIN [rating].RatingModifierCategorySubtype ModifierType on ModifierType.Id = Modifier.RatingModifierCategorySubtypeId
                                                     WHERE LineId =7 AND 
                                                     StateProv.Code = '{this.Engine.GoverningStateCode}' AND
-                                                    ('{DateTime.Now.ToString("d")}' BETWEEN Modifier.TimeFrom AND Modifier.TimeTo)
+                                                    ('{this.Engine.EffectiveDate.ToString("d")}' BETWEEN Modifier.TimeFrom AND Modifier.TimeTo)
                                                     ;");
 
                     string credit = "Maximum Schedule Rating Credit";
@@ -625,6 +656,8 @@ namespace ApolloQA.Data.Rating
 
                         var systemValue = (decimal)this.Engine.root[category[0]];
 
+                        //Log.Debug($"{category[0]} -> {systemValue}");
+
                         if (systemValue < categoryBoundaries[0])
                         {
                             total += categoryBoundaries[0];
@@ -637,7 +670,6 @@ namespace ApolloQA.Data.Rating
                         {
                             total += systemValue;
                         }
-
 
                     }
 
@@ -672,13 +704,14 @@ namespace ApolloQA.Data.Rating
                                                     LEFT JOIN [rating].RatingModifierCategorySubtype ModifierType on ModifierType.Id = Modifier.RatingModifierCategorySubtypeId
                                                     WHERE LineId =7 AND 
                                                     StateProv.Code = '{this.Engine.GoverningStateCode}' AND
-                                                    ('{DateTime.Now.ToString("d")}' BETWEEN Modifier.TimeFrom AND Modifier.TimeTo) AND
+                                                    ('{this.Engine.EffectiveDate.ToString("d")}' BETWEEN Modifier.TimeFrom AND Modifier.TimeTo) AND
                                                     [ModifierType].[Name] = 'Experience Rating'
                                                     ;");
 
                     var lower = -table[0]["Maximum Schedule Rating Credit"];
                     var upper = table[0]["Maximum Schedule Rating Debit"];
                     var value = this.Engine.root.ExperienceModifier;
+                    //Log.Debug($"experience -> {value}");
                     if (value < lower)
                     {
                         value = lower;
@@ -815,6 +848,38 @@ namespace ApolloQA.Data.Rating
 
                 }
             }
+            private decimal TrailerInterchangeExposureBase
+            {
+                get
+                {
+                    int pullingUnitCount = 0;
+                    int semiTrailerCount = 0;
+                    var vehicles = this.Engine.root.GetVehicles();
+                    foreach(var vehicle in vehicles)
+                    {
+                        if(vehicle.BodyCategoryTypeId == 5 && Engine.root.getLimits(vehicle).FirstOrDefault(it=> it.GetCoverageType().Name == "Collision" || it.GetCoverageType().Name == "Comprehensive") != null)
+                        {
+                            semiTrailerCount++;
+                            continue;
+                        }
+                        else if(vehicle.BodySubCategoryTypeId == 23 || vehicle.GrossVehicleWeight>=20001)
+                        {
+                            pullingUnitCount++;
+                        }
+
+                    }
+
+                    return Math.Max(1, Math.Max(0, pullingUnitCount - semiTrailerCount) + 0.10m * Math.Min(pullingUnitCount, semiTrailerCount));
+
+                }
+            }
+            private decimal Limit
+            {
+                get
+                {
+                    return this.KnownFields.Find(it=> it.Name== "Limit").Value;
+                }
+            }
             private decimal BIPDPremium
             {
                 get
@@ -827,7 +892,7 @@ namespace ApolloQA.Data.Rating
                     }
                     catch (Exception ex)
                     {
-                        Log.Error($"BIPD Manual Basic Limits Premium was not found in rating object: {ratingAlgorithm}");
+                        Log.Error($"BIPD Manual Basicï¿½Limits Premium was not found in rating object: {ratingAlgorithm}");
                         throw ex;
                     }
 
@@ -850,7 +915,7 @@ namespace ApolloQA.Data.Rating
                     }
                 }
             }
-            private decimal PIP_DriverRating
+            private decimal HalfDriverRating
             {
                 get
                 {
@@ -864,12 +929,155 @@ namespace ApolloQA.Data.Rating
                     catch (Exception ex)
                     {
                         Log.Error($"error retrieving BIPD Driver Rating Factor in rating object: {ratingAlgorithm}");
-                        throw ex;
+                        throw;
                     }
                 }
             }
 
-            
+            private decimal CargoHauledFactor
+            {
+                get
+                {
+                    var cargoHauled = this.KnownFields[0];
+                    string[] selections = JsonConvert.DeserializeObject<string[]>(cargoHauled.Value);
+
+                    var table = this.Engine.getTable(this.Factor.Name);
+                    var relevantRows = table.Where(row => selections.Contains(row["Cargo that is Hauled"]));
+
+                    return relevantRows.Select(row=>decimal.Parse(row["Factor"])).Max();
+
+                }
+            }
+
+            private decimal CargoTruckFactor
+            {
+                get
+                {
+                    var GVW = this.KnownFields.First(it=> it.Name == "GVW/GCW");
+                    var BodySubCategoryTypeId = this.KnownFields.First(it => it.Name == "BodySubCategoryTypeId");
+
+                    var table = this.Engine.getTable(this.Factor.Name);
+
+                    Dictionary<string, string> row;
+                    switch((decimal)GVW.Value)
+                    {
+                        //Truck Tractor
+                        case decimal n when n <= 45000 && BodySubCategoryTypeId.Value == 23:
+                            row = table.Find(it => it["Truck Type"] == "Heavy Truck-Tractor: 0 - 45k");
+                            return decimal.Parse(row["Factor"]);
+                        case decimal n when n > 45000 && BodySubCategoryTypeId.Value == 23:
+                            row = table.Find(it => it["Truck Type"] == "Extra Heavy Truck-Tractor: 45k+");
+                            return decimal.Parse(row["Factor"]);
+
+
+                        case decimal n when n <= 10000:
+                            row =  table.Find(it => it["Truck Type"] == "Light Truck or PPT: 0 - 10k");
+                            return decimal.Parse(row["Factor"]);
+
+                        case decimal n when n <= 20000:
+                            row = table.Find(it => it["Truck Type"] == "Medium Truck: 10,001 - 20k");
+                            return decimal.Parse(row["Factor"]);
+
+                        case decimal n when n <= 45000:
+                            row = table.Find(it => it["Truck Type"] == "Heavy Truck: 20,001 - 45k");
+                            return decimal.Parse(row["Factor"]);
+
+                        case decimal n when n > 45000:
+                            row = table.Find(it => it["Truck Type"] == "Extra-Heavy Truck: 45k+");
+                            return decimal.Parse(row["Factor"]);
+
+                        default:
+                            throw new Exception($"Incorrect decimal provided for GVW: {GVW.Value}");
+
+                    }
+                }
+            }
+
+            private decimal CargoRadiusFactor
+            {
+                get
+                {
+                    var radius = (int)this.KnownFields[0].Value;
+                    var table = this.Engine.getTable(this.Factor.Name);
+
+                    foreach(var row in table)
+                    {
+                        var upper = int.Parse(row["Radius Higher (Inclusive)"]);
+                        var lower = int.Parse(row["Radius Lower"]);
+
+                        if(radius> lower && radius<= upper)
+                        {
+                            this.matchedRow = row;
+                            return decimal.Parse(row["Factor"]);
+                        }
+                    }
+                    throw new Exception($"Radius: {radius} did not match any row in table \n {string.Join(",\n", table.Select(dict=> dict.Select(it=> $"{it.Key}:{it.Value}, ")))}");
+                }
+            }
+
+            private decimal DrivertoVehicleRatio
+            {
+                get
+                {
+                    var ratio = (int)this.KnownFields[0].Value;
+                    var table = this.Engine.getTable(this.Factor.Name);
+                    foreach (var row in table)
+                    {
+                        var upper = int.Parse(row["Driver to Vehicle Ratio Upper Bound"]);
+                        var lower = int.Parse(row["Driver to Vehicle Ratio Lower Bound"]);
+
+                        if (ratio >= lower && ratio < upper)
+                        {
+                            this.matchedRow = row;
+                            return decimal.Parse(row["Factor"]);
+                        }
+                    }
+                    throw new Exception($"Radius: {ratio} did not match any row in table \n {string.Join(",\n", table.Select(dict => dict.Select(it => $"{it.Key}:{it.Value}, ")))}");
+
+                }
+            }
+
+            private decimal BaseRateFactorRR1
+            {
+                get
+                {
+                    string DAILYLIMIT = "Daily $ limit";
+                    string NUMBEROFDAYS = "Number of Days";
+                    string SELECTED = "Selected";
+                    string TOTAL = "Total";
+                    string DOWNTIME = "Downtime";
+
+                    var table = this.Engine.getTable(this.Factor.Name);
+
+
+
+                    var Limit = (CoverageType.Limit)this.Engine.interpreter.Eval("Limit");
+
+                    var dailyLimit = Limit.selectedLimits[0];
+                    var numberOfDays = Limit.selectedLimits[1];
+                    var total = Limit.selectedLimits[2];
+                    var downtime = (string)KnownFields[0].Value;
+
+
+
+                    foreach (var row in table)
+                    {
+                      
+                        if (   int.Parse(row[DAILYLIMIT]) == dailyLimit 
+                            && int.Parse(row[NUMBEROFDAYS]) == numberOfDays
+                            && int.Parse(row[TOTAL]) == total
+                            && row[DOWNTIME].ToLower() == downtime.ToLower())
+                        {
+                            return decimal.Parse(row[SELECTED]);
+                        }
+                    }
+                    Log.Critical("Table->" + JArray.FromObject(table).ToString());
+                    throw new Exception($" dailyLimit: {dailyLimit}, numberOfDays: {numberOfDays}, total: {total}, downtime: {downtime} did not match any row in table");
+
+
+                }
+            }
+
 
 
         }

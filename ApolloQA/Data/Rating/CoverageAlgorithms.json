@@ -1,8 +1,8 @@
 {
-  "IL": {
-    "Uninsured Motorists BI": "UM00003",
-    "Underinsured Motorists BI": "UM00004",
-    "Uninsured Motorists PD": "UM00006",
+  "All": {
+    "Cargo Coverage":  "CR1",
+    "In-Tow": "IT1",
+    "Rental Reimbursement": "RR1",
     "Hired Car BIPD - Truckers": "OR00001",
     "Hired Car BIPD - All Other": "OR00002",
     "Hired Car Physical Damage": "OR00003",
@@ -17,6 +17,12 @@
     "Drive Other Car Other Than Collision": "OR00013",
     "Drive Other Car Medical Payments": "OR00014",
     "Pollution": "OR00019"
+  },
+  "IL": {
+    "Uninsured Motorists BI": "UM00003",
+    "Underinsured Motorists BI": "UM00004",
+    "Uninsured Motorists PD": "UM00006",
+
   },
   "CA": {
     "Uninsured Motorists BI": "UM00021",
@@ -50,9 +56,14 @@
     "Uninsured Motorists BI": "UM00011",
     "Underinsured Motorists BI": "UM00012"
   },
-  "WI":{
+  "WI": {
     "Uninsured Motorists BI": "UM00026",
     "Underinsured Motorists BI": "UM00026"
+  },
+  "CO": {
+    "Uninsured Motorists BI": "UM00026",
+    "Uninsured Motorists PD": "UM00026"
+
   }
 }
 

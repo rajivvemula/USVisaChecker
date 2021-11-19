@@ -1,24 +1,24 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using ApolloQA.Source.Driver;
-using System.IO;
-using System.Threading.Tasks;
-using CsvHelper;
-using System.Globalization;
-using CsvHelper.Configuration;
+﻿using ApolloQA.Data.Entity;
 using ApolloQA.Data.Rating;
-using ApolloQA.Data.Entity;
+using ApolloQA.Source.Driver;
+using CsvHelper;
+using CsvHelper.Configuration;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ApolloQA.Source.Helpers
 {
-    class Functions
+    internal class Functions
     {
         public static void ScrollToBottom()
         {
@@ -110,7 +110,6 @@ namespace ApolloQA.Source.Helpers
                 }
             }
             return ex ?? new Exception(message);
-
         }
 
         public static System.Exception handleFailure(Exception ex, bool optional = false)
@@ -127,9 +126,8 @@ namespace ApolloQA.Source.Helpers
             return ex;
         }
 
-        public static void WriteToCSV(string filePath, IEnumerable<Dictionary<string,string>> data)
+        public static void WriteToCSV(string filePath, IEnumerable<Dictionary<string, string>> data)
         {
-
             if (Mutex.TryOpenExisting("MUTEX_WRITE_CSV", out Mutex mutex))
             {
                 mutex.WaitOne();
@@ -167,24 +165,23 @@ namespace ApolloQA.Source.Helpers
 
             File.WriteAllText(filePath, fileWithHeader.ToString());
 
-
             using (var writer = new StreamWriter(filePath, true))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 //var hasHeaderBeenWritten = false;
                 foreach (var row in data)
                 {
-                   /* if (!hasHeaderBeenWritten)
-                    {
-                        foreach (var pair in row)
-                        {
-                            csv.WriteField(pair.Key);
-                        }
+                    /* if (!hasHeaderBeenWritten)
+                     {
+                         foreach (var pair in row)
+                         {
+                             csv.WriteField(pair.Key);
+                         }
 
-                        hasHeaderBeenWritten = true;
+                         hasHeaderBeenWritten = true;
 
-                        csv.NextRecord();
-                    }*/
+                         csv.NextRecord();
+                     }*/
 
                     foreach (var pair in row)
                     {
@@ -193,12 +190,11 @@ namespace ApolloQA.Source.Helpers
 
                     csv.NextRecord();
                 }
-               
             }
 
             mutex.ReleaseMutex();
-
         }
+
         public static Dictionary<string, string> TableToDictionary(TechTalk.SpecFlow.Table table)
         {
             var dictionary = new Dictionary<string, string>();
@@ -225,30 +221,29 @@ namespace ApolloQA.Source.Helpers
                     for (int rowIndex = 1; rowIndex < sheetData.Length; rowIndex++)
                     {
                         tasks.Add(parseRow(workbookPart, header, sheetData[rowIndex], filePath));
-
                     }
                 }
 
                 return tasks.Select(it => it.Result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Debug($"File-> {filePath}");
                 throw ex;
             }
         }
+
         public static List<Dictionary<String, String>> parseCSV(String filePath, int headerRow = 0)
         {
             List<string> header = new List<String>();
 
-            if( !File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
                 handleFailure($"File {filePath} does not exist");
             }
             filePath = System.IO.Path.IsPathFullyQualified(filePath) ? filePath : System.IO.Path.GetFullPath(filePath);
 
             Log.Debug(filePath);
-
 
             List<Dictionary<String, String>> result = new List<Dictionary<String, String>>();
 
@@ -268,7 +263,6 @@ namespace ApolloQA.Source.Helpers
 
                     while (!String.IsNullOrEmpty(columnName))
                     {
-                      
                         header.Add(columnName);
                         i++;
                         columnName = csvReader.GetField(i);
@@ -277,18 +271,18 @@ namespace ApolloQA.Source.Helpers
                     while (csvReader.Read())
                     {
                         Dictionary<String, String> row = new Dictionary<String, String>();
-                        for(int col =0; col < header.Count; col++)
+                        for (int col = 0; col < header.Count; col++)
                         {
                             row.Add(header.ElementAt(col), csvReader.GetField(col));
                         }
-                        result.Add( row);
+                        result.Add(row);
                     }
                 }
             }
             return result;
         }
 
-        private static async Task<Dictionary<String, String>> parseRow(WorkbookPart workbookPart, string [] header, Row row, string filePath)
+        private static async Task<Dictionary<String, String>> parseRow(WorkbookPart workbookPart, string[] header, Row row, string filePath)
         {
             var cells = row.Elements<Cell>().ToArray<Cell>();
             var dict = new Dictionary<String, String>();
@@ -297,9 +291,9 @@ namespace ApolloQA.Source.Helpers
                 Cell cell;
                 try
                 {
-                     cell= cells[i];
+                    cell = cells[i];
                 }
-                catch(IndexOutOfRangeException)
+                catch (IndexOutOfRangeException)
                 {
                     cell = new Cell();
                 }
@@ -307,7 +301,7 @@ namespace ApolloQA.Source.Helpers
                 {
                     dict.Add(header[i], extractCellText(workbookPart, cell));
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Log.Debug($"File-> {filePath}");
                     throw ex;
@@ -328,13 +322,14 @@ namespace ApolloQA.Source.Helpers
             }
             return (text ?? string.Empty).Trim();
         }
+
         public static dynamic parseRatingFactorNumericalValues(String value)
         {
             if (value.Contains("+"))
             {
                 return int.MaxValue;
             }
-            else if(int.TryParse(value, out int intValue))
+            else if (int.TryParse(value, out int intValue))
             {
                 return intValue;
             }
@@ -343,6 +338,7 @@ namespace ApolloQA.Source.Helpers
                 return null;
             }
         }
+
         public static int parseInt(string IntegerString)
         {
             try
@@ -362,7 +358,7 @@ namespace ApolloQA.Source.Helpers
             try
             {
                 vin = (string)RestAPI.GET("https://randomvin.com/getvin.php?type=real");
-                if(string.IsNullOrWhiteSpace(vin))
+                if (string.IsNullOrWhiteSpace(vin))
                 {
                     return GetRandomVIN();
                 }
@@ -377,14 +373,14 @@ namespace ApolloQA.Source.Helpers
         public static string GetValidDriverLicense(string state)
         {
             //not a great implementation but it works
-            char[] chars =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+            char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
             Random r = new Random();
 
             string licenseNo = "";
-            
-            if(state.ToUpper() == "IL")
+
+            if (state.ToUpper() == "IL")
             {
-                licenseNo = ""+chars[r.Next(chars.Length)];
+                licenseNo = "" + chars[r.Next(chars.Length)];
             }
 
             licenseNo += (r.Next(100, 1000).ToString()) + (r.Next(1000, 10000).ToString()) + (r.Next(1000, 10000).ToString());
@@ -392,7 +388,7 @@ namespace ApolloQA.Source.Helpers
             return licenseNo;
         }
 
-        public static string getValidCreditCardNumber(string cardType="Visa")
+        public static string getValidCreditCardNumber(string cardType = "Visa")
         {
             switch (cardType)
             {
@@ -404,7 +400,7 @@ namespace ApolloQA.Source.Helpers
 
                 case "JCB":
                     return "3088000000000017";
-           
+
                 case "Visa":
                     return "4111111111111111";
 
@@ -431,9 +427,9 @@ namespace ApolloQA.Source.Helpers
             }
         }
 
-        public static int GetRandomInteger(int max=100)
+        public static int GetRandomInteger(int max = 100)
         {
-           return new Random().Next(max); 
+            return new Random().Next(max);
         }
 
         public static Data.Entity.Organization CreateNewOrganization()
@@ -446,10 +442,10 @@ namespace ApolloQA.Source.Helpers
             return new Data.TestData.Organization(ClassCodeKeyword.GetUsingKeywordName(keyword)).organization;
         }
 
-        public static void  AddAddressToOrganization(Data.Entity.Organization Org, string state)
+        public static void AddAddressToOrganization(Data.Entity.Organization Org, string state)
         {
             var OrgData = new Data.TestData.Organization(Org);
-            OrgData.OrganizationAddAddress(state);   
+            OrgData.OrganizationAddAddress(state);
         }
 
         public static Quote CreateNewQuote(string keyword, string state)
@@ -504,14 +500,14 @@ namespace ApolloQA.Source.Helpers
             );
             quote.AddVehicleCoverage();*/
 
-            quote.CreateVehicle();
+            quote.CreateVehicles();
             quote.AddVehicleToQuote();
             quote.AddVehicleCoverage();
 
-            quote.CreateDriver();
+            quote.CreateDrivers();
             quote.AddDriverToQuote();
 
-            quote.CreateTrailer();
+            //quote.CreateTrailer();
             //quote.AddTrailerToQuote();
 
             quote.AnswerOperationQuestions();
@@ -520,8 +516,8 @@ namespace ApolloQA.Source.Helpers
 
             var summary = quote.PostSummary();
             Log.Debug("Quote Id: " + quote.quoteEntity.Id);
-            Log.Debug("Rating Group Id (rating worksheet): \n" +$"{Environment.GetEnvironmentVariable("HOST")}/rating/ratings-worksheet/" + (summary?["ratingGroupId"]??"null") +"\n" );
-            if (summary["errors"].Count()>0 || summary?["ratingResponses"] == null )
+            Log.Debug("Rating Group Id (rating worksheet): \n" + $"{Environment.GetEnvironmentVariable("HOST")}/rating/ratings-worksheet/" + (summary?["ratingGroupId"] ?? "null") + "\n");
+            if (summary["errors"].Count() > 0 || summary?["ratingResponses"] == null)
             {
                 Log.Critical(summary);
                 throw Functions.handleFailure($"Premium generation was unsuccessful Quote: {quote.quoteEntity.Id} Premium: " + summary?["ratingResponses"]);
@@ -536,23 +532,23 @@ namespace ApolloQA.Source.Helpers
 
         public static dynamic GetCAB(int? usDotNumber)
         {
-                string baseURL = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_BASEURL_SECRETNAME"));
-                string APIKEY = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_API_KEY_SECRETNAME"));
+            string baseURL = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_BASEURL_SECRETNAME"));
+            string APIKEY = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_API_KEY_SECRETNAME"));
 
-                if (usDotNumber == null)
-                {
-                    return null;
-                }
+            if (usDotNumber == null)
+            {
+                return null;
+            }
 
-                var response = RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/checkDOT/{usDotNumber}?key={APIKEY}");
+            var response = RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/checkDOT/{usDotNumber}?key={APIKEY}");
 
-                if (!(bool)response.found)
-                {
-                    Log.Debug("usDot" + usDotNumber + " returned invalid from CAB");
-                    return null;
-                }
+            if (!(bool)response.found)
+            {
+                Log.Debug("usDot" + usDotNumber + " returned invalid from CAB");
+                return null;
+            }
 
-                return RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/{usDotNumber}?key={APIKEY}");
+            return RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/{usDotNumber}?key={APIKEY}");
         }
 
         public static string parsePDF(string path)
@@ -567,7 +563,7 @@ namespace ApolloQA.Source.Helpers
             return text;
         }
 
-        public static void MarkTestCasePassed(int testCaseId) 
+        public static void MarkTestCasePassed(int testCaseId)
         {
             if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))
             {
@@ -580,8 +576,12 @@ namespace ApolloQA.Source.Helpers
             if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))
             {
                 Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_FAIL);
-
             }
+        }
+
+        public static int GetRatio(int a, int b)
+        {
+            return b == 0 ? Math.Abs(a) : GetRatio(b, a % b);
         }
     }
 }

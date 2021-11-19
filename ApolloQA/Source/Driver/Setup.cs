@@ -199,11 +199,11 @@ namespace ApolloQA.Source.Driver
         {
             JObject environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine(SourceDir, JsonEnvironmentFileName.ToLower())).ReadToEnd());
             //automation specific keyvault
-            var KeyVault = new KeyVault(environmentVariables?["KEYVAULT_URI"]?.ToString());
+            var KeyVault = environmentVariables?["KEYVAULT_URI"] == null ? null : new KeyVault(environmentVariables?["KEYVAULT_URI"]?.ToString());
             
 
             //application under test's keyvault
-            var appKeyVault = new KeyVault(environmentVariables?["APP_KEYVAULT_URI"]?.ToString());
+            var appKeyVault = environmentVariables?["APP_KEYVAULT_URI"] == null? null : new KeyVault(environmentVariables?["APP_KEYVAULT_URI"]?.ToString());
             
             //
             //Loop through each variable, 
@@ -226,11 +226,11 @@ namespace ApolloQA.Source.Driver
                     var secretName = variable.Value.ToString();
 
                     //Log.Debug(secretName);
-                    if(KeyVault.GetSecret(secretName, true) is var secretValue && !string.IsNullOrWhiteSpace(secretValue))
+                    if(KeyVault != null && KeyVault.GetSecret(secretName, true) is var secretValue && !string.IsNullOrWhiteSpace(secretValue))
                     {
                         Environment.SetEnvironmentVariable(secretName, secretValue);
                     }
-                    else
+                    else if(appKeyVault != null)
                     {
                         Environment.SetEnvironmentVariable(secretName, appKeyVault.GetSecret(secretName));
                     }

@@ -51,6 +51,9 @@
   "Vehicle Type Description": {
     "source": "Vehicle.TypeName.Replace(\"Semi-Trailer\", \"SemiTrailer\")"
   },
+  "BodySubCategoryTypeId":{
+    "source":"Vehicle.BodySubCategoryTypeId"
+  },
   "GVW/GCW": {
     "source": "Vehicle.GrossVehicleWeight"
   },
@@ -132,7 +135,7 @@
     "type": "Currency"
   },
   "Property Damage Limit Per Occurrence": {
-    "source": "Limit.selectedLimits[2]",
+    "source": "Limit.selectedLimits.ElementAtOrDefault(2)",
     "type": "Currency"
   },
   //default to false as per paula
@@ -151,8 +154,57 @@
   },
   "Benefits Limit": {
     "source": "Limit.selectedLimits[0]"
-  }
+  },
+  "Written Agreement": {
+    "source": "root.GetQuestionResponse(\"TrailerInterchangeAgreements\")",
+    "type": "Boolean"
 
+  },
+  "Other Than Collision Type": {
+    "source": "\"Comprehensive\""
+  },
+  "Collision Type": {
+    "source": "\"Collision\""
+  },
+  "Other Than Collision Deductible": {
+    "source": "Limit.selectedDeductibles[0]"
+  },
+  "Collision Deductible": {
+    "source": "Limit.selectedDeductibles[1]"
+  },
+  "State": {
+    "source": "State"
+  },
+  "Auto Liability Limit":{
+    "source": "Limit.selectedLimits[0]"
+  },
+  "Cargo that is Hauled":{
+    "source": "root.GetQuestionResponse(\"Haul\")"
+  },
+  "Theft Coverage":{
+    "source": "Limit.getQuestionResponse(\"IncludeCargoTheftCoverage\")"
+  },
+  "Named Perils Coverage":{
+    "source": "Limit.getQuestionResponse(\"IncludeCargoNamedPerilsCoverage\")"
+  },
+  "Earned Freight Coverage":{
+    "source": "((string)Limit.getQuestionResponse(\"IncludeEarnedFreightCoverage\")).ToLower() == \"true\" ? \"Included\" : \"Excluded\""
+  },
+  "Customer Cargo Coverage":{
+    "source": "Limit.getQuestionResponse(\"CustomerCargoCoverage\")"
+  },
+  "Driver Count":{
+    "source": "root.GetDrivers().Count"
+  },
+  "Driver to Vehicle Ratio":{
+    "source": "DrivertoVehicleRatio"
+  },
+  "Hours of Operation":{
+    "source": "Boolean.Parse((string)root.GetQuestionResponse(\"OnCall\")) ? 24 : 23"
+  },
+  "Downtime":{
+    "source": "Limit.getQuestionResponse(\"RentalDowntimeIncluded\")"
+  }
 }
   
 

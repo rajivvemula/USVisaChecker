@@ -1174,13 +1174,13 @@
     }
   },
 
-  {
-    "code": "FL5476",
-    "name": "Florida ID Card",
-    "condition": {
-      "stateCode": "FL"
-    }
-  },
+  //{
+  //  "code": "FL5476",
+  //  "name": "Florida ID Card",
+  //  "condition": {
+  //    "stateCode": "FL"
+  //  }
+  //},
 
   {
     "code": "GA5937",

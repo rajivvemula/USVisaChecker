@@ -1,4 +1,4 @@
-﻿@NoBrowser
+﻿@NoBrowser @ignore
 Feature: Rating Tables
 
 # Pre-requisites:
@@ -23,9 +23,7 @@ Feature: Rating Tables
 #
 # Instructions to execute
 #
-# 1.) Navigate to default.srprofile
-# 2.) Identify the <Filter> tag
-# 3.) Remove the negation ('!') from the @ratingTests tag
+# 1.) Switch runsettings to rating.runsettings
 #
 #
 
@@ -52,7 +50,7 @@ Feature: Rating Tables
 #
 #      BUG 33584
 #
-@ratingTests
+@ratingTestsignore @ignore
 Scenario: Test rating manual against PDF
 	Given <state> tables are parsed into json object
 	And tables are loaded from the system for date 2021-08-01
@@ -73,7 +71,7 @@ Scenario: Test rating manual against PDF
 	| CA    |
 
 
-@ratingTests
+@ratingTestsignore @ignore
 Scenario: Test rating manual against CSV
 	Given <state> csv is parsed into json object
 	And tables are loaded from the system for date 2021-03-01

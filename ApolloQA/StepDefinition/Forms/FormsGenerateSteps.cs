@@ -37,8 +37,7 @@ namespace ApolloQA.StepDefinition.Forms
 
             this.form  = Form.GetForm(code);
             //matching policy from the form
-
-            this.policy = this.form.condition.GetValidPolicy();
+            this.policy = this.form.condition.GetValidPolicy(true);
         }
 
         private DocGenBody _body;
@@ -46,13 +45,16 @@ namespace ApolloQA.StepDefinition.Forms
         public void WhenUserAttemptsToGenerateForm()
         {
             this.documentName = $"AutomationForms ({Functions.GetRandomInteger(10000)}) - {this.name.Trim('-').Trim()}";
+
+            var ratableObjectId = this.form.condition.endorsement ? (dynamic)this.policy.GetDraftEndorsements().Last().GetRatableObject().Id : null;
+
             DocGenBody body = new DocGenBody()
             {
                 documentName = this.documentName,
                 entityId = policy.Id,
                 entityType = policy.EntityTypeId,
                 lineId = LineId,
-                ratableObjectId = this.form.condition.endorsement ? (dynamic)this.policy.GetDraftEndorsements().Last().GetRatableObject().Id : null,
+                ratableObjectId = ratableObjectId,
                 requestedForms = new RequestedForms()
                 {
                     forms = new List<FormObj>() {

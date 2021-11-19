@@ -1,23 +1,72 @@
-﻿using ApolloQA.Source.Helpers;
-using DynamicExpresso;
+﻿using DynamicExpresso;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ApolloQA.Data.TestData
 {
-    //the purpose of this class is to parse Json objects
-    //replacing any variables (e.g. "@VariableName") 
+    /// <summary>
+    /// The purpose of this class is to parse Json objects
+    /// replacing any variables (e.g. "@VariableName")
+    /// </summary>
     public class Parser
     {
         public Interpreter interpreter = new Interpreter();
 
+        public T Hydrate<T>(object obj, List<string> nestedTypes = null)
+        {
+            nestedTypes ??= new List<string>();
 
+            if (obj != null)
+            {
+                nestedTypes.AddRange(obj.GetType().GetNestedTypes().Select(it => it.Name));
+
+                //// Loop through each property in the provided object
+                foreach (var prop in obj.GetType().GetProperties())
+                {
+                    if (nestedTypes.Contains(prop.PropertyType.Name))
+                    {
+                        var nestedObject = prop.GetGetMethod().Invoke(obj, null);
+                        Hydrate<dynamic>(nestedObject, nestedTypes);
+                    }
+
+                    // Invoke each property to get the value
+                    try
+                    {
+                        var value = prop.GetGetMethod().Invoke(obj, null);
+
+                        // If the value starts with @ then it means it's a variable
+                        if (value is string && ((string)value).StartsWith('@'))
+                        {
+                            // Cast the interpreset value into whatever the property type is
+                            var castedValue = Convert.ChangeType(interpreter.Eval(((string)value)[1..]), prop.PropertyType);
+
+                            if (castedValue == null || string.IsNullOrWhiteSpace(castedValue.ToString()))
+                            {
+                                Log.Error($"{prop.Name} returned null for {((string)value)[1..]}");
+
+                                throw new NullReferenceException();
+                            }
+
+                            // Invoke the setter method with the casted value
+                            prop.SetValue(obj, castedValue);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Log.Error(prop.Name);
+                        throw;
+                    }
+                }
+            }
+
+            // Finally, return the hydrated object
+            return (T)obj;
+        }
 
         public dynamic GetObject(string fileName)
         {
@@ -26,14 +75,13 @@ namespace ApolloQA.Data.TestData
                                                       $"Data/TestData/objects/{(fileName.Contains(".json") ? fileName : fileName + ".json")}"
                                                       )).ReadToEnd();
 
-
             //loop through the json string as many times as there are @'s
             int count = jsonString.Count(it => it == '@');
-            for (int i=0; i< count; i++)
+            for (int i = 0; i < count; i++)
             {
                 //this is a post scenario
                 //if the jsonString doens't contain any "@ then it's finished
-                if(!jsonString.Contains("\"@"))
+                if (!jsonString.Contains("\"@"))
                 {
                     break;
                 }
@@ -54,9 +102,9 @@ namespace ApolloQA.Data.TestData
                 object value;
                 try
                 {
-                     value= interpreter.Eval(variableName);
+                    value = interpreter.Eval(variableName);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Log.Critical($"error evaluating Variable: {variableName}");
                     throw ex;
@@ -86,7 +134,6 @@ namespace ApolloQA.Data.TestData
                     //loop through each existing \ withing the value
                     foreach (var slash in ((string)value).Where(it => it == '\\'))
                     {
-
                         var match = regex.Match((string)value);
 
                         //extract the three characters matched by the regex
@@ -98,9 +145,7 @@ namespace ApolloQA.Data.TestData
                         value = ((string)value).Replace(stringToReplace, stringToReplace.Replace("\\", "\\\\"));
                     }
 
-
                     jsonString = jsonString.Replace($"\"@{variableName}\"", $"\"{(string)value}\"");
-
                 }
                 else
                 {
@@ -123,10 +168,10 @@ namespace ApolloQA.Data.TestData
                 //this will either return a JObject or JArray
                 return JsonConvert.DeserializeObject<dynamic>(jsonString);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Log.Critical($"object: {jsonString}");
-                    throw ex;
+                throw;
             }
         }
     }

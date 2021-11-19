@@ -1,6 +1,6 @@
 ﻿{
-  "RatableObjectEffectiveDate": "@TomorrowDate",
-  "RatableObjectExpirationDate": "@YearLaterDate",
+  "RatableObjectEffectiveDate": "@EffectiveDate",
+  "RatableObjectExpirationDate": "@ExpirationDate",
   "InsuredId": "@OrganizationId",
   "MailingAddressId": "@PhysicalAddressId",
   "PhysicalAddressId": "@PhysicalAddressId",

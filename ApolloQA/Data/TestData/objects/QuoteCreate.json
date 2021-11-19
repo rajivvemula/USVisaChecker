@@ -3,8 +3,8 @@
   "insuredId": "@OrganizationId",
   "agencyId": 2,
   "carrierId": 3,
-  "ratableObjectEffectiveDate": "@TomorrowDate",
-  "ratableObjectExpirationDate": "@YearLaterDate",
+  "ratableObjectEffectiveDate": "@EffectiveDate",
+  "ratableObjectExpirationDate": "@ExpirationDate",
   "keywordId": "@KeywordId",
   "industryClassTaxonomyClassName": "@IndustryClassTaxonomy",
   "industryClassTaxonomyId": "@IndustryClassTaxonomyId"

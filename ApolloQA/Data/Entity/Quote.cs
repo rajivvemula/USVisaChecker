@@ -1,11 +1,14 @@
-﻿using System;
+﻿using ApolloQA.Source.Helpers;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using ApolloQA.Source.Helpers;
 using ApolloQA.Data.Entity.Question;
 using ApolloQA.Data.Rating;
+using Newtonsoft.Json;
+using static ApolloQA.Data.Entity.Policy;
 
 namespace ApolloQA.Data.Entity
 {
@@ -13,36 +16,52 @@ namespace ApolloQA.Data.Entity
     {
         public readonly long Id;
 
-        public Quote(int Id) {
+        public Quote(int Id)
+        {
             this.Id = Id;
         }
+        [JsonConstructor]
         public Quote(long Id)
         {
             this.Id = Id;
         }
+
         public Quote(string property, int value)
         {
             this.Id = (int)Cosmos.GetQuery("Application", $"SELECT * FROM c Where c.{property}={value} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"];
-
         }
+
         public Quote(string property, string value)
         {
             this.Id = (int)Cosmos.GetQuery("Application", $"SELECT * FROM c Where c.{property}='{value}' ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"];
-
         }
+
         public Quote(JObject quoteProps)
         {
             this.Id = quoteProps["Id"].ToObject<long>();
             this._properties = quoteProps;
         }
+
         private JObject _properties = null;
+
+        private JObject _APIObj = null;
 
         public Quote CacheProps()
         {
-            this._properties =  Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").ElementAt(0);
-
+            this._properties = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").ElementAt(0);
+            this._APIObj = RestAPI.GET($"/quote/{this.Id}");
             return this;
         }
+
+        public JObject GetAPIObj()
+        {
+            if (_APIObj != null)
+            {
+                return _APIObj;
+            }
+            return RestAPI.GET($"/quote/{this.Id}");
+        }
+
         public dynamic GetProperties()
         {
             if (_properties != null)
@@ -51,11 +70,13 @@ namespace ApolloQA.Data.Entity
             }
             return Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").ElementAt(0);
         }
+
         public dynamic GetProperty(String propertyName)
         {
             var property = this.GetProperties()[propertyName];
             return property;
         }
+
         public dynamic this[String propertyName]
         {
             get
@@ -72,12 +93,10 @@ namespace ApolloQA.Data.Entity
             }
         }
 
-
         public static Quote GetLatestQuote()
         {
             return new Quote((int)Cosmos.GetQuery("Application", "SELECT * FROM c WHERE c.ApplicationStatusValue  NOT IN (\"Issued\", \"Expired\", \"Cancelled\") ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
         }
-
 
         public static Quote GetLatestIssuedQuote()
         {
@@ -86,7 +105,7 @@ namespace ApolloQA.Data.Entity
 
         public static int GetNCFRequest(long tetherID)
         {
-            return  Cosmos.GetQuery("NcfRequest", $"SELECT * FROM c WHERE c.TetherId = {tetherID} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"];
+            return Cosmos.GetQuery("NcfRequest", $"SELECT * FROM c WHERE c.TetherId = {tetherID} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"];
         }
 
         public static string GetNCFRResponse(long requestID)
@@ -94,32 +113,58 @@ namespace ApolloQA.Data.Entity
             return Cosmos.GetQuery("NcfResponse", $"SELECT * FROM c WHERE c.RequestId = {requestID} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["RawScore"];
         }
 
-
-
         public Policy PurchaseThis()
         {
             var body = new JObject()
             {
-                { "amount", 100 },
+                { "amount", 10000 },
                 { "checkDate", DateTime.Now},
                 { "entityId", this.Tether.Id },
                 { "entityTypeId", 15000},
                 { "isAppliedToCollections", null},
                 { "memo", "113456"},
-                { "partyId", this.Organization.Id},
+                { "partyId", this.Organization.PartyId},
                 { "paymentMethodTypeId", 4}
             };
             var response = RestAPI.POST("payment", body);
 
-            if(response.isSuccess!=true)
+            if (response.isSuccess != true)
             {
                 throw Functions.handleFailure(response);
             }
 
             return GetCurrentRatableObject();
-
         }
 
+        public JObject ReferToUnderwriting()
+        {
+            var response = RestAPI.POST($"/quote/{Id}/referToUnderwriting", "\"Testing\"");
+
+            return response;
+        }
+
+        public JObject GenerateProposal()
+        {
+            var response = RestAPI.POST($"/quote/{Id}/proposal", null);
+
+            return response;
+        }
+
+        public dynamic CreateEndorsementHeader(long policyId)
+        {
+            var endorseObject = new
+            {
+                number = "001",
+                label = "Endorsement Label",
+                effectiveDate = "2021-11-06T04:00:00.000Z",
+                reasonForChangeId = ReasonForChangeEndorsement.AgencyInitiated,
+                remarks = ""
+            };
+
+            var response = RestAPI.PUT($"/policy/{policyId}/endorsement/{Id}", JObject.FromObject(endorseObject));
+
+            return response;
+        }
 
         public Tether Tether
         {
@@ -130,16 +175,17 @@ namespace ApolloQA.Data.Entity
         }
 
         private Policy _currentRatableObject;
+
         public Policy GetCurrentRatableObject()
         {
-            if(_currentRatableObject == null)
+            if (_currentRatableObject == null)
             {
                 var ratableObjectId = Tether.GetTether(this.Id).CurrentRatableObjectId;
-                if(ratableObjectId == null)
+                if (ratableObjectId == null)
                 {
                     return null;
                 }
-                _currentRatableObject = new Policy(ratableObjectId?? throw new ArgumentNullException());
+                _currentRatableObject = new Policy(ratableObjectId ?? throw new ArgumentNullException());
             }
             return _currentRatableObject;
         }
@@ -150,21 +196,22 @@ namespace ApolloQA.Data.Entity
             return ratableObjectId is DBNull ? null : new Policy(ratableObjectId);
         }
 
+        public List<CoverageType.Limit> SelectedCoverages => ((JArray)this.GetProperty("SelectedCoverages"))
+                                                            .ToObject<List<CoverageType.Limit>>()
+                                                            .Where(it => it.selectedDeductibleName != null || it.selectedLimitName != null || (it.riskCoverages?.Any() ?? false))
+                                                            .OrderBy(it => it.GetCoverageType().SortOrder).ToList().ToList();
 
         public IEnumerable<CoverageType> getCoverageTypes(Vehicle risk)
         {
-            
-            var coverages = this.GetProperty("SelectedCoverages");
-
-            foreach(var coverage in coverages)
+            foreach (var limit in SelectedCoverages)
             {
-                var coverageType = new CoverageType((int)coverage.CoverageTypeId);
+                var coverageType = limit.GetCoverageType();
 
-                if(coverageType.isVehicleLevel)
+                if (coverageType.isVehicleLevel)
                 {
-                    foreach(var riskEntry in coverage.RiskCoverages)
+                    foreach (var riskEntry in limit.riskCoverages)
                     {
-                        if (riskEntry.RiskId == risk.RiskId)
+                        if (riskEntry.riskId == risk.RiskId)
                         {
                             yield return coverageType;
                         }
@@ -174,72 +221,75 @@ namespace ApolloQA.Data.Entity
                 {
                     yield return coverageType;
                 }
-
             }
+        }
 
+        public List<CoverageType.Limit> getLimits()
+        {
+            return this.SelectedCoverages;
         }
 
         public IEnumerable<CoverageType.Limit> getLimits(Vehicle risk)
         {
-
-            var coverages = this.GetProperty("SelectedCoverages");
-
-            foreach (var coverage in coverages)
+            foreach (var limit in SelectedCoverages)
             {
-                var coverageType = new CoverageType((int)coverage.CoverageTypeId);
+                var coverageType = limit.GetCoverageType();
 
                 if (coverageType.isVehicleLevel)
                 {
-                    foreach (var riskEntry in coverage.RiskCoverages)
+                    foreach (var riskEntry in limit.riskCoverages)
                     {
-                        if (riskEntry.RiskId == risk.RiskId)
+                        if (riskEntry.riskId == risk.RiskId)
                         {
-                            var limit  = new CoverageType.Limit(coverageType,
-                                                    riskEntry.SelectedDeductibleName.ToObject<string?>(),
-                                                    riskEntry.SelectedDeductibles.ToObject<List<int>>(),
-                                                    riskEntry.SelectedLimitName.ToObject<string?>(),
-                                                    riskEntry.SelectedLimits.ToObject<List<int>>(),
-                                                    (JArray)riskEntry.QuestionResponses
-                                                    );
                             yield return limit;
                         }
                     }
                 }
-                else if( !(risk.IsNonPowered() && coverageType.IsNonPoweredVehicle_Unapplicable()) )
+                else if (!(risk.IsNonPowered() && coverageType.IsNonPoweredVehicle_Unapplicable()))
                 {
-
-                    var limit = new CoverageType.Limit(coverageType,
-                                                    coverage.SelectedDeductibleName.ToObject<string?>(),
-                                                    coverage.SelectedDeductibles.ToObject<List<int>>(),
-                                                    coverage.SelectedLimitName.ToObject<string?>(),
-                                                    coverage.SelectedLimits.ToObject<List<int>>(),
-                                                    (JArray)coverage.QuestionResponses
-                                                    );
                     yield return limit;
                 }
-
             }
-
         }
+
         public dynamic GetVehicleTypeRisk()
         {
             int riskTypeId = 1;
 
+            if (_properties != null)
+            {
+                if (_properties[nameof(GetVehicleTypeRisk)] == null)
+                {
+                    _properties[nameof(GetVehicleTypeRisk)] = RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
+                }
+                return _properties[nameof(GetVehicleTypeRisk)];
+            }
+
             return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
         }
+
         public List<Vehicle> GetVehicles()
         {
             return ((JArray)GetVehicleTypeRisk().risks).Select(risk => risk).ToList<dynamic>().Select(risk => new Vehicle(risk.risk.id.ToObject<int>())).ToList<Vehicle>();
         }
-        public dynamic GetDriverTypeRisk()
+
+        public JObject GetDriverTypeRisk()
         {
             int riskTypeId = 2;
-
+            if (_properties != null)
+            {
+                if (_properties[nameof(GetDriverTypeRisk)] == null)
+                {
+                    _properties[nameof(GetDriverTypeRisk)] = RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
+                }
+                return (JObject)_properties[nameof(GetDriverTypeRisk)];
+            }
             return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
         }
+
         public List<Driver> GetDrivers()
         {
-            return ((JArray)GetDriverTypeRisk().risks).Select(risk => risk).ToList<dynamic>().Select(risk => new Driver(risk.risk.id.ToObject<int>())).ToList<Driver>();
+            return ((JArray)GetDriverTypeRisk()["risks"]).Select(risk => risk).ToList<dynamic>().Select(risk => new Driver(risk.risk.id.ToObject<int>())).ToList<Driver>();
         }
 
         public dynamic GetSectionQuestions(string sectionName)
@@ -248,31 +298,35 @@ namespace ApolloQA.Data.Entity
             return RestAPI.GET($"/quote/{this.Id}/sections/{sectionId}/questions");
         }
 
+        public dynamic GetCoverageQuestions(string coverageTypeName)
+        {
+            var limits = (JArray)RestAPI.GET($"/quote/{this.Id}/policy/limits");
+
+            var limit = limits.First(it => it["coverageTypeName"].ToString() == coverageTypeName);
+            return limit["configuration"]["questions"];
+        }
+
         public dynamic GetQuestionResponse(string alias)
         {
-            foreach(var response in this.GetProperty("QuestionResponses"))
+            foreach (JObject response in this.GetProperty("QuestionResponses"))
             {
-                if(response.questionAlias==alias)
+                if (response?["QuestionAlias"]?.ToString() == alias)
                 {
-                    return ((JValue)response.response)?.Value;
+                    return response["Response"].ToObject<dynamic>();
                 }
             }
             return null;
         }
-        public dynamic SetQuestionResponse(string alias)
-        {
-            foreach (var response in this.GetProperty("QuestionResponses"))
-            {
-                if (response.questionAlias == alias)
-                {
-                    return ((JValue)response.response)?.Value;
-                }
-            }
-            return null;
-        }
+
         public JObject PostSummary()
         {
             var response = RestAPI.POST($"quote/{this.Id}/summary", "");
+            return response;
+        }
+
+        public JObject GetSummary()
+        {
+            var response = RestAPI.GET($"quote/{this.Id}/summary");
             return response;
         }
 
@@ -283,6 +337,7 @@ namespace ApolloQA.Data.Entity
                 return new Address(((JToken)this["PhysicalAddressId"]).ToObject<long>());
             }
         }
+
         public int GoverningStateId
         {
             get
@@ -299,22 +354,31 @@ namespace ApolloQA.Data.Entity
             }
         }
 
+        public string GoverningStateName
+        {
+            get
+            {
+                return PhysicalAddress.StateName;
+            }
+        }
+
         private String _ApplicationNumber { get; set; }
+
         public String ApplicationNumber
         {
             get
             {
                 return _ApplicationNumber ??= GetProperty("ApplicationNumber");
             }
-        } 
+        }
 
         private Organization _organization { get; set; }
+
         public Organization Organization
         {
-
             get
             {
-                return _organization ??= new Organization((int)this.GetProperty("InsuredId"));               
+                return _organization ??= new Organization((int)this.GetProperty("InsuredId"));
             }
         }
 
@@ -342,14 +406,15 @@ namespace ApolloQA.Data.Entity
                 return this.GetCurrentRatableObject().MotorCarrierFiling;
             }
         }
+
         public Boolean AccidentPreventionCredit
         {
             get
             {
                 return this.GetCurrentRatableObject().AccidentPreventionCredit;
             }
-
         }
+
         public String BillingType
         {
             get
@@ -357,6 +422,7 @@ namespace ApolloQA.Data.Entity
                 return this.GetCurrentRatableObject().BillingType;
             }
         }
+
         public int RatingPackageId
         {
             get
@@ -364,6 +430,7 @@ namespace ApolloQA.Data.Entity
                 return this.GetCurrentRatableObject().RatingPackageID;
             }
         }
+
         public String PaymentPlan
         {
             get
@@ -371,14 +438,15 @@ namespace ApolloQA.Data.Entity
                 return this.GetCurrentRatableObject().PaymentPlan;
             }
         }
+
         public String isEft
         {
             get
             {
                 return this.GetCurrentRatableObject().isEft;
             }
-
         }
+
         public int? RadiusOfOperation
         {
             get
@@ -387,19 +455,18 @@ namespace ApolloQA.Data.Entity
             }
         }
 
-
         private dynamic _CAB;
+
         public dynamic GetCAB(bool Refresh)
         {
             _CAB = null;
             return GetCAB();
         }
+
         public dynamic GetCAB()
         {
             if (_CAB == null)
             {
-
-
                 string baseURL = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_BASEURL_SECRETNAME"));
                 string APIKEY = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_API_KEY_SECRETNAME"));
 
@@ -418,113 +485,154 @@ namespace ApolloQA.Data.Entity
 
                 _CAB = RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/{usDot}?key={APIKEY}");
             }
-             
+
             return _CAB;
-
-
         }
 
         public int InspectionCount
         {
             get
             {
-               return GetCAB()?.events?.inspections?.insp?.tot ?? 0;
+                return GetCAB()?.events?.inspections?.insp?.tot ?? 0;
             }
         }
+
         public decimal OutOfServiceViolationRatio
         {
             get
             {
-                decimal OOSViolationCount  = (decimal?)GetCAB()?.events?.inspections?.OOS?.tot?.ToObject<decimal>() ?? 0;
+                decimal OOSViolationCount = (decimal?)GetCAB()?.events?.inspections?.OOS?.tot?.ToObject<decimal>() ?? 0;
 
                 decimal InspectionCount = this.InspectionCount;
-                                
-                if(GetCAB() ==null)
+
+                if (GetCAB() == null)
                 {
                     return -2;
                 }
-                if(InspectionCount ==0)
+                if (InspectionCount == 0)
                 {
                     return -1;
                 }
                 else
                 {
-                   return Math.Round(OOSViolationCount / InspectionCount, 4, MidpointRounding.AwayFromZero);
+                    return Math.Round(OOSViolationCount / InspectionCount, 4, MidpointRounding.AwayFromZero);
                 }
             }
         }
+
         public int TotalBASICViolationWeight
         {
             get
             {
                 var basicWeights = ((JArray)GetCAB()?.BASICWeights);
 
-                if(basicWeights == null)
+                if (basicWeights == null)
                 {
                     return 0;
                 }
                 var weights = basicWeights.Select(it => (decimal)it["baseWeight"]).ToList();
 
-
                 return (int)Math.Floor(weights.Sum());
-
             }
         }
 
-        private JObject _ScheduleModifiers;
-        public JObject ScheduleModifiers
+        public JObject ScheduleModifiers => (JObject)GetAPIObj()["scheduleModifiers"];
+
+        private decimal getScheduleModifier(string modifierName)
         {
-            get
+            var obj = ScheduleModifiers[modifierName];
+            decimal percentage = obj["adjustmentPercentage"].ToObject<decimal?>() ?? 0;
+            foreach (JObject action in obj["actionResults"])
             {
-                if(_ScheduleModifiers == null)
-                {
-                    _ScheduleModifiers = RestAPI.GET($"/quote/{this.Id}")["scheduleModifiers"];
-
-                }
-                return _ScheduleModifiers;
+                percentage += action["percentage"].ToObject<decimal>();
             }
+            return percentage;
         }
+
+        public long SAFETYORGANIZATION_Id => ScheduleModifiers[nameof(SAFETYORGANIZATION)]["id"].ToObject<long>();
 
         public decimal SAFETYORGANIZATION
         {
-            get {
-                return ((decimal?)ScheduleModifiers["SAFETYORGANIZATION"]["adjustmentPercentage"])??0;
-           }
+            get
+            {
+                return getScheduleModifier(nameof(SAFETYORGANIZATION));
+            }
         }
+
+        public long CLASSIFICATION_Id => ScheduleModifiers[nameof(CLASSIFICATION)]["id"].ToObject<long>();
+
         public decimal CLASSIFICATION
         {
             get
             {
-                return ((decimal?)ScheduleModifiers["CLASSIFICATION"]["adjustmentPercentage"]) ?? 0;
+                return getScheduleModifier(nameof(CLASSIFICATION));
             }
         }
+
+        public long MANAGEMENT_Id => ScheduleModifiers[nameof(MANAGEMENT)]["id"].ToObject<long>();
+
         public decimal MANAGEMENT
         {
             get
             {
-                return ((decimal?)ScheduleModifiers["MANAGEMENT"]["adjustmentPercentage"])??0;
+                return getScheduleModifier(nameof(MANAGEMENT));
             }
         }
+
+        public long EMPLOYEES_Id => ScheduleModifiers[nameof(EMPLOYEES)]["id"].ToObject<long>();
+
         public decimal EMPLOYEES
         {
             get
             {
-                return ((decimal?)ScheduleModifiers["EMPLOYEES"]["adjustmentPercentage"]) ?? 0;
+                return getScheduleModifier(nameof(EMPLOYEES));
             }
         }
-        
+
+        public long EQUIPMENT_Id => ScheduleModifiers[nameof(EQUIPMENT)]["id"].ToObject<long>();
+
         public decimal EQUIPMENT
         {
             get
             {
-                return ((decimal?)ScheduleModifiers["EQUIPMENT"]["adjustmentPercentage"])??0;
+                return getScheduleModifier(nameof(EQUIPMENT));
             }
         }
+
+        public long TOTAL_Id => ScheduleModifiers["TOTAL"]["id"].ToObject<long>();
+
+        public JObject GetExperienceModifierObj() => (JObject)GetAPIObj()["experienceModifier"];
+
+        public long EXPERIENCE_Id => GetExperienceModifierObj()["id"].ToObject<long>();
+
         public decimal ExperienceModifier
         {
             get
             {
-                return ((decimal?)RestAPI.GET($"/quote/{this.Id}")["experienceModifier"]["adjustmentPercentage"])??0;
+                decimal percentage = GetExperienceModifierObj()["adjustmentPercentage"].ToObject<decimal?>() ?? 0;
+                foreach (JObject action in GetExperienceModifierObj()["actionResults"])
+                {
+                    percentage += action["percentage"].ToObject<decimal>();
+                }
+                return percentage;
+            }
+        }
+
+        public long GetRatingModifierId(string ModifierCode)
+        {
+            try
+            {
+                return SQL.executeQuery(@$"   SELECT RM.Id
+                                  FROM [rating].[RatingModifier] RM
+                                  LEFT JOIN [rating].[RatingModifierCategoryType] T on T.Id = RM.RatingModifierCategoryTypeId
+                                  LEFT JOIN [rating].[RatingModifierCategorySubtype] subT on subT.Id = RM.RatingModifierCategorySubtypeId
+                                  LEFT JOIN location.StateProvince SP on SP.Id = RM.StateProvinceId
+                                  Where SP.Code = '{this.GoverningStateCode}' and subT.Code = '{ModifierCode}';")[0]["Id"];
+            }
+            catch
+            {
+                Log.Critical($"Error while getting Id for ModifierCode={ModifierCode}");
+                throw;
             }
         }
     }

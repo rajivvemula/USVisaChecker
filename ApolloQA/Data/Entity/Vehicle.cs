@@ -205,5 +205,19 @@ namespace ApolloQA.Data.Entity
                 return this.GetProperty("SafetyFeatures")??false;
             }
         }
+        public int BodySubCategoryTypeId
+        {
+            get
+            {
+                return this.GetProperty(nameof(BodySubCategoryTypeId));
+            }
+        }
+        public int BodyCategoryTypeId
+        {
+            get
+            {
+                return this.GetProperty(nameof(BodyCategoryTypeId));
+            }
+        }
     }
 }

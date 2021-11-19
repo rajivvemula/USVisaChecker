@@ -42,7 +42,8 @@ namespace ApolloQA.Data.Entity
             }
             else
             {
-                mutex = new Mutex(true, "MUTEX_ORG_NEXTVALIDNAME");
+                mutex = new Mutex(false, "MUTEX_ORG_NEXTVALIDNAME");
+                mutex.WaitOne();
             }
             var result = SQL.executeQuery("SELECT [Name] FROM [party].[Organization] Where [Name] Like 'Automation API org%';");
 
@@ -101,18 +102,23 @@ namespace ApolloQA.Data.Entity
             }
         }
 
+        private JObject _properties = null;
 
-        public dynamic GetProperties()
+        public Organization CacheProps()
         {
-            try
+            this._properties = RestAPI.GET($"/organization/{Id}");
+
+            return this;
+        }
+        public JObject GetProperties()
+        {
+            if(this._properties != null)
             {
-                return RestAPI.GET($"/organization/{Id}");
+                return _properties;
             }
-            catch(Exception ex)
-            {
-                Log.Warn($"GET /organization/{Id} threw Exception");
-                throw ex;
-            }
+
+            return RestAPI.GET($"/organization/{Id}");
+
         }
 
         public dynamic GetProperty(String propertyName)
@@ -165,14 +171,14 @@ namespace ApolloQA.Data.Entity
                 return this["dba"];
             }
         }
+
+        private static List<dynamic> TypeNames = RestAPI.GET("/config/lookup/4").ToObject<List<dynamic>>();
         public String TypeName
         {
             get
             {
                 var typeID = this["businessTypeEntityId"].ToString();
-                List<dynamic> list = RestAPI.GET("/config/lookup/4").ToObject<List<dynamic>>();
-
-                return (String)list.Find(type => type.id == typeID).name;
+                return (String)TypeNames.Find(type => type.id == typeID).name;
             }
         }
         public String TaxIdType

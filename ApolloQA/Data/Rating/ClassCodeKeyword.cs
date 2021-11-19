@@ -60,6 +60,7 @@ namespace ApolloQA.Data.Rating
             //if we find that there was at least 1 candidate, then we got a match
             if(classCodeCandidates.Count>1)
             {
+                Log.Debug("coverage:" + coverage);
                 return GetUsingClassCodes(classCodeCandidates, coverage);
             }
 

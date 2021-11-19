@@ -257,16 +257,20 @@ namespace ApolloQA.Data.Entity
 
                 resultPoints += int.Parse(row[DriverRatingPlan]);
             }
-            
-            if(quote.GetQuestionResponse("CDL") is var CDL && CDL!= null && (string)CDL!="0")
+
+            var driverRisk = (JObject)((JArray)quote.GetDriverTypeRisk()["risks"]).First(it => it["riskId"].ToObject<long>() == this.RiskId);
+
+            var cdlResponse = driverRisk["outputMetadata"]["QuestionResponses"].FirstOrDefault(it => it["questionAlias"].ToString() == "CDL")?["response"]?.ToString();
+
+            if (!string.IsNullOrWhiteSpace(cdlResponse))
             {
                 Dictionary<string, string> row = null;
 
-                if (CDL == "1")
+                if (cdlResponse == "0" || cdlResponse == "1")
                 {
                     row = DR2.Find(it => it["Criteria for Rating"] == "CDL Experience: Less than 1 Year");
                 }
-                else if (CDL == "2")
+                else if (cdlResponse == "2")
                 {
                     row = DR2.Find(it => it["Criteria for Rating"] == "CDL Experience: 1 to 2 Years");
                 }
