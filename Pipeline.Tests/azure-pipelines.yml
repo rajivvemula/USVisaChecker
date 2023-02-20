@@ -8,7 +8,7 @@
 trigger:
   branches:
     include:
-      - phase2/*
+      - master
 
 pr:
  - master
