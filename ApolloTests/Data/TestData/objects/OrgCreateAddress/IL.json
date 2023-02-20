@@ -1,0 +1,58 @@
+﻿{
+  "line1": "207 S Washington St",
+  "line2": null,
+  "minorMunicipality": null,
+  "majorMunicipality": "Naperville",
+  "postalCode": "60540",
+  "addressTypeId": 0,
+  "stateProvinceId": 1,
+  "stateProvince": {
+    "code": "IL",
+    "name": "Illinois",
+    "referenceTypeId": null,
+    "description": null,
+    "statusId": 0,
+    "updatedBy": null,
+    "updatedByPersonId": null,
+    "insertDateTime": "0001-01-01T00:00:00.000Z",
+    "insertedBy": null,
+    "insertedByPersonId": 0,
+    "id": 1,
+    "resource": "StateProvinceResource"
+  },
+  "countryId": 0,
+  "country": {
+    "code": "USA",
+    "name": "United States",
+    "referenceTypeId": null,
+    "description": null,
+    "statusId": 0,
+    "updatedBy": null,
+    "updatedByPersonId": null,
+    "insertDateTime": "0001-01-01T00:00:00.000Z",
+    "insertedBy": null,
+    "insertedByPersonId": 0,
+    "id": 0,
+    "resource": "CountryResource"
+  },
+  "countyName": "Dupage",
+  "countyFips": "17043",
+  "smartyStreetDocumentId": 0,
+  "smartyStreetDocumentIndex": 0,
+  "logicId": null,
+  "version": null,
+  "statusId": 0,
+  "tags":[
+
+    "primary",
+
+    "mailing"
+
+  ],
+  "updatedBy": null,
+  "updatedByPersonId": null,
+  "insertDateTime": "0001-01-01T00:00:00.000Z",
+  "insertedBy": null,
+  "insertedByPersonId": 0,
+  "resource": "AddressResource"
+}

@@ -1,0 +1,18 @@
+﻿{
+  "person": {
+    "primaryName": {
+      "given": "Automation",
+      "middle": "",
+      "surName": "Driver",
+      "suffix": "",
+      "statusId": 0
+    },
+    "statusId": 0
+  },
+  "dateOfBirth": "1965-10-26T04:00:00.000Z",
+  "stateProvinceId": "@GoverningStateId",
+  "stateProvince": {
+    "code": "@StateCode"
+  },
+  "licenseNo": "@LicenseNumber"
+}

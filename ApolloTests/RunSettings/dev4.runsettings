@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+	<RunConfiguration>
+		<EnvironmentVariables>
+			<HOST>https://biberk-apollo-dev4.azurewebsites.net</HOST>
+			<SERVER_HOST>https://bibaodev4-fd.azurefd.net/api</SERVER_HOST>
+			<APP_KEYVAULT_URI>https://xbibaoazckv4-dev4.vault.azure.net/</APP_KEYVAULT_URI>
+			<KEYVAULT_URI>https://xbibaoazckv-automationqa.vault.azure.net/</KEYVAULT_URI>
+			<BROWSER>Chrome</BROWSER>
+		</EnvironmentVariables>
+	</RunConfiguration>
+</RunSettings>

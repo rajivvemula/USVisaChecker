@@ -1,0 +1,75 @@
+{
+  "line1": "5834 Highland Ter",
+  "line2": null,
+  "minorMunicipality": null,
+  "majorMunicipality": "Middleton",
+  "postalCode": "53562",
+  "addressTypeId": 300,
+  "addressType": {
+    "code": "LOCATION",
+    "name": "Location",
+    "description": null,
+    "timeFrom": "1901-01-01T00:00:00.000Z",
+    "timeTo": "2999-01-01T00:00:00.000Z",
+    "referenceTypeId": null,
+    "statusId": 0,
+    "updateDateTime": "2021-09-20T12:20:07.020Z",
+    "updatedBy": "bbadmin",
+    "updatedByPersonId": null,
+    "insertDateTime": "2021-04-14T23:52:01.286Z",
+    "insertedBy": "bbadmin",
+    "insertedByPersonId": -1,
+    "id": 300,
+    "resource": "LookupResource"
+  },
+  "stateProvinceId": 215,
+  "stateProvince": {
+    "code": "WI",
+    "name": "Wisconsin",
+    "description": null,
+    "referenceTypeId": null,
+    "statusId": 0,
+    "updatedBy": null,
+    "updatedByPersonId": null,
+    "insertDateTime": "0001-01-01T00:00:00.000Z",
+    "insertedBy": null,
+    "insertedByPersonId": 0,
+    "id": 215,
+    "resource": "StateProvinceResource"
+  },
+  "countryId": 0,
+  "country": {
+    "code": "USA",
+    "name": "United States",
+    "description": null,
+    "referenceTypeId": null,
+    "statusId": 0,
+    "updatedBy": null,
+    "updatedByPersonId": null,
+    "insertDateTime": "0001-01-01T00:00:00.000Z",
+    "insertedBy": null,
+    "insertedByPersonId": 0,
+    "id": 0,
+    "resource": "CountryResource"
+  },
+  "countyName": "Dane",
+  "countyFips": "55025",
+  "smartyStreetDocumentId": 98780,
+  "smartyStreetDocumentIndex": 0,
+  "logicId": null,
+  "version": null,
+  "statusId": 0,
+  "tags":[
+
+    "primary",
+
+    "mailing"
+
+  ],
+  "updatedBy": null,
+  "updatedByPersonId": null,
+  "insertDateTime": "0001-01-01T00:00:00.000Z",
+  "insertedBy": null,
+  "insertedByPersonId": 0,
+  "resource": "AddressResource"
+}
