@@ -40,10 +40,11 @@ namespace ApolloTests.Data.TestData
                         var value = prop.GetGetMethod().Invoke(obj, null);
 
                         // If the value starts with @ then it means it's a variable
-                        if (value is string && ((string)value).StartsWith('@'))
+                        if (value is string && (  ((string)value).StartsWith('@') || ((string)value).StartsWith("JSON@")  ))
                         {
                             // Cast the interpreset value into whatever the property type is
-                            var castedValue = Convert.ChangeType(interpreter.Eval(((string)value)[1..]), prop.PropertyType);
+                            var targetVar = ((string)value).StartsWith('@') ? ((string)value)[1..] : ((string)value)[5..];
+                            var castedValue = Convert.ChangeType(interpreter.Eval(targetVar), prop.PropertyType);
 
                             if (castedValue == null || string.IsNullOrWhiteSpace(castedValue.ToString()))
                             {
@@ -55,6 +56,7 @@ namespace ApolloTests.Data.TestData
                             // Invoke the setter method with the casted value
                             prop.SetValue(obj, castedValue);
                         }
+                        
                     }
                     catch (Exception)
                     {

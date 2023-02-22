@@ -70,6 +70,8 @@ namespace ApolloTests.Data.TestData
 
             AddModifiers();
 
+            AddAdditionalInterests();
+
             var summary = PostSummary();
 
             Log.Debug("Quote Id: " + quoteEntity.Id);
@@ -158,12 +160,14 @@ namespace ApolloTests.Data.TestData
 
         public dynamic AddVehicleToQuote()
         {
-            var body = new List<VehicleParam.RiskObject>();
 
-            _parser.interpreter.SetVariable("ClassCode", this.QuoteParam.ClassCodeKeyword.ClassCode);
+            JArray finalResponse = new JArray();
 
             foreach (var vehicle in QuoteParam.VehicleParam.Vehicles)
             {
+                var body = new List<VehicleParam.RiskObject>();
+
+                _parser.interpreter.SetVariable("ClassCode", this.QuoteParam.ClassCodeKeyword.ClassCode);
                 _parser.interpreter.SetVariable("VinNumber", Functions.GetRandomVIN());
                 var vehicleRiskBody = _parser.Hydrate<VehicleParam.RiskObject>(vehicle.Risk);
                 
@@ -183,17 +187,18 @@ namespace ApolloTests.Data.TestData
                 vehicleRiskBody.outputMetadata.QuestionResponses = hydratedAnswers;
 
                 body.Add(vehicleRiskBody);
+
+                var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk", body);
+
+                for (int i = 0; i < response.Count; i++)
+                {
+                    var riskResponse = response[i];
+                    QuoteParam.VehicleParam.Vehicles[i].LoadJObject(riskResponse["vehicle"]);
+                }
+                finalResponse.Add(response);
             }
 
-            var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk", body);
-
-            for (int i = 0; i<response.Count; i++)
-            {
-                var riskResponse = response[i];
-                QuoteParam.VehicleParam.Vehicles[i].LoadJObject(riskResponse["vehicle"]);
-            }
-
-            return response;
+            return finalResponse;
         }
 
         public dynamic AddVehicleToQuote(JObject vehicle)
@@ -279,7 +284,7 @@ namespace ApolloTests.Data.TestData
                         quoteEntity,
                         driver.Object.ToJObject(),
                         driver.DriverQuentionAnswerParam
-                        ).ToObject<List<DriverParam.RiskObject.QuestionRespons>>();
+                        ).ToObject<List<DriverParam.RiskObject.QuestionResponse>>();
                 hydratedAnswers.NullGuard();
                 driverRiskBody.outputMetadata.QuestionResponses = hydratedAnswers;
                    
@@ -336,6 +341,29 @@ namespace ApolloTests.Data.TestData
             var body = _parser.Hydrate<ModifierParam.ModifierObject>(QuoteParam.ModifierParam.Modifiers.Object);
 
             var response = RestAPI.PATCH($"/quote/{quoteEntity.Id}", body);
+
+            return response;
+        }
+        public bool AddAdditionalInterests()
+        {
+            var finalBody = new List<AdditionalInterestsParam.AdditionalInterestsObject>();
+            foreach(var AddInt in QuoteParam.AdditionalInterestParam.AdditionalInterests)
+            {
+                var body = _parser.Hydrate<AdditionalInterestsParam.AdditionalInterestsObject>(AddInt.Object);
+
+                var hydratedAnswers = AnswersHydrator.AdditionalInterests(
+                        quoteEntity,
+                        body.ToJObject(),
+                        AddInt.AdditionalInterestsAnswerParam
+                        ).ToObject<List<AdditionalInterestsParam.AdditionalInterestsObject.QuestionResponse>>();
+                hydratedAnswers.NullGuard();
+                AddInt.Object.questionResponses = hydratedAnswers;
+
+                finalBody.Add(body);
+            }
+
+
+            var response = RestAPI.POST($"/quote/{quoteEntity.Id}/additionalinterest", finalBody);
 
             return response;
         }

@@ -22,15 +22,16 @@ namespace ApolloTests.StepDefinition.Forms
         public string code,
                name;
         public Form form;
-        public string documentName;
-        public int documentGenerationRequestId;
-        public JObject documentObj;
 
         public Data.Entity.Policy policy;
         private RestAPI RestAPI;
         private SQL SQL;
         private IConfiguration Configuration;
         private TestContext TestContext;
+        List<string> errors = new List<string>();
+        private Dictionary<int, DocGenBody> DocGen = new Dictionary<int, DocGenBody>();
+        private Dictionary<int, string> ResultFiles = new Dictionary<int, string>();
+
         public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC)
         {
             this.RestAPI = restAPI;
@@ -53,60 +54,69 @@ namespace ApolloTests.StepDefinition.Forms
 
             this.policy = this.form.condition.GetValidPolicy(false);
         }
-
-        private DocGenBody _body;
+       
         [When(@"user attempts to generate form")]
         public void WhenUserAttemptsToGenerateForm()
         {
-            this.documentName = $"Test({Functions.GetRandomInteger(10000)}) [{this.form.Edition}] {this.name}";
-            object ratableObjectId = null;
-            if(this.form.condition.endorsement)
+            long? ratableObjectId = null;
+
+            if (this.form.condition.endorsement)
             {
                 var endorsement = this.policy.GetDraftEndorsements().Last();
                 var ratableObject = endorsement.GetRatableObject();
                 ratableObject.NullGuard($"RatableObject under policy: {this.policy.Id}");
                 ratableObjectId = ratableObject.Id;
             }
-            DocGenBody body = new DocGenBody()
+            
+
+            foreach(var recipient in this.form.Recipients)
             {
-                documentName = this.documentName,
-                entityId = policy.Id,
-                entityType = policy.EntityTypeId,
-                lineId = LineId,
-                ratableObjectId = ratableObjectId,
-                ghostDraftRequest = new GhostDraftRequest()
+                var documentName = $"Test({Functions.GetRandomInteger(10000)}) [{recipient.RecipientTypeCode}][{this.form.Edition}] {this.name}";
+                DocGenBody body = new DocGenBody()
                 {
-                    forms = new List<FormObj>() {
-                        new FormObj()
-                        {
-                            name = this.name,
-                            edition = this.form.Edition,
-                            sortOrder = 1,
-                            editionDate = this.form.EditionDate.ToString("O"),  
-                            line = "Commercial Auto"
+                    documentName = documentName,
+                    entityId = policy.Id,
+                    entityType = policy.EntityTypeId,
+                    lineId = LineId,
+                    ratableObjectId = ratableObjectId,
+                    ghostDraftRequest = new GhostDraftRequest()
+                    {
+                        forms = new List<FormObj>() {
+                            new FormObj()
+                            {
+                                name = this.name,
+                                edition = this.form.Edition,
+                                sortOrder = 1,
+                                editionDate = this.form.EditionDate.ToString("O"),
+                                line = "Commercial Auto"
+                            }
                         }
-                    }
-                },
-                templateName = "generate-document-v2",
-                //workflowPlanName = Configuration.GetVariable("GHOSTDRAFT_WORKFLOW_PLAN"),
-                //workflowServiceName = Configuration.GetVariable("GHOSTDRAFT_WORKFLOW_SERVICE"),
+                    },
+                    templateName = "generate-document-v2",
+                    recipientRoleTypeId = recipient.RecipientRoleTypeId
+                    //workflowPlanName = Configuration.GetVariable("GHOSTDRAFT_WORKFLOW_PLAN"),
+                    //workflowServiceName = Configuration.GetVariable("GHOSTDRAFT_WORKFLOW_SERVICE"),
 
 
-            };
-            _body = body;
+                };
+                GenerateForm(body);
+            }
+            
+        }
+
+        public void GenerateForm(DocGenBody body)
+        {
             var docGenResponse = RestAPI.POST("/documentgenerationrequest", body);
-            Log.Info(JToken.FromObject(body));
-
-            //File.WriteAllText(Directory.GetCurrentDirectory() + "testForms.json", JObject.FromObject(body).ToString());
-
-            this.documentGenerationRequestId = docGenResponse.id;
+            var res = (JObject)docGenResponse;
+            DocGen.Add(res.Value<int>("id"), body);
 
         }
-        dynamic formFilePath;
+
+
+
         [Then(@"form should be generated successfully")]
         public void ThenFormShouldBeGeneratedSuccessfully()
         {
-            Log.Info($"Form Generated: \nDocumentName: {this.documentName} \nFormName: {this.form.name} \nCode: {this.form.code}");
             Log.Info($"At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.policy.Id}/document");
 
 
@@ -126,13 +136,7 @@ namespace ApolloTests.StepDefinition.Forms
                 { "orderBy", "insertDateTime" },
                 { "sortOrder", 1 },
             };
-
-
-
-
-            //check out Polly
-            //Log.Debug($"documents {documents}");
-            var retries = Policy.Handle<Exception>()
+            var retries = Policy.HandleResult<bool>(false)
                 .WaitAndRetry(new[]
                     {
                     TimeSpan.FromSeconds(3),
@@ -142,47 +146,80 @@ namespace ApolloTests.StepDefinition.Forms
                     }
                 );
 
-            try
+            foreach (var request in this.DocGen)
             {
+                var docGenRequestId = request.Key;
+                var requestedDoc = request.Value;
+                requestedDoc.NullGuard();
+
+                var errorMsg = $"Document was not generated \nDocumentName: {requestedDoc.documentName} \nFormName: {name} \nCode: {code} \nEdition: {form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.policy.Id}/document";
+
+
+                //Log.Info($"Form Generated: \nDocumentName: {requestedDoc.documentName} \nFormName: {this.form.name} \nCode: {this.form.code}\n Recipient: {this.form.Recipients.First(it=> it.RecipientRoleTypeId == requestedDoc.recipientRoleTypeId).RecipientTypeName}");
+
+                JObject documentObj =null;
                 retries.Execute(() =>
                 {
                     JArray documents = RestAPI.POST("/documentmetadata/search", body).results;
-                    this.documentObj = (JObject)documents.FirstOrDefault(it => it["documentGenerationRequestId"].ToObject<int>() == documentGenerationRequestId);
-                    if(this.documentObj== null)
+                    documentObj = (JObject)documents.FirstOrDefault(it => it["documentGenerationRequestId"].ToObject<int>() == docGenRequestId);
+
+                    if (documentObj != null)
                     {
-                        throw new Exception($"Document was not generated \nDocument: {name} \nCode: {code} \nEdition: {form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.policy.Id}/document");
+                        this.errors.RemoveAll(it => it == errorMsg);
+                        return true;
                     }
+                    this.errors.Add(errorMsg);
+                    return false;
+
+
                 });
-            }
-            catch(Exception) {
-                Log.Error(JObject.FromObject(this._body));
-                throw;
-            }
 
-            try
-            {
-                formFilePath = RestAPI.GET($"document/{documentObj["id"]}");
+                if (documentObj != null)
+                {
+                    dynamic? formFilePath = null;
+                    try
+                    {
+                        formFilePath = RestAPI.GET($"document/{documentObj["id"]}");
+                        ResultFiles.Add(docGenRequestId, formFilePath);
+
+                    }
+                    catch (Exception)
+                    {
+                        Thread.Sleep(5000);
+                        formFilePath = RestAPI.GET($"document/{documentObj["id"]}");
+                        ResultFiles.Add(docGenRequestId, formFilePath);
+
+                    }
+                    TestContext.AddResultFile(formFilePath);
+                }
             }
-            catch (Exception)
-            {
-                Thread.Sleep(5000);
-                formFilePath = RestAPI.GET($"document/{documentObj["id"]}");
-            }
-            TestContext.AddResultFile( formFilePath );
-
-
-
+            ThrowErrorsIfAny();
 
         }
+
 
         [Then(@"form shouldn't be blank")]
         public void ThenFormShouldnTBeBlank()
         {
-            string formFile = Functions.parsePDF(formFilePath);
-            Log.Info($"Filepath: {formFilePath}");
-            if(formFile.Length<10)
+            foreach(var file in this.ResultFiles)
             {
-                throw new Exception($"Document was blank \nDocument: {name} \nCode: {code} \nEdition: {form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.policy.Id}/document");
+                string formFile = Functions.parsePDF(file.Value);
+                Log.Info($"Filepath: {file.Value}");
+                if (formFile.Length < 10)
+                {
+                    this.errors.Add($"Document was blank \nDocument: {this.DocGen.First(it=> it.Key == file.Key).Value.documentName} \nCode: {code} \nEdition: {form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.policy.Id}/document");
+                }
+            }
+            ThrowErrorsIfAny();
+
+
+        }
+
+        public void ThrowErrorsIfAny()
+        {
+            if(this.errors.Any())
+            {
+                throw new Exception(string.Join("\n\n", errors.Distinct()));
             }
         }
 
@@ -319,6 +356,7 @@ namespace ApolloTests.StepDefinition.Forms
         public string? workflowServiceName { get; set; }
         public string? workflowPlanName { get; set; }
         public int lineId { get; set; }
+        public int recipientRoleTypeId { get; set; }
         public GhostDraftRequest? ghostDraftRequest { get; set; }
 
         public override string ToString()

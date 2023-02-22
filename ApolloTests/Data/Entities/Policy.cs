@@ -160,7 +160,7 @@ namespace ApolloTests.Data.Entity
             var cancelPolicy = new CancelPolicyObject()
             {
                 cancelDenyReasonTypeId = CancellationReason.PolicyCancelledAndReissued,
-                cancellationInitiatedById = CancellationInitiatedBy.Carrier,
+                cancellationInitiatedBy = CancellationInitiatedBy.Carrier,
                 cancellationUnderwriterReason = "Testing"
             };
 
@@ -169,7 +169,7 @@ namespace ApolloTests.Data.Entity
 
         public dynamic Cancel(CancelPolicyObject cancelPolicyObject)
         {
-            var response = RestAPI.PATCH($"/policy/{Id}", cancelPolicyObject.ToJObject());
+            var response = RestAPI.POST($"/policy/cancelpolicy/{Id}", cancelPolicyObject.ToJObject());
 
             return response;
         }
@@ -389,12 +389,13 @@ namespace ApolloTests.Data.Entity
             /// <summary>
             /// Use yyyy-MM-dd format
             /// </summary>
-            public string cancellationDate { get; set; } = DateTime.Now.AddDays(2).ToString("yyyy-MM-dd");
+            public string policyCancellationEffectiveDate { get; set; } = DateTime.Now.AddDays(2).ToString("O");
 
-            public CancellationInitiatedBy cancellationInitiatedById { get; set; }
+            public CancellationInitiatedBy cancellationInitiatedBy { get; set; }
 
             public string cancellationUnderwriterReason { get; set; }
 
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public DateTime? reinstatementDate { get; set; }
 
             public JObject ToJObject()

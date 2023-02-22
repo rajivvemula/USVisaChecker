@@ -28,6 +28,8 @@ namespace ApolloTests.Data.TestData
         public static JArray PolicyCoverages(Entity.Quote quote, JObject limitParam, QuentionAnswerParamBase policyCoverageQuentionAnswerParam)
             => new Hydratable(quote, limitParam, "Policy Coverages", policyCoverageQuentionAnswerParam).GetHydrated();
 
+        public static JArray AdditionalInterests(Entity.Quote quote, JObject additionalInterest, QuentionAnswerParamBase AdditionalInterestAnswerParam)
+            => new Hydratable(quote, additionalInterest, "Policy Addl Interests", AdditionalInterestAnswerParam).GetHydrated();
         /// <summary>
         /// Private inner class denoting a hydratable entity or section (e.g. Operations, Vehicles, Drivers)
         /// </summary>
@@ -214,6 +216,7 @@ namespace ApolloTests.Data.TestData
                 }
 
                 obj.Add("isHidden", question["isHidden"].ToObject<bool>());
+                obj.Add("isDisabled", question["isDisabled"].ToObject<bool>());
                 obj.Add("sectionId", section.Id);
                 obj.Add("questionAlias", alias);
 
@@ -224,7 +227,7 @@ namespace ApolloTests.Data.TestData
 
                 //we are only going to answer questions that are not hidden in the UI
                 // or flagged PopulateWhenHidden=true
-                if (!string.IsNullOrWhiteSpace(response) && (!(bool)obj["isHidden"] || answer.PopulateWhenHidden))
+                if (!string.IsNullOrWhiteSpace(response) && (!obj.Value<bool>("isHidden") || answer.PopulateWhenHidden))
                 {
                     //if the answer happens to be @SectionEntity
                     //this means we're refering to the section's corresponding object within entities
@@ -285,6 +288,16 @@ namespace ApolloTests.Data.TestData
                     {"otherResponses", CurrentAnswers },
                     {"entityContext", new JObject() }
                 };
+
+                if(sectionName == "Policy Addl Interests")
+                {
+                    body.Add("currentResponse", CurrentAnswers.First(it => it.Value<string>("questionAlias") == "AdditionalInterests"));
+                    body.Add("policyLevel", true);
+                    body["entityContext"] = new JObject() { { "AdditionalInterest", this.entities[sectionName] } };
+                    body["entityContext"]["AdditionalInterest"]["additionalInterestTypeId"] = 3;
+                    body["entityContext"]["AdditionalInterest"]["questionResponses"] = CurrentAnswers;
+
+                }
 
                 if (sectionName == "Vehicles")
                 {

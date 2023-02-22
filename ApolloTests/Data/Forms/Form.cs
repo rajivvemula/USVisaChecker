@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace ApolloTests.Data.Form
@@ -19,6 +20,13 @@ namespace ApolloTests.Data.Form
         public string code;
         public Condition condition;
         public string displayTitle;
+        public List<Recipient> Recipients { get
+            {
+                var obj = Cosmos.GetQuery("FormsServiceRule", $"SELECT * FROM c where ARRAY_CONTAINS(c.Forms, {{GhostDraftTemplateFormCode:\"{this.code}\"}}, true)").Result[0];
+                var recipients = (JArray)((JArray)obj["Forms"]).First(it=> it.Value<string>("GhostDraftTemplateFormCode")== code)["Recipients"];
+                return recipients.Select(it => it.ToObject<Recipient>()??throw new ArgumentNullException()).ToList();
+
+            } }
 
         private long? _Id = null;
         public long Id
@@ -110,6 +118,11 @@ namespace ApolloTests.Data.Form
             {
                 form.condition = new Condition();
             }
+            if(form.Recipients.Any(it => it.RecipientTypeCode != "INSURED"))
+            {
+                form.condition.recipients = form.Recipients.Select(it => it.RecipientTypeCode).ToList();
+            }
+            
             return form;
         }
 

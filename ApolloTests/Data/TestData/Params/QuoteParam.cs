@@ -81,6 +81,8 @@ namespace ApolloTests.Data.TestData
 
         public QuoteQuentionAnswerParam QuoteQuentionAnswerParam { get; set; } = new QuoteQuentionAnswerParam();
 
+        public AdditionalInterest AdditionalInterestParam { get; set; } = new AdditionalInterest();
+
         public Entity.Quote RunThisThroughAPI()
         {
             return new Quote(this).GetQuotedQuoteThroughAPI();
@@ -98,6 +100,41 @@ namespace ApolloTests.Data.TestData
 
             limit.Object.selectedLimitName = "Split Limit";
             limit.Object.selectedLimits = new List<int> { BI_PerPerson, BI_perOccurrence, PD_perOccurrence };
+        }
+
+        public class AdditionalInterest
+        {
+            public uint NumberOfAdditionalInterest
+            {
+                get
+                {
+                    return (uint)AdditionalInterests.Count;
+                }
+                set
+                {
+                    if (NumberOfAdditionalInterest > value)
+                    {
+                        while (AdditionalInterests.Count != value)
+                        {
+                            AdditionalInterests.RemoveAt(AdditionalInterests.Count - 1);
+                        }
+                    }
+                    else
+                    {
+                        while (NumberOfAdditionalInterest != value)
+                        {
+                            this.Add();
+                        }
+                    }
+                }
+            }
+
+            public List<AdditionalInterestsParam> AdditionalInterests { get; set; } = new List<AdditionalInterestsParam>() { new AdditionalInterestsParam() };
+
+            public void Add()
+            {
+                AdditionalInterests.Add(new AdditionalInterestsParam());
+            }
         }
 
         public class Vehicle

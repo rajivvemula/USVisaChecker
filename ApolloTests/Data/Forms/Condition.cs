@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using Quote = ApolloTests.Data.Entity.Quote;
 using static ApolloTests.Data.Entity.Policy;
+using DocumentFormat.OpenXml.Presentation;
 
 namespace ApolloTests.Data.Form
 {
@@ -22,6 +23,7 @@ namespace ApolloTests.Data.Form
         public Boolean canceled;
         public Boolean reinstated;
         public Dictionary<string, string> vehicle;
+        public List<string> recipients;
 
         public Condition() { }
         
@@ -212,8 +214,8 @@ namespace ApolloTests.Data.Form
             }
 
            
-            Log.Info($"Policy count: {policies.Count}");
-            Log.Info($"Quote  count: {quotes.Count}");
+            //Log.Info($"Policy count: {policies.Count}");
+            //Log.Info($"Quote  count: {quotes.Count}");
 
 
             var policy = findPolicyForThis();
@@ -290,6 +292,39 @@ namespace ApolloTests.Data.Form
                 conditions.Add($"ARRAY_CONTAINS(c.SelectedCoverages, {{ \"CoverageTypeId\": {type.Id},  \"SelectedLimitName\": \"Split Limit\"}}, true) ");
 
             }
+            if(this.recipients!=null)
+            {
+                if(recipients.Contains("ADDITIONALINTEREST"))
+                {
+                    conditions.Add($"ARRAY_LENGTH(c.AdditionalInterests)>0");
+                }
+                var vehicleQuery = "SELECT * FROM c where STARTSWITH(c.id, \"RiskEntity\") and c.RiskTypeId= 1";
+                var tetherConditions = new List<string>();
+                if (recipients.Contains("LIENHOLDER"))
+                {
+                    tetherConditions.Add($"ARRAY_CONTAINS(c.QuestionResponses, {{ \"QuestionAlias\": \"VehicleOwnedLeasedFinanced\", \"Response\": \"Financed\" }}, true) ");
+                }
+                if (recipients.Contains("LESSOR"))
+                {
+                    tetherConditions.Add($"ARRAY_CONTAINS(c.QuestionResponses, {{ \"QuestionAlias\": \"VehicleOwnedLeasedFinanced\", \"Response\": \"Leased\" }}, true) ");
+                }
+
+                if(tetherConditions.Any())
+                {
+                    var finalVehicleQuery = $"{vehicleQuery} and {string.Join(" and ", tetherConditions)}";
+                    var validVehicles = Cosmos.GetQuery("Tether", finalVehicleQuery).Result;
+                    if (validVehicles == null)
+                        validTetherIds = new List<long>();
+                    else
+                    {
+                        var tethers = validVehicles.Select(it => (long)it["TetherId"]);
+
+                        validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                    }
+                }
+               
+
+            }
             if (this.endorsement)
             {
                 var draftEndorsements = SQL.executeQuery(@$"SELECT Tether.Id as TetherId, TARO.RatableObjectId as draftRatableObject, TARO.ApplicationId as draftApplication 
@@ -332,20 +367,23 @@ namespace ApolloTests.Data.Form
             }
             if (this.vehicle != null)
             {
-                var vehicleQuery = "SELECT TetherId FROM c where STARTSWITH(c.id, \"RiskEntity\") and c.RiskTypeId= 1";
+                var vehicleQuery = "SELECT * FROM c where STARTSWITH(c.id, \"RiskEntity\") and c.RiskTypeId= 1";
                 var tetherConditions = new List<string>();
 
                 foreach(var prop in this.vehicle)
                 {
-                    var alias = prop.Key;
-                    var res = prop.Value;
-                    tetherConditions.Add($"ARRAY_CONTAINS(c.QuestionResponses, {{ \"QuestionAlias\": \"{alias}\", \"Response\": {res} }}, true) ");
+                    tetherConditions.Add($"Vehile.{prop.Key}={prop.Value}");
                 }
-                var validVehicles = Cosmos.GetQuery("Tether", $"{vehicleQuery} and {string.Join(" and ", tetherConditions)}").Result;
-                var tethers = validVehicles.Select(it => (long)it["TetherId"]);
+                var finalVehicleQuery = $"{vehicleQuery} and {string.Join(" and ", tetherConditions)}";
+                var validVehicles = Cosmos.GetQuery("Tether", finalVehicleQuery).Result;
+                if (validVehicles == null)
+                    validTetherIds = new List<long>();
+                else
+                {
+                    var tethers = validVehicles.Select(it => (long)it["TetherId"]);
 
-                validTetherIds.RemoveAll(it => !tethers.Contains(it));
-
+                    validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                }
             }
 
             if(validTetherIds.Count > 0)
@@ -489,7 +527,31 @@ namespace ApolloTests.Data.Form
                 foreach (var prop in this.vehicle)
                 {
                     vehicleObject.GetType().GetProperty(prop.Key).SetValue(vehicleObject, prop.Value, null);
+                }
 
+            }
+            if (this.recipients!=null)
+            {
+                //additional interest is now always added by default
+                if (quoteParam.AdditionalInterestParam.NumberOfAdditionalInterest<1)
+                {
+                    quoteParam.AdditionalInterestParam.NumberOfAdditionalInterest = 1;
+                }
+                if (recipients.Contains("LIENHOLDER"))
+                {
+                    quoteParam.VehicleParam.Vehicles[0].VehicleQuentionAnswerParam.VehicleOwnedLeasedFinanced._response = "Financed";
+                }
+                if (recipients.Contains("LESSOR"))
+                {
+                    if(recipients.Contains("LIENHOLDER"))
+                    {
+                        quoteParam.VehicleParam.NumberOfVehicles = 2;
+                        quoteParam.VehicleParam.Vehicles[1].VehicleQuentionAnswerParam.VehicleOwnedLeasedFinanced._response = "Leased";
+                    }
+                    else
+                    {
+                        quoteParam.VehicleParam.Vehicles[0].VehicleQuentionAnswerParam.VehicleOwnedLeasedFinanced._response = "Leased";
+                    }
                 }
             }
 
@@ -531,6 +593,7 @@ namespace ApolloTests.Data.Form
             //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
             if (this.canceled)
             {
+                Thread.Sleep(5000);
                 policy.Cancel();
             }
 
@@ -538,8 +601,7 @@ namespace ApolloTests.Data.Form
 
             quote.CacheProps();
             policy.CacheProps();
-            quotes.Add(quote);
-            policies.Add(policy);
+            
 
             return policy;
         }

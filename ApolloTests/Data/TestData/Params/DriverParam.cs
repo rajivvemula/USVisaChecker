@@ -97,7 +97,7 @@ namespace ApolloTests.Data.TestData.Params
             {
                 public DriverHistory DriverHistory { get; set; } = new DriverHistory();
 
-                public List<QuestionRespons> QuestionResponses { get; set; } = new List<QuestionRespons>();
+                public List<QuestionResponse> QuestionResponses { get; set; } = new List<QuestionResponse>();
             }
 
             public class DriverHistory
@@ -126,7 +126,7 @@ namespace ApolloTests.Data.TestData.Params
                 }
             }
 
-            public class QuestionRespons
+            public class QuestionResponse
             {
                 public int questionId { get; set; }
 

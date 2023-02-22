@@ -5,7 +5,7 @@
 			<HOST>https://biberk-apollo-dev2.azurewebsites.net/</HOST>
 			<SERVER_HOST>https://bibaodev2-fd.azurefd.net/api/</SERVER_HOST>
 			<APP_KEYVAULT_URI>https://xbibaoazckv-dev2.vault.azure.net/</APP_KEYVAULT_URI>
-			<KEYVAULT_URI>https://xbibaoazckv-automationqa.vault.azure.net/"</KEYVAULT_URI>
+			<KEYVAULT_URI>https://xbibaoazckv-automationqa.vault.azure.net/</KEYVAULT_URI>
 			<BROWSER>Chrome</BROWSER>
 		</EnvironmentVariables>
 	</RunConfiguration>

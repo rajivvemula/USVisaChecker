@@ -161,6 +161,13 @@
             public static string TrailerOwner1BusinessName { get; } = "TrailerOwner1BusinessName";
 
             public static string TrailerOwner1Address { get; } = "TrailerOwner1Address";
+            public static string VehicleLienholder1FirstName { get; } = "VehicleLienholder1FirstName";
+            public static string VehicleLienholder1Address { get; } = "VehicleLienholder1Address";
+
+            public static string VehicleLessorName { get; } = "VehicleLessorName";
+
+            public static string VehicleLessorAddress { get; } = "VehicleLessorAddress";
+
 
             #endregion Vehicles
 
@@ -207,6 +214,15 @@
             #endregion In-Tow
 
             #endregion Policy Coverage
+
+            #region Additional Interest
+            public static string AdditionalInterestContactUpdated { get; } = "AdditionalInterestContactUpdated";
+            public static string AdditionalInterests { get; } = "AdditionalInterests";
+            public static string AdditionalInterestName { get; } = "AdditionalInterestName";
+            public static string AdditionalInterestAddress { get; } = "AdditionalInterestAddress";
+            public static string AdditionalInterestCertificateHolderNotice { get; } = "AdditionalInterestCertificateHolderNotice";
+
+            #endregion Additional Interest
         }
     }
 }
