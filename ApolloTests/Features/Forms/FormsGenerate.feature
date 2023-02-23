@@ -24,6 +24,7 @@ Scenario: Form can be generated
 	Then form should be generated successfully
 	And form shouldn't be blank
 
+
 	Examples:
 	| code       | name                                                                                                                                             |
 	| M5964      | Michigan Changes - Cancellation and Nonrenewal                                                                                                   |

@@ -45,143 +45,7 @@ namespace ApolloTests.Data.Form
             this.vehicle = vehicle;
             this.reinstated = reinstated;
         }
-
-
-
-
-
-        /**
-         * retrieve all valid policies and all quotes in order to find a matching policy for any condition object
-         * note: static because is used across any condition (thus any form)
-         */
-        private static Entities<Policy> policies = new Entities<Policy>($"./Conditions/{nameof(policies)}.json");
-
-        private static Entities<Quote> quotes = new Entities<Quote>($"./Conditions/{nameof(quotes)}.json");
-
-        public class Entities<T> : List<T>
-        {
-            public string filePath;
-
-            public Entities(string filePath) : base()
-            {
-                this.filePath = filePath;
-                if(!File.Exists(filePath))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-                    File.Create(filePath).Close();
-                }
-                this.Load();
-            }
-
-            public new void Add(T _item)
-            {
-                base.Add(_item);
-                this.Write();
-            }
-
-            public void Load()
-            {
-                var arr = JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(filePath));
-                if(arr != null && arr.Count > this.Count)
-                {
-                    var existingIds = this.Select(it => (long)((dynamic)it).Id);
-
-                    foreach (dynamic item in arr)
-                    {
-                        if(!existingIds.Contains((long)item.Id))
-                        {
-                            item.CacheProps();
-                            base.Add((T)item);
-                        }
-
-                    }
-                }
-            }
-
-            private void Write()
-            {
-                var mutex = new Mutex(false, "Condition.Entities");
-                mutex.WaitOne();
-                try
-                {
-                    File.WriteAllText(this.filePath, JsonConvert.SerializeObject(this.Select(it => new Dictionary<string, long> { { "Id", (long)((dynamic)it).Id } })));
-                }
-                finally
-                {
-                    mutex.ReleaseMutex();
-                }
-            }
-
-           
-        }
         
-        public void createRelevantPolicies()
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
-            var states = Form.Forms.Select(it => it?.condition?.stateCode).Where(it=> it!=null).Distinct().ToArray();
-            //Log.Debug($"states {string.Join(", ", states) }");
-            var coverageTypes = new string[] {  CoverageType.BIPD,
-                                                CoverageType.COLLISION,
-                                                CoverageType.COMPREHENSIVE,
-                                                CoverageType.IN_TOW,
-                                                CoverageType.RENTAL_REIMBURSEMENT,
-                                                CoverageType.TRAILER_INTERCHANGE,
-            };
-            Parallel.ForEach(states, stateCode =>
-                {
-                    if(Mutex.TryOpenExisting($"createRelevantPolicies.{stateCode}", out Mutex mutex))
-                    {
-                        mutex.WaitOne();
-                        mutex.ReleaseMutex();
-                        return;
-                    }
-                    else
-                    {
-                        mutex = new Mutex(false, $"createRelevantPolicies.{stateCode}");
-                        mutex.WaitOne();
-                    }
-                    var quoteParam = new QuoteParam(stateCode, coverageTypes.Select(it=> new CoverageType(it)).ToList());
-
-                    quoteParam.QuoteQuentionAnswerParam.TXAuth._response = "true";
-                    quoteParam.QuoteQuentionAnswerParam.SC_Authority._response = "true";
-
-                    quoteParam.BIPD_SplitLimit();
-
-                    quoteParam.DriverParam.Drivers[0].DriverQuentionAnswerParam.CDL._response = "1";
-
-                    Quote quote;
-                    Policy policy;
-
-                    try
-                    {
-                        quote = quoteParam.RunThisThroughAPI();
-
-                    }
-                    catch
-                    {
-                        quote = quoteParam.RunThisThroughAPI();
-                    }
-
-                    try
-                    {
-                        policy = quote.PurchaseThis();
-                    }
-                    catch (Exception)
-                    {
-                        policy = quote.PurchaseThis();
-
-                    }
-
-                    quotes.Add(quote);
-                    policies.Add(policy);
-                    mutex.ReleaseMutex();
-                }
-            );
-            watch.Stop();
-            Log.Debug($"Took: {watch.Elapsed.TotalSeconds} Seconds");
-        }
 
         /// <summary>
         /// this function iterates through all valid policies in order to find one that matches this object's properties
@@ -205,34 +69,16 @@ namespace ApolloTests.Data.Form
          *  
          *  
          */
-        public Policy GetValidPolicy(bool LoadRelevantQuotes = false)
+        public Policy GetValidPolicy(bool createNewQuote = false)
         {
-            if(LoadRelevantQuotes)
+            if(!createNewQuote)
             {
-                createRelevantPolicies();
-                policies.Load();
-                quotes.Load();
+                var policy = findPolicyForThis();
+                if (policy != null)
+                {
+                    return policy;
+                }
             }
-
-           
-            //Log.Info($"Policy count: {policies.Count}");
-            //Log.Info($"Quote  count: {quotes.Count}");
-
-
-            var policy = findPolicyForThis();
-            if (policy != null)
-            {
-                return policy;
-            }
-            ////1.) for each valid RatableObject (Policy) in the system (issued and not archived)
-            ////2.)    var policyOBJ is the cosmos object of the policy in context
-            //foreach (var policy in policies)
-            //{             
-            //    if(checkIfPolicyMatches(policy))
-            //    {
-            //        return policy;
-            //    }
-            //}
 
             return this.CreateQuoteForThis();
 
@@ -444,95 +290,6 @@ namespace ApolloTests.Data.Form
             return null;
            
         }
-
-        public bool checkIfPolicyMatches(Policy policy)
-        {
-            //3.)   let match = true  (will be set to false on any mismatch with the policy in context and this object's properties)
-            var match = true;
-
-            //4.)    initialize the policy and quote objects usign the cosmos objects
-            var quote = quotes.FirstOrDefault(quote => quote.Id == policy.GetProperty("ApplicationId").ToObject<long>());
-
-            if(quote==null)
-            {
-                match = false;
-                return match;
-            }
-
-            //5.)    if StateCode was provided and if the governing state from the policy is not equal to the StateCode provided turn flag off and continue to the next iteration (policy)
-            if (!string.IsNullOrWhiteSpace(this.stateCode) && this.stateCode != quote.GoverningStateCode)
-            {
-                match = false;
-                return match;
-
-            }
-            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-            if (this.coverageTypes != null && this.coverageTypes.Any())
-            {
-                this.CheckCoverageTypes(ref match, quote);
-                if (!match)
-                {
-                    return match;
-                }
-            }
-            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-            if (this.questionResponses != null && this.questionResponses.Any())
-            {
-                this.CheckQuestionResponses(ref match, quote);
-                if (!match)
-                {
-                    return match;
-                }
-            }
-            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-            if (this.splitLimitBIPD)
-            {
-                this.CheckSplitLimitBIPD(ref match, quote);
-                if (!match)
-                {
-                    return match;
-                }
-            }
-            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-            if (this.endorsement)
-            {
-                this.checkEndorsement(ref match, policy);
-                if (!match)
-                {
-                    return match;
-                }
-            }
-            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-            if (this.materializedBillToday)
-            {
-                this.checkMaterializedBillToday(ref match, policy);
-                if (!match)
-                {
-                    return match;
-                }
-            }
-            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-            if (this.canceled)
-            {
-                this.checkCanceled(ref match, policy);
-                if (!match)
-                {
-                    return match;
-                }
-            }
-            //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-            if (this.vehicle != null)
-            {
-                this.checkVehicleProperties(ref match, quote);
-                if (!match)
-                {
-                    return match;
-                }
-            }
-            //6.)    finally, return match which should be true
-            return match;
-        }
-
 
         /// <summary>
         /// 

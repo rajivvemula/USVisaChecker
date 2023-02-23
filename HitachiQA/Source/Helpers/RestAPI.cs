@@ -213,7 +213,7 @@ namespace HitachiQA.Helpers
                                                         .Split(";")[1]
                                                         .Substring(10)
                                                         .Trim('"');
-                using (var file = System.IO.File.Create(filename))
+                using (var file = File.Create(filename))
                 {
                     var contentStream = response.Content.ReadAsStreamAsync().Result; // get the actual content stream
                     contentStream.CopyTo(file); // copy that stream to the file stream

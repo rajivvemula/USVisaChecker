@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Polly;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Newtonsoft.Json;
+using HitachiQA.Hooks;
 
 namespace ApolloTests.StepDefinition.Forms
 {
@@ -23,21 +24,22 @@ namespace ApolloTests.StepDefinition.Forms
         public const int LineId = 7;
         public string code,
                name;
-        public Form form;
+        public Form Form;
 
         private RestAPI RestAPI;
         private SQL SQL;
         private IConfiguration Configuration;
         private TestContext TestContext;
         private FormContext Context;
+        private MiscHook MiscHook;
 
-
-        public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC)
+        public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook)
         {
             this.RestAPI = restAPI;
             this.SQL= SQL;
             this.Configuration = config;
             this.TestContext= TC;
+            this.MiscHook = miscHook;
 
 
         }
@@ -46,8 +48,10 @@ namespace ApolloTests.StepDefinition.Forms
         {
             this.code = code;
             this.name = name;
-            this.form = Form.GetForm(code, name);
-            this.Context = new FormContext(form);
+            this.Form = Form.GetForm(code, name);
+            bool isRerun = MiscHook.CurrentScenarioStatus?.outcomes.Count > 0;
+            var policy = this.Form.condition.GetValidPolicy(isRerun);
+            this.Context = new FormContext(Form, policy);
 
             //matching policy from the form
 
@@ -105,7 +109,7 @@ namespace ApolloTests.StepDefinition.Forms
             {
                 var docGenRequestId = test.docGenResponseID;
 
-                var errorMsg = $"Document was not generated \nDocumentName: {test.documentName} \nFormName: {name} \nCode: {code} \nEdition: {form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.Context.Policy.Id}/document";
+                var errorMsg = $"Document was not generated \nDocumentName: {test.documentName} \nFormName: {name} \nCode: {code} \nEdition: {Form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.Context.Policy.Id}/document";
 
 
                 //Log.Info($"Form Generated: \nDocumentName: {requestedDoc.documentName} \nFormName: {this.form.name} \nCode: {this.form.code}\n Recipient: {this.form.Recipients.First(it=> it.RecipientRoleTypeId == requestedDoc.recipientRoleTypeId).RecipientTypeName}");
@@ -161,7 +165,7 @@ namespace ApolloTests.StepDefinition.Forms
                 Log.Info($"Filepath: {test.filePath}");
                 if (formFile.Length < 10)
                 {
-                    test.error = $"Document was blank \nDocument: {test.documentName} \nCode: {code} \nEdition: {form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{Context.Policy.Id}/document";
+                    test.error = $"Document was blank \nDocument: {test.documentName} \nCode: {code} \nEdition: {Form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{Context.Policy.Id}/document";
                 }
             }
             ThrowErrorsIfAny();
@@ -304,10 +308,10 @@ namespace ApolloTests.StepDefinition.Forms
         public Data.Entity.Policy Policy;
         public List<Test> Tests;
 
-        public FormContext(Form form)
+        public FormContext(Form form, Data.Entity.Policy policy)
         {
             this.Form = form;
-            this.Policy = this.Form.condition.GetValidPolicy(false);
+            this.Policy = policy;
 
             this.Tests = form.Recipients.Select(it => new Test(this.Form, this.Policy, it)).ToList();
             
