@@ -21,6 +21,7 @@ namespace ApolloTests.Data.Form
         public Boolean endorsement;
         public Boolean materializedBillToday;
         public Boolean canceled;
+        public Boolean canceledFuture;
         public Boolean reinstated;
         public Dictionary<string, string> vehicle;
         public List<string> recipients;
@@ -32,7 +33,7 @@ namespace ApolloTests.Data.Form
          * used by Data.Forms.Form.cs to parse the conditions from Data.Forms.Form.json for each specific form
          */
         [JsonConstructor]
-        public Condition(String stateCode, List<string> coverageTypes, Dictionary<string, string> questionResponses, Boolean splitLimitBIPD, Boolean endorsement, Boolean materializedBillToday,Boolean canceled, Boolean reinstated, Dictionary<string, string> vehicle)
+        public Condition(String stateCode, List<string> coverageTypes, Dictionary<string, string> questionResponses, Boolean splitLimitBIPD, Boolean endorsement, Boolean materializedBillToday,Boolean canceled, Boolean canceledFuture, Boolean reinstated, Dictionary<string, string> vehicle)
         {
             this.stateCode = stateCode?.ToUpper();
             this.coverageTypes = coverageTypes == null ? new List<CoverageType>(): coverageTypes.Select(it => new CoverageType(it)).ToList();
@@ -298,31 +299,60 @@ namespace ApolloTests.Data.Form
                 {
                     conditions.Add($"ARRAY_LENGTH(c.AdditionalInterests)>0");
                 }
-                var vehicleQuery = "SELECT * FROM c where STARTSWITH(c.id, \"RiskEntity\") and c.RiskTypeId= 1";
-                var tetherConditions = new List<string>();
-                if (recipients.Contains("LIENHOLDER"))
-                {
-                    tetherConditions.Add($"ARRAY_CONTAINS(c.QuestionResponses, {{ \"QuestionAlias\": \"VehicleOwnedLeasedFinanced\", \"Response\": \"Financed\" }}, true) ");
-                }
-                if (recipients.Contains("LESSOR"))
-                {
-                    tetherConditions.Add($"ARRAY_CONTAINS(c.QuestionResponses, {{ \"QuestionAlias\": \"VehicleOwnedLeasedFinanced\", \"Response\": \"Leased\" }}, true) ");
-                }
 
-                if(tetherConditions.Any())
+                //load if we need lienholder, lessor or both!
+                bool lienHolder = recipients.Contains("LIENHOLDER");
+                bool lessor = recipients.Contains("LESSOR");
+                bool both = lienHolder && lessor;
+
+                //if lienholder or lessor are needed
+                if (lienHolder || lessor)
                 {
-                    var finalVehicleQuery = $"{vehicleQuery} and {string.Join(" and ", tetherConditions)}";
-                    var validVehicles = Cosmos.GetQuery("Tether", finalVehicleQuery).Result;
-                    if (validVehicles == null)
-                        validTetherIds = new List<long>();
-                    else
+                    //get all risks that have lienholder or lessor as answer
+                    var vehicleQuery = "SELECT VALUE c FROM c JOIN r IN c.QuestionResponses WHERE STARTSWITH(c.id, \"RiskEntity\")  AND c.RiskTypeId = 1  AND r.QuestionAlias = \"VehicleOwnedLeasedFinanced\"  and (r.Response =\"Financed\" or r.Response=\"Leased\")";
+                    vehicleQuery+= $"AND c.TetherId in ({string.Join(",", validTetherIds)})";
+                    var validRisks = Cosmos.GetQuery("Tether", vehicleQuery).Result.ToObject<List<JObject>>();
+
+                    //to load all resulting valid tethers
+                    var tethers = new List<long>();
+                   
+                    // group all risks with their TetherId
+                    // ending with a group for each tether (group is basically a list of risks associated to that tether)
+                    var groups = validRisks.GroupBy(risk => risk.Value<long>("TetherId"));
+                    foreach(var tetherGroup in groups)
                     {
-                        var tethers = validVehicles.Select(it => (long)it["TetherId"]);
+                        //to store if this tether has financed or leased
+                        bool hasFinanced = false;
+                        bool hasLeased = false;
 
-                        validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                        //iterate through each risk associated to this tether
+                        foreach (var risk in tetherGroup)
+                        {
+
+                            //grab the response
+                            var response = risk.Value<JArray>("QuestionResponses")?.First(it => it.Value<string>("QuestionAlias") == "VehicleOwnedLeasedFinanced").Value<string>("Response")?? throw new ArgumentNullException();
+                            
+                            //load whether it's financed or leased
+                            if (response == "Financed")
+                                hasFinanced = true;
+                            else if (response == "Leased")
+                                hasLeased = true;
+                        }
+
+                        //if we need both, then only add if both matchd
+                        if (both && hasFinanced && hasLeased)
+                            tethers.Add(tetherGroup.Key);
+                        //if we need 1, only add that one
+                        else if(!both && lienHolder && hasFinanced)
+                            tethers.Add(tetherGroup.Key);
+                        //if we need 1, only add that one
+                        else if (!both && lessor && hasLeased)
+                            tethers.Add(tetherGroup.Key);
                     }
-                }
-               
+                    //finally, remove all previously valid tether that are no longer valid after checking this
+                    validTetherIds.RemoveAll(it => !tethers.Contains(it));
+
+                }               
 
             }
             if (this.endorsement)
@@ -352,6 +382,14 @@ namespace ApolloTests.Data.Form
             if (this.canceled)
             {
                 var canceled = SQL.executeQuery("SELECT Id as TetherId FROM [tether].[Tether] where EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() and PolicyCancellationEffectiveDate < GETDATE();");
+
+                var tethers = canceled.Select(it => (long)it["TetherId"]);
+
+                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+            }
+            if (this.canceledFuture)
+            {
+                var canceled = SQL.executeQuery("SELECT Id as TetherId FROM [tether].[Tether] where EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() and PolicyCancellationEffectiveDate > GETDATE();");
 
                 var tethers = canceled.Select(it => (long)it["TetherId"]);
 
@@ -593,7 +631,7 @@ namespace ApolloTests.Data.Form
             //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
             if (this.canceled)
             {
-                Thread.Sleep(5000);
+                Thread.Sleep(10000);
                 policy.Cancel();
             }
 
@@ -725,7 +763,6 @@ namespace ApolloTests.Data.Form
             }
             match = false;
         }
-
 
         public override string ToString()
         {

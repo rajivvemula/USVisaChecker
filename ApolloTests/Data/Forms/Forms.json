@@ -94,7 +94,7 @@
     "name": "Notice of Cancellation, Nonrenewal or Declination - IL",
     "condition": {
       "stateCode": "IL",
-      "canceled": true
+      "canceledFuture": true
     }
   },
 
@@ -149,7 +149,7 @@
     "name": "Notice of Cancellation, Nonrenewal or Declination - CA",
     "condition": {
       "stateCode": "CA",
-      "canceled": true
+      "canceledFuture": true
     }
   },
 
@@ -234,7 +234,7 @@
     "name": "Notice of Cancellation, Nonrenewal or Declination - TX",
     "condition": {
       "stateCode": "TX",
-      "canceled": true
+      "canceledFuture": true
     }
   },
 
@@ -338,7 +338,7 @@
     "name": "Notice of Cancellation, Nonrenewal or Declination - MO",
     "condition": {
       "stateCode": "MO",
-      "canceled": true
+      "canceledFuture": true
     }
   },
 
@@ -407,7 +407,7 @@
     "name": "Notice of Cancellation, Nonrenewal or Declination - NV",
     "condition": {
       "stateCode": "NV",
-      "canceled": true
+      "canceledFuture": true
     }
   },
   {
@@ -502,7 +502,7 @@
     "name": "Notice of Cancellation, Nonrenewal or Declination - SC",
     "condition": {
       "stateCode": "SC",
-      "canceled": true
+      "canceledFuture": true
     }
   },
 
@@ -543,7 +543,9 @@
     "code": "(E)GU6004k",
     "name": "Notice of Cancellation, Nonrenewal or Declination - TN",
     "condition": {
-      "stateCode": "TN"
+      "stateCode": "TN",
+      "canceledFuture": true
+
     }
   },
 
@@ -635,7 +637,7 @@
     "name": "Notice of Cancellation, Nonrenewal or Declination - IN",
     "condition": {
       "stateCode": "IN",
-      "canceled": true
+      "canceledFuture": true
     }
   },
 
@@ -704,7 +706,7 @@
     "name": "Notice of Cancellation, Nonrenewal or Declination - AZ",
     "condition": {
       "stateCode": "AZ",
-      "canceled": true
+      "canceledFuture": true
     }
   },
 
@@ -766,7 +768,7 @@
     "name": "Notice of Cancellation, Nonrenewal or Declination - GA",
     "condition": {
       "stateCode": "GA",
-      "canceled": true
+      "canceledFuture": true
     }
   },
 
@@ -1222,7 +1224,7 @@
     "name": "Notice of Cancellation or Nonrenewal - WI",
     "condition": {
       "stateCode": "WI",
-      "canceled": true
+      "canceledFuture": true
     }
   },
   {
@@ -1372,8 +1374,7 @@
     "name": "Notice of Cancellation, Nonrenewal, Declination - CO",
     "condition": {
       "stateCode": "CO",
-      "canceled": true
-
+      "canceledFuture": true
     }
   },
   {
@@ -1519,7 +1520,9 @@
     "code": "(E)GU405e",
     "name": "Notice of Cancellation, Nonrenewal, Declination - OH",
     "condition": {
-      "stateCode": "OH"
+      "stateCode": "OH",
+      "canceledFuture": true
+
     }
   },
   {
@@ -1533,21 +1536,25 @@
     "code": "EGU6009m",
     "name": "Notice of Cancellation Nonrenewal Declination-NJ",
     "condition": {
-      "stateCode": "NJ"
+      "stateCode": "NJ",
+      "canceledFuture": true
+
     }
   },
   {
     "code": "EGU88",
     "name": "13 Notice of Cancellation or Nonrenewal- MI",
     "condition": {
-      "stateCode": "MI"
+      "stateCode": "MI",
+      "canceledFuture": true
     }
   },
   {
     "code": "(E)GU8817u",
     "name": "Notice of Cancellation, Nonrenewal, Renewal Premium, Declination of Insurance or Policy Transfer - Florida",
     "condition": {
-      "stateCode": "FL"
+      "stateCode": "FL",
+      "canceledFuture": true
     }
   },
   {

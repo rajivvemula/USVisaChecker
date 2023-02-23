@@ -205,6 +205,7 @@ namespace HitachiQA.Helpers
                 Log.Critical(response.Content.ReadAsStringAsync().Result);
             }
             response.EnsureSuccessStatusCode();
+
             if (response.Content.Headers.TryGetValues("content-type", out var contentType) && contentType.Contains("application/pdf"))
             {
                 var filename = response.Content.Headers.GetValues("content-disposition")
@@ -222,17 +223,27 @@ namespace HitachiQA.Helpers
                     return file.Name;
                 }
             }
-
-            String dataObjects = response.Content.ReadAsStringAsync().Result;
-            response.Dispose();
-
-            try
+            else if(contentType!=null && contentType.Any(it=>it.Contains("json")))
             {
-                return JsonConvert.DeserializeObject<dynamic>(dataObjects);
-            }catch(JsonReaderException)
-            {
-                return dataObjects;
+                String responseStr = response.Content.ReadAsStringAsync().Result;
+
+                response.Dispose();
+
+                try
+                {
+                    return JsonConvert.DeserializeObject<dynamic>(responseStr);
+                }
+                catch (JsonReaderException)
+                {
+                    return responseStr;
+                }
             }
+            else
+            {
+                return response.Content.ReadAsStringAsync().Result;
+            }
+
+           
         }
 
         private String getAuthToken()
@@ -268,8 +279,15 @@ namespace HitachiQA.Helpers
             });
 
                 var response = POST($"https://login.microsoftonline.com/{TenantId}/oauth2/v2.0/token", null, content);
-
-                _APIToken = response["access_token"];
+                try
+                {
+                    _APIToken = response["access_token"];
+                }
+                catch(Exception)
+                {
+                    Log.Error("oauth2 response: "+response);
+                    throw;
+                }
             }
             return _APIToken;
         }
