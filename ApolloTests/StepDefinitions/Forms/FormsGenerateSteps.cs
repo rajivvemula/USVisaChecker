@@ -177,7 +177,11 @@ namespace ApolloTests.StepDefinition.Forms
         {
             if(this.Context.Tests.Any(it=> it.error!=null))
             {
-                throw new Exception(string.Join("\n\n\n", this.Context.Tests.Where(it=>it.error!=null).Select(it=> $"{it.error}")));
+                #if DEBUG
+                    throw new Exception(string.Join("\n\n\n", this.Context.Tests.Where(it=>it.error!=null).Select(it=> $"body: {it.body}\n{it.error}")));
+                #else
+                    throw new Exception(string.Join("\n\n\n", this.Context.Tests.Where(it=>it.error!=null).Select(it=> $"{it.error}")));
+                #endif
             }
         }
 
@@ -392,7 +396,7 @@ namespace ApolloTests.StepDefinition.Forms
         public string? workflowServiceName { get; set; }
         public string? workflowPlanName { get; set; }
         public int lineId { get; set; }
-        public int recipientRoleTypeId { get; set; }
+        public int? recipientRoleTypeId { get; set; }
         public GhostDraftRequest? ghostDraftRequest { get; set; }
 
         public override string ToString()

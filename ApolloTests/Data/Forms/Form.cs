@@ -15,8 +15,24 @@ namespace ApolloTests.Data.Form
     public class Form:BaseEntity
     {
         public static readonly List<Form> Forms = JsonConvert.DeserializeObject<List<Form>>(File.ReadAllText("Data/Forms/Forms.json"));
-
-        public string name;
+        private string _Name = null;
+        public string name
+        {
+            get
+            {
+                try
+                {
+                    return _Name ??= SQL.executeQuery(@$"SELECT TOP(1) Name
+                                                FROM [document].[GhostDraftTemplateForm] 
+                                                where Code ='{code}' AND LineId = 7 order by Id desc; ")[0]["Name"];
+                }
+                catch
+                {
+                    Log.Error($"Error retrieving Name for form code: {code}");
+                    throw;
+                }
+            }
+        }
         public string code;
         public Condition condition;
         public string displayTitle;
@@ -88,7 +104,6 @@ namespace ApolloTests.Data.Form
        
         public Form(string name, string code, Condition condition, string? displayTitle)
         {
-            this.name = name;
             this.code = code;
             //this.condition = condition?.ToObject<Condition>() ?? new Condition();
             this.condition = condition;

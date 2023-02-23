@@ -97,5 +97,7 @@ namespace ApolloTests.Data.TestData.Params
         public QuestionAnswer TrailerInterchangeAgreements { get; set; } = new QuestionAnswer(Alias.TrailerInterchangeAgreements, "false");
 
         public QuestionAnswer HaulIntermodal { get; set; } = new QuestionAnswer(Alias.HaulIntermodal, "false");
+
+        public QuestionAnswer DynamicVehicleMoratorium { get; set; } = new QuestionAnswer(Alias.DynamicVehicleMoratorium, "false");
     }
 }

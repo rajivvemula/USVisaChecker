@@ -116,6 +116,8 @@
 
             public static string HaulIntermodal { get; } = "HaulIntermodal";
 
+            public static string DynamicVehicleMoratorium { get; } = "DynamicVehicleMoratorium";
+
             #endregion Operations
 
             #region Vehicles
