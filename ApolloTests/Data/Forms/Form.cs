@@ -22,11 +22,20 @@ namespace ApolloTests.Data.Form
         public string displayTitle;
         public List<Recipient> Recipients { get
             {
-                var obj = Cosmos.GetQuery("FormsServiceRule", $"SELECT * FROM c where ARRAY_CONTAINS(c.Forms, {{GhostDraftTemplateFormCode:\"{this.code}\"}}, true)").Result[0];
-                var recipients = (JArray)((JArray)obj["Forms"]).First(it=> it.Value<string>("GhostDraftTemplateFormCode")== code)["Recipients"];
-                return recipients.Select(it => it.ToObject<Recipient>()??throw new ArgumentNullException()).ToList();
-
-            } }
+                var res = Cosmos.GetQuery("FormsServiceRule", $"SELECT * FROM c where ARRAY_CONTAINS(c.Forms, {{GhostDraftTemplateFormCode:\"{this.code}\"}}, true)").Result;
+                if(res.Any())
+                {
+                    var obj = res[0];
+                    var recipients = (JArray)((JArray)obj["Forms"]).First(it => it.Value<string>("GhostDraftTemplateFormCode") == code)["Recipients"];
+                    return recipients.Select(it => it.ToObject<Recipient>() ?? throw new ArgumentNullException()).ToList();
+                }
+                else
+                {
+                    //if no recipients found, we default to insurred
+                    return new List<Recipient>() { new Recipient() { Id=0, DeliveryMethodIdsInternal="1,2", FormsServiceRuleFormEntityId=0, RecipientRoleTypeId=10006 } };
+                }
+            } 
+        }
 
         private long? _Id = null;
         public long Id

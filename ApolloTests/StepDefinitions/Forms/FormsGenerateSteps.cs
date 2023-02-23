@@ -173,7 +173,7 @@ namespace ApolloTests.StepDefinition.Forms
         {
             if(this.Context.Tests.Any(it=> it.error!=null))
             {
-                throw new Exception(string.Join("\n\n\n", this.Context.Tests.Where(it=>it.error!=null).Select(it=> $"Body: {it.body}\n error: {it.error}")));
+                throw new Exception(string.Join("\n\n\n", this.Context.Tests.Where(it=>it.error!=null).Select(it=> $"{it.error}")));
             }
         }
 
@@ -317,7 +317,7 @@ namespace ApolloTests.StepDefinition.Forms
             public Test(Form form, Data.Entity.Policy policy, Recipient recipient)
             {
                 this.guid = Guid.NewGuid();
-                this.documentName = $"[{recipient.RecipientTypeCode}][{form.Edition}] {form.name} {guid}";
+                this.documentName = $"[{recipient.RecipientTypeCode}] [{form.Edition}] {form.name} {guid}";
                 this.Recipient = recipient;
                 this.LoadBody(form, policy, recipient);
 
