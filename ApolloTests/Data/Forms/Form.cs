@@ -142,9 +142,10 @@ namespace ApolloTests.Data.Form
             {
                 form.condition = new Condition();
             }
+
             if(form.Recipients.Any(it => it.RecipientTypeCode != "INSURED"))
             {
-                form.condition.recipients = form.Recipients.Select(it => it.RecipientTypeCode).ToList();
+                form.condition.recipients = form.Recipients.Where(it=>it.RecipientRoleTypeId!=-1).Select(it => it.RecipientTypeCode).ToList();
             }
             
             return form;

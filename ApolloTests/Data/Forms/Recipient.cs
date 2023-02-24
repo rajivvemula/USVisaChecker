@@ -26,9 +26,9 @@ namespace ApolloTests.Data.Form
         [JsonProperty("RecipientRoleTypeId")]
         public int RecipientRoleTypeId { get; set; }
 
-        public string RecipientTypeCode => SQL.executeQuery($"SELECT * FROM [party].[RoleType] where Id={RecipientRoleTypeId}")[0]["Code"];
+        public string RecipientTypeCode => RecipientRoleTypeId ==-1? "SYSTEM" : SQL.executeQuery($"SELECT * FROM [party].[RoleType] where Id={RecipientRoleTypeId}")[0]["Code"];
 
-        public string RecipientTypeName=> SQL.executeQuery($"SELECT * FROM [party].[RoleType] where Id={RecipientRoleTypeId}")[0]["Name"];
+        public string RecipientTypeName=> RecipientRoleTypeId == -1 ? "SYSTEM" : SQL.executeQuery($"SELECT * FROM [party].[RoleType] where Id={RecipientRoleTypeId}")[0]["Name"];
 
     }
 }

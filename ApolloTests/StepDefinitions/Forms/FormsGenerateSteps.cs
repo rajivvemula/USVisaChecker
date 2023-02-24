@@ -49,9 +49,10 @@ namespace ApolloTests.StepDefinition.Forms
             this.code = code;
             this.name = name;
             this.Form = Form.GetForm(code, name);
-            bool isRerun = MiscHook.CurrentScenarioStatus?.outcomes.Count > 0;
+            bool isRerun = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
             var policy = this.Form.condition.GetValidPolicy(isRerun);
             this.Context = new FormContext(Form, policy);
+            var policyId = policy.Id;
 
             //matching policy from the form
 
@@ -358,7 +359,7 @@ namespace ApolloTests.StepDefinition.Forms
                     entityType = policy.EntityTypeId,
                     lineId = 7,
                     ratableObjectId = ratableObjectId,
-                    insertedById= 10008,
+                    insertedById = 10008,
                     ghostDraftRequest = new GhostDraftRequest()
                     {
                         forms = new List<FormObj>() {
@@ -373,7 +374,7 @@ namespace ApolloTests.StepDefinition.Forms
                         }
                     },
                     templateName = "generate-document-v2",
-                    recipientRoleTypeId = recipient.RecipientRoleTypeId
+                    recipientRoleTypeId = recipient.RecipientRoleTypeId == -1 ? null: recipient.RecipientRoleTypeId
                     //workflowPlanName = Configuration.GetVariable("GHOSTDRAFT_WORKFLOW_PLAN"),
                     //workflowServiceName = Configuration.GetVariable("GHOSTDRAFT_WORKFLOW_SERVICE"),
 

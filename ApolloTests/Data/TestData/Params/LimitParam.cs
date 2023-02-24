@@ -61,7 +61,9 @@ namespace ApolloTests.Data.TestData.Params
                 case CoverageType.TRAILER_INTERCHANGE:
                     AddTrailerInterchange(coverageType);
                     break;
-
+                case CoverageType.UNINSURED_UNDERINSURED_BI:
+                    AddUninsuredUnderinsuredBI(coverageType);
+                    break;
                 default:
                     throw new NotImplementedException($"Coverage Type: {coverageType.Name} has not been implemented");
             }
@@ -150,6 +152,17 @@ namespace ApolloTests.Data.TestData.Params
                         questionResponses: null
                         );
         }
+        private void AddUninsuredUnderinsuredBI(CoverageType coverageType)
+        {
+            Object = new CoverageType.Limit(
+                        coverageType: coverageType,
+                        selectedDeductibleName: null,
+                        selectedDeductibles: new List<int>(),
+                        selectedLimitName: "Combined Single Limit",
+                        selectedLimits: new List<int>() { 100000 },
+                        questionResponses: null
+                        );
+        }
 
         private void AddCargo(CoverageType coverageType)
         {
@@ -198,6 +211,8 @@ namespace ApolloTests.Data.TestData.Params
                         questionResponses: null
                         );
         }
+
+
 
         public JObject ToJObject()
         {

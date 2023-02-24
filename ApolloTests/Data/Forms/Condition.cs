@@ -273,11 +273,12 @@ namespace ApolloTests.Data.Form
             if(validTetherIds.Count > 0)
             {
                 conditions.Add($"c.TetherId in ({string.Join(",", validTetherIds)})");
+                conditions.Add($"c.ApplicationStatusValue=\"Issued\"");
                 var generatedConditionStr = string.Join(" AND ", conditions);
                 var applicationQuery = $@"
                     SELECT TOP 1 * FROM c
                     WHERE {generatedConditionStr}
-                    ORDER BY c._ts DESC";
+                    ORDER BY c.TetherId DESC";
                 Log.Debug(applicationQuery);
                 var result = Cosmos.GetQuery("Application", applicationQuery).Result;
                 if (result.Any())
