@@ -10,6 +10,8 @@ using ApolloTests.Data.Rating;
 using Newtonsoft.Json;
 using static ApolloTests.Data.Entity.Policy;
 using ApolloTests.Data.Entities;
+using Polly;
+using System.Diagnostics;
 
 namespace ApolloTests.Data.Entity
 {
@@ -133,9 +135,12 @@ namespace ApolloTests.Data.Entity
             {
                 throw Functions.handleFailure(response);
             }
+            this.Tether.waitForTetherStatus("ISSUED");
 
             return GetCurrentRatableObject();
         }
+
+        
 
         public JObject ReferToUnderwriting()
         {
@@ -325,6 +330,15 @@ namespace ApolloTests.Data.Entity
         public JObject PostSummary()
         {
             var response = RestAPI.POST($"quote/{this.Id}/summary", "");
+            try
+            {
+                this.Tether.waitForTetherStatus("PRESUBMISSION", true);
+            }
+            catch(Exception)
+            {
+                Log.Error(response);
+                throw;
+            }
             return response;
         }
 

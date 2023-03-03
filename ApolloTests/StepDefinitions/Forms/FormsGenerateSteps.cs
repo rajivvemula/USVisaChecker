@@ -348,6 +348,12 @@ namespace ApolloTests.StepDefinition.Forms
                 {
                     var endorsement = policy.GetDraftEndorsements().Last();
                     var ratableObject = endorsement.GetRatableObject();
+                    if(ratableObject==null)
+                    {
+                        endorsement.GetSummary();
+                        ratableObject = endorsement.GetRatableObject();
+
+                    }
                     ratableObject.NullGuard($"RatableObject under policy: {policy.Id}");
                     ratableObjectId = ratableObject.Id;
                 }

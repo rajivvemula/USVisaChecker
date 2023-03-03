@@ -61,7 +61,7 @@
     "name": "Illinois Policy Changes",
     "condition": {
       "stateCode": "IL",
-      "endorsement": true
+      "issuedEndorsement": true
     }
   },
 

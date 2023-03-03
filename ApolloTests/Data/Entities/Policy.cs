@@ -163,13 +163,13 @@ namespace ApolloTests.Data.Entity
                 cancellationInitiatedBy = CancellationInitiatedBy.Carrier,
                 cancellationUnderwriterReason = "Testing"
             };
-
             return this.Cancel(cancelPolicy);
         }
 
         public dynamic Cancel(CancelPolicyObject cancelPolicyObject)
         {
             var response = RestAPI.POST($"/policy/cancelpolicy/{Id}", cancelPolicyObject.ToJObject());
+            this.Tether.waitForTetherStatus("CANCELLED");
 
             return response;
         }

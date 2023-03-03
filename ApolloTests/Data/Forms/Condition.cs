@@ -19,6 +19,7 @@ namespace ApolloTests.Data.Form
         public Dictionary<string, string> questionResponses;
         public Boolean splitLimitBIPD;
         public Boolean endorsement;
+        public Boolean issuedEndorsement;
         public Boolean materializedBillToday;
         public Boolean canceled;
         public Boolean canceledFuture;
@@ -33,7 +34,7 @@ namespace ApolloTests.Data.Form
          * used by Data.Forms.Form.cs to parse the conditions from Data.Forms.Form.json for each specific form
          */
         [JsonConstructor]
-        public Condition(String stateCode, List<string> coverageTypes, Dictionary<string, string> questionResponses, Boolean splitLimitBIPD, Boolean endorsement, Boolean materializedBillToday,Boolean canceled, Boolean canceledFuture, Boolean reinstated, Dictionary<string, string> vehicle)
+        public Condition(String stateCode, List<string> coverageTypes, Dictionary<string, string> questionResponses, Boolean splitLimitBIPD, Boolean endorsement, Boolean issuedEndorsement, Boolean materializedBillToday,Boolean canceled, Boolean canceledFuture, Boolean reinstated, Dictionary<string, string> vehicle)
         {
             this.stateCode = stateCode?.ToUpper();
             this.coverageTypes = coverageTypes == null ? new List<CoverageType>(): coverageTypes.Select(it => new CoverageType(it)).ToList();
@@ -44,6 +45,8 @@ namespace ApolloTests.Data.Form
             this.canceled = canceled;
             this.vehicle = vehicle;
             this.reinstated = reinstated;
+            this.canceledFuture = canceledFuture;
+            this.issuedEndorsement = issuedEndorsement;
         }
         
 
@@ -155,13 +158,14 @@ namespace ApolloTests.Data.Form
                 if (lienHolder || lessor)
                 {
                     //get all risks that have lienholder or lessor as answer
-                    var vehicleQuery = "SELECT VALUE c FROM c JOIN r IN c.QuestionResponses WHERE STARTSWITH(c.id, \"RiskEntity\")  AND c.RiskTypeId = 1  AND r.QuestionAlias = \"VehicleOwnedLeasedFinanced\"  and (r.Response =\"Financed\" or r.Response=\"Leased\")";
+                    var vehicleQuery = "SELECT VALUE c FROM c JOIN r IN c.QuestionResponses WHERE STARTSWITH(c.id, \"RiskEntity\")  AND c.RiskTypeId = 1 AND c.TimeTo=null AND r.QuestionAlias = \"VehicleOwnedLeasedFinanced\"  and (r.Response =\"Financed\" or r.Response=\"Leased\")";
                     vehicleQuery+= $"AND c.TetherId in ({string.Join(",", validTetherIds)})";
                     var validRisks = Cosmos.GetQuery("Tether", vehicleQuery).Result.ToObject<List<JObject>>();
 
+
                     //to load all resulting valid tethers
                     var tethers = new List<long>();
-                   
+
                     // group all risks with their TetherId
                     // ending with a group for each tether (group is basically a list of risks associated to that tether)
                     var groups = validRisks.GroupBy(risk => risk.Value<long>("TetherId"));
@@ -171,18 +175,22 @@ namespace ApolloTests.Data.Form
                         bool hasFinanced = false;
                         bool hasLeased = false;
 
+                        var currentApp = new Tether(tetherGroup.Key).CurrentApplicationId;
+                        
                         //iterate through each risk associated to this tether
                         foreach (var risk in tetherGroup)
                         {
+                            if (risk.Value<long>("EntityId") == currentApp)
+                            {
+                                //grab the response
+                                var response = risk.Value<JArray>("QuestionResponses")?.First(it => it.Value<string>("QuestionAlias") == "VehicleOwnedLeasedFinanced").Value<string>("Response") ?? throw new ArgumentNullException();
 
-                            //grab the response
-                            var response = risk.Value<JArray>("QuestionResponses")?.First(it => it.Value<string>("QuestionAlias") == "VehicleOwnedLeasedFinanced").Value<string>("Response")?? throw new ArgumentNullException();
-                            
-                            //load whether it's financed or leased
-                            if (response == "Financed")
-                                hasFinanced = true;
-                            else if (response == "Leased")
-                                hasLeased = true;
+                                //load whether it's financed or leased
+                                if (response == "Financed")
+                                    hasFinanced = true;
+                                else if (response == "Leased")
+                                    hasLeased = true;
+                            }
                         }
 
                         //if we need both, then only add if both matchd
@@ -214,10 +222,26 @@ namespace ApolloTests.Data.Form
 
 
                 var tethers = draftEndorsements.Select(it => (long)it["TetherId"]);
-
-
                 validTetherIds.RemoveAll(it => !tethers.Contains(it));
                 
+            }
+            if(this.issuedEndorsement)
+            {
+                var result = SQL.executeQuery(@"SELECT distinct *
+                                    FROM (
+                                      SELECT T.Id as TetherId, TH.RatableObjectId, TH.EventTypeId, ET.Description as EventType,
+                                         CASE WHEN TH.RatableObjectId = T.CurrentRatableObjectId THEN 'true' ELSE 'false' END AS [Current]
+                                      FROM [tether].[TetherHistory] TH
+                                      LEFT JOIN [tether].[Tether] T on TH.TetherId = T.Id
+                                      LEFT JOIN tether.[TetherHistoryEventType] ET on ET.Id=TH.EventTypeId
+                                      WHERE TH.EventTypeId=4 
+                                        AND (SELECT COUNT(distinct RatableObjectId) FROM [tether].[TetherHistory] WHERE TetherId=T.Id AND EventTypeId=4) >1 
+                                    ) AS subquery
+                                    WHERE [Current] = 'true' -- reference the alias in the outer query
+                                    ORDER BY TetherId desc;");
+                var tethers = result.Select(it => (long)it["TetherId"]);
+                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+
             }
             if (this.materializedBillToday)
             {
@@ -272,13 +296,14 @@ namespace ApolloTests.Data.Form
 
             if(validTetherIds.Count > 0)
             {
-                conditions.Add($"c.TetherId in ({string.Join(",", validTetherIds)})");
+                var tetherId = validTetherIds.Last();
+                conditions.Add($"c.TetherId in ({tetherId})");
                 conditions.Add($"c.ApplicationStatusValue=\"Issued\"");
                 var generatedConditionStr = string.Join(" AND ", conditions);
                 var applicationQuery = $@"
                     SELECT TOP 1 * FROM c
                     WHERE {generatedConditionStr}
-                    ORDER BY c.TetherId DESC";
+                    ORDER BY c.Id DESC";
                 Log.Debug(applicationQuery);
                 var result = Cosmos.GetQuery("Application", applicationQuery).Result;
                 if (result.Any())
@@ -353,18 +378,28 @@ namespace ApolloTests.Data.Form
 
             var quote = quoteParam.RunThisThroughAPI();
             var policy = quote.PurchaseThis();
+            Policy? endorsementRatableObject = null;
+            Quote? endorsement = null;
 
-            if (this.endorsement)
+            if (this.endorsement || issuedEndorsement)
             {
-                var endorsement = policy.CreateDraftPolicyEndorsement();
+                Thread.Sleep(2000);
+                endorsement = policy.CreateDraftPolicyEndorsement();
                 if(policy.GetDraftEndorsements().Count ==0)
                 {
                     throw new Exception("Endorsement Not Created Yet");
                 }
                 endorsement.CreateEndorsementHeader(policy.Id);
                 endorsement.PostSummary();
-                var ratableObject = endorsement.GetRatableObject();
-                Log.Debug("RatableObject Id: " + ratableObject?.Id);
+                endorsementRatableObject = endorsement.GetRatableObject();
+                Log.Debug("Endorsement RatableObject Id: " + endorsementRatableObject?.Id);
+            }
+            if (this.issuedEndorsement)
+            {
+                endorsementRatableObject.NullGuard(nameof(endorsementRatableObject));
+                RestAPI.PATCH($"quote/{endorsement.Id}", new { ApplicationStatus = 4000 });
+                endorsementRatableObject.IssueEndorsement();
+                endorsementRatableObject.CacheProps();
             }
             if (this.materializedBillToday)
             {
@@ -382,6 +417,7 @@ namespace ApolloTests.Data.Form
 
                 SQL.executeQuery(@$"update j set LastRun = GETDATE(), NextRun = DATEADD(SECOND, 5, GETDATE())
                                    from system.job j where Id in ({logicAppId})");
+                //WAIT FOR JOB TO RUN
                 Thread.Sleep(7000);
 
 
@@ -389,7 +425,6 @@ namespace ApolloTests.Data.Form
             //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
             if (this.canceled)
             {
-                Thread.Sleep(10000);
                 policy.Cancel();
             }
 
@@ -399,7 +434,7 @@ namespace ApolloTests.Data.Form
             policy.CacheProps();
             
 
-            return policy;
+            return issuedEndorsement? endorsementRatableObject ?? throw new NullReferenceException("endorsementRatableObject"): policy;
         }
 
         private void CheckCoverageTypes(ref bool match, Quote quote)

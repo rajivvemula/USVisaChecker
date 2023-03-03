@@ -1,6 +1,8 @@
 ﻿using ApolloTests.Data.Entities;
 using HitachiQA.Helpers;
+using Polly;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ApolloTests.Data.Entity
@@ -86,7 +88,37 @@ namespace ApolloTests.Data.Entity
             }
         }
 
+        public void waitForTetherStatus(string statusCode, bool waitForNotInStatus = false)
+        {
+            var sw = Stopwatch.StartNew();
+
+            var wait = Polly.Policy.HandleResult<bool>(false)
+                .WaitAndRetry(30, _ => TimeSpan.FromSeconds(1));
+            var success = wait.Execute(() =>
+            {
+                if (waitForNotInStatus)
+                    return this.TetherStatusCode != statusCode;
+                else
+                    return this.TetherStatusCode == statusCode;
+
+            });
+            sw.Stop();
+            Log.Debug($"seconds until Tether {(waitForNotInStatus ? "was out of" : "was in")} {statusCode} status: {sw.Elapsed.TotalSeconds}");
+
+            if (!success)
+                throw new TimeoutException($"Timeout waiting for tether Status {(waitForNotInStatus ? "to be out of" : "to be in")} {statusCode} current status: {this.TetherStatusCode}");
+
+
+
+        }
+
         public readonly long Id;
+
+        public string TetherStatusCode => SQL.executeQuery(@$"SELECT TST.Code
+                                                      FROM [tether].[TetherApplicationRatableObject] TAR
+                                                      LEFT JOIN [tether].[TetherStatusType] TST on TAR.TetherStatusTypeId = TST.Id
+                                                      WHERE TAR.TetherId={Id}
+                                                        ")[0]["Code"];
 
         private int _LineId { get; set; }
 
