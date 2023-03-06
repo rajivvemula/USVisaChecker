@@ -51,7 +51,6 @@ namespace ApolloTests.Data.TestData.Params
 
                 case CoverageType.RENTAL_REIMBURSEMENT:
                     AddRentalReimbursement(coverageType);
-
                     break;
 
                 case CoverageType.IN_TOW:
@@ -63,6 +62,15 @@ namespace ApolloTests.Data.TestData.Params
                     break;
                 case CoverageType.UNINSURED_UNDERINSURED_BI:
                     AddUninsuredUnderinsuredBI(coverageType);
+                    break;
+                case CoverageType.UNINSURED_MOTORIST_BI:
+                    AddUninsuredMotoristBI(coverageType);
+                    break;
+                case CoverageType.UNINSURED_MOTORIST_PD:
+                    AddUninsuredMotoristPD(coverageType);
+                    break;
+                case CoverageType.UNINSURED_BIPD:
+                    AddUninsuredMotoristBIPD(coverageType);
                     break;
                 default:
                     throw new NotImplementedException($"Coverage Type: {coverageType.Name} has not been implemented");
@@ -208,6 +216,41 @@ namespace ApolloTests.Data.TestData.Params
                         selectedDeductibles: new List<int>() { 1000, 1000 },
                         selectedLimitName: "Combined Single Limit",
                         selectedLimits: new List<int>() { 50000 },
+                        questionResponses: null
+                        );
+        }
+        private void AddUninsuredMotoristBIPD(CoverageType coverageType)
+        {
+            Object = new CoverageType.Limit(
+                         coverageType: coverageType,
+                         selectedDeductibleName: null,
+                         selectedDeductibles: new List<int>(),
+                         selectedLimitName: "Combined Single Limit",
+                         selectedLimits: new List<int>() { 100000 },
+                         questionResponses: null
+                         );
+        }
+
+        private void AddUninsuredMotoristPD(CoverageType coverageType)
+        {
+            Object = new CoverageType.Limit(
+                         coverageType: coverageType,
+                         selectedDeductibleName: null,
+                         selectedDeductibles: new List<int>(),
+                         selectedLimitName: "Combined Single Limit",
+                         selectedLimits: new List<int>() { 100000 },
+                         questionResponses: null
+                         );
+        }
+
+        private void AddUninsuredMotoristBI(CoverageType coverageType)
+        {
+            Object = new CoverageType.Limit(
+                        coverageType: coverageType,
+                        selectedDeductibleName: null,
+                        selectedDeductibles: new List<int>(),
+                        selectedLimitName: "Combined Single Limit",
+                        selectedLimits: new List<int>() { 100000 },
                         questionResponses: null
                         );
         }
