@@ -98,7 +98,7 @@ namespace ApolloTests.Data.Form
 
             if (string.IsNullOrWhiteSpace(this.stateCode))
             {
-                var tethers = SQL.executeQuery(@$"SELECT Id as TetherId, CurrentApplicationId, 
+                var tethers = SQL.executeQuery(@$"SELECT Id as TetherId, CurrentApplicationId 
                                 FROM [tether].[Tether] 
                                 where 
                                 EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() 
