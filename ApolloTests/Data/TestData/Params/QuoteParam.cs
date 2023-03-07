@@ -63,9 +63,7 @@ namespace ApolloTests.Data.TestData
 
         public string State { get; set; } = "IL";
 
-        public ClassCodeKeyword ClassCodeKeyword { get; set; } = null;
-
-        public Organization Organization { get; set; }
+        public ClassCodeKeyword ClassCodeKeyword { get; set; }
 
         public DateTime RatableObjectEffectiveDate { get; set; } = DateTime.Now.AddDays(1);
 

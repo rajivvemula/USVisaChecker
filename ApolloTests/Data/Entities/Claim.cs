@@ -36,7 +36,7 @@ namespace ApolloTests.Data.Entity
                 var method = this.GetType().GetProperty(propertyName);
                 if (method != null)
                 {
-                    return method.GetGetMethod().Invoke(this, null);
+                    return method.GetGetMethod()?.Invoke(this, null)?? throw new Exception();
 
                 }
                 else
@@ -61,7 +61,7 @@ namespace ApolloTests.Data.Entity
             return property == null ? "" : property;
         }
 
-        private String _ClaimNumber { get; set; }
+        private String? _ClaimNumber { get; set; } = null;
         public string ClaimNumber
         {
             get

@@ -67,12 +67,12 @@ namespace ApolloTests.Data.TestData.Params
         {
             get
             {
-                var limit = LimitParams.Find(it => it.CoverageName == "Collision");
+                var limit = LimitParams.First(it => it.CoverageName == "Collision");
                 return limit.Object.selectedDeductibles[0];
             }
             set
             {
-                var limit = LimitParams.Find(it => it.CoverageName == "Collision");
+                var limit = LimitParams.First(it => it.CoverageName == "Collision");
                 limit.Object.selectedDeductibles = new List<int> { value };
             }
         }
@@ -105,12 +105,12 @@ namespace ApolloTests.Data.TestData.Params
         {
             get
             {
-                var limit = LimitParams.Find(it => it.CoverageName == "Comprehensive");
+                var limit = LimitParams.First(it => it.CoverageName == "Comprehensive");
                 return limit.Object.selectedDeductibles[0];
             }
             set
             {
-                var limit = LimitParams.Find(it => it.CoverageName == "Comprehensive");
+                var limit = LimitParams.First(it => it.CoverageName == "Comprehensive");
                 limit.Object.selectedDeductibles = new List<int> { value };
             }
         }
@@ -222,11 +222,11 @@ namespace ApolloTests.Data.TestData.Params
 
                 public int questionType { get; set; }
 
-                public string questionAlias { get; set; }
+                public string? questionAlias { get; set; }
 
                 public int sectionId { get; set; }
 
-                public object response { get; set; }
+                public object? response { get; set; }
 
                 public bool isHidden { get; set; }
 

@@ -4,16 +4,13 @@ using ApolloTests.Data.Form;
 //using ApolloTests.Data.Entity;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
-using System.Threading;
-using System.Linq;
-using System.IO;
-using System.Text;
-using HitachiQA;
+
 using Microsoft.Extensions.Configuration;
 using Polly;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Newtonsoft.Json;
 using HitachiQA.Hooks;
+using ApolloTests.Data.Entity;
 
 namespace ApolloTests.StepDefinition.Forms
 {
@@ -21,16 +18,16 @@ namespace ApolloTests.StepDefinition.Forms
     public class FormsGenerateSteps
     {
         //LOB = Commercial Auto
-        public const int LineId = 7;
-        public string code,
+        public int LineId = 7;
+        public string? code,
                name;
-        public Form Form;
+        public Form? Form;
 
         private RestAPI RestAPI;
         private SQL SQL;
         private IConfiguration Configuration;
         private TestContext TestContext;
-        private FormContext Context;
+        private FormContext? Context;
         private MiscHook MiscHook;
 
         public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook)
@@ -43,12 +40,14 @@ namespace ApolloTests.StepDefinition.Forms
 
 
         }
-        [Given(@"condition for form with code '(.*)' and '(.*)' is met")]
-        public void GivenConditionForFormWithCodeAndStateIsMet(string code, string name)
+
+        [Given(@"condition for form with code '([^']*)' and '([^']*)' and lineId=(.*) is met")]
+        public void GivenConditionForFormWithCodeAndStateIsMet(string code, string name, int LineId)
         {
             this.code = code;
             this.name = name;
-            this.Form = Form.GetForm(code, name);
+            this.LineId = LineId;
+            this.Form = Form.GetForm(new Line(LineId), code, name);
             bool isRerun = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
             var policy = this.Form.condition.GetValidPolicy(isRerun);
             this.Context = new FormContext(Form, policy);
@@ -61,14 +60,12 @@ namespace ApolloTests.StepDefinition.Forms
         [When(@"user attempts to generate form")]
         public void WhenUserAttemptsToGenerateForm()
         {
-           
-            foreach(var test in this.Context.Tests)
+
+            foreach (var test in this.Context?.Tests ?? throw new NullReferenceException())
             {
-                var docGenResponse = RestAPI.POST("/documentgeneration", test.body);
+                var docGenResponse = RestAPI.POST("/documentgeneration", test?.body);
                 ((bool)docGenResponse).Should().Be(true, "this request should return true");
-                //var res = (JObject)docGenResponse;
-                //Log.Error(res);
-                //test.docGenResponseID = res.Value<long>("id");
+                
             }
             
         }
@@ -77,7 +74,7 @@ namespace ApolloTests.StepDefinition.Forms
         [Then(@"form should be generated successfully")]
         public void ThenFormShouldBeGeneratedSuccessfully()
         {
-            Log.Info($"At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.Context.Policy.Id}/document");
+            Log.Info($"At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.Context?.Policy.Id}/document");
 
 
             var body = new JObject()
@@ -85,9 +82,9 @@ namespace ApolloTests.StepDefinition.Forms
                 {"filters", new JObject(){
                     {"EntityReference", new JObject()
                         {
-                            { "EntityId",this.Context.Policy.Id.ToString() },
-                            { "EntityTypeId", this.Context.Policy.EntityTypeId},
-                            { "SearchType", this.Context.Policy.EntityTypeId}
+                            { "EntityId",this.Context?.Policy.Id.ToString() },
+                            { "EntityTypeId", this.Context?.Policy.EntityTypeId},
+                            { "SearchType", this.Context?.Policy.EntityTypeId}
                         }.ToString(Newtonsoft.Json.Formatting.None)
                     }
                 }
@@ -96,7 +93,7 @@ namespace ApolloTests.StepDefinition.Forms
                 { "orderBy", "insertDateTime" },
                 { "sortOrder", 1 },
             };
-            var retries = Policy.HandleResult<bool>(false)
+            var retries = Polly.Policy.HandleResult<bool>(false)
                 .WaitAndRetry(new[]
                     {
                     TimeSpan.FromSeconds(3),
@@ -106,20 +103,21 @@ namespace ApolloTests.StepDefinition.Forms
                     }
                 );
 
-            foreach (var test in this.Context.Tests)
+            foreach (var test in this.Context?.Tests ?? throw new Exception())
             {
                 var docGenRequestId = test.docGenResponseID;
 
-                var errorMsg = $"Document was not generated \nDocumentName: {test.documentName} \nFormName: {name} \nCode: {code} \nEdition: {Form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.Context.Policy.Id}/document";
+                var errorMsg = $"Document was not generated \nDocumentName: {test.documentName} \nFormName: {name} \nCode: {code} \nEdition: {Form?.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.Context.Policy.Id}/document";
 
 
                 //Log.Info($"Form Generated: \nDocumentName: {requestedDoc.documentName} \nFormName: {this.form.name} \nCode: {this.form.code}\n Recipient: {this.form.Recipients.First(it=> it.RecipientRoleTypeId == requestedDoc.recipientRoleTypeId).RecipientTypeName}");
 
-                JObject documentObj =null;
+                JObject? documentObj =null;
                 retries.Execute(() =>
                 {
-                    JArray documents = RestAPI.POST("/documentmetadata/search", body).results;
-                    documentObj = (JObject)documents.FirstOrDefault(it => it.Value<string>("originalFileName").Contains(test.guid.ToString()));
+                    JArray? documents = RestAPI.POST("/documentmetadata/search", body)?.results;
+                    documents.NullGuard();
+                    documentObj = (JObject?)documents.FirstOrDefault(it => it.Value<string>("originalFileName")?.Contains(test.guid.ToString()) ?? false);
 
                     if (documentObj != null)
                     {
@@ -159,14 +157,14 @@ namespace ApolloTests.StepDefinition.Forms
         [Then(@"form shouldn't be blank")]
         public void ThenFormShouldnTBeBlank()
         {
-            foreach(var test in this.Context.Tests)
+            foreach(var test in this.Context?.Tests?? throw new NullReferenceException())
             {
                 test.filePath.NullGuard("if document generated successfully, filepath should be loaded in the test object");
-                string formFile = Functions.parsePDF(test.filePath);
+                string formFile = Functions.ParsePDF(test.filePath);
                 Log.Info($"Filepath: {test.filePath}");
                 if (formFile.Length < 10)
                 {
-                    test.error = $"Document was blank \nDocument: {test.documentName} \nCode: {code} \nEdition: {Form.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{Context.Policy.Id}/document";
+                    test.error = $"Document was blank \nDocument: {test.documentName} \nCode: {code} \nEdition: {Form?.Edition}  \n At: {Environment.GetEnvironmentVariable("HOST")}/policy/{Context?.Policy.Id}/document";
                 }
             }
             ThrowErrorsIfAny();
@@ -176,7 +174,7 @@ namespace ApolloTests.StepDefinition.Forms
 
         public void ThrowErrorsIfAny()
         {
-            if(this.Context.Tests.Any(it=> it.error!=null))
+            if(this.Context?.Tests.Any(it=> it.error!=null)?? false)
             {
                 #if DEBUG
                     throw new Exception(string.Join("\n\n\n", this.Context.Tests.Where(it=>it.error!=null).Select(it=> $"body: {it.body}\n{it.error}")));
@@ -195,7 +193,7 @@ namespace ApolloTests.StepDefinition.Forms
 
             using (StreamReader sr = new StreamReader(FILEPATH))
             {
-                string line;
+                string? line;
                 // Read and display lines from the file until the end of
                 // the file is reached.
                 while ((line = sr.ReadLine()?.Trim()) != null)
@@ -333,7 +331,7 @@ namespace ApolloTests.StepDefinition.Forms
                
             }
             public Recipient Recipient;
-            public DocGenBody body;
+            public DocGenBody? body;
             public long docGenResponseID;
             public string documentName;
             public string? error;

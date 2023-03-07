@@ -15,9 +15,9 @@ namespace ApolloTests.Data.TestData
     /// </summary>
     public class Parser
     {
-        public Interpreter interpreter = new Interpreter();
+        public Interpreter interpreter = new();
 
-        public T Hydrate<T>(object obj, List<string> nestedTypes = null)
+        public T Hydrate<T>(object? obj, List<string>? nestedTypes = null)
         {
             nestedTypes ??= new List<string>();
 
@@ -30,25 +30,25 @@ namespace ApolloTests.Data.TestData
                 {
                     if (nestedTypes.Contains(prop.PropertyType.Name))
                     {
-                        var nestedObject = prop.GetGetMethod().Invoke(obj, null);
+                        var nestedObject = prop.GetGetMethod()?.Invoke(obj, null);
                         Hydrate<dynamic>(nestedObject, nestedTypes);
                     }
 
                     // Invoke each property to get the value
                     try
                     {
-                        var value = prop.GetGetMethod().Invoke(obj, null);
+                        var value = prop.GetGetMethod()?.Invoke(obj, null);
 
                         // If the value starts with @ then it means it's a variable
-                        if (value is string && (  ((string)value).StartsWith('@') || ((string)value).StartsWith("JSON@")  ))
+                        if (value is string @string && (  @string.StartsWith('@') || @string.StartsWith("JSON@")  ))
                         {
                             // Cast the interpreset value into whatever the property type is
-                            var targetVar = ((string)value).StartsWith('@') ? ((string)value)[1..] : ((string)value)[5..];
+                            var targetVar = @string.StartsWith('@') ? @string[1..] : @string[5..];
                             var castedValue = Convert.ChangeType(interpreter.Eval(targetVar), prop.PropertyType);
 
                             if (castedValue == null || string.IsNullOrWhiteSpace(castedValue.ToString()))
                             {
-                                Log.Error($"{prop.Name} returned null for {((string)value)[1..]}");
+                                Log.Error($"{prop.Name} returned null for {@string[1..]}");
 
                                 throw new NullReferenceException();
                             }
@@ -67,7 +67,7 @@ namespace ApolloTests.Data.TestData
             }
 
             // Finally, return the hydrated object
-            return (T)obj;
+            return (T)(obj ?? throw new NullReferenceException());
         }
 
         public dynamic GetObject(string fileName)
@@ -90,7 +90,7 @@ namespace ApolloTests.Data.TestData
 
                 //from the start of the variable, to the next "
                 //the count of characters will define our variable length
-                int length = jsonString.Substring(startIndex).IndexOf("\"");
+                int length = jsonString[startIndex..].IndexOf("\"");
 
                 //this here is extracting the actual variable name
                 string variableName = jsonString.Substring(startIndex, length);
@@ -103,10 +103,10 @@ namespace ApolloTests.Data.TestData
                 {
                     value = interpreter.Eval(variableName);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Log.Critical($"error evaluating Variable: {variableName}");
-                    throw ex;
+                    throw;
                 }
 
                 //see interpreter here: https://github.com/davideicardi/DynamicExpresso
@@ -120,23 +120,23 @@ namespace ApolloTests.Data.TestData
                 //in the scenario that we've got a \,
                 //DeserializeObject blows up
                 // we will replace \ by \\
-                if (value is string && new Regex(@"[^\\]\\[^\\]") is var regex && regex.Match((string)value).Success)
+                if (value is string @string && new Regex(@"[^\\]\\[^\\]") is var regex && regex.Match(@string).Success)
                 {
                     //because we don't want to replace \\ by \\\
                     //the above regex returns the \ along with the two chars around it
 
                     //loop through each existing \ withing the value
-                    foreach (var slash in ((string)value).Where(it => it == '\\'))
+                    foreach (var slash in @string.Where(it => it == '\\'))
                     {
-                        var match = regex.Match((string)value);
+                        var match = regex.Match(@string);
 
                         //extract the three characters matched by the regex
-                        var stringToReplace = ((string)value).Substring(match.Index, 3);
+                        var stringToReplace = @string.Substring(match.Index, 3);
 
                         //out of the 3 extracted characters
                         //1.) replace \ by \\
                         //2.) replace the three characters using the new \\ (e.g. A\B) by (e.g. A\\B)
-                        value = ((string)value).Replace(stringToReplace, stringToReplace.Replace("\\", "\\\\"));
+                        value = @string.Replace(stringToReplace, stringToReplace.Replace("\\", "\\\\"));
                     }
 
                 }
@@ -148,9 +148,9 @@ namespace ApolloTests.Data.TestData
                     jsonString = jsonString.Replace($"\"@{variableName}\"", (valueInt).ToString());
                     continue;
                 }
-                else if(value is JToken)
+                else if(value is JToken token)
                 {
-                    jsonString = jsonString.Replace($"\"@{variableName}\"", $"{((JToken)value).ToString(Formatting.None)}");
+                    jsonString = jsonString.Replace($"\"@{variableName}\"", $"{token.ToString(Formatting.None)}");
                     continue;
                 }
                 
@@ -171,7 +171,7 @@ namespace ApolloTests.Data.TestData
             try
             {
                 //this will either return a JObject or JArray
-                return JsonConvert.DeserializeObject<dynamic>(jsonString);
+                return JsonConvert.DeserializeObject<dynamic>(jsonString)?? throw new NullReferenceException(fileName);
             }
             catch (Exception)
             {

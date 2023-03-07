@@ -13,10 +13,10 @@ namespace ApolloTests.Data.Form
 {
     public class Condition:BaseEntity
     {
-        public String stateCode;
-        public List<Entity.CoverageType> coverageTypes;
+        public String? stateCode;
+        public List<Entity.CoverageType>? coverageTypes;
         //Key=alias value=response
-        public Dictionary<string, string> questionResponses;
+        public Dictionary<string, string>? questionResponses;
         public Boolean splitLimitBIPD;
         public Boolean endorsement;
         public Boolean issuedEndorsement;
@@ -24,8 +24,16 @@ namespace ApolloTests.Data.Form
         public Boolean canceled;
         public Boolean canceledFuture;
         public Boolean reinstated;
-        public Dictionary<string, string> vehicle;
-        public List<string> recipients;
+        public Dictionary<string, string>? vehicle;
+        public List<string>? recipients;
+        private Form? _form = null;
+        public Form Form {
+            get { 
+            _form.NullGuard(); return _form;
+            } 
+            set { 
+            this._form= value;
+            } }
 
         public Condition() { }
         
@@ -76,19 +84,19 @@ namespace ApolloTests.Data.Form
         {
             if(!createNewQuote)
             {
-                var policy = findPolicyForThis();
+                var policy = FindPolicyForThis();
                 if (policy != null)
                 {
                     return policy;
                 }
             }
-
-            return this.CreateQuoteForThis();
+            
+            return this.CreatePolicyForThis();
 
             throw new NotImplementedException($"No policy was found in the system for {this} \nFunction to create quote for given condition needs to be implemented");
         }
 
-        public Policy? findPolicyForThis()
+        public Policy? FindPolicyForThis()
         {
             
             var conditions = new List<string>();
@@ -103,6 +111,7 @@ namespace ApolloTests.Data.Form
                                 where 
                                 EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() 
                                 AND GoverningStateId = 1
+                                AND LineId={this.Form.Line.Id}
                                 AND PolicyNumber is not null");
                 var tetherIds = tethers.Select(it=> (long)it["TetherId"]);
                 foreach(var tether in tethers)
@@ -123,6 +132,7 @@ namespace ApolloTests.Data.Form
                                 where 
                                 EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() 
                                 AND GoverningStateId = {stateId}
+                                AND LineId={this.Form.Line.Id}
                                 AND PolicyNumber is not null");
 
                 var tetherIds = tethers.Select(it => (long)it["TetherId"]);
@@ -339,8 +349,12 @@ namespace ApolloTests.Data.Form
         /// 
         /// </summary>
         /// <returns></returns>
-        private Policy CreateQuoteForThis()
+        private Policy CreatePolicyForThis()
         {
+            if (this.Form.Line.Id != 7)
+            {
+                throw new NotImplementedException($"Creating a policy through API for {this.Form.Line.Name} LOB has not been implemented yet");
+            }
             stateCode ??= "IL";
             QuoteParam quoteParam = coverageTypes?.Any() ?? false ? new QuoteParam(stateCode, coverageTypes) : new QuoteParam(stateCode);
 
@@ -353,7 +367,7 @@ namespace ApolloTests.Data.Form
             }
             if(stateCode == "MI")
             {
-                quoteParam.LimitParam.Limits.Find(it => it.CoverageName == CoverageType.BIPD).SetSelectedLimits(510000);
+                quoteParam.LimitParam.Limits?.Find(it => it.CoverageName == CoverageType.BIPD)?.SetSelectedLimits(510000);
             }
             if (splitLimitBIPD)
             {
@@ -365,7 +379,7 @@ namespace ApolloTests.Data.Form
 
                 foreach (var prop in this.vehicle)
                 {
-                    vehicleObject.GetType().GetProperty(prop.Key).SetValue(vehicleObject, prop.Value, null);
+                    vehicleObject.GetType()?.GetProperty(prop.Key)?.SetValue(vehicleObject, prop.Value, null);
                 }
 
             }
@@ -414,6 +428,7 @@ namespace ApolloTests.Data.Form
             }
             if (this.issuedEndorsement)
             {
+                endorsement.NullGuard();
                 endorsementRatableObject.NullGuard(nameof(endorsementRatableObject));
                 RestAPI.PATCH($"quote/{endorsement.Id}", new { ApplicationStatus = 4000 });
                 endorsementRatableObject.IssueEndorsement();
@@ -429,7 +444,7 @@ namespace ApolloTests.Data.Form
                 var targetArrangementBillId = arrangmentBillIds[0]["ArrangementBillId"];
 
                 
-                SQL.executeQuery(@$"update billing.ArrangementBill set TimeFrom = '{DateTime.Now.ToString("O")}', DateMailed='{DateTime.Now.ToString("O")}', UpdateDateTime='{DateTime.Now.AddHours(-2).ToString("O")}'  where Id = {targetArrangementBillId};");
+                SQL.executeQuery(@$"update billing.ArrangementBill set TimeFrom = '{DateTime.Now:O}', DateMailed='{DateTime.Now:O}', UpdateDateTime='{DateTime.Now.AddHours(-2):O}'  where Id = {targetArrangementBillId};");
 
                 var logicAppId = SQL.executeQuery("select * from system.job where [Name]='ProcessLateBills';")[0]["Id"];
 
@@ -443,6 +458,7 @@ namespace ApolloTests.Data.Form
             //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
             if (this.canceled)
             {
+                Thread.Sleep(5000);
                 policy.Cancel();
             }
 
@@ -455,125 +471,16 @@ namespace ApolloTests.Data.Form
             return issuedEndorsement? endorsementRatableObject ?? throw new NullReferenceException("endorsementRatableObject"): policy;
         }
 
-        private void CheckCoverageTypes(ref bool match, Quote quote)
-        {
-            var quoteCoverages = quote.getCoverageTypes(quote.GetVehicles()[0]).Select(it => it.Name);
-
-            
-            foreach (var coverage in this.coverageTypes)
-            {
-                // Log.Debug($"quote Id: {quote.Id} Tether: {quote.Tether.Id} "+string.Join(", ", quoteCoverages));
-                if (!quoteCoverages.Contains(coverage.Name))
-                {
-                    match = false;
-                }
-            }
-        }
-
-        private void CheckQuestionResponses(ref bool match, Quote quote)
-        {
-            foreach (var questionResponse in this.questionResponses)
-            {
-                var response = quote.GetQuestionResponse(questionResponse.Key);
-                
-                if (response == null || response != questionResponse.Value)
-                {
-                    match = false;
-                }
-            }
-        }
-
-        private void CheckSplitLimitBIPD(ref bool match, Quote quote)
-        {
-            //speed can be improved by:
-            //saving loading all policies and quotes with static variables
-            //
-            var quoteLimits = quote.getLimits(quote.GetVehicles()[0]);
-
-            //Log.Debug(quoteLimits.Select(it => it.GetCoverageType().Name));
-            var bipdLimit = quoteLimits.FirstOrDefault(it => it.GetCoverageType().Name == "Bodily Injury Property Damage (BIPD)");
-
-            if(bipdLimit == null || bipdLimit.selectedLimitName != "Split Limit" || bipdLimit.selectedLimits.Count!=3)
-            {
-                match = false;
-            }
-
-            
-            
-        }
-        public void checkEndorsement(ref bool match, Policy policy)
-        {
-            var draftEndorsements = policy.GetDraftEndorsements();
-
-            if (draftEndorsements.Any())
-            {
-                if( draftEndorsements.Last().GetRatableObject() == null)
-                {
-                    match = false;
-                }
-
-            }
-            else
-            {
-                match = false;
-            }
-
-        }
-
         /// <summary>
         /// this static variable holds all the valid Tether Objects that have a materialized bill for today
         /// </summary>
-        private static List<Dictionary<string, dynamic>> MaterializedBills = GetSQLService().executeQuery($@"SELECT BAAP.TetherId, AB.*  
+        private static readonly List<Dictionary<string, dynamic>> MaterializedBills = GetSQLService().executeQuery($@"SELECT BAAP.TetherId, AB.*  
                                             FROM [billing].[BillingAccountArrangementPolicy] BAAP
                                             LEFT JOIN billing.ArrangementBill AB on AB.BillingAccountArrangementId = BAAP.BillingAccountArrangementId
                                             WHERE CONVERT(VARCHAR(10),AB.BillStatusUpdateDateTime ,110) = CONVERT(VARCHAR(10),GETDATE(),110)
                                             AND CONVERT(VARCHAR(10),AB.DateMailed ,110) = CONVERT(VARCHAR(10),GETDATE(),110)
                                             ORDER BY BAAP.TetherId DESC
                                             ;");
-        public void checkMaterializedBillToday(ref bool match, Policy policy)
-        {
-            var tetherId = policy.Tether.Id;
-
-            if(MaterializedBills.FirstOrDefault(row=> (long)row["TetherId"] == tetherId) == null)
-            {
-                match = false;
-
-            }
-
-        }
-        public void checkCanceled(ref bool match, Policy policy)
-        {
-            if(policy.CancellationDate == null)
-            {
-                match = false;
-            }
-        }
-        public void checkVehicleProperties(ref bool match, Quote quote)
-        {
-            var vehicles = quote.GetVehicles();
-            
-            if (vehicles.Any())
-            {
-                foreach (var property in this.vehicle)
-                {
-                    //propMethod represents a genetic reference to the property in the vehicle class to be invoked later with any vehicle instance
-                    var propMethod = vehicles[0].GetType().GetProperty(property.Key);
-                    foreach (var vehicle in vehicles)
-                    {
-                       var propertyValue = propMethod.GetGetMethod().Invoke(vehicle, null);
-                        if((propertyValue is string ? (string)propertyValue : propertyValue?.ToString()) == property.Value)
-                        {
-                            return;
-                        }
-                    }
-                }
-            }
-            else 
-            { 
-              match = false; 
-            }
-            match = false;
-        }
 
         public override string ToString()
         {

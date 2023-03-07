@@ -10,13 +10,13 @@ namespace ApolloTests.Data.Entity
     public class Address:BaseEntity 
     {
 
-        public String Street1;
-        public String Street2;
-        public String City;
-        public String StateCode;
-        public String PostalCode;
-        public String CountryName;
-        public String CountryCode;
+        public String? Street1;
+        public String? Street2;
+        public String? City;
+        public String? StateCode;
+        public String? PostalCode;
+        public String? CountryName;
+        public String? CountryCode;
         public long? Id;
         public int StateId
         {
@@ -79,6 +79,7 @@ namespace ApolloTests.Data.Entity
 		                                                LEFT JOIN location.StateProvince lsp on lsp.Id = la.StateProvinceId 
 		                                                LEFT JOIN location.Country lc on lc.Id = la.CountryId
 		                                                where la.Id = @ID;", ("@ID", location_Address_ID))[0];
+            address.NullGuard();
 
             this.Street1 = address["Line1"] is DBNull ? null : address["Line1"];
             this.Street2 = address["Line2"] is DBNull ? null : address["Line2"];

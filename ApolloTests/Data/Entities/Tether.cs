@@ -1,5 +1,6 @@
 ﻿using ApolloTests.Data.Entities;
 using HitachiQA.Helpers;
+using Newtonsoft.Json.Linq;
 using Polly;
 using System;
 using System.Diagnostics;
@@ -33,14 +34,22 @@ namespace ApolloTests.Data.Entity
                     {
                         continue;
                     }
-                    this.GetType().GetProperty(prop.Key).SetValue(this, prop.Value is DBNull ? null : prop.Value);
+                    this.GetType().GetProperty(prop.Key)?.SetValue(this, prop.Value is DBNull ? null : prop.Value);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Log.Critical("Property Key: " + prop.Key + " Property Value: " + prop.Value ?? "null");
-                    throw ex;
+                    throw;
                 }
             }
+        }
+
+        public T? GetProperty<T>(string key)
+        {
+            var prop = this.GetType().GetProperty(key);
+            prop.NullGuard(key);
+            return (T?)prop.GetValue(this, null);
+
         }
 
         private void SetProperty(string propertyName, object value)
@@ -111,6 +120,41 @@ namespace ApolloTests.Data.Entity
 
 
         }
+        public void waitForTetherProperty(string propName, object? value, bool waitForValueNotEqual)
+        {
+            var sw = Stopwatch.StartNew();
+
+            var wait = Polly.Policy.HandleResult<bool>(false)
+                .WaitAndRetry(30, _ => TimeSpan.FromSeconds(1));
+            object? result=null;
+            var success = wait.Execute(() =>
+            {
+                this.Load();
+                result = this.GetProperty<object>(propName);
+                if(waitForValueNotEqual)
+                {
+                    return result != value;
+                }
+                else
+                {
+                    return result == value;
+                }
+
+            });
+            sw.Stop();
+            Log.Debug($"seconds until {propName} {(waitForValueNotEqual ? "was not" : "was")} {value} status: {sw.Elapsed.TotalSeconds}");
+
+            if (!success)
+                throw new TimeoutException($"Timeout waiting for tether {propName} {(waitForValueNotEqual ? "to be out of" : "to be")} {value} current status: {result}");
+
+
+
+        }
+
+        public List<Dictionary<string, dynamic>> BillingSchedule => SQL.executeQuery(@$"SELECT BAAP.TetherId, AB.Id as ArrangementBillId, AB.*  
+                                                            FROM [billing].[BillingAccountArrangementPolicy] BAAP
+                                                            LEFT JOIN billing.ArrangementBill AB on AB.BillingAccountArrangementId = BAAP.BillingAccountArrangementId
+                                                            where BAAP.TetherId={this.Id}");
 
         public readonly long Id;
 
@@ -179,9 +223,9 @@ namespace ApolloTests.Data.Entity
 
         public DateTimeOffset ExpirationDate { get; set; }
 
-        public string ApplicationNumber { get; set; }
+        public string? ApplicationNumber { get; set; }
 
-        public string PolicyNumber { get; set; }
+        public string? PolicyNumber { get; set; }
 
         public DateTimeOffset? FirstIssuedDate { get; set; }
 
@@ -193,7 +237,7 @@ namespace ApolloTests.Data.Entity
 
         public DateTimeOffset InsertDateTime { get; set; }
 
-        public string InsertedBy { get; set; }
+        public string? InsertedBy { get; set; }
 
         public long InsertedByPersonId { get; set; }
 
@@ -201,13 +245,13 @@ namespace ApolloTests.Data.Entity
 
         public DateTimeOffset? CurrentApplicationExpirationDate { get; set; }
 
-        public string UpdatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         public long? UpdatedByPersonId { get; set; }
 
-        public int SourceSystemId { get; set; }
+        public int? SourceSystemId { get; set; }
 
-        public string SourceSystemKey { get; set; }
+        public string? SourceSystemKey { get; set; }
 
         public int StatusId { get; set; }
 

@@ -1,13 +1,7 @@
 ﻿using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json.Linq;
-using System.Reflection;
 using Newtonsoft.Json;
 using ApolloTests.Data.Entities;
-using BoDi;
 
 namespace ApolloTests.Data.Entity
 {
@@ -95,18 +89,18 @@ namespace ApolloTests.Data.Entity
 
         public Policy(JObject policyProps)
         {
-            this.Id = policyProps["Id"].ToObject<long>();
+            this.Id = policyProps["Id"]?.ToObject<long?>()?? throw new Exception("Id returned null");
             this._properties = policyProps;
         }
 
-        public dynamic this[String propertyName]
+        public dynamic? this[String propertyName]
         {
             get
             {
                 var method = this.GetType().GetProperty(propertyName);
                 if (method != null)
                 {
-                    return method.GetGetMethod().Invoke(this, null);
+                    return method.GetGetMethod()?.Invoke(this, null);
                 }
                 else
                 {
@@ -119,7 +113,7 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        private JObject _properties = null;
+        private JObject? _properties = null;
         public Policy CacheProps()
         {
             this._properties = Cosmos.GetQuery("RatableObject", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").Result.ElementAt(0);
@@ -155,7 +149,7 @@ namespace ApolloTests.Data.Entity
         //    return new Policy((int)Cosmos.GetQuery("RatableObject", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
         //}
 
-        public dynamic Cancel()
+        public dynamic? Cancel()
         {
             var cancelPolicy = new CancelPolicyObject()
             {
@@ -166,10 +160,10 @@ namespace ApolloTests.Data.Entity
             return this.Cancel(cancelPolicy);
         }
 
-        public dynamic Cancel(CancelPolicyObject cancelPolicyObject)
+        public dynamic? Cancel(CancelPolicyObject cancelPolicyObject)
         {
             var response = RestAPI.POST($"/policy/cancelpolicy/{Id}", cancelPolicyObject.ToJObject());
-            this.Tether.waitForTetherStatus("CANCELLED");
+            this.Tether.waitForTetherProperty("PolicyCancellationEffectiveDate", null, true);
 
             return response;
         }
@@ -180,7 +174,7 @@ namespace ApolloTests.Data.Entity
             return new Quote(response);
         }
 
-        public dynamic IssueEndorsement()
+        public dynamic? IssueEndorsement()
         {
             var response = RestAPI.POST($"/policy/{Id}/endorsement/issue", null);
 
@@ -217,12 +211,12 @@ namespace ApolloTests.Data.Entity
             {
                 return endorsements.Select(it => new Quote(it["ApplicationId"])).ToList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Log.Debug($"PolicyId: {this.Id} TetherId: {Tether.Id}  failed to GetEndorsements");
                 endorsements.ForEach(it => Log.Debug($"{{ {it} }},"));
 
-                throw ex;
+                throw;
             }
         }
 
@@ -234,26 +228,11 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        public Organization Organization
-        {
-            get
-            {
-                try
-                {
-                    return new Organization("PartyId", this.GetProperties().insuredPartyId.Value.ToString());
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"error constructing Organization with the following params 1=PartyId 2={this.GetProperties()?.insuredPartyId?.Value?.ToString()}");
-                }
-            }
-        }
-
         public string PolicyNumber
         {
             get
             {
-                return GetProperty("PolicyNumber");
+                return GetProperty(nameof(PolicyNumber));
             }
         }
 
@@ -261,11 +240,11 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return Convert.ToDateTime((string)this.GetProperty("TimeFrom"));
+                return Convert.ToDateTime((string)this.GetProperty(nameof(TimeFrom)));
             }
             set
             {
-                this["TimeFrom"] = value.ToString("O");
+                this[nameof(TimeFrom)] = value.ToString("O");
             }
         }
 
@@ -273,11 +252,11 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return Convert.ToDateTime((string)this.GetProperty("TimeTo"));
+                return Convert.ToDateTime((string)this.GetProperty(nameof(TimeTo)));
             }
             set
             {
-                this["TimeTo"] = value.ToString("O");
+                this[nameof(TimeTo)] = value.ToString("O");
             }
         }
 
@@ -287,7 +266,7 @@ namespace ApolloTests.Data.Entity
             {
                 var cancellationDate = this.GetProperty("CancellationDate");
 
-                return cancellationDate ?? Convert.ToDateTime((string)cancellationDate);
+                return cancellationDate ?? Convert.ToDateTime((string?)cancellationDate);
             }
         }
 
@@ -295,11 +274,11 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return this.GetProperty("LatestRatingResponseGroupId");
+                return this.GetProperty(nameof(LatestRatingResponseGroupId));
             }
         }
 
-        public JArray RatingGroup
+        public JArray? RatingGroup
         {
             get
             {
@@ -307,11 +286,11 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        public Boolean AccidentPreventionCredit
+        public bool? AccidentPreventionCredit
         {
             get
             {
-                return (Boolean)this["RatingFactors"]["AccidentPreventionCredit"];
+                return (bool)(this?["RatingFactors"]?["AccidentPreventionCredit"]??false);
             }
         }
 
@@ -320,15 +299,15 @@ namespace ApolloTests.Data.Entity
             get
             {
                 //broken
-                return (String)this["RatingFactors"]["CoveredAutos"];
+                return (String?)this["RatingFactors"]?["CoveredAutos"]?? throw new Exception("covered autos returned null");
             }
         }
 
-        public String MotorCarrierFiling
+        public String? MotorCarrierFiling
         {
             get
             {
-                return (String)this["Metadata"]["MotorCarrierFiling"];
+                return (String?)this["Metadata"]?["MotorCarrierFiling"];
             }
         }
 
@@ -337,7 +316,7 @@ namespace ApolloTests.Data.Entity
             get
             {
                 //broken
-                return (String)this["RatingFactors"]["BillingType"];
+                return (String?)this["RatingFactors"]?["BillingType"] ?? throw new Exception("RatingFactors.BillingType returned null");
             }
         }
 
@@ -355,7 +334,7 @@ namespace ApolloTests.Data.Entity
             get
             {
                 //broken
-                return (String)this["RatingFactors"]["paymentPlan"];
+                return (String?)this["RatingFactors"]?["paymentPlan"]?? throw new Exception("RatingFactors.paymentPlan returned null");
             }
         }
 
@@ -363,7 +342,7 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return (String)this["RatingFactors"]["IsEft"];
+                return (String?)this["RatingFactors"]?["IsEft"] ?? throw new Exception("RatingFactors.IsEft returned null");
             }
         }
 
@@ -371,7 +350,7 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                if (int.TryParse((String)this["Metadata"]["RadiusOfOperation"], out int result))
+                if (int.TryParse((String?)this["Metadata"]?["RadiusOfOperation"] ?? throw new Exception("Metadata.RadiusOfOpertion returned null"), out int result))
                 {
                     return result;
                 }
@@ -393,7 +372,7 @@ namespace ApolloTests.Data.Entity
 
             public CancellationInitiatedBy cancellationInitiatedBy { get; set; }
 
-            public string cancellationUnderwriterReason { get; set; }
+            public string? cancellationUnderwriterReason { get; set; }
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public DateTime? reinstatementDate { get; set; }

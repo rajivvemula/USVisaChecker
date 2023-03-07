@@ -14,9 +14,9 @@ namespace HitachiQA
     [Binding]
     public static class Main
     {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         private static IConfiguration _Config;
         public static IConfiguration Configuration { get { return _Config ??= BuildConfig(); } }
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public static IObjectContainer ObjectContainer;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
@@ -157,13 +157,13 @@ namespace HitachiQA
             get {
                 StackFrame[] frames = new StackTrace().GetFrames();
                 var executingAssemblyList = (from f in frames
-                                             select f.GetMethod().ReflectedType.Assembly
+                                             select f.GetMethod()?.ReflectedType?.Assembly
                                          )
                                          .Where(it =>
-                                             it.GetName().Name != "HitachiQA"
-                                             && !it.GetName().Name.Contains("System")
-                                             && !it.GetName().Name.Contains("SpecFlow")
-                                             && !it.GetName().Name.Contains("Microsoft")
+                                             it.GetName()?.Name != "HitachiQA"
+                                             && !(it.GetName()?.Name?.Contains("System")?? false)
+                                             && !(it.GetName()?.Name?.Contains("SpecFlow")?? false)
+                                             && !(it.GetName()?.Name?.Contains("Microsoft")?? false)
                                              )
                                          .Distinct();
                 return executingAssemblyList.First();

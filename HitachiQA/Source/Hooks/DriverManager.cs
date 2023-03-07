@@ -29,7 +29,8 @@ namespace HitachiQA.Hooks
 
         public DriverManager(IObjectContainer oc, FeatureContext fc, IConfiguration config) : base(oc, fc, config)
         {
-            
+            BrowserIndicator = new BrowserIndicator();
+
         }
 
 
@@ -37,7 +38,6 @@ namespace HitachiQA.Hooks
         public void invokeDriver(FeatureContext FT, ScenarioContext SC, ObjectContainer oc)
         {
 
-            BrowserIndicator = new BrowserIndicator();
             if (!FT.FeatureInfo.Tags.Contains("NoBrowser") && !SC.ScenarioInfo.Tags.Contains("NoBrowser"))
             {
                 BrowserIndicator.isNoBrowserFeature = false;

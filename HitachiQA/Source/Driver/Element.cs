@@ -44,7 +44,7 @@ namespace HitachiQA.Driver
                 }
                 else
                 {
-                    throw Functions.handleFailure(new NotImplementedException($"Locator string [{loc}] xpath conversion not built"));
+                    throw Functions.HandleFailure(new NotImplementedException($"Locator string [{loc}] xpath conversion not built"));
                 }     
             }
         }
@@ -112,7 +112,7 @@ namespace HitachiQA.Driver
             {
                 return true;
             }
-            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText}  did not contain expected \ntext: {text}"), optional);
+            Functions.HandleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText}  did not contain expected \ntext: {text}"), optional);
             return false;
         }
 
@@ -131,7 +131,7 @@ namespace HitachiQA.Driver
             {
                 return true;
             }
-            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {text}"), optional);
+            Functions.HandleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {text}"), optional);
             return false;
         }
 
@@ -151,7 +151,7 @@ namespace HitachiQA.Driver
             {
                 return true;
             }
-            Functions.handleFailure(new Exception($"Element {locator.ToString()} \ninner text: {innerText} did not equal expected\n      text: {text}"), optional);
+            Functions.HandleFailure(new Exception($"Element {locator.ToString()} \ninner text: {innerText} did not equal expected\n      text: {text}"), optional);
             return false;
         }
 
@@ -166,7 +166,7 @@ namespace HitachiQA.Driver
             }
             catch (Exception ex)
             {
-                Functions.handleFailure($"Element located {locator.ToString()} was not vissible in the UI", ex, optional);
+                Functions.HandleFailure($"Element located {locator.ToString()} was not vissible in the UI", ex, optional);
             }
             return false;
         }
@@ -183,7 +183,7 @@ namespace HitachiQA.Driver
             }
             catch (Exception ex)
             {
-                Functions.handleFailure($"Element located {locator.ToString()} was not present in the HTML", ex, optional);
+                Functions.HandleFailure($"Element located {locator.ToString()} was not present in the HTML", ex, optional);
             }
             return false;
         }
@@ -201,7 +201,7 @@ namespace HitachiQA.Driver
             }
             catch (Exception ex)
             {
-                Functions.handleFailure($"Element located {locator.ToString()} was still vissible in the UI after {wait_Seconds} seconds", ex, optional);
+                Functions.HandleFailure($"Element located {locator.ToString()} was still vissible in the UI after {wait_Seconds} seconds", ex, optional);
             }
             return false;
         }
@@ -215,7 +215,7 @@ namespace HitachiQA.Driver
             }
             else if (state != isSelected)
             {
-                throw Functions.handleFailure($"Radio Button state did not match expected {state} \n {this}");                      
+                throw Functions.HandleFailure($"Radio Button state did not match expected {state} \n {this}");                      
             }
             else
             {
@@ -240,7 +240,7 @@ namespace HitachiQA.Driver
                     this.SelectMatDropdownOptionByText(value);
                     break;
                 default:
-                    Functions.handleFailure(new NotImplementedException($"Field type: {fieldType} is not implemented"));
+                    Functions.HandleFailure(new NotImplementedException($"Field type: {fieldType} is not implemented"));
                     break; 
             }
         }
@@ -281,7 +281,7 @@ namespace HitachiQA.Driver
             {
                 return true;
             }
-            Functions.handleFailure(new Exception($"Text Field {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {expected}"), optional);
+            Functions.HandleFailure(new Exception($"Text Field {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {expected}"), optional);
             return false;
         }
 
@@ -311,7 +311,7 @@ namespace HitachiQA.Driver
 
         public void AssertMatDropdownOptionsContain(string optionText)
         {
-            List<string> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
+            var dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
 
             dropdownOptions.Should().Contain(optionText);
         }
@@ -319,14 +319,15 @@ namespace HitachiQA.Driver
         [Obsolete("Please use AssertMatDropdownOptionsContain(string optionText)")]
         public bool AssertMatDropdownOptionsContain(string optionText, bool optional = false)
         {
-            List<string> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
-
+            var dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
+            dropdownOptions.NullGuard();
             return Assert.Contains(dropdownOptions, optionText, optional);
         }
 
         public void AssertMatDropdownOptionsEqual(List<String> optionsText)
         {
-            List<String> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
+            var dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
+            dropdownOptions.NullGuard();
 
             dropdownOptions.Should().BeEquivalentTo(optionsText);
         }
@@ -367,7 +368,7 @@ namespace HitachiQA.Driver
 
         public IEnumerable<Dictionary<String, String>> parseUITable()
         {
-            return UserActions.parseUITable(this.Xpath);
+            return UserActions.parseUITable(this.Xpath)?? throw new NullReferenceException();
         }
 
         public List<Dictionary<String, String?>> GetGridItems()

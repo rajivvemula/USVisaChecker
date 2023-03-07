@@ -62,7 +62,7 @@ namespace HitachiQA.Hooks
         }
         private static List<ScenarioStatus>? GetStatuses()
         {
-            if (Mutex.TryOpenExisting(MUTEXNAME, out Mutex mutex))
+            if (Mutex.TryOpenExisting(MUTEXNAME, out Mutex? mutex))
             {
                 mutex.WaitOne();
                 mutex.ReleaseMutex();

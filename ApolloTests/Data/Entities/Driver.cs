@@ -25,9 +25,9 @@ namespace ApolloTests.Data.Entity
 
         }
 
-        public dynamic this[String propertyName] { get { return this.GetProperty(propertyName); }
+        public dynamic? this[String propertyName] { get { return this.GetProperty(propertyName); }
         }
-        public dynamic GetProperty(String propertyName)
+        public dynamic? GetProperty(String propertyName)
         {
             var property = this.GetProperties()[propertyName];
             return property is DBNull ? null : property;
@@ -63,7 +63,7 @@ namespace ApolloTests.Data.Entity
             {
                 if(_RiskId == null)
                 {
-                    _RiskId = this.GetProperty("RiskId");
+                    _RiskId = this.GetProperty("RiskId")?? throw new Exception();
                 }
                 return (long)_RiskId;
             }
@@ -97,27 +97,27 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return this.GetProperty("LicenseNo");
+                return this.GetProperty("LicenseNo") ?? throw new Exception();
             }
         }
         public DateTimeOffset LicenseExpirationDate
         {
             get
             {
-                return this.GetProperty("LicenseExpirationDate");
+                return this.GetProperty("LicenseExpirationDate") ?? throw new Exception();
             }
         }
 
-        public dynamic GetQuestionResponse(Quote quote, string alias)
+        public dynamic? GetQuestionResponse(Quote quote, string alias)
         {
             var risks = (JArray)quote.GetProperty("Risks");
-            var risk = risks.FirstOrDefault(it => it["RiskId"].ToObject<long>() == this.RiskId);
+            var risk = risks.FirstOrDefault(it => it["RiskId"]?.ToObject<long>() == this.RiskId);
 
-            foreach (JObject response in risk["OutputMetaDataEntity"]["QuestionResponses"])
+            foreach (JObject response in risk?["OutputMetaDataEntity"]?["QuestionResponses"]??throw new NullReferenceException())
             {
-                if (response["QuestionAlias"].ToString() == alias)
+                if (response["QuestionAlias"]?.ToString() == alias)
                 {
-                    return ((JValue)response["Response"]).Value;
+                    return ((JValue?)response["Response"])?.Value;
                 }
             }
             return null;
@@ -127,19 +127,19 @@ namespace ApolloTests.Data.Entity
         {
             var result = new List<Incident>();
 
-            var risk = ((JArray)quote.GetProperty("Risks")).FirstOrDefault(it => it["RiskId"].ToObject<long>() == this.RiskId);
+            var risk = ((JArray)quote.GetProperty("Risks")).FirstOrDefault(it => it["RiskId"]?.ToObject<long>() == this.RiskId);
 
-            var incidents = (JArray)risk["OutputMetaDataEntity"]["DriverHistory"]["Accidents"];
-
+            var incidents = (JArray?)risk?["OutputMetaDataEntity"]?["DriverHistory"]?["Accidents"];
+            incidents.NullGuard();
 
             foreach(var incident in incidents)
             {
                 result.Add(new Incident
                                 (
                                     "Accident",
-                                    incident["Date"].ToObject<DateTimeOffset>(),
-                                    incident["State"].ToString(),
-                                    incident["Reason"].ToString(), 
+                                    incident["Date"]?.ToObject<DateTimeOffset>()??throw new NullReferenceException(),
+                                    incident["State"]?.ToString() ?? throw new NullReferenceException(),
+                                    incident["Reason"]?.ToString() ?? throw new NullReferenceException(), 
                                     this
                                 )
                             );
@@ -150,19 +150,19 @@ namespace ApolloTests.Data.Entity
         {
             var result = new List<Incident>();
 
-            var risk = ((JArray)quote.GetProperty("Risks")).FirstOrDefault(it => it["RiskId"].ToObject<long>() == this.RiskId);
+            var risk = ((JArray)quote.GetProperty("Risks")).FirstOrDefault(it => it["RiskId"]?.ToObject<long>() == this.RiskId);
 
-            var incidents = (JArray)risk["OutputMetaDataEntity"]["DriverHistory"]["Violations"];
-
+            var incidents = (JArray?)risk?["OutputMetaDataEntity"]?["DriverHistory"]?["Violations"];
+            incidents.NullGuard();
 
             foreach (var incident in incidents)
             {
                 result.Add(new Incident
                                 (
                                     "Violation",
-                                    incident["Date"].ToObject<DateTimeOffset>(),
-                                    incident["State"].ToString(),
-                                    incident["Reason"].ToString(),
+                                     incident["Date"]?.ToObject<DateTimeOffset>() ?? throw new NullReferenceException(),
+                                    incident["State"]?.ToString() ?? throw new NullReferenceException(),
+                                    incident["Reason"]?.ToString() ?? throw new NullReferenceException(),
                                     this
                                 )
                             );
@@ -173,9 +173,10 @@ namespace ApolloTests.Data.Entity
         {
             var result = new List<Incident>();
 
-            var risk = ((JArray)quote.GetProperty("Risks")).FirstOrDefault(it => it["RiskId"].ToObject<long>() == this.RiskId);
+            var risk = ((JArray)quote.GetProperty("Risks")).FirstOrDefault(it => it["RiskId"]?.ToObject<long>() == this.RiskId);
 
-            var incidents = (JArray)risk["OutputMetaDataEntity"]["DriverHistory"]["Convictions"];
+            var incidents = (JArray?)risk?["OutputMetaDataEntity"]?["DriverHistory"]?["Convictions"];
+            incidents.NullGuard();
 
 
             foreach (var incident in incidents)
@@ -183,9 +184,9 @@ namespace ApolloTests.Data.Entity
                 result.Add(new Incident
                                 (
                                     "Conviction",
-                                    incident["Date"].ToObject<DateTimeOffset>(),
-                                    incident["State"].ToString(),
-                                    incident["Reason"].ToString(),
+                                    incident["Date"]?.ToObject<DateTimeOffset>() ?? throw new NullReferenceException(),
+                                    incident["State"]?.ToString() ?? throw new NullReferenceException(),
+                                    incident["Reason"]?.ToString() ?? throw new NullReferenceException(),
                                     this
                                 )
                             );
@@ -195,7 +196,7 @@ namespace ApolloTests.Data.Entity
         public int GetPoints(Quote quote, string DriverRatingPlan)
         {
             int resultPoints = 0;
-            List<Dictionary<string, string>> DR2 = Functions.parseCSV("/Data/RatingManual/DR.2.csv");
+            List<Dictionary<string, string>> DR2 = Functions.ParseCSV("/Data/RatingManual/DR.2.csv");
 
             var year = 365;
             var three_years = year * 3;
@@ -209,7 +210,7 @@ namespace ApolloTests.Data.Entity
                 {
                     var row = DR2.Find(it => it["Criteria for Rating"] == "Violations");
 
-                    resultPoints += int.Parse(row[DriverRatingPlan]);
+                    resultPoints += int.Parse(row?[DriverRatingPlan]?? throw new NullReferenceException());
                 }
             }
 
@@ -224,24 +225,24 @@ namespace ApolloTests.Data.Entity
                 {
                     var row = DR2.Find(it => it["Criteria for Rating"] == "Chargeable Accidents");
 
-                    resultPoints += int.Parse(row[DriverRatingPlan]);
+                    resultPoints += int.Parse(row?[DriverRatingPlan]??throw new Exception());
                 }
             }
            
             foreach (var conviction in GetConvictions(quote))
             {
-                Dictionary<string, string> row = null;
+                Dictionary<string, string>? row = null;
                 if ((DateTime.Now - conviction.Date).TotalDays < year)
                 {
-                    row = DR2.Find(it => it["Criteria for Rating"] == "Conviction: in past 1 year");
+                    row = DR2.Find(it => it?["Criteria for Rating"] == "Conviction: in past 1 year");
                 }
                 else if ((DateTime.Now - conviction.Date).TotalDays < three_years)
                 {                    
-                    row = DR2.Find(it => it["Criteria for Rating"] == "Conviction: in 2nd or 3rd past year");
+                    row = DR2.Find(it => it?["Criteria for Rating"] == "Conviction: in 2nd or 3rd past year");
                 }
                 else if ((DateTime.Now - conviction.Date).TotalDays < five_years)
                 {
-                    row = DR2.Find(it => it["Criteria for Rating"] == "Conviction: in 4th or 5th past year");
+                    row = DR2.Find(it => it?["Criteria for Rating"] == "Conviction: in 4th or 5th past year");
                 }
                 if(row == null)
                 {
@@ -254,28 +255,28 @@ namespace ApolloTests.Data.Entity
            
             if (this.GetProperty("StateCode") != quote.GoverningStateCode)
             {
-                var row = DR2.Find(it => it["Criteria for Rating"] == "Drivers license State different than state of applicant or policyholder address");
+                var row = DR2.First(it => it["Criteria for Rating"] == "Drivers license State different than state of applicant or policyholder address");
 
                 resultPoints += int.Parse(row[DriverRatingPlan]);
             }
 
-            var driverRisk = (JObject)((JArray)quote.GetDriverTypeRisk()["risks"]).First(it => it["riskId"].ToObject<long>() == this.RiskId);
+            var driverRisk = (JObject)((JArray?)quote.GetDriverTypeRisk()?["risks"]?? throw new Exception()).First(it => it["riskId"]?.ToObject<long>() == this.RiskId);
 
-            var cdlResponse = driverRisk["outputMetadata"]["QuestionResponses"].FirstOrDefault(it => it["questionAlias"].ToString() == "CDL")?["response"]?.ToString();
+            var cdlResponse = driverRisk?["outputMetadata"]?["QuestionResponses"]?.FirstOrDefault(it => it?["questionAlias"]?.ToString() == "CDL")?["response"]?.ToString();
 
             if (!string.IsNullOrWhiteSpace(cdlResponse))
             {
-                Dictionary<string, string> row = null;
+                Dictionary<string, string>? row = null;
 
                 if (cdlResponse == "0" || cdlResponse == "1")
                 {
-                    row = DR2.Find(it => it["Criteria for Rating"] == "CDL Experience: Less than 1 Year");
+                    row = DR2.Find(it => it?["Criteria for Rating"] == "CDL Experience: Less than 1 Year");
                 }
                 else if (cdlResponse == "2")
                 {
-                    row = DR2.Find(it => it["Criteria for Rating"] == "CDL Experience: 1 to 2 Years");
+                    row = DR2.Find(it => it?["Criteria for Rating"] == "CDL Experience: 1 to 2 Years");
                 }
-
+                row.NullGuard();
                 resultPoints += int.Parse(row[DriverRatingPlan]);
 
 
@@ -299,7 +300,7 @@ namespace ApolloTests.Data.Entity
             public DateTimeOffset Date { get;  }
             public string StateCode { get;  }
             public string ReasonCode { get;  }
-            public Driver Driver { get;}
+            public Driver? Driver { get;}
 
             public Incident(string type, DateTimeOffset date, string stateCode, string reasonCode)
             {

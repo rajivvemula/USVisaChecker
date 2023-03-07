@@ -25,12 +25,12 @@ namespace ApolloTests.StepDefinitions
         {
             string Username = Config.GetVariable("API_USERNAME");
             string Password = Config.GetVariable("API_PASSWORD");
-            QuotePage.UsernameTextField.setText(Username);
+            QuotePage.UsernameTextField.SetFieldValue(Username);
 
             //Next button
             QuotePage.SubmitButton.Click();
 
-            QuotePage.PasswordTextField.setText(Password);
+            QuotePage.PasswordTextField.SetFieldValue(Password);
 
             //Sign in button
             QuotePage.SubmitButton.Click();
@@ -85,11 +85,11 @@ namespace ApolloTests.StepDefinitions
             String jsonString = new StreamReader($"Data/TestData/objects/OrgCreateAddress/{stateCode}.json").ReadToEnd();
             var addressObj = JObject.Parse(jsonString);
 
-            streetField.SetFieldValue(addressObj.Value<string>("line1"));
-            street2Field.SetFieldValue(addressObj.Value<string>("line2"));
-            cityField.SetFieldValue(addressObj.Value<string>("majorMunicipality"));
+            streetField.SetFieldValue(addressObj.Value<string>("line1")??throw new Exception());
+            street2Field.SetFieldValue(addressObj.Value<string>("line2") ?? throw new Exception());
+            cityField.SetFieldValue(addressObj.Value<string>("majorMunicipality") ?? throw new Exception());
             stateField.SetFieldValue(stateCode);
-            zipField.SetFieldValue(addressObj.Value<string>("postalCode"));
+            zipField.SetFieldValue(addressObj.Value<string>("postalCode") ?? throw new Exception());
 
             this.QuotePage.GetElementByText("//mat-dialog-container", "Save").Click();
 

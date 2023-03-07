@@ -33,16 +33,16 @@ namespace ApolloTests.StepDefinitions.Forms
         [Given(@"Current Test Function Names are loaded")]
         public void GivenCurrentTestFunctionNamesAreLoaded()
         {
-            Type type = Assembly.GetExecutingAssembly().GetType("ApolloTests.Features.Forms.FormsGenerateFeature");
-
+            Type? type = Assembly.GetExecutingAssembly().GetType("ApolloTests.Features.Forms.CommercialAutoLOBFeature");
+            type.NullGuard();
 
             MethodInfo[] methods;
             
             methods= type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             
             //Log.Info(methods.Select(x => x.Name));
-            var filterednames = methods.Where(x => x.Name.StartsWith("FormCanBeGenerated_"));
-            TestFunctionNames.AddRange( filterednames.Select(x => $"ApolloTests.Features.Forms.FormsGenerateFeature.{x.Name}"));
+            var filterednames = methods.Where(x => x.Name.StartsWith("FormCanBeGeneratedLineId_7_"));
+            TestFunctionNames.AddRange( filterednames.Select(x => $"ApolloTests.Features.Forms.CommercialAutoLOBFeature.{x.Name}"));
 
             var formCodes = TestFunctionNames.Select(x => Regex.Match(x, @"(?<=_)[^_]+$").Value);
 
@@ -68,6 +68,10 @@ namespace ApolloTests.StepDefinitions.Forms
             };
             var auth = new AuthenticationHeaderValue("Basic", "Omx0d2hybm9zN2t6aTI1cXF4YTZrNnliam5ma3JtZHRucHJzanp5bXZjY2ttaHU3YnN0bnE=");
             var QueryResult = RestAPI.GET(url,null,headers);
+            if(QueryResult==null)
+            {
+                throw new Exception();
+            }
             //Log.Info(QueryResult);
             var ids = ((JArray)QueryResult["workItems"]).Select(x => x.Value<int>("id"));
             
@@ -88,18 +92,22 @@ namespace ApolloTests.StepDefinitions.Forms
                     }
                 };
                 var response = RestAPI.POST(getworkitemurl, myObject, auth);
+                if (response == null)
+                {
+                    throw new Exception();
+                }
                 ADOQueriedworkitems.Merge(response["value"]);
 
             }
-            var resultIds = ADOQueriedworkitems.Select(it => it["fields"].Value<int>("System.Id"));
-            var resultTitles = ADOQueriedworkitems.Select(it => it["fields"].Value<string>("System.Title"));
+            var resultIds = ADOQueriedworkitems.Select(it => it["fields"]?.Value<int>("System.Id"));
+            var resultTitles = ADOQueriedworkitems.Select(it => it["fields"]?.Value<string>("System.Title"));
 
             if (resultIds.Distinct().Count() != ids.Count())
             {
                 var dups = ids.ToList();
                 foreach (var id in resultIds.Distinct())
                 {
-                    dups.Remove(id);
+                    dups.Remove(id?? throw new NullReferenceException());
                 }
                 Log.Error($"unique result: {resultIds.Distinct().Count()}; query result: {ids.Count()}; duplicate count: {dups.Count}");
                 Log.Error(dups);
@@ -137,7 +145,7 @@ namespace ApolloTests.StepDefinitions.Forms
                 
                 var formCode = Regex.Match(form, @"(?<=_)[^_]+$").Value;
                 var workitem = ADOQueriedworkitems.FirstOrDefault(x => 
-                                    x["fields"].Value<string>("System.Title")
+                                        (x["fields"]?.Value<string>("System.Title")??throw new NullReferenceException())
                                         .ToLower()
                                         .Replace("(","")
                                         .Replace(")", "")
@@ -147,7 +155,7 @@ namespace ApolloTests.StepDefinitions.Forms
                 {
                     throw new Exception($"No work item found for form {formCode}");
                 }
-                var workItemId = workitem["id"].ToString();
+                var workItemId = (workitem["id"]?.ToString() ?? throw new NullReferenceException());
                 if(associations.ContainsKey(workItemId))
                 {
                     throw new Exception($"Work item {workItemId} has already been associated with {formCode} @ {form}");
@@ -191,8 +199,9 @@ namespace ApolloTests.StepDefinitions.Forms
 
             foreach(var batch in bulkupdatebody.Chunk(199)) {
 
-                var res = RestAPI.PATCH(bulkupdateurl, batch, auth);
-                bulkUpdatesRes.Merge(res["value"]);
+                var res = (JObject?)RestAPI.PATCH(bulkupdateurl, batch, auth);
+                res.NullGuard();
+                bulkUpdatesRes.Merge(res["value"]?? throw new NullReferenceException());
             }
 
             Log.Info(bulkUpdatesRes);

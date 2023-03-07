@@ -1,12 +1,6 @@
 ﻿using ApolloTests.Data.TestData.Params;
-using ApolloTests.Data.TestData;
-using ApolloTests.Data.TestData;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using ApolloTests.Data.Entities;
 
 namespace ApolloTests.Data.TestData
@@ -43,7 +37,7 @@ namespace ApolloTests.Data.TestData
             /// <summary>
             /// To store all possible questions within the specific section
             /// </summary>
-            public JArray sectionQuestions;
+            public JArray? sectionQuestions;
 
             public Entity.Question.Section section;
 
@@ -67,10 +61,10 @@ namespace ApolloTests.Data.TestData
                     //attempt to get the section object from the quote's story board
                     section = quote.Storyboard.GetSection(sectionName);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Log.Critical($"quoteId: {quote.Id} did not have sectionName: {sectionName}");
-                    throw ex;
+                    throw;
                 }
 
                 if (sectionName != "Policy Coverages")
@@ -91,7 +85,7 @@ namespace ApolloTests.Data.TestData
                 {
                     var limitParam = entities["Policy Coverages"];
 
-                    sectionQuestions = quote.GetCoverageQuestions(limitParam["CoverageName"].ToString());
+                    sectionQuestions = quote.GetCoverageQuestions(limitParam?["CoverageName"]?.ToString()?? throw new Exception("LimitParam.CovergaeName"));
                 }
             }
 
@@ -119,7 +113,7 @@ namespace ApolloTests.Data.TestData
                     CurrentSectionQuestions = StateChange(quote, currentAnswersState);
                     GetSectionAnswers(ref result, ref currentAnswersState, CurrentSectionQuestions);
                     counter++;
-                } while (counter < 10 && CurrentSectionQuestions.Where(it => (bool)it["isHidden"] == false).Count() > 1);
+                } while (counter < 10 && CurrentSectionQuestions.Where(it => (bool)(it["isHidden"]??throw new Exception($"isHidden shoudl exist in {Log.stringify(it)}")) == false).Count() > 1);
 
                 return result;
             }
@@ -133,19 +127,20 @@ namespace ApolloTests.Data.TestData
             /// <param name="result"></param>
             /// <param name="currentAnswersState"></param>
             /// <param name="sectionQuestions"></param>
-            private void GetSectionAnswers(ref JArray result, ref JArray currentAnswersState, JArray sectionQuestions)
+            private void GetSectionAnswers(ref JArray result, ref JArray currentAnswersState, JArray? sectionQuestions)
             {
+                sectionQuestions.NullGuard();
                 //iterate through all possible questions within the specific section
                 foreach (JObject question in sectionQuestions)
                 {
                     var answer = GetAnswer(question);
 
-                    bool newResult = result.Where(it => it["questionId"].ToObject<int>() == answer["questionId"].ToObject<int>()).Count() == 0;
+                    bool newResult = result.Where(it => it?["questionId"]?.ToObject<int>() == answer?["questionId"]?.ToObject<int>()).Count() == 0;
 
-                    if (((JValue)answer["response"]).Value != null)
+                    if (((JValue?)answer["response"])?.Value != null)
                     {
-                        var toRemoveStateObject = currentAnswersState.Where(it => it["questionId"].ToObject<int>() == answer["questionId"].ToObject<int>());
-                        var toRemoveResultObject = result.Where(it => it["questionId"].ToObject<int>() == answer["questionId"].ToObject<int>());
+                        var toRemoveStateObject = currentAnswersState.Where(it => it["questionId"]?.ToObject<int>() == answer?["questionId"]?.ToObject<int>());
+                        var toRemoveResultObject = result.Where(it => it?["questionId"]?.ToObject<int>() == answer?["questionId"]?.ToObject<int>());
 
                         foreach (var removable in toRemoveStateObject.ToList())
                         {
@@ -182,7 +177,7 @@ namespace ApolloTests.Data.TestData
             /// <returns></returns>
             private JObject GetAnswer(JObject question)
             {
-                String alias = null;
+                String? alias = null;
 
                 //because quote sections & state change responses have different alias property
                 //we will use any of the two
@@ -206,17 +201,17 @@ namespace ApolloTests.Data.TestData
                 //we will use any of the two
                 if (question.ContainsKey("id"))
                 {
-                    obj.Add("questionId", question["id"].ToObject<long>());
-                    obj.Add("questionType", question["questionType"].ToObject<int>());
+                    obj.Add("questionId", question?["id"]?.ToObject<long>());
+                    obj.Add("questionType", question?["questionType"]?.ToObject<int>());
                 }
                 else
                 {
-                    obj.Add("questionId", question["questionId"].ToObject<long>());
-                    obj.Add("questionType", (int)SQL.executeQuery($"SELECT QuestionType  FROM [question].[QuestionDefinition] where Id = {question["questionId"]};")[0]["QuestionType"]);
+                    obj.Add("questionId", question?["questionId"]?.ToObject<long>());
+                    obj.Add("questionType", (int)SQL.executeQuery($"SELECT QuestionType  FROM [question].[QuestionDefinition] where Id = {question?["questionId"]};")[0]["QuestionType"]);
                 }
 
-                obj.Add("isHidden", question["isHidden"].ToObject<bool>());
-                obj.Add("isDisabled", question["isDisabled"].ToObject<bool>());
+                obj.Add("isHidden", question?["isHidden"]?.ToObject<bool>());
+                obj.Add("isDisabled", question?["isDisabled"]?.ToObject<bool>());
                 obj.Add("sectionId", section.Id);
                 obj.Add("questionAlias", alias);
 
@@ -238,10 +233,10 @@ namespace ApolloTests.Data.TestData
                         {
                             obj.Add("response", entities[sectionName].ToString(Newtonsoft.Json.Formatting.None));
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             Log.Critical($"Hydrator - adding entity for Section: {sectionName} error, Entities: {entities}");
-                            throw ex;
+                            throw;
                         }
                     }
                     //if the response is a string and it starts with JSON,
@@ -293,9 +288,15 @@ namespace ApolloTests.Data.TestData
                 {
                     body.Add("currentResponse", CurrentAnswers.First(it => it.Value<string>("questionAlias") == "AdditionalInterests"));
                     body.Add("policyLevel", true);
-                    body["entityContext"] = new JObject() { { "AdditionalInterest", this.entities[sectionName] } };
-                    body["entityContext"]["AdditionalInterest"]["additionalInterestTypeId"] = 3;
-                    body["entityContext"]["AdditionalInterest"]["questionResponses"] = CurrentAnswers;
+
+                    var additionalInterest = this.entities[sectionName];
+                    if (additionalInterest != null)
+                    {
+                        additionalInterest["additionalInterestTypeId"] = 3;
+                        additionalInterest["questionResponses"] = CurrentAnswers;
+
+                    }
+                    body["entityContext"] = new JObject() { { "AdditionalInterest", additionalInterest } };
 
                 }
 
@@ -324,7 +325,7 @@ namespace ApolloTests.Data.TestData
                                             };
                 }
 
-                dynamic response;
+                dynamic? response;
                 try
                 {
                     response = RestAPI.POST("/questionresponse/questionstatechanges", body);
@@ -335,7 +336,7 @@ namespace ApolloTests.Data.TestData
                     response = RestAPI.POST("/questionresponse/questionstatechanges", body);
                 }
 
-                return response;
+                return response ?? throw new Exception("StateChange returned null");
             }
         }
     }

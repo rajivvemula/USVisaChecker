@@ -24,7 +24,7 @@ namespace ApolloTests.Data.Entity.Question
                 var method = this.GetType().GetProperty(propertyName);
                 if (method != null)
                 {
-                    return method.GetGetMethod().Invoke(this, null);
+                    return method.GetGetMethod()?.Invoke(this, null)?? throw new NullReferenceException();
 
                 }
                 else
@@ -35,7 +35,7 @@ namespace ApolloTests.Data.Entity.Question
         }
         public dynamic GetProperties()
         {
-            return RestAPI.GET($"/storyboard/{Id}");
+            return RestAPI.GET($"/storyboard/{Id}")?? throw new Exception();
         }
         public dynamic GetProperty(String propertyName)
         {

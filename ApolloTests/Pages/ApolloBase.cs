@@ -20,7 +20,7 @@ namespace ApolloTests.Pages
         };
         public Element GetElementByText(string parentXPath, string displayText) => Element($"{string.Join(" | ", elementXPaths.Select(xpath=> $"{parentXPath+xpath.Replace("{displayText}", displayText)}"))}");
 
-        public Element GetField(string displayLabel) => Element($"//mat-form-field[.//mat-label[normalize-space(text())='{displayLabel}']]");
+        public new Element GetField(string displayLabel) => Element($"//mat-form-field[.//mat-label[normalize-space(text())='{displayLabel}']]");
 
         public Element GetNavSection(string sectionName) => GetElementByText("//bh-left-navbar", sectionName);
 

@@ -31,7 +31,7 @@ namespace ApolloTests.Data.TestData.Params
 
         public void LoadJObject(JObject driverObject)
         {
-            Object = driverObject.ToObject<RiskObject.DriverObject>();
+            Object =  driverObject.ToObject<RiskObject.DriverObject>()?? throw new Exception();
         }    
 
         public class RiskObject
@@ -70,11 +70,11 @@ namespace ApolloTests.Data.TestData.Params
                 {
                     public string given { get; set; } = "Miguel";
 
-                    public string middle { get; set; }
+                    public string? middle { get; set; }
 
                     public string surName { get; set; } = "Acosta";
 
-                    public string suffix { get; set; }
+                    public string? suffix { get; set; }
                 }
 
                 public class Person
@@ -114,15 +114,15 @@ namespace ApolloTests.Data.TestData.Params
                 {
                     public DateTime date { get; set; }
 
-                    public string reason { get; set; }
+                    public string? reason { get; set; }
 
-                    public string state { get; set; }
+                    public string? state { get; set; }
 
-                    public string notes { get; set; }
+                    public string? notes { get; set; }
 
-                    public string description { get; set; }
+                    public string? description { get; set; }
 
-                    public string wasRecklessDriving { get; set; }
+                    public string? wasRecklessDriving { get; set; }
                 }
             }
 
@@ -132,11 +132,11 @@ namespace ApolloTests.Data.TestData.Params
 
                 public int questionType { get; set; }
 
-                public string questionAlias { get; set; }
+                public string? questionAlias { get; set; }
 
                 public int sectionId { get; set; }
 
-                public object response { get; set; }
+                public object? response { get; set; }
 
                 public bool isHidden { get; set; }
             }

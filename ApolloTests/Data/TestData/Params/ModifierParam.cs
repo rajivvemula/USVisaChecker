@@ -97,7 +97,7 @@ namespace ApolloTests.Data.TestData.Params
 
                 public string applicationId { get; set; } = "@ApplicationId";
 
-                public JObject ratingModifierCategorySubtypeCode { get; set; }
+                public JObject? ratingModifierCategorySubtypeCode { get; set; }
 
                 public string ratingModifierId { get; set; }
 
@@ -107,7 +107,7 @@ namespace ApolloTests.Data.TestData.Params
 
                 public decimal adjustmentPercentage { get; set; }
 
-                public JObject adjustmentJustification { get; set; }
+                public JObject? adjustmentJustification { get; set; }
 
                 public decimal totalPercentage { get; set; } = 0;
 

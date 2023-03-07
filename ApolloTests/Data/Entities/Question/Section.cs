@@ -25,7 +25,7 @@ namespace ApolloTests.Data.Entity.Question
                 var method = this.GetType().GetProperty(propertyName);
                 if (method != null)
                 {
-                    return method.GetGetMethod().Invoke(this, null);
+                    return method.GetGetMethod()?.Invoke(this, null) ?? throw new NullReferenceException();
 
                 }
                 else

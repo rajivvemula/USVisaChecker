@@ -45,11 +45,11 @@ namespace ApolloTests.Data.TestData.Params
 
                 public int questionType { get; set; }
 
-                public string questionAlias { get; set; }
+                public string? questionAlias { get; set; }
 
                 public int sectionId { get; set; }
 
-                public object response { get; set; }
+                public object? response { get; set; }
 
                 public bool isHidden { get; set; }
 

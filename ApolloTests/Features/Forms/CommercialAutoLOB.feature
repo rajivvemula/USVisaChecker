@@ -1,5 +1,5 @@
 ﻿@NoBrowser
-Feature: Forms Generate
+Feature: CommercialAutoLOB 
 
 @formsTests
 Scenario: Check System for untested forms
@@ -18,8 +18,8 @@ Scenario: Check System for untested forms
 # 6.) it will request the actual document, parse the PDF and make sure it's not blank or Empty
 
 @formsTests
-Scenario: Form can be generated
-	Given condition for form with code '<code>' and '<name>' is met
+Scenario: Form can be generated LineId_7
+	Given condition for form with code '<code>' and '<name>' and lineId=7 is met
 	When user attempts to generate form
 	Then form should be generated successfully
 	And form shouldn't be blank

@@ -18,7 +18,7 @@ namespace ApolloTests.Data.Form
         public int Id { get; set; }
 
         [JsonProperty("DeliveryMethodIdsInternal")]
-        public string DeliveryMethodIdsInternal { get; set; }
+        public string? DeliveryMethodIdsInternal { get; set; }
 
         [JsonProperty("FormsServiceRuleFormEntityId")]
         public int FormsServiceRuleFormEntityId { get; set; }

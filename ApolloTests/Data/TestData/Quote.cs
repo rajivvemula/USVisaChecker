@@ -27,34 +27,7 @@ namespace ApolloTests.Data.TestData
             QuoteParam = quoteParam;
             _parser = new Parser();
             CreateQuote(QuoteParam.State);
-        }
-
-        public Quote(int quoteId)
-        {
-            _parser = new Parser();
-            quoteEntity = new Entity.Quote(quoteId);
-            QuoteParam.Organization = new Organization(quoteEntity.Organization, _parser);
-        }
-
-        public Quote(Organization organization, List<Entity.CoverageType> coverageTypes) : this(organization, "IL", coverageTypes)
-        {
-        }
-
-        public Quote(Organization organization, string state, List<Entity.CoverageType> coverageTypes)
-        {
-            QuoteParam.Organization = organization;
-            _parser = organization.parser;
-            QuoteParam.LimitParam.Limits.AddRange(coverageTypes.Select(it => new LimitParam(it)));
-            QuoteParam.State = state;
-            CreateQuote(state);
-        }
-
-        public Quote(Organization organization, string state)
-        {
-            QuoteParam.Organization = organization;
-            _parser = organization.parser;
-            QuoteParam.State = state;
-            CreateQuote(state);
+            quoteEntity.NullGuard();
         }
 
         public Entity.Quote GetQuotedQuoteThroughAPI()
@@ -73,13 +46,13 @@ namespace ApolloTests.Data.TestData
             AddAdditionalInterests();
 
             var summary = PostSummary();
-
+            summary.NullGuard();
             Log.Debug("Quote Id: " + quoteEntity.Id);
             Log.Debug("Rating Group Id (rating worksheet): \n" + $"{Environment.GetEnvironmentVariable("HOST")}/rating/ratings-worksheet/" + (summary?["ratingGroupId"] ?? "null") + "\n");
-            if (summary["errors"].Count() > 0 || summary?["ratingResponses"] == null)
+            if (summary?["errors"]?.Count() > 0 || summary?["ratingResponses"] == null)
             {
                 Log.Critical(summary);
-                throw Functions.handleFailure($"Premium generation was unsuccessful Quote: {quoteEntity.Id} Premium: " + summary?["ratingResponses"]);
+                throw Functions.HandleFailure($"Premium generation was unsuccessful Quote: {quoteEntity.Id} Premium: " + summary?["ratingResponses"]);
             }
 
             if (quoteEntity["ApplicationStatusKey"] != 4000)
@@ -101,7 +74,7 @@ namespace ApolloTests.Data.TestData
                 _parser.interpreter.SetVariable("KeywordId", QuoteParam.ClassCodeKeyword.KeywordId);
                 _parser.interpreter.SetVariable("IndustryClassTaxonomyClassName", QuoteParam.ClassCodeKeyword.TaxonomyName);
                 _parser.interpreter.SetVariable("IndustryClassTaxonomyId", QuoteParam.ClassCodeKeyword.IndustryClassTaxonomyId);
-                _parser.interpreter.SetVariable("OrganizationName", Entity.Organization.GetNextValidName("Automation API org", out mutex));
+                _parser.interpreter.SetVariable("OrganizationName", $"Automation API org {DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
 
 
                 _parser.interpreter.SetVariable("EffectiveDate", QuoteParam.RatableObjectEffectiveDate.ToString("O"));
@@ -125,39 +98,7 @@ namespace ApolloTests.Data.TestData
             return response;
         }
 
-        [Obsolete("We no longer create a risks in the organization level, AddVehicleToQuote replaces this")]
-        public List<Entity.Vehicle> CreateVehicles()
-        {
-            var vehiclesToReturn = new List<Entity.Vehicle>();
-
-            for (int i = 0; i < Math.Max(QuoteParam.VehicleParam.NumberOfVehicles, QuoteParam.VehicleParam.Vehicles.Count); i++)
-            {
-                _parser.interpreter.SetVariable("VinNumber", Functions.GetRandomVIN());
-                _parser.interpreter.SetVariable("ClassCode", QuoteParam.Organization.classCodeKeyword.ClassCode);
-
-                var vehicleParam = QuoteParam.VehicleParam.Vehicles.ElementAtOrDefault(i);
-
-                if (vehicleParam == null)
-                {
-                    //means NumberOfVehicles is greater than VehicleParam list count
-                    //thus create and add new vehicle to VehicleParam
-                    throw new NotImplementedException();
-                }
-
-                var body = _parser.Hydrate<VehicleParam.RiskObject.VehicleObject>(vehicleParam.Object);
-
-                var response = RestAPI.POST("/vehicle", body);
-
-                ((JObject)response).Add("classCode", QuoteParam.Organization.classCodeKeyword.ClassCode);
-
-                QuoteParam.VehicleParam.Vehicles[i].LoadJObject(response);
-
-                vehiclesToReturn.Add(new Entity.Vehicle((string)response.id));
-            }
-
-            return vehiclesToReturn;
-        }
-
+       
         public dynamic AddVehicleToQuote()
         {
 
@@ -172,6 +113,7 @@ namespace ApolloTests.Data.TestData
                 var vehicleRiskBody = _parser.Hydrate<VehicleParam.RiskObject>(vehicle.Risk);
                 
                 var parkingAddress = this.quoteEntity.PrimaryAddress;
+                parkingAddress.NullGuard();
                 vehicle.VehicleQuentionAnswerParam.DefaultVehicleClassCode._response = this.QuoteParam.ClassCodeKeyword.ClassCode;
                 vehicle.VehicleQuentionAnswerParam.VehicleParkingAddrsIn._response = parkingAddress.StateCode;
                 vehicle.VehicleQuentionAnswerParam.TrailerParkingAddrsIn._response = parkingAddress.StateCode;
@@ -189,7 +131,10 @@ namespace ApolloTests.Data.TestData
                 body.Add(vehicleRiskBody);
 
                 var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk", body);
-
+                if(response==null)
+                {
+                    throw new NullReferenceException();
+                }
                 for (int i = 0; i < response.Count; i++)
                 {
                     var riskResponse = response[i];
@@ -222,7 +167,7 @@ namespace ApolloTests.Data.TestData
 
                 foreach (var limit in vehicle.LimitParams)
                 {
-                    if (limit.CoverageType.isVehicleLevel && body.FirstOrDefault(it=> it["coverageTypeId"].ToObject<long>() == limit.CoverageType.Id) == null)
+                    if (limit.CoverageType.isVehicleLevel && body.FirstOrDefault(it=> it["coverageTypeId"]?.ToObject<long>() == limit.CoverageType.Id) == null)
                     {
                         //this.parser.interpreter.SetVariable("CoverageTypeId", limit.CoverageType.Id);
 
@@ -231,7 +176,7 @@ namespace ApolloTests.Data.TestData
                 }
 
                 var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk/{vehicle.Object.riskId}/limits", body);
-
+                
                 vehiclesCoverage.Add(response);
             }
 
@@ -259,6 +204,10 @@ namespace ApolloTests.Data.TestData
                 var body = _parser.Hydrate<DriverParam.RiskObject.DriverObject>(driverParam.Object);
 
                 var response = RestAPI.POST("/driver", body);
+                if(response==null)
+                {
+                    throw new NullReferenceException();
+                }
 
                 _parser.interpreter.SetVariable("DriverRiskId", response.riskId);
 
@@ -293,6 +242,10 @@ namespace ApolloTests.Data.TestData
             }
 
             var response = RestAPI.POST($"quote/{quoteEntity.Id}/risk", body);
+            if(response==null)
+            {
+                throw new Exception();
+            }
             for (int i = 0; i < response.Count; i++)
             {
                 var riskResponse = response[i];
@@ -313,8 +266,8 @@ namespace ApolloTests.Data.TestData
             var body = AnswersHydrator.Operations(quoteEntity, QuoteParam.QuoteQuentionAnswerParam);
 
             var response = RestAPI.POST($"quote/{quoteEntity.Id}/sections/{quoteEntity.Storyboard.GetSection("Operations").Id}/answers", body);
-
-            return response;
+           
+            return ((JObject?)response)??throw new NullReferenceException();
         }
 
         public JObject AddPolicyCoverages()
@@ -331,8 +284,8 @@ namespace ApolloTests.Data.TestData
                 }
             }
 
-            var response = RestAPI.POST($"quote/{quoteEntity.Id}/limits", body);
-
+            var response = (JObject?)RestAPI.POST($"quote/{quoteEntity.Id}/limits", body);
+            response.NullGuard();
             return response;
         }
 
@@ -340,8 +293,8 @@ namespace ApolloTests.Data.TestData
         {
             var body = _parser.Hydrate<ModifierParam.ModifierObject>(QuoteParam.ModifierParam.Modifiers.Object);
 
-            var response = RestAPI.PATCH($"/quote/{quoteEntity.Id}", body);
-
+            var response = (JObject?)RestAPI.PATCH($"/quote/{quoteEntity.Id}", body);
+            response.NullGuard();
             return response;
         }
         public bool AddAdditionalInterests()
@@ -364,7 +317,10 @@ namespace ApolloTests.Data.TestData
 
 
             var response = RestAPI.POST($"/quote/{quoteEntity.Id}/additionalinterest", finalBody);
-
+            if (response == null)
+            {
+                throw new NullReferenceException();
+            }
             return response;
         }
 

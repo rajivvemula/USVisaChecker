@@ -1,4 +1,6 @@
-﻿using ApolloTests.Data.Entity;
+﻿using ApolloTests.Data.Entities;
+using ApolloTests.Data.Entity;
+using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,7 @@ namespace ApolloTests.Data.TestData.Params
 
         public LimitParam(string coverageTypeName) : this(new CoverageType(coverageTypeName))
         {
+            Object.NullGuard();
         }
 
         public LimitParam(CoverageType coverageType)
@@ -75,13 +78,22 @@ namespace ApolloTests.Data.TestData.Params
                 default:
                     throw new NotImplementedException($"Coverage Type: {coverageType.Name} has not been implemented");
             }
+            Object.NullGuard();
+        }
+        private Limit? _obj = null;
+        public Limit Object { get
+            {
+                _obj.NullGuard();
+                return this._obj;
+            }
+            set { 
+                this._obj= value;
+            }
         }
 
-        public CoverageType.Limit Object { get; set; }
+        public string CoverageName => Object?.GetCoverageType().Name?? throw new Exception("CoverageName returned null");
 
-        public string CoverageName => Object.GetCoverageType().Name;
-
-        public CoverageType CoverageType => Object.GetCoverageType();
+        public CoverageType CoverageType => Object?.GetCoverageType() ?? throw new Exception("CoverageType returned null");
 
         public void SetSelectedLimits(int limit) => SetSelectedLimits(new List<int>() { limit });
         public void SetSelectedLimits(List<int> limits) => Object.selectedLimits = limits;
@@ -91,7 +103,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddBIPD(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>(),
@@ -103,7 +115,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddMedicalPayments(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                       coverageType: coverageType,
                       selectedDeductibleName: null,
                       selectedDeductibles: new List<int>(),
@@ -115,7 +127,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddCollision(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                       coverageType: coverageType,
                       selectedDeductibleName: "Deductible",
                       selectedDeductibles: new List<int>() { 1000 },
@@ -127,7 +139,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddComprehensive(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>() { 1000 },
@@ -139,7 +151,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddVehicleUnderinsuredMotorists(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: null,
                         selectedLimitName: "Combined Single Limit",
@@ -151,7 +163,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddVehicleUninsuredMotorists(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
@@ -162,7 +174,7 @@ namespace ApolloTests.Data.TestData.Params
         }
         private void AddUninsuredUnderinsuredBI(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
@@ -174,7 +186,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddCargo(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>() { 1000 },
@@ -186,7 +198,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddRentalReimbursement(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
@@ -198,7 +210,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddInTow(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>() { 1000 },
@@ -210,7 +222,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddTrailerInterchange(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>() { 1000, 1000 },
@@ -221,7 +233,7 @@ namespace ApolloTests.Data.TestData.Params
         }
         private void AddUninsuredMotoristBIPD(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                          coverageType: coverageType,
                          selectedDeductibleName: null,
                          selectedDeductibles: new List<int>(),
@@ -233,7 +245,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddUninsuredMotoristPD(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                          coverageType: coverageType,
                          selectedDeductibleName: null,
                          selectedDeductibles: new List<int>(),
@@ -245,7 +257,7 @@ namespace ApolloTests.Data.TestData.Params
 
         private void AddUninsuredMotoristBI(CoverageType coverageType)
         {
-            Object = new CoverageType.Limit(
+            Object = new Limit(
                         coverageType: coverageType,
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),

@@ -80,8 +80,8 @@ namespace HitachiQA.Driver
             }
             set { _iFrame = value; }
         }
-        public string IFrameTitle;
-        public string IFrameId;
+        public string? IFrameTitle;
+        public string? IFrameId;
 
         public List<string> KnownFieldXPaths = new List<string>()
         {

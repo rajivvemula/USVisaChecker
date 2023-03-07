@@ -14,8 +14,23 @@ namespace ApolloTests.Data.Form
 {
     public class Form:BaseEntity
     {
-        public static readonly List<Form> Forms = JsonConvert.DeserializeObject<List<Form>>(File.ReadAllText("Data/Forms/Forms.json"));
-        private string _Name = null;
+        private static readonly List<Form> FormsCA = JsonConvert.DeserializeObject<List<Form>>(File.ReadAllText("Data/Forms/CommercialAutoLOB.json"))?? throw new NullReferenceException("loading FormsCA returned null");
+        private static readonly List<Form> FormsBP = JsonConvert.DeserializeObject<List<Form>>(File.ReadAllText("Data/Forms/BusinessOwnerLOB.json")) ?? throw new NullReferenceException("loading FormsBP returned null");
+
+        public static List<Form> GetForms(Line LOB)
+        {
+            var forms= LOB.Id switch
+            {
+                7 => FormsCA,
+                3 => FormsBP,
+                _ => throw new NotImplementedException($"Line ={LOB.Name} not implemented"),
+            };
+           
+            return forms;
+        }
+       
+
+        private string? _Name = null;
         public string name
         {
             get
@@ -24,7 +39,7 @@ namespace ApolloTests.Data.Form
                 {
                     return _Name ??= SQL.executeQuery(@$"SELECT TOP(1) Name
                                                 FROM [document].[GhostDraftTemplateForm] 
-                                                where Code ='{code}' AND LineId = 7 order by Id desc; ")[0]["Name"];
+                                                where Code ='{code}' AND LineId = {Line.Id} order by Id desc; ")[0]["Name"];
                 }
                 catch
                 {
@@ -35,15 +50,25 @@ namespace ApolloTests.Data.Form
         }
         public string code;
         public Condition condition;
-        public string displayTitle;
+        public string? displayTitle;
+        private Line? _line = null;
+        public Line Line {
+            get{
+                _line.NullGuard();
+                return _line;
+            } 
+            set {
+                this._line= value;
+            }
+        }
         public List<Recipient> Recipients { get
             {
                 var res = Cosmos.GetQuery("FormsServiceRule", $"SELECT * FROM c where ARRAY_CONTAINS(c.Forms, {{GhostDraftTemplateFormCode:\"{this.code}\"}}, true)").Result;
                 if(res.Any())
                 {
                     var obj = res[0];
-                    var recipients = (JArray)((JArray)obj["Forms"]).First(it => it.Value<string>("GhostDraftTemplateFormCode") == code)["Recipients"];
-                    return recipients.Select(it => it.ToObject<Recipient>() ?? throw new ArgumentNullException()).ToList();
+                    var recipients = (JArray?)((JArray?)obj?["Forms"]??throw new Exception("recipient's form was null")).First(it => it.Value<string>("GhostDraftTemplateFormCode") == code)?["Recipients"];
+                    return recipients?.Select(it => it.ToObject<Recipient>() ?? throw new ArgumentNullException()).ToList()?? throw new Exception("Recipients were null");
                 }
                 else
                 {
@@ -63,7 +88,7 @@ namespace ApolloTests.Data.Form
             }
         }
 
-        private string _Edition = null;
+        private string? _Edition = null;
         public string Edition
         {
             get
@@ -72,7 +97,7 @@ namespace ApolloTests.Data.Form
                 {
                     return _Edition ??= SQL.executeQuery(@$"SELECT TOP(1) Edition, EditionDate
                                                 FROM [document].[GhostDraftTemplateForm] 
-                                                where Code ='{code}' AND LineId = 7 order by Id desc; ")[0]["Edition"];
+                                                where Code ='{code}' AND LineId = {Line.Id} order by Id desc; ")[0]["Edition"];
                 }
                 catch {
                     Log.Error($"Error retrieving edition for form code: {code}");
@@ -91,7 +116,7 @@ namespace ApolloTests.Data.Form
                 {
                      return _EditionDate ??= (DateTime)SQL.executeQuery(@$"SELECT TOP(1) Edition, EditionDate
                                                 FROM [document].[GhostDraftTemplateForm] 
-                                                where Code ='{code}' AND LineId = 7 order by Id desc; ")[0]["EditionDate"];
+                                                where Code ='{code}' AND LineId = {Line.Id} order by Id desc; ")[0]["EditionDate"];
                 }
                 catch
                 {
@@ -112,10 +137,10 @@ namespace ApolloTests.Data.Form
 
 
         //static funciton in order to access any form using it's code (forms' unique identifier)
-        public static Form GetForm(string code, string name="")
+        public static Form GetForm(Line line, string code, string name="")
         {
-            var form = Forms.FirstOrDefault(it => it.code == code);
-
+            var form = GetForms(line).FirstOrDefault(it => it.code == code);
+            
             if (form == null)
             {
                 string addition = $@"
@@ -134,7 +159,7 @@ namespace ApolloTests.Data.Form
                         ""name"": ""{name}"",
                     }},
                 ";
-                throw new KeyNotFoundException($"Form with code {code} was not found in ./Data/Forms/Forms.json {addition}");
+                throw new KeyNotFoundException($"Form with code {code} was not found in ./Data/Forms/FormsLine{line.Id}.json {addition}");
 
 
             }
@@ -147,7 +172,9 @@ namespace ApolloTests.Data.Form
             {
                 form.condition.recipients = form.Recipients.Where(it=>it.RecipientRoleTypeId!=-1).Select(it => it.RecipientTypeCode).ToList();
             }
-            
+            form.Line = line;
+            form.condition.Form = form;
+
             return form;
         }
 

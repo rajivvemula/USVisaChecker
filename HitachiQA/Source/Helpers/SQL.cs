@@ -56,7 +56,7 @@ namespace HitachiQA.Helpers
                     }
                 }
                 connection.Open();
-                SqlDataReader reader = null;
+                SqlDataReader? reader = null;
                 try
                 {
                     reader = command.ExecuteReader();
@@ -64,7 +64,7 @@ namespace HitachiQA.Helpers
                 }
                 catch (Exception ex)
                 {
-                    Functions.handleFailure($"Query: \n{query}\n", ex);
+                    throw new Exception($"Query: \n{query}\n", ex);
                 }
 
                 try

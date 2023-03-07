@@ -14,7 +14,7 @@ namespace ApolloTests.Data.Rating
 {
     public class KnownField:BaseEntity
     {
-        private static readonly dynamic KnownFields = JsonConvert.DeserializeObject<JObject>(new StreamReader($"Data/Rating/KnownFields.json").ReadToEnd());
+        private static readonly dynamic KnownFields = JsonConvert.DeserializeObject<JObject>(new StreamReader($"Data/Rating/KnownFields.json").ReadToEnd()) ?? throw new NullReferenceException();
         
         public readonly string Name;
         public string Source;
@@ -60,7 +60,7 @@ namespace ApolloTests.Data.Rating
             return new Resolvable(engine, this);
         }
 
-        public dynamic Resolve(Engine engine)
+        public dynamic? Resolve(Engine engine)
         {
             return GetResolvable(engine).Resolve();
         }
@@ -85,9 +85,9 @@ namespace ApolloTests.Data.Rating
                 }
             }
             public string Source => KnownField.Source;
-            public Type Type { get; set; }
-            public dynamic Value { get; set; }
-            public String parsedValue { get; set; }
+            public Type? Type { get; set; }
+            public dynamic? Value { get; set; }
+            public String? parsedValue { get; set; }
             public String TypeName => KnownField?.TypeName ?? Type?.Name ?? "Null";
 
             public Resolvable(Engine engine, KnownField knownField)
@@ -96,7 +96,7 @@ namespace ApolloTests.Data.Rating
                 this.Engine = engine;
             }
 
-            public dynamic Resolve()
+            public dynamic? Resolve()
             {
 
                 var method = this.GetType().GetProperty(KnownField.Source, BindingFlags.NonPublic | BindingFlags.Instance);
@@ -104,7 +104,7 @@ namespace ApolloTests.Data.Rating
                 dynamic resolvedValue;
                 if (method != null)
                 {
-                    resolvedValue = method.GetGetMethod(true).Invoke(this, null);
+                    resolvedValue = method.GetGetMethod(true)?.Invoke(this, null)??throw new NullReferenceException();
 
                 }
                 else
@@ -176,26 +176,17 @@ namespace ApolloTests.Data.Rating
 
             }
 
-            private JObject GetRisk(long? riskId)
+            private JObject GetRisk(long riskId)
             {
-                return ((JArray)this.Engine.root["Risks"]).ToObject<List<dynamic>>().Find(risk => risk["RiskId"] == riskId);
+                return ((JArray?)this.Engine.root["Risks"])?.ToObject<List<dynamic>>()?.Find(risk => risk["RiskId"] == riskId)?? throw new NullReferenceException();
             }
 
             private JObject GetCurrentVehicleRisk()
             {
-                var riskId = ((Entity.Vehicle)this.Engine.interpreter.Eval("Vehicle"))?["RiskId"];
+                var riskId = ((Entity.Vehicle)this.Engine.interpreter.Eval("Vehicle"))?["RiskId"]??throw new NullReferenceException();
 
-                var risk = new JObject();
-
-                //future implementation, root should be policy or quote
-                if (this.Engine.root is Entity.Policy)
-                {
-                    //risk = ((JArray)this.root.GetQuote()["risks"]).ToObject<List<dynamic>>().Find(risk => risk["riskId"] == riskId);
-                }
-                else
-                {
-                    risk = GetRisk(riskId);
-                }
+                var risk = GetRisk(riskId);
+                
                 return risk;
             }
 
@@ -222,7 +213,7 @@ namespace ApolloTests.Data.Rating
                 {
                     var risk = GetCurrentVehicleRisk();
 
-                    var locationID = risk["OutputMetaDataEntity"]["VehicleDriverLocation"]?["LocationId"];
+                    var locationID = risk?["OutputMetaDataEntity"]?["VehicleDriverLocation"]?["LocationId"];
                     if (locationID == null)
                     {
                         //Log.Debug("Location ID null " + risk.ToString());
@@ -245,29 +236,30 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    var org = this.Engine.root.Organization;
-                    int score = org.InsuranceScore ?? 998;
+                    throw new NotImplementedException();
+                    //var org = this.Engine.root.Organization;
+                    //int score = org.InsuranceScore ?? 998;
 
 
-                    int fleetSize = this.Engine.root.GetVehicles().Count;
+                    //int fleetSize = this.Engine.root.GetVehicles().Count;
 
-                    String type = org.TypeName;
+                    //String type = org.TypeName;
 
 
-                    foreach (Dictionary<String, String> row in Engine.getTable("CT.2"))
-                    {
+                    //foreach (Dictionary<String, String> row in Engine.getTable("CT.2"))
+                    //{
 
-                        if (Functions.parseRatingFactorNumericalValues(row["Fleet Size Lower Bound"]) <= fleetSize &&
-                            Functions.parseRatingFactorNumericalValues(row["Fleet Size Upper Bound"]) >= fleetSize &&
-                            Functions.parseRatingFactorNumericalValues(row["Insurance Score Lower Bound"]) <= score &&
-                            Functions.parseRatingFactorNumericalValues(row["Insurance Score Upper Bound"]) >= score &&
-                            row["Organization Type"] == type
-                            )
-                        {
-                            return row["Insurance Score Tier"];
-                        }
-                    }
-                    throw new KeyNotFoundException($"No Score tier found for   Insurrance Score: [[{score}]  -  Org Type: [{type}]  -  Fleet Size: [{fleetSize}]");
+                    //    if (Functions.parseRatingFactorNumericalValues(row["Fleet Size Lower Bound"]) <= fleetSize &&
+                    //        Functions.parseRatingFactorNumericalValues(row["Fleet Size Upper Bound"]) >= fleetSize &&
+                    //        Functions.parseRatingFactorNumericalValues(row["Insurance Score Lower Bound"]) <= score &&
+                    //        Functions.parseRatingFactorNumericalValues(row["Insurance Score Upper Bound"]) >= score &&
+                    //        row["Organization Type"] == type
+                    //        )
+                    //    {
+                    //        return row["Insurance Score Tier"];
+                    //    }
+                    //}
+                    //throw new KeyNotFoundException($"No Score tier found for   Insurrance Score: [[{score}]  -  Org Type: [{type}]  -  Fleet Size: [{fleetSize}]");
 
                 }
             }

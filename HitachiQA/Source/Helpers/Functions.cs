@@ -22,7 +22,7 @@ namespace HitachiQA.Helpers
 {
     public class Functions
     {
-        private RestAPI RestAPI;
+        private readonly RestAPI RestAPI;
         public Functions(ObjectContainer objectContainer)
         {
             this.RestAPI = objectContainer.Resolve<RestAPI>();
@@ -32,10 +32,11 @@ namespace HitachiQA.Helpers
         public string GetRandomVIN()
         {
             //grabs random vin via randomvin.com
-            string vin;
+            string? vin;
             try
             {
-                vin = (string)RestAPI.GET("https://randomvin.com/getvin.php?type=real");
+                vin = (string?)RestAPI.GET("https://randomvin.com/getvin.php?type=real");
+                vin.NullGuard();
                 if (string.IsNullOrWhiteSpace(vin))
                 {
                     return GetRandomVIN();
@@ -52,9 +53,9 @@ namespace HitachiQA.Helpers
 
         public static string ParseURL(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
-            foreach (var param in parameters)
+            foreach (var (key, value) in parameters)
             {
-                URL_OR_PATH = URL_OR_PATH.Replace("{" + param.key + "}", param.value);
+                URL_OR_PATH = URL_OR_PATH.Replace("{" + key + "}", value);
             }
             return ParseURL(URL_OR_PATH);
         }
@@ -79,7 +80,7 @@ namespace HitachiQA.Helpers
         //
         //  Failure Handling
         //
-        public static System.Exception handleFailure(string message, Exception ex = null, bool optional = false)
+        public static System.Exception HandleFailure(string message, Exception? ex = null, bool optional = false)
         {
             if (optional)
             { Log.Info(message); }
@@ -88,7 +89,7 @@ namespace HitachiQA.Helpers
                 Log.Error(message);
                 if (ex != null)
                 {
-                    handleFailure(ex, optional);
+                    HandleFailure(ex, optional);
                 }
                 else
                 {
@@ -98,7 +99,7 @@ namespace HitachiQA.Helpers
             return ex ?? new Exception(message);
         }
 
-        public static System.Exception handleFailure(string message, Exception ex = null, bool optional = false, params (string key, dynamic value)[] parameters)
+        public static System.Exception HandleFailure(string message, Exception? ex = null, bool optional = false, params (string key, dynamic value)[] parameters)
         {
             if (optional)
             { Log.Info(message, parameters); }
@@ -107,7 +108,7 @@ namespace HitachiQA.Helpers
                 Log.Error(message, parameters);
                 if (ex != null)
                 {
-                    handleFailure(ex, optional);
+                    HandleFailure(ex, optional);
                 }
                 else
                 {
@@ -117,7 +118,7 @@ namespace HitachiQA.Helpers
             return ex ?? new Exception(message);
         }
 
-        public static System.Exception handleFailure(Exception ex, bool optional = false)
+        public static System.Exception HandleFailure(Exception ex, bool optional = false)
         {
             if (optional)
             {
@@ -141,46 +142,47 @@ namespace HitachiQA.Helpers
             return dictionary;
         }
 
-        public static IEnumerable<Dictionary<String, String>> parseExcel(String filePath, int headerRow = 0)
+        public static IEnumerable<Dictionary<String, String>> ParseExcel(String filePath, int headerRow = 0)
         {
             var tasks = new List<Task<Dictionary<String, String>>>();
             try
             {
                 using (SpreadsheetDocument doc = SpreadsheetDocument.Open(filePath, false))
                 {
-                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    WorkbookPart? workbookPart = doc?.WorkbookPart;
+                    workbookPart.NullGuard();
                     WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
                     Row[] sheetData = worksheetPart.Worksheet.Elements<SheetData>().First().Elements<Row>().ToArray<Row>();
 
-                    var header = sheetData[0].Elements<Cell>().Select(cell => extractCellText(workbookPart, cell)).ToArray<string>();
+                    var header = sheetData[headerRow].Elements<Cell>().Select(cell => ExtractCellText(workbookPart, cell)).ToArray<string>();
 
                     for (int rowIndex = 1; rowIndex < sheetData.Length; rowIndex++)
                     {
-                        tasks.Add(parseRow(workbookPart, header, sheetData[rowIndex], filePath));
+                        tasks.Add(ParseRow(workbookPart, header, sheetData[rowIndex], filePath));
                     }
                 }
                 return tasks.Select(it => it.Result);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 Log.Debug($"File-> {filePath}");
-                throw ex;
+                throw;
             }
         }
 
-        public static List<Dictionary<String, String>> parseCSV(String filePath, int headerRow = 0)
+        public static List<Dictionary<String, String>> ParseCSV(String filePath, int headerRow = 0)
         {
-            List<string> header = new List<String>();
+            List<string> header = new();
 
             if( !File.Exists(filePath))
             {
-                handleFailure($"File {filePath} does not exist");
+                HandleFailure($"File {filePath} does not exist");
             }
             filePath = System.IO.Path.IsPathFullyQualified(filePath) ? filePath : System.IO.Path.GetFullPath(filePath);
 
             Log.Debug(filePath);
 
-            List<Dictionary<String, String>> result = new List<Dictionary<String, String>>();
+            List<Dictionary<String, String>> result = new();
 
             using (TextReader reader = new StreamReader(filePath))
             {
@@ -188,36 +190,34 @@ namespace HitachiQA.Helpers
                 {
                     MissingFieldFound = null,
                 };
-                using (var csvReader = new CsvReader(reader, config))
+                using var csvReader = new CsvReader(reader, config);
+                // calculate number of columns
+                csvReader.Read();
+                int i = 0;
+
+                var columnName = csvReader.GetField(i);
+
+                while (!String.IsNullOrEmpty(columnName))
                 {
-                    // calculate number of columns
-                    csvReader.Read();
-                    int i = 0;
+                    header.Add(columnName);
+                    i++;
+                    columnName = csvReader.GetField(i);
+                }
 
-                    var columnName = csvReader.GetField(i);
-
-                    while (!String.IsNullOrEmpty(columnName))
+                while (csvReader.Read())
+                {
+                    Dictionary<String, String> row = new();
+                    for (int col = 0; col < header.Count; col++)
                     {
-                        header.Add(columnName);
-                        i++;
-                        columnName = csvReader.GetField(i);
+                        row.Add(header.ElementAt(col), csvReader.GetField(col));
                     }
-
-                    while (csvReader.Read())
-                    {
-                        Dictionary<String, String> row = new Dictionary<String, String>();
-                        for(int col =0; col < header.Count; col++)
-                        {
-                            row.Add(header.ElementAt(col), csvReader.GetField(col));
-                        }
-                        result.Add( row);
-                    }
+                    result.Add(row);
                 }
             }
             return result;
         }
 
-        private static async Task<Dictionary<String, String>> parseRow(WorkbookPart workbookPart, string [] header, Row row, string filePath)
+        private static async Task<Dictionary<String, String>> ParseRow(WorkbookPart workbookPart, string [] header, Row row, string filePath)
         {
             var cells = row.Elements<Cell>().ToArray<Cell>();
 
@@ -235,7 +235,7 @@ namespace HitachiQA.Helpers
                 }
                 try
                 {
-                    dict.Add(header[i], extractCellText(workbookPart, cell));
+                    dict.Add(header[i], ExtractCellText(workbookPart, cell));
                 }
                 catch(Exception)
                 {
@@ -243,25 +243,26 @@ namespace HitachiQA.Helpers
                     throw;
                 }
             }
-            return dict;
+            return dict?? throw new NullReferenceException();
         }
 
-        private static String extractCellText(WorkbookPart workbookPart, Cell cell)
+        private static String ExtractCellText(WorkbookPart workbookPart, Cell cell)
         {
             var cellValue = cell.CellValue;
             var text = (cellValue == null) ? cell.InnerText : cellValue.Text;
             if ((cell.DataType != null) && (cell.DataType == CellValues.SharedString))
             {
+                workbookPart.SharedStringTablePart.NullGuard();
                 text = workbookPart.SharedStringTablePart.SharedStringTable
                     .Elements<SharedStringItem>().ElementAt(
-                        Convert.ToInt32(cell.CellValue.Text)).InnerText;
+                        Convert.ToInt32(cell.CellValue?.Text)).InnerText;
             }
             return (text ?? string.Empty).Trim();
         }
 
-        public static dynamic parseRatingFactorNumericalValues(String value)
+        public static dynamic? ParseRatingFactorNumericalValues(String value)
         {
-            if (value.Contains("+"))
+            if (value.Contains('+'))
             {
                 return int.MaxValue;
             }
@@ -275,7 +276,7 @@ namespace HitachiQA.Helpers
             }
         }
 
-        public static int parseInt(string IntegerString)
+        public static int ParseInt(string IntegerString)
         {
             try
             {
@@ -283,7 +284,7 @@ namespace HitachiQA.Helpers
             }
             catch (Exception ex)
             {
-                throw handleFailure($"String {IntegerString} Failed to parse into int", ex);
+                throw HandleFailure($"String {IntegerString} Failed to parse into int", ex);
             }
         }
 
@@ -292,7 +293,7 @@ namespace HitachiQA.Helpers
             //not a great implementation but it works
 
             char[] chars =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-            Random r = new Random();
+            Random r = new();
 
             string licenseNo = "";
             
@@ -306,43 +307,22 @@ namespace HitachiQA.Helpers
             return licenseNo;
         }
 
-        public static string getValidCreditCardNumber(string cardType="Visa")
+        public static string GetValidCreditCardNumber(string cardType="Visa")
         {
-            switch (cardType)
+            return cardType switch
             {
-                case "AmericanExpress":
-                    return "370000000000002";
-
-                case "Discover":
-                    return "6011000000000012";
-
-                case "JCB":
-                    return "3088000000000017";
-           
-                case "Visa":
-                    return "4111111111111111";
-
-                case "Visa1":
-                    return "4012888818888";
-
-                case "Visa2":
-                    return "4007000000027";
-
-                case "Mastercard":
-                    return "5424000000000015";
-
-                case "Mastercard1":
-                    return "2223000010309703";
-
-                case "Mastercard2":
-                    return "2223000010309711";
-
-                case "DinersClub/CarteBlanche":
-                    return "38000000000006";
-
-                default:
-                    throw handleFailure($"Credit Card Type: {cardType} is not supported");
-            }
+                "AmericanExpress" => "370000000000002",
+                "Discover" => "6011000000000012",
+                "JCB" => "3088000000000017",
+                "Visa" => "4111111111111111",
+                "Visa1" => "4012888818888",
+                "Visa2" => "4007000000027",
+                "Mastercard" => "5424000000000015",
+                "Mastercard1" => "2223000010309703",
+                "Mastercard2" => "2223000010309711",
+                "DinersClub/CarteBlanche" => "38000000000006",
+                _ => throw HandleFailure($"Credit Card Type: {cardType} is not supported"),
+            };
         }
 
         public static int GetRandomInteger(int max=100)
@@ -409,9 +389,9 @@ namespace HitachiQA.Helpers
             return (1.0M - ((decimal)distance / (decimal)Math.Max(s.Length, t.Length)));
 
         }
-        public static string parsePDF(string path)
+        public static string ParsePDF(string path)
         {
-            PdfReader reader = new PdfReader(path);
+            PdfReader reader = new(path);
             string text = string.Empty;
             for (int page = 1; page <= reader.NumberOfPages; page++)
             {

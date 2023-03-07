@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HitachiQA.Helpers;
+using System;
 
 namespace ApolloTests.Data.TestData.Params
 {
@@ -8,7 +9,8 @@ namespace ApolloTests.Data.TestData.Params
         {
             foreach (var prop in GetType().GetProperties())
             {
-                var questionAnswer = (QuestionAnswer)prop.GetGetMethod().Invoke(this, null);
+                var questionAnswer = (QuestionAnswer?)prop.GetGetMethod()?.Invoke(this, null);
+                questionAnswer.NullGuard();
                 if (questionAnswer._alias == alias)
                 {
                     return questionAnswer;
@@ -21,7 +23,9 @@ namespace ApolloTests.Data.TestData.Params
         {
             foreach (var prop in GetType().GetProperties())
             {
-                var propertyAlias = (QuestionAnswer)prop.GetGetMethod().Invoke(this, null);
+                var propertyAlias = (QuestionAnswer?)prop.GetGetMethod()?.Invoke(this, null);
+                propertyAlias.NullGuard();
+
                 if (propertyAlias._alias == alias)
                 {
                     propertyAlias._response = value;

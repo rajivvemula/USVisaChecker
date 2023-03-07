@@ -23,9 +23,9 @@ namespace ApolloTests.Data.Entity
       
             return $"{YearOfManufacture} {Make}{ (String.IsNullOrEmpty(Model) ? "" : $" {Model}") }";
         }
-        public dynamic this[String propertyName] { get { return this.GetProperty(propertyName); }
+        public dynamic? this[String propertyName] { get { return this.GetProperty(propertyName); }
         }
-        public dynamic GetProperty(String propertyName)
+        public dynamic? GetProperty(String propertyName)
         {
             try
             {
@@ -47,18 +47,18 @@ namespace ApolloTests.Data.Entity
         public void SetProperties(params (String key, dynamic value)[] fields)
         {
             throw new NotImplementedException("Need to implement this funciton for Cosmos (maybe through API)");
-            var fieldMap = new Dictionary<String, dynamic>();
-            String keyValue = "";
-            for (int i = 0; i < fields.Length; i++)
-            {
-                keyValue += $" {fields[i].key} = @{fields[i].key}";
+            //var fieldMap = new Dictionary<String, dynamic>();
+            //String keyValue = "";
+            //for (int i = 0; i < fields.Length; i++)
+            //{
+            //    keyValue += $" {fields[i].key} = @{fields[i].key}";
 
-                fieldMap.Add($"@{fields[i].key}", fields[i].value);
-            }
+            //    fieldMap.Add($"@{fields[i].key}", fields[i].value);
+            //}
 
-            fieldMap.Add("@Id", $"{this.Id}");
+            //fieldMap.Add("@Id", $"{this.Id}");
 
-            SQL.executeQuery($"UPDATE risk.Vehicle SET {keyValue} where Id=@Id;", fieldMap.Select(field => (field.Key, field.Value)).ToArray())    ;
+            //SQL.executeQuery($"UPDATE risk.Vehicle SET {keyValue} where Id=@Id;", fieldMap.Select(field => (field.Key, field.Value)).ToArray())    ;
 
         }
         public bool IsNonPowered()
@@ -69,21 +69,21 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return this.GetProperty("Make");
+                return this.GetProperty("Make") ?? throw new NullReferenceException();
             }
         }
         public string Model
         {
             get
             {
-                return this.GetProperty("Model");
+                return this.GetProperty("Model") ?? throw new NullReferenceException();
             }
         }
-        public string? VinNumber
+        public string VinNumber
         {
             get
             {
-                return this.GetProperty("VinNumber");
+                return this.GetProperty("VinNumber") ?? throw new NullReferenceException();
             }
             set
             {
@@ -98,14 +98,14 @@ namespace ApolloTests.Data.Entity
             {
                 if (_RiskId == null)
                 {
-                    _RiskId = this.GetProperty("RiskId");
+                    _RiskId = this.GetProperty("RiskId") ?? throw new NullReferenceException();
                 }
                 return (long)_RiskId;
             }
         }
         public string ClassCode { get
             {
-                return this.GetProperty("ClassCode");
+                return this.GetProperty("ClassCode") ?? throw new NullReferenceException();
             }
             set
             {
@@ -125,14 +125,14 @@ namespace ApolloTests.Data.Entity
             }
             set
             {
-                SetProperties(("RadiusOfOperation", value));
+                SetProperties(("RadiusOfOperation", value?? throw new NullReferenceException()));
             }
         }
-        public int? YearOfManufacture
+        public int YearOfManufacture
         {
             get
             {
-                return this["YearOfManufacture"];
+                return this["YearOfManufacture"]?? throw new NullReferenceException();
             }
             set
             {

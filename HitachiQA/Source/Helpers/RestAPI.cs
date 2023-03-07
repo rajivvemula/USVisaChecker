@@ -15,7 +15,7 @@ namespace HitachiQA.Helpers
     public class RestAPI
     {
         private readonly BrowserIndicator BrowserIndicator;
-        private readonly JSExecutor JSExecutor;
+        private readonly JSExecutor? JSExecutor;
         private readonly IConfiguration Configuration;
         public RestAPI(ObjectContainer objectContainer)
         {
@@ -27,11 +27,11 @@ namespace HitachiQA.Helpers
             this.Configuration = objectContainer.Resolve<IConfiguration>();
         }
         public List<(string key, double seconds)> timeSpans = new List<(string key, double seconds)>();
-        public dynamic GET( String URL)
+        public dynamic? GET( String URL)
         {
             return GET(URL, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
-        public dynamic GET(String URL, AuthenticationHeaderValue Authorization, Dictionary<string, string> headers = null)
+        public dynamic? GET(String URL, AuthenticationHeaderValue? Authorization, Dictionary<string, string>? headers = null)
         {
 
             HttpClient client = new HttpClient();
@@ -55,12 +55,12 @@ namespace HitachiQA.Helpers
             client.Dispose();
             return ConsumeResponse(response, URL);
         }
-        public dynamic POST(String URL, dynamic body)
+        public dynamic? POST(String URL, dynamic? body)
         {
             return POST(URL, body, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
 
-        public dynamic POST(String URL, dynamic body, AuthenticationHeaderValue Authorization)
+        public dynamic? POST(String URL, dynamic? body, AuthenticationHeaderValue Authorization)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
@@ -91,7 +91,7 @@ namespace HitachiQA.Helpers
             client.Dispose();
             return ConsumeResponse(response, URL, body);
         }
-        public dynamic POST(String URL, AuthenticationHeaderValue Authorization, HttpContent content)
+        public dynamic? POST(String URL, AuthenticationHeaderValue? Authorization, HttpContent content)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
@@ -111,12 +111,12 @@ namespace HitachiQA.Helpers
         }
 
 
-        public dynamic PATCH(String URL, dynamic body)
+        public dynamic? PATCH(String URL, dynamic body)
         {
             return PATCH(URL, body, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
 
-        public dynamic PATCH(String URL, dynamic body, AuthenticationHeaderValue Authorization)
+        public dynamic? PATCH(String URL, dynamic body, AuthenticationHeaderValue Authorization)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
@@ -146,12 +146,12 @@ namespace HitachiQA.Helpers
             return ConsumeResponse(response, URL,body);
         }
 
-        public dynamic PUT(string URL, dynamic body)
+        public dynamic? PUT(string URL, dynamic body)
         {
             return PUT(URL, body, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
 
-        public dynamic PUT(string URL, dynamic body, AuthenticationHeaderValue Authorization)
+        public dynamic? PUT(string URL, dynamic body, AuthenticationHeaderValue Authorization)
         {
             HttpClient client = new HttpClient()
             {
@@ -196,7 +196,7 @@ namespace HitachiQA.Helpers
             return URL;
         }
 
-        private dynamic ConsumeResponse(HttpResponseMessage response, string URL, dynamic body=null)
+        private dynamic? ConsumeResponse(HttpResponseMessage response, string URL, dynamic? body=null)
         {
             if(!response.IsSuccessStatusCode)
             {
@@ -209,7 +209,7 @@ namespace HitachiQA.Helpers
             if (response.Content.Headers.TryGetValues("content-type", out var contentType) && contentType.Contains("application/pdf"))
             {
                 var filename = response.Content.Headers.GetValues("content-disposition")
-                                                        .ElementAtOrDefault(0)
+                                                        .ElementAt(0)
                                                         .Split(";")[1]
                                                         .Substring(10)
                                                         .Trim('"');
@@ -246,17 +246,18 @@ namespace HitachiQA.Helpers
            
         }
 
-        private String getAuthToken()
+        private String? getAuthToken()
         {
             if(BrowserIndicator.isNoBrowserFeature)
             {
                 return getAuthTokenAPI();
             }
+            JSExecutor.NullGuard();
             String currentUser= (string)JSExecutor.execute("return window.localStorage.getItem('currentUser')");
-            return (String)JsonConvert.DeserializeObject<dynamic>(currentUser)["accessToken"];
+            return (String?)JsonConvert.DeserializeObject<dynamic?>(currentUser)?["accessToken"];
         }
 
-        private String _APIToken = null;
+        private String? _APIToken = null;
 
         private String getAuthTokenAPI()
         {
@@ -281,7 +282,7 @@ namespace HitachiQA.Helpers
                 var response = POST($"https://login.microsoftonline.com/{TenantId}/oauth2/v2.0/token", null, content);
                 try
                 {
-                    _APIToken = response["access_token"];
+                    _APIToken = response?["access_token"]?? throw new NullReferenceException("access_token");
                 }
                 catch(Exception)
                 {

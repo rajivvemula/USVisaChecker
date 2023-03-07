@@ -16,10 +16,10 @@ namespace ApolloTests.Data.Rating
 {
     public class Engine: BaseEntity
     {
-        private static readonly dynamic Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader("Data/Rating/Factors.json").ReadToEnd());
-        private static readonly dynamic KnownFields =  JsonConvert.DeserializeObject<JObject>(new StreamReader( $"Data/Rating/KnownFields.json").ReadToEnd());
-        private static JObject PersistedData = JsonConvert.DeserializeObject<JObject>(new StreamReader( @"StepDefinition\Rating\persistedData.json").ReadToEnd());
-        private static JObject CoverageAlgorithms = JsonConvert.DeserializeObject<JObject>(new StreamReader( @"Data/Rating/CoverageAlgorithms.json").ReadToEnd());
+        private static readonly dynamic Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader("Data/Rating/Factors.json").ReadToEnd())?? throw new NullReferenceException();
+        private static readonly dynamic KnownFields =  JsonConvert.DeserializeObject<JObject>(new StreamReader( $"Data/Rating/KnownFields.json").ReadToEnd()) ?? throw new NullReferenceException();
+        private static JObject PersistedData = JsonConvert.DeserializeObject<JObject>(new StreamReader( @"StepDefinition\Rating\persistedData.json").ReadToEnd()) ?? throw new NullReferenceException();
+        private static JObject CoverageAlgorithms = JsonConvert.DeserializeObject<JObject>(new StreamReader( @"Data/Rating/CoverageAlgorithms.json").ReadToEnd()) ?? throw new NullReferenceException();
 
         /// <returns>
         /// Returns specified table from the Rating Manual
@@ -27,7 +27,7 @@ namespace ApolloTests.Data.Rating
         public static List<Dictionary<String, String>> GetAlorithm(String tableName)
         {
             
-            var table = Functions.parseExcel(@$"Data\RatingManual\Algorithms\{tableName}.xlsx").ToList();
+            var table = Functions.ParseExcel(@$"Data\RatingManual\Algorithms\{tableName}.xlsx").ToList();
 
             return table;
         }
@@ -107,13 +107,13 @@ namespace ApolloTests.Data.Rating
 
                         rowDict.Add(columnName, (columnValue is DBNull ? "" : (columnValue is string ? columnValue : columnValue.ToString()) ) ?? "");
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
 
                         Log.Error("Row-> " + JObject.FromObject(row));
                         Log.Error("column-> " + column["AttributeColumn"]);
                         Log.Error($"table Name-> : {tableName} Att Name: {column["AttributeName"]} value:{row[column["AttributeColumn"]]} ");
-                        throw ex;
+                        throw;
                     }
                 }
 
@@ -139,7 +139,7 @@ namespace ApolloTests.Data.Rating
         public readonly Interpreter interpreter;
 
         //properties public in order to be mentioned in the json files
-        public readonly Entity.Quote root;
+        public readonly Quote root;
 
         public readonly string GoverningStateCode;
         public readonly DateTime EffectiveDate;
@@ -149,21 +149,21 @@ namespace ApolloTests.Data.Rating
         /// constructed with a root object which in the future could be a Policy or Quote. <br/><br/>
         /// <param name="CoverageCode"> To be removed in the future, (iteration through all policy coverages need to be implemented)</param>
         /// </summary>
-        public Engine(Entity.Quote root)
+        public Engine(Quote root)
         {
             this.root = root;
             this.GoverningStateCode = root.GoverningStateCode;
-            this.EffectiveDate = root.GetCurrentRatableObject().TimeFrom;
+            this.EffectiveDate = root.RatableObject.TimeFrom;
             this.interpreter = new Interpreter();
             interpreter.Reference(typeof(JObject));
             interpreter.Reference(typeof(AlgorithmAssignment));
-            interpreter.Reference(typeof(Entity.CoverageType.Limit));
+            interpreter.Reference(typeof(Limit));
 
             interpreter.SetVariable("root", this.root);
 
         }
 
-        public List<JObject> latestResults; 
+        public List<JObject>? latestResults; 
 
         /// <summary>
         /// Run the engine to calculate premium using Known Field's values and mapping them to the Rating Manuals. <br/><br/>
@@ -171,7 +171,6 @@ namespace ApolloTests.Data.Rating
         public List<JObject> Run()
         {
             root.CacheProps();
-            root.Organization.CacheProps();
             latestResults = new List<JObject>();
 
             var vehicles = root.GetVehicles();
@@ -189,8 +188,8 @@ namespace ApolloTests.Data.Rating
                             continue;
                         }
 
-                        var vehicleLimit = limit.GetCoverageType().isVehicleLevel ? limit.riskCoverages.Find(it => it.riskId == vehicle.RiskId) : limit;
-
+                        var vehicleLimit = limit.GetCoverageType().isVehicleLevel ? limit.riskCoverages?.Find(it => it.riskId == vehicle.RiskId) : limit;
+                        vehicleLimit.NullGuard();
                         var rateResults = RunForLimit(vehicleLimit);
                         rateResults.Add("Vehicle", JObject.FromObject(vehicle.GetProperties()));
                         latestResults.Add(rateResults);
@@ -210,26 +209,28 @@ namespace ApolloTests.Data.Rating
             return latestResults;
         }
 
-        private JObject RunForLimit(CoverageType.Limit limit)
+        private JObject RunForLimit(Limit limit)
         {
             var coverageType = limit.GetCoverageType();
             Log.Debug($"Current Coverage: {coverageType.Name}");
 
             interpreter.SetVariable("Limit", limit);
-            AlgorithmAssignment algorithmAssignment = getAlgorithmAssignment(limit.GetCoverageType(), KnownField.GetKnownField("Class Code").Resolve(this).ToString());
+            AlgorithmAssignment algorithmAssignment = getAlgorithmAssignment(limit.GetCoverageType(), KnownField.GetKnownField("Class Code").Resolve(this)?.ToString()??throw new NullReferenceException());
             interpreter.SetVariable("AlgorithmAssignment", algorithmAssignment);
-            string coverageCode = algorithmAssignment.CoverageCode;
+            string? coverageCode = algorithmAssignment?.CoverageCode;
             /*                    if (string.IsNullOrWhiteSpace(coverageCode))
                                 {
                                     continue;
                                 }*/
-
+            coverageCode.NullGuard();
             interpreter.SetVariable("CoverageCode", coverageCode);
 
 
             var rateResults = new JObject() { { "CoverageCode", coverageCode }, { "CoverageName", coverageType.Name } };
 
             loadResolvedAlgorithmFactors(coverageCode, ref rateResults);
+            JObject factors = (JObject)(rateResults["Factors"] ?? throw new NullReferenceException());
+
             decimal premium = 0;
 
             List<Dictionary<string, string>> algorithmFormula = getTable(coverageCode);
@@ -240,7 +241,7 @@ namespace ApolloTests.Data.Rating
                 string operation = row["Operation"];
                 string factorName = row["Rating Factor"];
 
-                if(string.IsNullOrWhiteSpace(operation) && string.IsNullOrWhiteSpace(factorName))
+                if (string.IsNullOrWhiteSpace(operation) && string.IsNullOrWhiteSpace(factorName))
                 {
                     continue;
                 }
@@ -258,28 +259,27 @@ namespace ApolloTests.Data.Rating
                     var _resolvable = _factor.GetResolvable(this);
                     _resolvable.Value = premium;
                     _resolvable.parsedValue = premium.ToString("C0");
-
-                    if (((JObject)rateResults["Factors"]).ContainsKey(factorName))
+                    if (factors.ContainsKey(factorName))
                     {
-                        ((JObject)rateResults["Factors"])[factorName] = JObject.FromObject(_resolvable);
+                        factors[factorName] = JObject.FromObject(_resolvable);
                     }
                     else
                     {
-                        ((JObject)rateResults["Factors"]).Add(factorName, JObject.FromObject(_resolvable));
+                        factors.Add(factorName, JObject.FromObject(_resolvable));
                     }
                     continue;
                 }
 
                 try
                 {
-                    if (((JObject)rateResults["Factors"]).ContainsKey($"{coverageCode}.{factorName}"))
+                    if (factors.ContainsKey($"{coverageCode}.{factorName}"))
                     {
-                        factor = (JObject)rateResults["Factors"][$"{coverageCode}.{factorName}"];
+                        factor = (JObject?)factors[$"{coverageCode}.{factorName}"]??throw new NullReferenceException();
 
                     }
                     else
                     {
-                        factor = (JObject)rateResults["Factors"][factorName];
+                        factor = (JObject?)factors[factorName] ?? throw new NullReferenceException(); 
                     }
                     if (factor == null)
                     {
@@ -290,19 +290,19 @@ namespace ApolloTests.Data.Rating
                 catch (Exception)
                 {
                     Log.Critical($"Row=> {JObject.FromObject(row)}");
-                    throw Functions.handleFailure($"couldn't find factor {factorName} in Factors.json");
+                    throw Functions.HandleFailure($"couldn't find factor {factorName} in Factors.json");
 
                 }
 
                 decimal factorValue;
                 try
                 {
-                    factorValue = factor["Value"].ToObject<decimal>();
+                    factorValue = factor["Value"]?.ToObject<decimal?>()?? throw new NullReferenceException();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Log.Error($"Error parsing factor {factor?["Value"] ?? null} into decimal ");
-                    throw ex;
+                    throw;
                 }
 
                 if (string.IsNullOrWhiteSpace(operation))
@@ -321,14 +321,14 @@ namespace ApolloTests.Data.Rating
 
                     try
                     {
-                        if (((JObject)rateResults["Factors"]).ContainsKey($"{coverageCode}.{factorNameNext}"))
+                        if (factors.ContainsKey($"{coverageCode}.{factorNameNext}"))
                         {
-                            factorNext = (JObject)rateResults["Factors"][$"{coverageCode}.{factorNameNext}"];
+                            factorNext = (JObject?)factors[$"{coverageCode}.{factorNameNext}"] ?? throw new NullReferenceException();
 
                         }
                         else
                         {
-                            factorNext = (JObject)rateResults["Factors"][factorNameNext];
+                            factorNext = (JObject?)factors[factorNameNext] ?? throw new NullReferenceException();
                         }
                         if (factor == null)
                         {
@@ -337,20 +337,20 @@ namespace ApolloTests.Data.Rating
 
 
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         Log.Error($"couldn't find factor {factorNameNext} in rate results {rateResults}");
-                        throw ex;
+                        throw;
                     }
                     decimal factorValueNext;
                     try
                     {
-                        factorValueNext = factorNext["Value"].ToObject<decimal>();
+                        factorValueNext = factorNext["Value"]?.ToObject<decimal>()?? throw new NullReferenceException();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         Log.Error($"Error parsing factor name: {factorNameNext} value: {factorNext?["Value"] ?? null} into decimal ");
-                        throw ex;
+                        throw;
                     }
                     premium += Math.Max(factorValue, factorValueNext);
                 }
@@ -382,7 +382,7 @@ namespace ApolloTests.Data.Rating
         /// <summary>
         /// Any factor in this dictionary will only be calculated once and will be reused across the whole policy
         /// </summary>
-        private readonly Dictionary<string, Factor.Resolvable> CrossPolicyFactors = new Dictionary<string, Factor.Resolvable>() { { "Driver Rating", null } }; 
+        private readonly Dictionary<string, Factor.Resolvable?> CrossPolicyFactors = new Dictionary<string, Factor.Resolvable?>() { { "Driver Rating", null } }; 
         /// <summary>
         /// Finds all Known Field's values in the Apollo System
         /// </summary>
@@ -439,7 +439,7 @@ namespace ApolloTests.Data.Rating
 
         public AlgorithmAssignment getAlgorithmAssignment(Entity.CoverageType coverageType, string ClassCode)
         {
-            AlgorithmAssignment result = null;
+            AlgorithmAssignment? result = null;
 
             if(string.IsNullOrWhiteSpace(ClassCode) || ClassCode == "0")
             {
@@ -484,7 +484,7 @@ namespace ApolloTests.Data.Rating
             }
 
             
-            if(string.IsNullOrWhiteSpace(result.CoverageCode))
+            if(string.IsNullOrWhiteSpace(result?.CoverageCode))
             {
                 throw new KeyNotFoundException($"Coverage Type: [{coverageType.Name}] Class Code: [{ClassCode}] did not match any Algorithms");
 
@@ -492,12 +492,12 @@ namespace ApolloTests.Data.Rating
             return result;
         }
 
-        private string getDefaultCoverageCode(CoverageType coverageType)
+        private string? getDefaultCoverageCode(CoverageType coverageType)
         {
-            var DefaultCoverageAlgorithms = (JObject)CoverageAlgorithms["All"].DeepClone();
-            DefaultCoverageAlgorithms.Merge(CoverageAlgorithms[GoverningStateCode]);
+            var DefaultCoverageAlgorithms = (JObject?)CoverageAlgorithms["All"]?.DeepClone()?? throw new NullReferenceException();
+            DefaultCoverageAlgorithms.Merge(CoverageAlgorithms?[GoverningStateCode]?? throw new NullReferenceException());
 
-            JToken coverageCode = null;
+            JToken? coverageCode = null;
             if (DefaultCoverageAlgorithms?.TryGetValue(coverageType.Name, out coverageCode) ?? false)
             {
                 return coverageCode?.ToString();
@@ -509,11 +509,11 @@ namespace ApolloTests.Data.Rating
 
         public class AlgorithmAssignment
         {
-            public string ClassCode { get; set; }
-            public string RatingGroup { get; set; }
-            public string DriverRatingPlan { get; set; }
-            public string IncreasedLimitGroup { get; set; }
-            public string CoverageCode { get; set; }
+            public string? ClassCode { get; set; }
+            public string? RatingGroup { get; set; }
+            public string? DriverRatingPlan { get; set; }
+            public string? IncreasedLimitGroup { get; set; }
+            public string? CoverageCode { get; set; }
 
         }
         /// <returns>

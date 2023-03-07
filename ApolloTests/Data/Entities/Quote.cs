@@ -1,17 +1,8 @@
 ﻿using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json.Linq;
-using HitachiQA.Helpers;
-using ApolloTests.Data.Entity.Question;
-using ApolloTests.Data.Rating;
 using Newtonsoft.Json;
 using static ApolloTests.Data.Entity.Policy;
 using ApolloTests.Data.Entities;
-using Polly;
-using System.Diagnostics;
 
 namespace ApolloTests.Data.Entity
 {
@@ -41,18 +32,18 @@ namespace ApolloTests.Data.Entity
 
         public Quote(JObject quoteProps)
         {
-            this.Id = quoteProps["Id"].ToObject<long>();
+            this.Id = quoteProps["Id"]?.ToObject<long>()?? throw new Exception("Id returned null");
             this._properties = quoteProps;
         }
 
-        private JObject _properties = null;
+        private JObject? _properties = null;
 
-        private JObject _APIObj = null;
+        private JObject? _APIObj = null;
 
         public Quote CacheProps()
         {
             this._properties = Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").Result.ElementAt(0);
-            this._APIObj = RestAPI.GET($"/quote/{this.Id}");
+            this._APIObj = RestAPI.GET($"/quote/{this.Id}") ?? throw new Exception();
             return this;
         }
 
@@ -62,7 +53,7 @@ namespace ApolloTests.Data.Entity
             {
                 return _APIObj;
             }
-            return RestAPI.GET($"/quote/{this.Id}");
+            return RestAPI.GET($"/quote/{this.Id}") ?? throw new Exception("GetAPIObj returned null");
         }
 
         public dynamic GetProperties()
@@ -80,14 +71,14 @@ namespace ApolloTests.Data.Entity
             return property;
         }
 
-        public dynamic this[String propertyName]
+        public dynamic? this[String propertyName]
         {
             get
             {
                 var method = this.GetType().GetProperty(propertyName);
                 if (method != null)
                 {
-                    return method.GetGetMethod().Invoke(this, null);
+                    return method.GetGetMethod()?.Invoke(this, null);
                 }
                 else
                 {
@@ -118,9 +109,11 @@ namespace ApolloTests.Data.Entity
 
         public Policy PurchaseThis()
         {
+            var paymentAmount = SummaryResponse?["ratingResponses"]?.Select(it=>it["fullTermPremium"]?.Value<int>()).Max() / 12;
+            paymentAmount.NullGuard();
             var body = new JObject()
             {
-                { "amount", 10000 },
+                { "amount", paymentAmount+1 },
                 { "checkDate", DateTime.Now},
                 { "entityId", this.Tether.Id },
                 { "entityTypeId", 15000},
@@ -131,13 +124,22 @@ namespace ApolloTests.Data.Entity
             };
             var response = RestAPI.POST("payment", body);
 
-            if (response.isSuccess != true)
+            if (response?.isSuccess != true)
             {
-                throw Functions.handleFailure(response);
+                throw Functions.HandleFailure(response);
             }
-            this.Tether.waitForTetherStatus("ISSUED");
+            try
+            {
+                this.Tether.waitForTetherStatus("ISSUED");
+            }
+            catch (Exception)
+            {
+                Log.Error("Summary Response:");
+                Log.Error(SummaryResponse);
+                throw;
+            }
 
-            return GetCurrentRatableObject();
+            return GetCurrentRatableObject()?? throw new Exception("PurchaseThis returned null");
         }
 
         
@@ -146,14 +148,14 @@ namespace ApolloTests.Data.Entity
         {
             var response = RestAPI.POST($"/quote/{Id}/referToUnderwriting", "\"Testing\"");
 
-            return response;
+            return response?? throw new Exception("ReferToUnderwriting returned null");
         }
 
         public JObject GenerateProposal()
         {
             var response = RestAPI.POST($"/quote/{Id}/proposal", null);
 
-            return response;
+            return response ?? throw new Exception("GenerateProposal returned null");
         }
 
         public dynamic CreateEndorsementHeader(long policyId)
@@ -168,16 +170,16 @@ namespace ApolloTests.Data.Entity
             };
 
             var response = RestAPI.PUT($"/policy/{policyId}/endorsement/{Id}", JObject.FromObject(endorseObject));
-            return response;
+            return response ?? throw new Exception("CreateEndorsementHeader returned null");
 
         }
 
-        private Tether _tether;
+        private Tether? _tether;
         public Tether Tether => _tether ??= new Tether(this.GetProperty("TetherId").ToObject<long>());
 
-        private Policy _currentRatableObject;
+        private Policy? _currentRatableObject;
 
-        public Policy GetCurrentRatableObject()
+        public Policy? GetCurrentRatableObject()
         {
             if (_currentRatableObject == null)
             {
@@ -197,10 +199,12 @@ namespace ApolloTests.Data.Entity
             return ratableObjectId is DBNull ? null : new Policy(ratableObjectId);
         }
 
-        public List<CoverageType.Limit> SelectedCoverages => ((JArray)this.GetProperty("SelectedCoverages"))
-                                                            .ToObject<List<CoverageType.Limit>>()
-                                                            .Where(it => it.selectedDeductibleName != null || it.selectedLimitName != null || (it.riskCoverages?.Any() ?? false))
-                                                            .OrderBy(it => it.GetCoverageType().SortOrder).ToList().ToList();
+        public List<Limit> SelectedCoverages => ((JArray)this.GetProperty("SelectedCoverages"))
+                                                            ?.ToObject<List<Limit>>()
+                                                            ?.Where(it => it.selectedDeductibleName != null || it.selectedLimitName != null || (it.riskCoverages?.Any() ?? false))
+                                                            ?.OrderBy(it => it.GetCoverageType().SortOrder).ToList().ToList()
+                                                            ?? throw new NullReferenceException("SelectedCoverages returned null")
+                                                            ;
 
         public IEnumerable<CoverageType> getCoverageTypes(Vehicle risk)
         {
@@ -210,7 +214,7 @@ namespace ApolloTests.Data.Entity
 
                 if (coverageType.isVehicleLevel)
                 {
-                    foreach (var riskEntry in limit.riskCoverages)
+                    foreach (var riskEntry in limit?.riskCoverages?? throw new Exception("RiskCoverages returned null"))
                     {
                         if (riskEntry.riskId == risk.RiskId)
                         {
@@ -225,12 +229,12 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        public List<CoverageType.Limit> getLimits()
+        public List<Limit> getLimits()
         {
             return this.SelectedCoverages;
         }
 
-        public IEnumerable<CoverageType.Limit> getLimits(Vehicle risk)
+        public IEnumerable<Limit> getLimits(Vehicle risk)
         {
             foreach (var limit in SelectedCoverages)
             {
@@ -238,7 +242,7 @@ namespace ApolloTests.Data.Entity
 
                 if (coverageType.isVehicleLevel)
                 {
-                    foreach (var riskEntry in limit.riskCoverages)
+                    foreach (var riskEntry in limit.riskCoverages?? throw new Exception("Limit.riskcoverages returned null"))
                     {
                         if (riskEntry.riskId == risk.RiskId)
                         {
@@ -263,10 +267,10 @@ namespace ApolloTests.Data.Entity
                 {
                     _properties[nameof(GetVehicleTypeRisk)] = RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
                 }
-                return _properties[nameof(GetVehicleTypeRisk)];
+                return _properties[nameof(GetVehicleTypeRisk)]?? throw new Exception("GetVehicleTypeRisk returned null 1");
             }
 
-            return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
+            return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}") ?? throw new Exception("GetVehicleTypeRisk returned null 2");
         }
 
         public List<Vehicle> GetVehicles()
@@ -275,7 +279,7 @@ namespace ApolloTests.Data.Entity
             {
                 return ((JArray)GetVehicleTypeRisk().risks).Select(risk => risk).ToList<dynamic>().Select(risk => new Vehicle(risk.risk.id.ToObject<string>())).ToList();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 Log.Error(GetVehicleTypeRisk().risks);
                 throw;
@@ -291,61 +295,63 @@ namespace ApolloTests.Data.Entity
                 {
                     _properties[nameof(GetDriverTypeRisk)] = RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
                 }
-                return (JObject)_properties[nameof(GetDriverTypeRisk)];
+                return (JObject?)_properties?[nameof(GetDriverTypeRisk)] ?? throw new Exception("GetDriverTypeRisk returned null 1");
             }
-            return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}");
+            return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}") ?? throw new Exception("GetDriverTypeRisk returned null 2");
         }
 
         public List<Driver> GetDrivers()
         {
-            return ((JArray)GetDriverTypeRisk()["risks"]).Select(risk => risk).ToList<dynamic>().Select(risk => new Driver(risk.risk.id.ToObject<int>())).ToList<Driver>();
+            return ((JArray?)GetDriverTypeRisk()["risks"]?? throw new NullReferenceException()).Select(risk => risk).ToList<dynamic>().Select(risk => new Driver(risk.risk.id.ToObject<int>())).ToList<Driver>();
         }
 
         public dynamic GetSectionQuestions(string sectionName)
         {
             var sectionId = this.Storyboard.GetSection(sectionName).Id;
-            return RestAPI.GET($"/quote/{this.Id}/sections/{sectionId}/questions")["questionDefinitions"];
+            return RestAPI.GET($"/quote/{this.Id}/sections/{sectionId}/questions")?["questionDefinitions"]?? throw new Exception("GetSectionQuestions returned null");
         }
 
         public dynamic GetCoverageQuestions(string coverageTypeName)
         {
-            var limits = (JArray)RestAPI.GET($"/quote/{this.Id}/policy/limits");
-
-            var limit = limits.First(it => it["coverageTypeName"].ToString() == coverageTypeName);
-            return limit["configuration"]["questions"];
+            var limits = (JArray?)RestAPI.GET($"/quote/{this.Id}/policy/limits");
+            limits.NullGuard(nameof(limits));
+            var limit = limits.First(it => it["coverageTypeName"]?.ToString() == coverageTypeName);
+            return limit?["configuration"]?["questions"]??throw new KeyNotFoundException("limit.configuration.questions");
         }
 
-        public dynamic GetQuestionResponse(string alias)
+        public dynamic? GetQuestionResponse(string alias)
         {
             foreach (JObject response in this.GetProperty("QuestionResponses"))
             {
                 if (response?["QuestionAlias"]?.ToString() == alias)
                 {
-                    return response["Response"].ToObject<dynamic>();
+                    return response["Response"]?.ToObject<dynamic>();
                 }
             }
             return null;
         }
 
+        public JObject? SummaryResponse = null;
+
         public JObject PostSummary()
         {
-            var response = RestAPI.POST($"quote/{this.Id}/summary", "");
+            SummaryResponse = RestAPI.POST($"quote/{this.Id}/summary", "");
             try
             {
                 this.Tether.waitForTetherStatus("PRESUBMISSION", true);
             }
             catch(Exception)
             {
-                Log.Error(response);
+                Log.Error(SummaryResponse);
                 throw;
             }
-            return response;
+            return SummaryResponse ?? throw new Exception("PostSummary returned null");
         }
 
         public JObject GetSummary()
         {
             var response = RestAPI.GET($"quote/{this.Id}/summary");
-            return response;
+            return response ?? throw new Exception("PostSummary returned null");
         }
 
         [Obsolete("Please use PrimaryAddress instead")]
@@ -355,14 +361,14 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                var ids = (JArray)this["AddressIds"];
-                if(ids.Count==1)
+                var ids = (JArray?)this["AddressIds"];
+                if(ids?.Count==1)
                 {
                     return new Address(ids[0].ToObject<long>());
                 }
                 else
                 {
-                    throw new NotImplementedException($"Need to implement handle for multiple addresses current count: {ids.Count}");
+                    throw new NotImplementedException($"Need to implement handle for multiple addresses current count: {ids?.Count}");
                 }
              
             }
@@ -380,7 +386,7 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return PrimaryAddress.StateCode;
+                return PrimaryAddress.StateCode?? throw new NullReferenceException();
             }
         }
 
@@ -392,7 +398,7 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        private String _ApplicationNumber { get; set; }
+        private String? _ApplicationNumber = null;
 
         public String ApplicationNumber
         {
@@ -402,17 +408,7 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        private Organization _organization { get; set; }
-
-        [Obsolete("Information about insured should come from Application.BusinessInformation now")]
-        public Organization Organization
-        {
-            get
-            {
-                return _organization ??= new Organization((int)this.GetProperty("InsuredId"));
-            }
-        }
-
+      
         public Question.Storyboard Storyboard
         {
             get
@@ -422,27 +418,29 @@ namespace ApolloTests.Data.Entity
             }
         }
 
+        public Policy RatableObject=> this.GetCurrentRatableObject()?? throw new NullReferenceException("RatableObject returned null");
+
         public string CoveredAutos
         {
             get
             {
-                return this.GetCurrentRatableObject().CoveredAutos;
+                return this.RatableObject.CoveredAutos;
             }
         }
 
-        public String MotorCarrierFiling
+        public String? MotorCarrierFiling
         {
             get
             {
-                return this.GetCurrentRatableObject().MotorCarrierFiling;
+                return this.RatableObject.MotorCarrierFiling;
             }
         }
 
-        public Boolean AccidentPreventionCredit
+        public Boolean? AccidentPreventionCredit
         {
             get
             {
-                return this.GetCurrentRatableObject().AccidentPreventionCredit;
+                return this.RatableObject.AccidentPreventionCredit;
             }
         }
 
@@ -450,7 +448,7 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return this.GetCurrentRatableObject().BillingType;
+                return this.RatableObject.BillingType;
             }
         }
 
@@ -458,7 +456,7 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return this.GetCurrentRatableObject().RatingPackageID;
+                return this.RatableObject.RatingPackageID;
             }
         }
 
@@ -466,7 +464,7 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return this.GetCurrentRatableObject().PaymentPlan;
+                return this.RatableObject.PaymentPlan;
             }
         }
 
@@ -474,7 +472,7 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return this.GetCurrentRatableObject().isEft;
+                return this.RatableObject.isEft;
             }
         }
 
@@ -482,24 +480,24 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                return this.GetCurrentRatableObject().RadiusOfOperation;
+                return this.RatableObject.RadiusOfOperation;
             }
         }
 
-        private dynamic _CAB;
+        private dynamic? _CAB;
 
-        public dynamic GetCAB(bool Refresh)
+        public dynamic? GetCAB(bool Refresh)
         {
             _CAB = null;
             return GetCAB();
         }
 
-        public dynamic GetCAB()
+        public dynamic? GetCAB()
         {
             if (_CAB == null)
             {
-                string baseURL = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_BASEURL_SECRETNAME"));
-                string APIKEY = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_API_KEY_SECRETNAME"));
+                string baseURL = Main.Configuration.GetVariable("CAB_BASEURL_SECRETNAME");
+                string APIKEY = Main.Configuration.GetVariable("CAB_API_KEY_SECRETNAME");
 
                 var usDot = GetQuestionResponse("USDOT#");
                 if (usDot == null)
@@ -507,8 +505,7 @@ namespace ApolloTests.Data.Entity
                     return null;
                 }
                 var response = RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/checkDOT/{usDot}?key={APIKEY}");
-
-                if (!(bool)response.found)
+                if (!(bool?)response?.found?? throw new NullReferenceException())
                 {
                     Log.Debug("usDot" + usDot + " was returned invalid from CAB");
                     return null;
@@ -555,32 +552,33 @@ namespace ApolloTests.Data.Entity
         {
             get
             {
-                var basicWeights = ((JArray)GetCAB()?.BASICWeights);
+                var basicWeights = ((JArray?)GetCAB()?.BASICWeights);
 
                 if (basicWeights == null)
                 {
                     return 0;
                 }
-                var weights = basicWeights.Select(it => (decimal)it["baseWeight"]).ToList();
+                var weights = basicWeights.Select(it => (decimal)(it["baseWeight"] ?? throw new Exception("baseWeight returned null"))).ToList();
 
                 return (int)Math.Floor(weights.Sum());
             }
         }
 
-        public JObject ScheduleModifiers => (JObject)GetAPIObj()["scheduleModifiers"];
+        public JObject ScheduleModifiers => (JObject?)GetAPIObj()?["scheduleModifiers"]?? throw new Exception("scheduleModifiers returned null");
 
         private decimal getScheduleModifier(string modifierName)
         {
             var obj = ScheduleModifiers[modifierName];
-            decimal percentage = obj["adjustmentPercentage"].ToObject<decimal?>() ?? 0;
-            foreach (JObject action in obj["actionResults"])
+            obj.NullGuard();
+            decimal percentage = obj["adjustmentPercentage"]?.ToObject<decimal?>() ?? 0;
+            foreach (JObject action in obj["actionResults"]?? throw new NullReferenceException($"scheduleModifier.{modifierName}.actionResults returned null"))
             {
-                percentage += action["percentage"].ToObject<decimal>();
+                percentage += action["percentage"]?.ToObject<decimal>()?? throw new NullReferenceException($"scheduleModifier.{modifierName}.percentage returned null");
             }
             return percentage;
         }
 
-        public long SAFETYORGANIZATION_Id => ScheduleModifiers[nameof(SAFETYORGANIZATION)]["id"].ToObject<long>();
+        public long SAFETYORGANIZATION_Id => ScheduleModifiers[nameof(SAFETYORGANIZATION)]?["id"]?.ToObject<long>()??throw new NullReferenceException(nameof(SAFETYORGANIZATION));
 
         public decimal SAFETYORGANIZATION
         {
@@ -590,7 +588,7 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        public long CLASSIFICATION_Id => ScheduleModifiers[nameof(CLASSIFICATION)]["id"].ToObject<long>();
+        public long CLASSIFICATION_Id => ScheduleModifiers[nameof(CLASSIFICATION)]?["id"]?.ToObject<long>() ?? throw new NullReferenceException(nameof(CLASSIFICATION));
 
         public decimal CLASSIFICATION
         {
@@ -600,7 +598,7 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        public long MANAGEMENT_Id => ScheduleModifiers[nameof(MANAGEMENT)]["id"].ToObject<long>();
+        public long MANAGEMENT_Id => ScheduleModifiers[nameof(MANAGEMENT)]?["id"]?.ToObject<long>() ?? throw new NullReferenceException(nameof(MANAGEMENT));
 
         public decimal MANAGEMENT
         {
@@ -610,7 +608,7 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        public long EMPLOYEES_Id => ScheduleModifiers[nameof(EMPLOYEES)]["id"].ToObject<long>();
+        public long EMPLOYEES_Id => ScheduleModifiers[nameof(EMPLOYEES)]?["id"]?.ToObject<long>() ?? throw new NullReferenceException(nameof(EMPLOYEES));
 
         public decimal EMPLOYEES
         {
@@ -620,7 +618,7 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        public long EQUIPMENT_Id => ScheduleModifiers[nameof(EQUIPMENT)]["id"].ToObject<long>();
+        public long EQUIPMENT_Id => ScheduleModifiers[nameof(EQUIPMENT)]?["id"]?.ToObject<long>() ?? throw new NullReferenceException(nameof(EQUIPMENT));
 
         public decimal EQUIPMENT
         {
@@ -630,20 +628,20 @@ namespace ApolloTests.Data.Entity
             }
         }
 
-        public long TOTAL_Id => ScheduleModifiers["TOTAL"]["id"].ToObject<long>();
+        public long TOTAL_Id => (ScheduleModifiers["TOTAL"]?["id"] ?? throw new Exception("TOTAL_Id returned null")).ToObject<long>();
 
-        public JObject GetExperienceModifierObj() => (JObject)GetAPIObj()["experienceModifier"];
+        public JObject GetExperienceModifierObj() => (JObject?)GetAPIObj()?["experienceModifier"]?? throw new Exception("GetExperienceModifierObj returned null");
 
-        public long EXPERIENCE_Id => GetExperienceModifierObj()["id"].ToObject<long>();
+        public long EXPERIENCE_Id => (GetExperienceModifierObj()["id"] ?? throw new Exception("EXPERIENCE_Id returned null")).ToObject<long>();
 
         public decimal ExperienceModifier
         {
             get
             {
-                decimal percentage = GetExperienceModifierObj()["adjustmentPercentage"].ToObject<decimal?>() ?? 0;
-                foreach (JObject action in GetExperienceModifierObj()["actionResults"])
+                decimal percentage = GetExperienceModifierObj()["adjustmentPercentage"]?.ToObject<decimal?>() ?? 0;
+                foreach (JObject action in GetExperienceModifierObj()?["actionResults"]?? throw new Exception("actionResults returned null"))
                 {
-                    percentage += action["percentage"].ToObject<decimal>();
+                    percentage += action["percentage"]?.ToObject<decimal?>()?? throw new Exception("percentage was null");
                 }
                 return percentage;
             }

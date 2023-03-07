@@ -4,7 +4,7 @@
     {
         public readonly string _alias;
 
-        public string _response;
+        public string? _response;
         public bool PopulateWhenHidden { get; set; } = false;
         public QuestionAnswer(string alias, string response)
         {

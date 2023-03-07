@@ -14,22 +14,28 @@ namespace HitachiQA
     {
         IWebDriver Driver;
         TestContext TestContext;
-        public ScreenShot(IWebDriver driver, TestContext testContext)
+        ScenarioContext ScenarioContext;
+        FeatureContext FeatureContext;
+        public ScreenShot(IWebDriver driver, TestContext testContext, ScenarioContext ScenarioContext, FeatureContext FeatureContext)
         {
-            Driver = driver;
-            TestContext = testContext;
+            this.Driver = driver;
+            this.TestContext = testContext;
+            this.ScenarioContext= ScenarioContext;
+            this.FeatureContext= FeatureContext;
         }
-        public void Info(String filename = null) => Take(Severity.INFO, filename!);
-        public void Debug(String filename = null) => Take(Severity.DEBUG, filename!);
-        public void Warn(String filename = null) => Take(Severity.WARN, filename!);
-        public void Error(String filename = null) => Take(Severity.ERROR, filename!);
-        public void Critical(String filename = null) => Take(Severity.CRITICAL, filename!);
+        public void Info(String? filename = null) => Take(Severity.INFO, filename!);
+        public void Debug(String? filename = null) => Take(Severity.DEBUG, filename!);
+        public void Warn(String? filename = null) => Take(Severity.WARN, filename!);
+        public void Error(String? filename = null) => Take(Severity.ERROR, filename!);
+        public void Critical(String? filename = null) => Take(Severity.CRITICAL, filename!);
 
 
         /// <summary>
         /// Take screenshot, by defualt the filename will be Severity_CurrentScenario_currentDateTime unless otherwise specified
         /// </summary>
-        public void Take(Severity severity, String filename =null)
+        /// 
+
+        public void Take(Severity severity, String? filename =null)
         {
             var currentSev = Severity.parseLevel(Main.Configuration.GetSection("Logging").GetSection("LogLevel")["Default"]).Level;
 
@@ -40,7 +46,7 @@ namespace HitachiQA
             else if (severity.Level <= currentSev)
             { 
 
-                String fileNameBase = filename ?? string.Format($"{FeatureContext.Current.FeatureInfo.Title}_{ScenarioContext.Current.ScenarioInfo.Title}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}").Replace(" ", "_");
+                String fileNameBase = filename ?? string.Format($"{FeatureContext.FeatureInfo.Title}_{ScenarioContext.ScenarioInfo.Title}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}").Replace(" ", "_");
 
                 fileNameBase = $"{severity.Name}_{fileNameBase}";
                 var artifactDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Screenshots");
@@ -54,7 +60,7 @@ namespace HitachiQA
                 Console.WriteLine($"\nPage Source: {new Uri(sourceFilePath)}\n");
 
 
-                ITakesScreenshot takesScreenshot = Driver as ITakesScreenshot;
+                ITakesScreenshot takesScreenshot = Driver as ITakesScreenshot?? throw new NullReferenceException();
                 if (takesScreenshot != null)
                 {
                     var screenshot = takesScreenshot.GetScreenshot();
@@ -62,7 +68,8 @@ namespace HitachiQA
                     string screenshotFilePath = Path.Combine(artifactDirectory, fileNameBase + "_screenshot.png");
 
                     screenshot.SaveAsFile(screenshotFilePath, ScreenshotImageFormat.Png);
-                    
+
+#pragma warning disable CA1416 // Validate platform compatibility
                     var screenshotBitMap = (Bitmap)Image.FromFile(screenshotFilePath);
 
                     var resultBitMap = new Bitmap(screenshotBitMap.Width, screenshotBitMap.Height + 30);
@@ -78,6 +85,8 @@ namespace HitachiQA
 
                     resultBitMap.Save(screenshotFilePath, ImageFormat.Png);
                     resultBitMap.Dispose();
+#pragma warning restore CA1416 // Validate platform compatibility
+
 
                     Console.WriteLine($"\nScreenshot: {new Uri(screenshotFilePath)}\n");
                     this.TestContext.AddResultFile(screenshotFilePath);

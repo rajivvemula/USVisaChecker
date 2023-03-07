@@ -13,11 +13,11 @@ namespace HitachiQA
 {
     public static class Log
     {
-        public static void Debug(object text) => Write(Severity.DEBUG, text);
-        public static void Info(object text) => Write(Severity.INFO, text);
-        public static void Warn(object text) => Write(Severity.WARN, text);
-        public static void Error(object text) => Write(Severity.ERROR, text);
-        public static void Critical(object text) => Write(Severity.CRITICAL, text);
+        public static void Debug(object? text) => Write(Severity.DEBUG, text);
+        public static void Info(object? text) => Write(Severity.INFO, text);
+        public static void Warn(object? text) => Write(Severity.WARN, text);
+        public static void Error(object? text) => Write(Severity.ERROR, text);
+        public static void Critical(object? text) => Write(Severity.CRITICAL, text);
 
 
         public static void Debug(string text, params (string key, dynamic value)[] parameters) => Write(Severity.DEBUG, text, parameters);
@@ -37,7 +37,7 @@ namespace HitachiQA
         /// </remarks>
         /// 
 
-        public static void Write(Severity severity, object text)
+        public static void Write(Severity severity, object? text)
         {
             var currentSev = Severity.parseLevel(Main.Configuration.GetSection("Logging").GetSection("LogLevel")["Default"]).Level;
 
@@ -52,7 +52,7 @@ namespace HitachiQA
             }
         }
 
-        public static string stringify(object text)
+        public static string stringify(object? text)
         {
             try
             {

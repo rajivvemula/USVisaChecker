@@ -11,18 +11,18 @@ namespace ApolloTests.Data.Rating
     //this is a object made up to retrieve the relationship between a class code and a keyword
     public class ClassCodeKeyword:BaseEntity
     {
-        public string ClassCode { get; private set; }
+        public string? ClassCode { get; private set; }
         public int KeywordId { get; private set; }
-        public string KeywordName { get; private set; }
+        public string? KeywordName { get; private set; }
         public int IndustryClassTaxonomyId { get; private set; }
-        public string TaxonomyName { get; private set; }
+        public string? TaxonomyName { get; private set; }
 
         //optiona, will only be loaded when constructed using the GetUsingAlgorithmCode function
-        public Entity.CoverageType coverage { get; private set; }
+        public Entity.CoverageType? coverage { get; private set; }
 
         //set of different invokers to this class
-        public static ClassCodeKeyword GetUsingClassCode(string classCode, String OptionalCoverage = null) => Get("reference.RiskClassType.Code", classCode, OptionalCoverage);
-        public static ClassCodeKeyword GetUsingClassCodes(List<string> classCodes, String OptionalCoverage = null) => Get("reference.RiskClassType.Code", classCodes, OptionalCoverage);
+        public static ClassCodeKeyword GetUsingClassCode(string classCode, String? OptionalCoverage = null) => Get("reference.RiskClassType.Code", classCode, OptionalCoverage);
+        public static ClassCodeKeyword GetUsingClassCodes(List<string> classCodes, String? OptionalCoverage = null) => Get("reference.RiskClassType.Code", classCodes, OptionalCoverage);
         public static ClassCodeKeyword GetUsingKeywordId(string keywordId) => Get("Keyword.Id", keywordId);
         public static ClassCodeKeyword GetUsingKeywordName(string Keyword) => Get("[Keyword].[Name]", Keyword);
 
@@ -34,7 +34,7 @@ namespace ApolloTests.Data.Rating
             var AT1 = Engine.GetTable("AT.1", stateCode, null);
 
             //local variable to store the related coverage
-            String coverage = null;
+            String? coverage = null;
 
             //because we only support a limited amount of class codes, 
             //this list will store all valid ones for the related algorithm code
@@ -70,7 +70,7 @@ namespace ApolloTests.Data.Rating
         }
         //since this is some sort of constructor, we just need the coverage to load it into the actual object
         //this function is flexible enough to search for any valid property and criteria
-        private static ClassCodeKeyword Get(string property, object criteria, String coverage = null)
+        private static ClassCodeKeyword Get(string property, object criteria, String? coverage = null)
         {
             var result = GetSQLService().executeQuery(@$"SELECT reference.RiskClassType.Code as ClassCode,reference.Keyword.Id as KeywordId,reference.Keyword.Name as KeywordName,reference.KeywordDefault.IndustryClassTaxonomyId,reference.IndustryClassTaxonomy.Name as TaxonomyName
                                 FROM  reference.RiskClassType
@@ -85,7 +85,7 @@ namespace ApolloTests.Data.Rating
             //a match is crucial here
             if(result.Count == 0)
             {
-               throw Functions.handleFailure($"Property: {property} & criteria:{criteria} did not return any results");
+               throw Functions.HandleFailure($"Property: {property} & criteria:{criteria} did not return any results");
             }
 
             //we only care about the first match
@@ -105,7 +105,7 @@ namespace ApolloTests.Data.Rating
         }
 
         //same function as above but plural
-        private static ClassCodeKeyword Get(string property, List<string> criterias, String coverage = null)
+        private static ClassCodeKeyword Get(string property, List<string> criterias, String? coverage = null)
         {
             //to store the valid matching Record
 
@@ -123,7 +123,7 @@ namespace ApolloTests.Data.Rating
             //a match is crucial here
             if (results.Count == 0)
             {
-                throw Functions.handleFailure($"Property: {property} & criteria: @criterias did not return any results", null, false, ("@criterias", criterias));
+                throw Functions.HandleFailure($"Property: {property} & criteria: @criterias did not return any results", null, false, ("@criterias", criterias));
             }
             //we only care about the first match
             var group = results.Find(result=>   !BrokenTaxonomies.Contains((int)result["IndustryClassTaxonomyId"]) &&
@@ -133,7 +133,7 @@ namespace ApolloTests.Data.Rating
 
             return new ClassCodeKeyword()
             {
-                ClassCode = group["ClassCode"],
+                ClassCode = group?["ClassCode"]?? throw new NullReferenceException("ClassCode was null"),
                 IndustryClassTaxonomyId = group["IndustryClassTaxonomyId"],
                 KeywordId = group["KeywordId"],
                 KeywordName = group["KeywordName"],
