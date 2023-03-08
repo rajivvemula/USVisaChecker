@@ -3,6 +3,7 @@ using HitachiQA.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,6 +42,15 @@ namespace ApolloTests.Data.Entities
         {
             return Main.ObjectContainer.Resolve<ServiceBus>();
         }
+
+        public static void RunRatableObjectManagementFunction(string path)
+        {
+            var client = GetRestAPIService();
+            var url = Main.Configuration.GetVariable("RATABLEOBJECTMANAGEMENTFUNCTION_URL");
+            url = Path.Combine(url, path);
+            client.POST(url, null);
+        }
+
 
 
 

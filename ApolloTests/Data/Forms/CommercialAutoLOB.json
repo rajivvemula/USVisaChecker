@@ -1529,7 +1529,7 @@
     "code": "(E)GU560a",
     "name": "Reinstatement Notice",
     "condition": {
-      "reinstated": true
+      "rescindedCancelation": true
     }
   },
   {

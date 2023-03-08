@@ -48,8 +48,8 @@ namespace ApolloTests.StepDefinition.Forms
             this.name = name;
             this.LineId = LineId;
             this.Form = Form.GetForm(new Line(LineId), code, name);
-            bool isRerun = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
-            var policy = this.Form.condition.GetValidPolicy(isRerun);
+            bool createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
+            var policy = this.Form.condition.GetValidPolicy(true);
             this.Context = new FormContext(Form, policy);
             var policyId = policy.Id;
 
@@ -102,7 +102,8 @@ namespace ApolloTests.StepDefinition.Forms
                     TimeSpan.FromSeconds(15)
                     }
                 );
-
+            //give it 3 seconds to procees before checking
+            Thread.Sleep(3000);
             foreach (var test in this.Context?.Tests ?? throw new Exception())
             {
                 var docGenRequestId = test.docGenResponseID;
@@ -111,7 +112,7 @@ namespace ApolloTests.StepDefinition.Forms
 
 
                 //Log.Info($"Form Generated: \nDocumentName: {requestedDoc.documentName} \nFormName: {this.form.name} \nCode: {this.form.code}\n Recipient: {this.form.Recipients.First(it=> it.RecipientRoleTypeId == requestedDoc.recipientRoleTypeId).RecipientTypeName}");
-
+                
                 JObject? documentObj =null;
                 retries.Execute(() =>
                 {
@@ -403,6 +404,7 @@ namespace ApolloTests.StepDefinition.Forms
         public int lineId { get; set; }
         public int? recipientRoleTypeId { get; set; }
         public GhostDraftRequest? ghostDraftRequest { get; set; }
+        public int generationEvent { get; set; } = 4;
 
         public override string ToString()
         {

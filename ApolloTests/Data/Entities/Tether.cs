@@ -52,7 +52,7 @@ namespace ApolloTests.Data.Entity
 
         }
 
-        private void SetProperty(string propertyName, object value)
+        public void SetProperty(string propertyName, object value)
         {
             SQL.executeQuery($"UPDATE [tether].[Tether] SET {propertyName}=@value WHERE Id = {this.Id} ", ("@value", value));
         }
@@ -151,10 +151,7 @@ namespace ApolloTests.Data.Entity
 
         }
 
-        public List<Dictionary<string, dynamic>> BillingSchedule => SQL.executeQuery(@$"SELECT BAAP.TetherId, AB.Id as ArrangementBillId, AB.*  
-                                                            FROM [billing].[BillingAccountArrangementPolicy] BAAP
-                                                            LEFT JOIN billing.ArrangementBill AB on AB.BillingAccountArrangementId = BAAP.BillingAccountArrangementId
-                                                            where BAAP.TetherId={this.Id}");
+      
 
         public readonly long Id;
 
@@ -163,7 +160,14 @@ namespace ApolloTests.Data.Entity
                                                       LEFT JOIN [tether].[TetherStatusType] TST on TAR.TetherStatusTypeId = TST.Id
                                                       WHERE TAR.TetherId={Id}
                                                         ")[0]["Code"];
-
+        public List<Dictionary<string, dynamic>> BillingSchedule => SQL.executeQuery(@$"SELECT BAAP.TetherId, AB.Id as ArrangementBillId, AB.*  
+                                                            FROM [billing].[BillingAccountArrangementPolicy] BAAP
+                                                            LEFT JOIN billing.ArrangementBill AB on AB.BillingAccountArrangementId = BAAP.BillingAccountArrangementId
+                                                            where BAAP.TetherId={this.Id}");
+        public List<Dictionary<string, dynamic>> EventHistory => SQL.executeQuery(@$"SELECT ET.[Name] as EventTypeName, TH.* 
+                                                                                    FROM [tether].[TetherHistory] TH
+                                                                                    LEFT JOIN tether.TetherHistoryEventType ET on TH.EventTypeId=ET.Id 
+                                                                                    where TetherId ={this.Id}");
         private int _LineId { get; set; }
 
         public int LineId

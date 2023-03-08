@@ -138,8 +138,9 @@ namespace ApolloTests.Data.Entity
                 Log.Error(SummaryResponse);
                 throw;
             }
-
-            return GetCurrentRatableObject()?? throw new Exception("PurchaseThis returned null");
+            var policy = GetCurrentRatableObject() ?? throw new Exception("PurchaseThis returned null");
+            Log.Debug($"Purchased PolicyId: {policy.Id}");
+            return policy;
         }
 
         

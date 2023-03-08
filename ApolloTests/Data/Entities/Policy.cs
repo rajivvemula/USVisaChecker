@@ -167,7 +167,32 @@ namespace ApolloTests.Data.Entity
 
             return response;
         }
+        public dynamic Reinstate()
+        {
+            Tether.Load();
+            var reinstatePolicy = new ReinstatePolicyObject()
+            {
+                reinstatementDate = Tether.PolicyCancellationEffectiveDate??throw new NullReferenceException($"tether Id: {this.Tether.Id} Tether.PolicyCancellationEffectiveDate")
+            };
 
+            return Reinstate(reinstatePolicy);
+        }
+        public dynamic Reinstate(ReinstatePolicyObject cancelPolicyObject)
+        {
+            var response = RestAPI.POST($"/policy/{Id}/reinstate", cancelPolicyObject.ToJObject());
+            
+            return response?? throw new NullReferenceException();
+        }
+        public dynamic RescindCancelation()
+        {
+            return RescindCancelation(new RescindPolicyObject());
+        }
+        public dynamic RescindCancelation(RescindPolicyObject rescindObj)
+        {
+            var response = RestAPI.POST($"/policy/{Id}/rescindcancel", rescindObj.ToJObject());
+
+            return response ?? throw new NullReferenceException();
+        }
         public Quote CreateDraftPolicyEndorsement()
         {
             var response = RestAPI.POST($"/policy/{Id}/endorsement/", null);
@@ -376,6 +401,27 @@ namespace ApolloTests.Data.Entity
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public DateTime? reinstatementDate { get; set; }
+
+            public JObject ToJObject()
+            {
+                return JObject.FromObject(this);
+            }
+        }
+
+        public class ReinstatePolicyObject
+        {
+            public DateTimeOffset reinstatementDate { get; set; }
+
+            public string reinstatementReason = "Reinstate Automated API";
+            public JObject ToJObject()
+            {
+                return JObject.FromObject(this);
+            }
+        }
+
+        public class RescindPolicyObject
+        {
+            public string rescindPendingCancellationReason { get; set; } = "Rescind Automated API";
 
             public JObject ToJObject()
             {

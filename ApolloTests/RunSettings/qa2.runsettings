@@ -6,6 +6,7 @@
 			<SERVER_HOST>https://bibaoqa2-fd.azurefd.net/api/</SERVER_HOST>
 			<APP_KEYVAULT_URI>https://xbibaoazckv2-qa2.vault.azure.net/</APP_KEYVAULT_URI>
 			<KEYVAULT_URI>https://xbibaoazckv-automationqa.vault.azure.net/</KEYVAULT_URI>
+			<RATABLEOBJECTMANAGEMENTFUNCTION_URL>https://bibaoqa2-ratableobjectmanagementfunction.azurewebsites.net/api/</RATABLEOBJECTMANAGEMENTFUNCTION_URL>
 			<BROWSER>Chrome</BROWSER>
 		</EnvironmentVariables>
 	</RunConfiguration>

@@ -24,6 +24,7 @@ namespace ApolloTests.Data.Form
         public Boolean canceled;
         public Boolean canceledFuture;
         public Boolean reinstated;
+        public Boolean rescindedCancelation;
         public Dictionary<string, string>? vehicle;
         public List<string>? recipients;
         private Form? _form = null;
@@ -42,7 +43,7 @@ namespace ApolloTests.Data.Form
          * used by Data.Forms.Form.cs to parse the conditions from Data.Forms.Form.json for each specific form
          */
         [JsonConstructor]
-        public Condition(String stateCode, List<string> coverageTypes, Dictionary<string, string> questionResponses, Boolean splitLimitBIPD, Boolean endorsement, Boolean issuedEndorsement, Boolean materializedBillToday,Boolean canceled, Boolean canceledFuture, Boolean reinstated, Dictionary<string, string> vehicle)
+        public Condition(String stateCode, List<string> coverageTypes, Dictionary<string, string> questionResponses, Boolean splitLimitBIPD, Boolean endorsement, Boolean issuedEndorsement, Boolean materializedBillToday,Boolean canceled, Boolean canceledFuture, Boolean reinstated, Boolean rescindedCancelation, Dictionary<string, string> vehicle)
         {
             this.stateCode = stateCode?.ToUpper();
             this.coverageTypes = coverageTypes == null ? new List<CoverageType>(): coverageTypes.Select(it => new CoverageType(it)).ToList();
@@ -55,6 +56,7 @@ namespace ApolloTests.Data.Form
             this.reinstated = reinstated;
             this.canceledFuture = canceledFuture;
             this.issuedEndorsement = issuedEndorsement;
+            this.rescindedCancelation = rescindedCancelation;
         }
         
 
@@ -293,6 +295,22 @@ namespace ApolloTests.Data.Form
 
                 validTetherIds.RemoveAll(it => !tethers.Contains(it));
             }
+            if (this.rescindedCancelation)
+            {
+                var rescinded = SQL.executeQuery(@"SELECT TH2.TetherId, ET.[Name] as EventTypeName
+                                                    FROM (
+                                                        SELECT TetherId, MAX(Id) as MaxId
+                                                        FROM tether.TetherHistory
+                                                        GROUP BY TetherId
+                                                    ) TH1
+                                                    INNER JOIN tether.TetherHistory TH2 on TH1.TetherId = TH2.TetherId and TH1.MaxId = TH2.Id 
+                                                    LEFT JOIN tether.TetherHistoryEventType ET on TH2.EventTypeId = ET.Id 
+                                                    WHERE TH2.EventTypeId = 20
+                                                    order by TH2.TetherId desc");
+                var tethers = rescinded.Select(it => (long)it["TetherId"]);
+                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+
+            }
             if (this.reinstated)
             {
                 var reinstated = SQL.executeQuery("SELECT Id as TetherId FROM [tether].[Tether] where EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() and PolicyReinstatementDate < GETDATE();");
@@ -444,25 +462,62 @@ namespace ApolloTests.Data.Form
                 var targetArrangementBillId = arrangmentBillIds[0]["ArrangementBillId"];
 
                 
-                SQL.executeQuery(@$"update billing.ArrangementBill set TimeFrom = '{DateTime.Now:O}', DateMailed='{DateTime.Now:O}', UpdateDateTime='{DateTime.Now.AddHours(-2):O}'  where Id = {targetArrangementBillId};");
+                SQL.executeQuery(@$"update billing.ArrangementBill set TimeFrom = GETDATE(), DateMailed=GETDATE(), UpdateDateTime= DATEADD(HOUR, -2, GETDATE())  where Id = {targetArrangementBillId};");
 
                 var logicAppId = SQL.executeQuery("select * from system.job where [Name]='ProcessLateBills';")[0]["Id"];
 
-                SQL.executeQuery(@$"update j set LastRun = GETDATE(), NextRun = DATEADD(SECOND, 5, GETDATE())
-                                   from system.job j where Id in ({logicAppId})");
+                RunRatableObjectManagementFunction($"jobtrigger/{logicAppId}");
+
+                //SQL.executeQuery(@$"update j set LastRun = GETDATE(), NextRun = DATEADD(SECOND, 5, GETDATE())
+                //                   from system.job j where Id in ({logicAppId})");
                 //WAIT FOR JOB TO RUN
                 Thread.Sleep(7000);
 
 
              }
             //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
-            if (this.canceled)
+            if (this.canceled || rescindedCancelation)
             {
                 Thread.Sleep(5000);
                 policy.Cancel();
             }
+            if (rescindedCancelation)
+            {
+                policy.RescindCancelation();
+            }
+            if (this.reinstated)
+            {
+                var cancelPolicy = new CancelPolicyObject()
+                {
+                    cancelDenyReasonTypeId = CancellationReason.PolicyCancelledAndReissued,
+                    cancellationInitiatedBy = CancellationInitiatedBy.Carrier,
+                    cancellationUnderwriterReason = "Testing",
+                    policyCancellationEffectiveDate = DateTime.Now.AddDays(1).ToString("O")
+                };
+                Thread.Sleep(5000);
+                policy.Cancel(cancelPolicy);
+                policy.Tether.Load();
+                policy.Tether.SetProperty("PolicyCancellationEffectiveDate", DateTimeOffset.UtcNow.AddDays(-1));
+                policy.Tether.SetProperty("EffectiveDate", policy.Tether.EffectiveDate.AddDays(-2));
+                policy.Tether.SetProperty("ExpirationDate", policy.Tether.ExpirationDate.AddDays(-2));
 
-           
+                var cancelJobId = SQL.executeQuery("select * from system.job where [Name]='CancelPolicies';")[0]["Id"];
+
+                RunRatableObjectManagementFunction($"jobtrigger/{cancelJobId}");
+                //WAIT FOR JOB TO RUN
+                Thread.Sleep(5000);
+
+                policy.Tether.waitForTetherStatus("CANCELLED");
+
+                policy.Reinstate();
+                policy.Tether.waitForTetherStatus("ISSUED");
+
+
+
+            }
+            
+
+
 
             quote.CacheProps();
             policy.CacheProps();
