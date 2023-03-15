@@ -1,26 +1,18 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using HitachiQA.Driver;
-using System.IO;
-using System.Threading.Tasks;
+
 using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using BoDi;
-using OpenQA.Selenium.DevTools;
-using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium;
-using System.Runtime.CompilerServices;
+
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 
 namespace HitachiQA.Helpers
 {
-    public class Functions
+    public class Functions 
     {
         private readonly RestAPI RestAPI;
         public Functions(ObjectContainer objectContainer)
@@ -31,21 +23,24 @@ namespace HitachiQA.Helpers
 
         public string GetRandomVIN()
         {
+           return GetRandomVIN(RestAPI);
+        }
+        public static string GetRandomVIN(RestAPI RestAPI)
+        {
             //grabs random vin via randomvin.com
             string? vin;
             try
             {
                 vin = (string?)RestAPI.GET("https://randomvin.com/getvin.php?type=real");
-                vin.NullGuard();
                 if (string.IsNullOrWhiteSpace(vin))
                 {
-                    return GetRandomVIN();
+                    return GetRandomVIN(RestAPI);
                 }
                 return vin;
             }
             catch
             {
-                return GetRandomVIN();
+                return GetRandomVIN(RestAPI);
             }
         }
 
@@ -219,31 +214,35 @@ namespace HitachiQA.Helpers
 
         private static async Task<Dictionary<String, String>> ParseRow(WorkbookPart workbookPart, string [] header, Row row, string filePath)
         {
-            var cells = row.Elements<Cell>().ToArray<Cell>();
-
-            var dict = new Dictionary<String, String>();
-            for (int i = 0; i < header.Length; i++)
+            return await Task.Run<Dictionary<string, string>>(() =>
             {
-                Cell cell;
-                try
+                var cells = row.Elements<Cell>().ToArray<Cell>();
+
+                var dict = new Dictionary<String, String>();
+                for (int i = 0; i < header.Length; i++)
                 {
-                     cell= cells[i];
+                    Cell cell;
+                    try
+                    {
+                        cell = cells[i];
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        cell = new Cell();
+                    }
+                    try
+                    {
+                        dict.Add(header[i], ExtractCellText(workbookPart, cell));
+                    }
+                    catch (Exception)
+                    {
+                        Log.Debug($"File-> {filePath}");
+                        throw;
+                    }
                 }
-                catch(IndexOutOfRangeException)
-                {
-                    cell = new Cell();
-                }
-                try
-                {
-                    dict.Add(header[i], ExtractCellText(workbookPart, cell));
-                }
-                catch(Exception)
-                {
-                    Log.Debug($"File-> {filePath}");
-                    throw;
-                }
+                return dict ?? throw new NullReferenceException();
             }
-            return dict?? throw new NullReferenceException();
+            );
         }
 
         private static String ExtractCellText(WorkbookPart workbookPart, Cell cell)

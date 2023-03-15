@@ -1,21 +1,24 @@
-﻿namespace ApolloTests.Data.TestData
+﻿namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
 {
     public class QuestionAnswer
     {
         public readonly string _alias;
 
-        public string? _response;
+        public object? _response;
         public bool PopulateWhenHidden { get; set; } = false;
-        public QuestionAnswer(string alias, string response)
+        public bool AsJsonStr { get; set; } = false;
+        public string? variableName { get; set; }
+        public Type? targetType { get; set; }
+        public QuestionAnswer(string alias, object? response)
         {
             _alias = alias;
             _response = response;
         }
-        public QuestionAnswer(string alias, string response, bool populateWhenHidden)
+        public QuestionAnswer(string alias, object? response, bool populateWhenHidden)
         {
             _alias = alias;
             _response = response;
-            this.PopulateWhenHidden = populateWhenHidden;
+            PopulateWhenHidden = populateWhenHidden;
         }
 
         public static class Alias
@@ -179,11 +182,11 @@
 
             public static string AccidentOrViolation { get; } = "AccidentOrViolation";
 
-            public static string IL_DefensiveDriving { get; } = "IL_DefensiveDriving";
+            public static string IL_DefensiveDriving { get; } = "IL-DefensiveDriving";
 
-            public static string IL_LastYearViolation { get; } = "IL_LastYearViolation";
+            public static string IL_LastYearViolation { get; } = "IL-LastYearViolation";
 
-            public static string IL_Last3YearsLicenseSuspended { get; } = "IL_Last3YearsLicenseSuspended";
+            public static string IL_Last3YearsLicenseSuspended { get; } = "IL-Last3YearsLicenseSuspended";
 
             public static string CDL { get; } = "CDL";
 

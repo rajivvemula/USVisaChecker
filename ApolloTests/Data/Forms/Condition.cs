@@ -1,5 +1,4 @@
-﻿using ApolloTests.Data.TestData;
-using ApolloTests.Data.Entities;
+﻿using ApolloTests.Data.Entities;
 using ApolloTests.Data.Entity;
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
@@ -8,6 +7,8 @@ using System.Diagnostics;
 using Quote = ApolloTests.Data.Entity.Quote;
 using static ApolloTests.Data.Entity.Policy;
 using DocumentFormat.OpenXml.Presentation;
+using ApolloTests.Data.EntityBuilder;
+using ApolloTests.Data.EntityBuilder.SectionBuilders;
 
 namespace ApolloTests.Data.Form
 {
@@ -374,26 +375,27 @@ namespace ApolloTests.Data.Form
                 throw new NotImplementedException($"Creating a policy through API for {this.Form.Line.Name} LOB has not been implemented yet");
             }
             stateCode ??= "IL";
-            QuoteParam quoteParam = coverageTypes?.Any() ?? false ? new QuoteParam(stateCode, coverageTypes) : new QuoteParam(stateCode);
+            QuoteBuilder quoteBuilder = coverageTypes?.Any() ?? false ? new QuoteBuilder(this.Form.Line, stateCode, coverageTypes) : new QuoteBuilder(this.Form.Line, stateCode);
 
             if (this.questionResponses != null)
             {
                 foreach (var questionAnswer in this.questionResponses)
                 {
-                    quoteParam.QuoteQuentionAnswerParam.SetAnswer(questionAnswer.Key, questionAnswer.Value);
+                    quoteBuilder.Operations.SetAnswer(questionAnswer.Key, questionAnswer.Value);
+                    
                 }
             }
             if(stateCode == "MI")
             {
-                quoteParam.LimitParam.Limits?.Find(it => it.CoverageName == CoverageType.BIPD)?.SetSelectedLimits(510000);
+                quoteBuilder.PolicyCoverages.First(it => it.GetCoverageType().Name == CoverageType.BIPD).selectedLimits = new List<int>() { 510000 };
             }
             if (splitLimitBIPD)
             {
-                quoteParam.BIPD_SplitLimit();
+                quoteBuilder.PolicyCoverages.BIPD_SplitLimit();
             }
             if (this.vehicle != null)
             {
-                var vehicleObject = quoteParam.VehicleParam.Vehicles[0].Object;
+                var vehicleObject = quoteBuilder.Vehicles[0].Vehicle;
 
                 foreach (var prop in this.vehicle)
                 {
@@ -404,29 +406,29 @@ namespace ApolloTests.Data.Form
             if (this.recipients!=null)
             {
                 //additional interest is now always added by default
-                if (quoteParam.AdditionalInterestParam.NumberOfAdditionalInterest<1)
+                if (quoteBuilder.PolicyAddlInterest.NumberOfParties<1)
                 {
-                    quoteParam.AdditionalInterestParam.NumberOfAdditionalInterest = 1;
+                    quoteBuilder.PolicyAddlInterest.NumberOfParties = 1;
                 }
                 if (recipients.Contains("LIENHOLDER"))
                 {
-                    quoteParam.VehicleParam.Vehicles[0].VehicleQuentionAnswerParam.VehicleOwnedLeasedFinanced._response = "Financed";
+                    quoteBuilder.Vehicles[0].QuestionAnswers.VehicleOwnedLeasedFinanced._response = "Financed";
                 }
                 if (recipients.Contains("LESSOR"))
                 {
                     if(recipients.Contains("LIENHOLDER"))
                     {
-                        quoteParam.VehicleParam.NumberOfVehicles = 2;
-                        quoteParam.VehicleParam.Vehicles[1].VehicleQuentionAnswerParam.VehicleOwnedLeasedFinanced._response = "Leased";
+                        ((IRiskBuilder)quoteBuilder.Vehicles).NumberOfRisks = 2;
+                        quoteBuilder.Vehicles[1].QuestionAnswers.VehicleOwnedLeasedFinanced._response = "Leased";
                     }
                     else
                     {
-                        quoteParam.VehicleParam.Vehicles[0].VehicleQuentionAnswerParam.VehicleOwnedLeasedFinanced._response = "Leased";
+                        quoteBuilder.Vehicles[0].QuestionAnswers.VehicleOwnedLeasedFinanced._response = "Leased";
                     }
                 }
             }
 
-            var quote = quoteParam.RunThisThroughAPI();
+            var quote = quoteBuilder.Build();
             var policy = quote.PurchaseThis();
             Policy? endorsementRatableObject = null;
             Quote? endorsement = null;

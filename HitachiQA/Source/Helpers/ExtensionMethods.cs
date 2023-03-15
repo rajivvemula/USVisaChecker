@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace HitachiQA.Helpers
@@ -13,6 +14,10 @@ namespace HitachiQA.Helpers
                 throw new ArgumentNullException(paramName);
             }
         }
+
+        public static JObject ToJObject(this object obj) => JObject.FromObject(obj);
+        public static JToken ToJToken(this object obj) => JToken.FromObject(obj);
+        public static JArray ToJArray(this object obj) => JArray.FromObject(obj);
 
         public static T ToObject<T>(this object obj)
         {
@@ -37,6 +42,16 @@ namespace HitachiQA.Helpers
         {
             return dictionaryListWithIndexKey.FirstOrDefault(dict => dict.TryGetValue("index", out string? k) && k == index);
 
+        }
+
+        public static bool ShouldSerialize(this PropertyInfo prop, object parent)
+        {
+            var method = parent.GetType().GetMethod($"ShouldSerialize{prop.PropertyType.Name}");
+            if (method != null)
+            {
+                return (bool?)method.Invoke(parent, null) ?? throw new NullReferenceException($"Should serialize returned null {parent.GetType().FullName}.{prop.Name}");
+            }
+            return true;
         }
     }
 }

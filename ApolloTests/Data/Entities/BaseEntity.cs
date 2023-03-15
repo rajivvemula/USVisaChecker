@@ -11,11 +11,11 @@ namespace ApolloTests.Data.Entities
 {
     public class BaseEntity
     {
-        protected SQL SQL;
-        protected Cosmos Cosmos;
-        protected RestAPI RestAPI;
-        protected Functions Functions;
-        protected ServiceBus ServiceBus;
+        public SQL SQL;
+        public Cosmos Cosmos;
+        public RestAPI RestAPI;
+        public Functions Functions;
+        public ServiceBus ServiceBus;
         public BaseEntity()
         {
             SQL=GetSQLService();

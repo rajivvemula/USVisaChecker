@@ -629,6 +629,18 @@ namespace ApolloTests.Data.Entity
             }
         }
 
+        public long GetModifierId(string modifierName)
+        {
+            if(modifierName=="EXPERIENCE")
+            {
+                return GetExperienceModifierObj().Value<long>("id");
+            }
+            else
+            {
+                return ScheduleModifiers.Value<JToken>(modifierName)?.Value<long>("id")?? throw new NullReferenceException(modifierName);
+            }
+        }
+
         public long TOTAL_Id => (ScheduleModifiers["TOTAL"]?["id"] ?? throw new Exception("TOTAL_Id returned null")).ToObject<long>();
 
         public JObject GetExperienceModifierObj() => (JObject?)GetAPIObj()?["experienceModifier"]?? throw new Exception("GetExperienceModifierObj returned null");

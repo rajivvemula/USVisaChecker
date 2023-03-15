@@ -9,11 +9,44 @@ using HitachiQA.Driver;
 using BoDi;
 using Microsoft.Extensions.Configuration;
 using HitachiQA.Hooks;
+using Newtonsoft.Json.Linq;
 
 namespace HitachiQA.Helpers
 {
     public class RestAPI
     {
+        public dynamic? SEND(HttpMethod method, String URL, dynamic? body)
+        {
+            return SEND(method, URL, body, new AuthenticationHeaderValue("Bearer", getAuthToken()));
+        }
+        public dynamic? SEND(HttpMethod method, String URL, dynamic? body, AuthenticationHeaderValue Authorization)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(processURL(URL));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = Authorization;
+            client.Timeout = TimeSpan.FromSeconds(600);
+
+            DateTime start = DateTime.Now;
+            var request = new HttpRequestMessage();
+            request.Method = method;
+            request.RequestUri = new Uri(processURL(URL));
+            if(body != null)
+            {
+                String bodyString  = body is string? body: ((JToken)JToken.FromObject(body)).ToString(Formatting.None); 
+                HttpContent content = new StringContent(bodyString, Encoding.UTF8, "application/json");
+                request.Content = content;
+            }
+
+            HttpResponseMessage response = client.SendAsync(request).Result;
+
+            TimeSpan requestTime = DateTime.Now - start;
+            timeSpans.Add(($"[{method}] {URL}", requestTime.TotalSeconds));
+
+
+            client.Dispose();
+            return ConsumeResponse(response, URL, body);
+        }
         private readonly BrowserIndicator BrowserIndicator;
         private readonly JSExecutor? JSExecutor;
         private readonly IConfiguration Configuration;

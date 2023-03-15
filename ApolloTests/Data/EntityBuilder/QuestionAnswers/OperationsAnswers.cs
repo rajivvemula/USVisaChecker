@@ -1,14 +1,20 @@
-﻿using static ApolloTests.Data.TestData.QuestionAnswer;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static ApolloTests.Data.EntityBuilder.QuestionAnswers.QuestionAnswer;
 
-namespace ApolloTests.Data.TestData.Params
+namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
 {
-    public class QuoteQuentionAnswerParam : QuentionAnswerParamBase
+    public class OperationsAnswers : AnswersBase
     {
         public QuestionAnswer VehicleRadius { get; set; } = new QuestionAnswer(Alias.VehicleRadius, "50");
 
         public QuestionAnswer FineArt { get; set; } = new QuestionAnswer(Alias.FineArt, "false");
 
-        public QuestionAnswer Haul { get; set; } = new QuestionAnswer(Alias.Haul, "JSON[\"General Freight\"]");
+        //[HydratorAttr(true)]
+        public QuestionAnswer Haul { get; set; } = new QuestionAnswer(Alias.Haul, "[\"General Freight\"]");
 
         public QuestionAnswer Chains { get; set; } = new QuestionAnswer(Alias.Chains, "false");
 

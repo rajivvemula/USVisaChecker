@@ -82,7 +82,7 @@ namespace ApolloTests.StepDefinitions
             var stateField = this.QuotePage.GetField("State / Region");
             var zipField = this.QuotePage.GetField("Zip / Postal Code");
 
-            String jsonString = new StreamReader($"Data/TestData/objects/OrgCreateAddress/{stateCode}.json").ReadToEnd();
+            String jsonString = new StreamReader($"Data/EntityBuilder/Entities/CreateAddress/{stateCode}.json").ReadToEnd();
             var addressObj = JObject.Parse(jsonString);
 
             streetField.SetFieldValue(addressObj.Value<string>("line1")??throw new Exception());

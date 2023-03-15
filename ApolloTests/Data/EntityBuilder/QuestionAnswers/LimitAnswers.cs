@@ -1,8 +1,13 @@
-﻿using static ApolloTests.Data.TestData.QuestionAnswer;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static ApolloTests.Data.EntityBuilder.QuestionAnswers.QuestionAnswer;
 
-namespace ApolloTests.Data.TestData.Params
+namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
 {
-    public class PolicyCoverageQuestionAnswerParam : QuentionAnswerParamBase
+    public class LimitAnswers : AnswersBase
     {
         #region Cargo Coverage
 

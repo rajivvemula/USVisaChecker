@@ -26,6 +26,11 @@ namespace ApolloTests.Data.Entity
             this.Code.NullGuard();
 
         }
+        public enum LineEnum
+        {
+            BusinessOwner=3,
+            CommercialAuto=7
+        }
 
         public void Load()
         {

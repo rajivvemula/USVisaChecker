@@ -156,6 +156,8 @@ namespace ApolloTests.Data.Entity
         public const string IN_TOW = "In-Tow";
 
         public const string TRAILER_INTERCHANGE = "Trailer Interchange";
+
+        public const string PERSONAL_INJURY_PROTECTION = "Personal Injury Protection";
         #endregion
 
         #region Business Owners
