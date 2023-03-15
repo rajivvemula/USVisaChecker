@@ -50,11 +50,5 @@ namespace ApolloTests.Data.Entities
             url = Path.Combine(url, path);
             client.POST(url, null);
         }
-
-
-
-
-
-
     }
 }

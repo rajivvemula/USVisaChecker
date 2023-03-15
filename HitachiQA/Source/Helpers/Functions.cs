@@ -7,8 +7,9 @@ using CsvHelper.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using BoDi;
 
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
+using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Parser.Listener;
+using iText.Kernel.Pdf.Canvas.Parser;
 
 namespace HitachiQA.Helpers
 {
@@ -390,13 +391,15 @@ namespace HitachiQA.Helpers
         }
         public static string ParsePDF(string path)
         {
-            PdfReader reader = new(path);
+            PdfDocument pdfDoc = new PdfDocument(new PdfReader(path));
             string text = string.Empty;
-            for (int page = 1; page <= reader.NumberOfPages; page++)
+            for (int pageNum = 1; pageNum <= pdfDoc.GetNumberOfPages(); pageNum++)
             {
-                text += PdfTextExtractor.GetTextFromPage(reader, page);
+                PdfPage page = pdfDoc.GetPage(pageNum);
+                ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+                text += PdfTextExtractor.GetTextFromPage(page, strategy);
             }
-            reader.Close();
+            pdfDoc.Close();
             return text;
         }
 
