@@ -231,11 +231,21 @@ namespace HitachiQA.Helpers
 
         private dynamic? ConsumeResponse(HttpResponseMessage response, string URL, dynamic? body=null)
         {
+            string? errorMsg=null;
             if(!response.IsSuccessStatusCode)
             {
                 Log.Critical(processURL(URL));
                 Log.Critical(body);
-                Log.Critical(response.Content.ReadAsStringAsync().Result);
+                errorMsg = response.Content.ReadAsStringAsync().Result;
+                Log.Critical(errorMsg);
+            }
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(errorMsg??ex.Message, ex);
             }
             response.EnsureSuccessStatusCode();
 

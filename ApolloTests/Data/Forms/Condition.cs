@@ -148,6 +148,9 @@ namespace ApolloTests.Data.Form
 
             }
 
+
+            if (validTetherIds.Count == 0) { return null; }
+
             if (this.coverageTypes != null && this.coverageTypes.Any())
             {
                 foreach (var type in this.coverageTypes)
@@ -183,6 +186,7 @@ namespace ApolloTests.Data.Form
                 bool lienHolder = recipients.Contains("LIENHOLDER");
                 bool lessor = recipients.Contains("LESSOR");
                 bool both = lienHolder && lessor;
+
 
                 //if lienholder or lessor are needed
                 if (lienHolder || lessor)
