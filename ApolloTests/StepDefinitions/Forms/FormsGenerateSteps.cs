@@ -1,16 +1,14 @@
 ﻿using System;
 using TechTalk.SpecFlow;
 using ApolloTests.Data.Form;
-//using ApolloTests.Data.Entity;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 
 using Microsoft.Extensions.Configuration;
 using Polly;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Newtonsoft.Json;
 using HitachiQA.Hooks;
-using ApolloTests.Data.Entity;
+
 
 namespace ApolloTests.StepDefinition.Forms
 {
@@ -30,14 +28,13 @@ namespace ApolloTests.StepDefinition.Forms
         private FormContext? Context;
         private MiscHook MiscHook;
 
-        public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook)
+        public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook,)
         {
             this.RestAPI = restAPI;
             this.SQL= SQL;
             this.Configuration = config;
             this.TestContext= TC;
             this.MiscHook = miscHook;
-
 
         }
 
@@ -47,13 +44,11 @@ namespace ApolloTests.StepDefinition.Forms
             this.code = code;
             this.name = name;
             this.LineId = LineId;
-            this.Form = Form.GetForm(new Line(LineId), code, name);
+            this.Form = Form.GetForm(new Data.Entity.Line(LineId), code, name);
             bool createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
             var policy = this.Form.condition.GetValidPolicy(createNewEntities);
             this.Context = new FormContext(Form, policy);
             var policyId = policy.Id;
-
-            //matching policy from the form
 
         }
 
