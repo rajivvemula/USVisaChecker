@@ -28,7 +28,7 @@ namespace ApolloTests.StepDefinition.Forms
         private FormContext? Context;
         private MiscHook MiscHook;
 
-        public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook,)
+        public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook)
         {
             this.RestAPI = restAPI;
             this.SQL= SQL;
