@@ -439,7 +439,7 @@ namespace ApolloTests.Data.Form
 
             if (this.endorsement || issuedEndorsement)
             {
-                Thread.Sleep(2000);
+                Thread.Sleep(4000);
                 endorsement = policy.CreateDraftPolicyEndorsement();
                 if(policy.GetDraftEndorsements().Count ==0)
                 {

@@ -46,7 +46,7 @@ namespace ApolloTests.StepDefinition.Forms
             this.LineId = LineId;
             this.Form = Form.GetForm(new Data.Entity.Line(LineId), code, name);
             bool createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
-            var policy = this.Form.condition.GetValidPolicy(createNewEntities);
+            var policy = this.Form.condition.GetValidPolicy(true);
             this.Context = new FormContext(Form, policy);
             var policyId = policy.Id;
 
@@ -60,7 +60,6 @@ namespace ApolloTests.StepDefinition.Forms
             {
                 var docGenResponse = RestAPI.POST("/documentgeneration", test?.body);
                 ((bool)docGenResponse).Should().Be(true, "this request should return true");
-                
             }
             
         }
