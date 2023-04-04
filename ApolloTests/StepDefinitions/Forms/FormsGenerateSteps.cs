@@ -46,7 +46,7 @@ namespace ApolloTests.StepDefinition.Forms
             this.LineId = LineId;
             this.Form = Form.GetForm(new Data.Entity.Line(LineId), code, name);
             bool createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
-            var policy = this.Form.condition.GetValidPolicy(true);
+            var policy = this.Form.condition.GetValidPolicy(createNewEntities);
             this.Context = new FormContext(Form, policy);
             var policyId = policy.Id;
 
