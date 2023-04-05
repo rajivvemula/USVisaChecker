@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ApolloTests.Data.EntityBuilder.SectionBuilders;
+using ApolloTests.Data.EntityBuilder.Models.Risks;
 
 namespace ApolloTests.Data.EntityBuilder
 {
@@ -40,6 +41,22 @@ namespace ApolloTests.Data.EntityBuilder
         public Entity.Quote Quote { 
             get { return _quote ?? throw new NullReferenceException("Attempted to access quote before it was loaded"); } 
             set { this._quote = value; } 
+        }
+
+        public HydratorUtil()
+        {
+            this.Interpreter.Reference(typeof(LocationRisk));
+            this.Interpreter.Reference(typeof(Risk));
+            this.Interpreter.Reference(typeof(BuildingRisk));
+            this.Interpreter.Reference(typeof(AnswersBase));
+            this.Interpreter.Reference(typeof(RiskAnswers));
+            this.Interpreter.Reference(typeof(JObject));
+            this.Interpreter.Reference(typeof(JArray));
+            this.Interpreter.Reference(typeof(JToken));
+            this.Interpreter.Reference(typeof(JValue));
+
+
+
         }
 
         /// <summary>
@@ -99,8 +116,9 @@ namespace ApolloTests.Data.EntityBuilder
             {
                 // 2.)if the object is a List<QuestionResponse> then we must use state change utility to hydrate it
                 if (obj is List<QuestionResponse> questionAnswers)
-                    questionAnswers.Hydrate(this);
-                
+                {
+                    questionAnswers.Hydrate(this, prop);
+                }
                 // 3.)if the object is an IEnumerable(collection) then we iterate through the collection and hydrate each object in it
                 else if (obj is IEnumerable enumerable && !isDeadEnd(obj))
                 {
@@ -108,7 +126,7 @@ namespace ApolloTests.Data.EntityBuilder
                     if (varAtt != null)
                     {
                         // 3.1) if it's an collection and we have an Attribute, we expect the attribute to be a collection of Names to load
-                        varAtt.Names.NullGuard("for a Enumerable attribute a list of variables name is expected to resolve");
+                        varAtt.Names.NullGuard($"{prop?.PropertyType?.FullName?? "null"} for a Enumerable attribute a list of variables name is expected to resolve");
 
                         foreach (var name in varAtt.Names)
                         {
@@ -119,7 +137,7 @@ namespace ApolloTests.Data.EntityBuilder
                                 jarr.Add(interpretedVal);
                             else if (obj is IList lis)
                                 lis.Add(interpretedVal);
-                            
+
                             // 3.3) if your collection type is not handled, please add it's Add method
                             else
                                 throw new InvalidOperationException();
@@ -132,7 +150,7 @@ namespace ApolloTests.Data.EntityBuilder
                     {
                         Hydrate(item);
                     }
-                    
+
                 }
 
                 // 4.)if the object is not a deadend, iterate through it's properties and hydrate them using recursion.
@@ -140,9 +158,9 @@ namespace ApolloTests.Data.EntityBuilder
                 {
                     // 4.1) Add the self variable to the interpreter so that we can use it in the attribute (E.g. [HydratorAttr(Name="self.Id")] would load the property with the Id member of the property's class)
                     Interpreter.SetVariable("self", obj);
-                    
+
                     //    4.2) iterate through the properties in the current object's class
-                    foreach (var property in obj?.GetType()?.GetProperties()??throw new InvalidCastException("object is not DeadEnd but is Null, please load it"))
+                    foreach (var property in obj?.GetType()?.GetProperties() ?? throw new InvalidCastException("object is not DeadEnd but is Null, please load it"))
                     {
                         //    4.3) check for ShouldSerialize: https://www.newtonsoft.com/json/help/html/conditionalproperties.htm, if false don't hydrate
                         var shouldSerialize = property.ShouldSerialize(obj);
@@ -165,14 +183,14 @@ namespace ApolloTests.Data.EntityBuilder
                         {
                             property.SetValue(obj, propValObj);
                         }
-                       
+
                     }
                     Interpreter.SetVariable("self", null);
                 }
 
                 //5.) finally, if object is deadend, we grab the name provided to the attribute and interpret it using the interpreter
                 //    5.1) check if this object has an Attribute (varAt)
-                else if (varAtt!=null)
+                else if (varAtt != null)
                 {
                     //    5.2) make sure Attribute's name is not null
                     varAtt.Name.NullGuard();
@@ -183,10 +201,32 @@ namespace ApolloTests.Data.EntityBuilder
                     var interpretedVal = Interpreter.Eval(varAtt.Name);
 
                     //    5.4) change the type returned by the Interpreter to the same as the current obj (prop.PropertyType)
-                    var castedValue = Convert.ChangeType(interpretedVal, prop.PropertyType);
+                    object castedValue;
+                    try
+                    {
+                        if(interpretedVal is JToken token)
+                        {
+                            castedValue = token.ToObject(prop.PropertyType) ?? throw new NullReferenceException();
+                        }
+                        else
+                        {
+                            try
+                            {
+                                castedValue = Convert.ChangeType(interpretedVal, prop.PropertyType);
+                            }
+                            catch(Exception ex)
+                            {
+                                throw new Exception($"error converting {interpretedVal?.GetType()?.FullName??"null"} into {prop.PropertyType.GetType().FullName}", ex);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"Error converting val: {interpretedVal} into {prop.PropertyType.Name} for prop: {prop.Name} from object: {prop.DeclaringType?.FullName}", ex);
+                    }
 
                     //    5.5) if the final value is null or whitespace then fail
-                    if (castedValue == null || string.IsNullOrWhiteSpace(castedValue.ToString()))
+                    if (castedValue == null || (castedValue is string && string.IsNullOrWhiteSpace(castedValue.ToString())))
                     {
                         Log.Error($"{prop.Name} returned null for {varAtt.Name}");
                         throw new NullReferenceException();
@@ -196,7 +236,7 @@ namespace ApolloTests.Data.EntityBuilder
                     obj = castedValue;
                 }
                 //old implementation used @ to identify variables, this is not obsolete
-                else if(obj is string varName && (varName.StartsWith('@') || varName.StartsWith("JSON@")))
+                else if (obj is string varName && (varName.StartsWith('@') || varName.StartsWith("JSON@")))
                 {
                     throw new Exception("using @ is obsolete, please use HydratorAtt instead");
                     //// Cast the interpreset value into whatever the property type is
@@ -228,6 +268,12 @@ namespace ApolloTests.Data.EntityBuilder
             typeof(DateTimeOffset).Name,
             typeof(Decimal).Name,
             typeof(String).Name,
+            typeof(JToken).Name,
+            typeof(JArray).Name,
+            typeof(JObject).Name,
+            typeof(JProperty).Name,
+            typeof(JValue).Name,
+
         };
 
         //types to be skipped from hydration

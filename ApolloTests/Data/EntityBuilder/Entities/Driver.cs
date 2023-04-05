@@ -4,28 +4,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ApolloTests.Data.EntityBuilder.Models;
 using Newtonsoft.Json;
+using ApolloTests.Data.EntityBuilder.Models.Risks;
 
 namespace ApolloTests.Data.EntityBuilder.Entities
 {
     public class Driver : IRiskEntity, IEntityBase
     {
-        [JsonIgnore]
-        public IOutputMetadata OutputMetadata { get; set; } = new OutputMetadataDriver();
 
         [JsonIgnore]
         public RiskType RiskType => RiskType.Driver;
 
         [JsonIgnore]
-        private Risk Risk { get; }
-
-        public Risk GetRisk() => Risk;
+        Risk? IRiskEntity.Risk { get; set; }
 
         public Driver(Risk risk)
         {
-            this.Risk= risk;
+            ((IRiskEntity)this).SetRisk(risk);
         }
+        public Driver() { }
 
         public Person person { get; set; } = new Person();
 
@@ -64,38 +61,7 @@ namespace ApolloTests.Data.EntityBuilder.Entities
             public string? code { get; set; } 
         }
 
-        public class OutputMetadataDriver : IOutputMetadata
-        {
-            public List<QuestionResponse> QuestionResponses { get; set; } = new List<QuestionResponse>();
-            public DriverHistory DriverHistory { get; set; } = new DriverHistory();
-
-        }
-
-        public class DriverHistory
-        {
-            public int id { get; set; }
-
-            public List<Incident> accidents { get; set; } = new List<Incident>();
-
-            public List<Incident> violations { get; set; } = new List<Incident>();
-
-            public List<Incident> convictions { get; set; } = new List<Incident>();
-
-            public class Incident
-            {
-                public DateTime date { get; set; }
-
-                public string? reason { get; set; }
-
-                public string? state { get; set; }
-
-                public string? notes { get; set; }
-
-                public string? description { get; set; }
-
-                public string? wasRecklessDriving { get; set; }
-            }
-        }
+       
 
     }
 

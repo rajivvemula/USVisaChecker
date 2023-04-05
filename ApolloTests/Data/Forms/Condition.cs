@@ -374,10 +374,6 @@ namespace ApolloTests.Data.Form
         /// <returns></returns>
         private Policy CreatePolicyForThis()
         {
-            if (this.Form.Line.Id != 7)
-            {
-                throw new NotImplementedException($"Creating a policy through API for {this.Form.Line.Name} LOB has not been implemented yet");
-            }
             stateCode ??= "IL";
             QuoteBuilder quoteBuilder = coverageTypes?.Any() ?? false ? new QuoteBuilder(this.Form.Line, stateCode, coverageTypes) : new QuoteBuilder(this.Form.Line, stateCode);
 
@@ -422,7 +418,7 @@ namespace ApolloTests.Data.Form
                 {
                     if(recipients.Contains("LIENHOLDER"))
                     {
-                        ((IRiskBuilder)quoteBuilder.Vehicles).NumberOfRisks = 2;
+                        quoteBuilder.Vehicles.NumberOfRisks = 2;
                         quoteBuilder.Vehicles[1].QuestionAnswers.VehicleOwnedLeasedFinanced._response = "Leased";
                     }
                     else

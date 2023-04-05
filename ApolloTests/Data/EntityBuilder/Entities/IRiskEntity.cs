@@ -1,4 +1,4 @@
-﻿using ApolloTests.Data.EntityBuilder.Models;
+﻿using ApolloTests.Data.EntityBuilder.Models.Risks;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,14 +11,17 @@ namespace ApolloTests.Data.EntityBuilder.Entities
 {
     public interface IRiskEntity
     {
-          
-        [JsonIgnore]
-        public abstract IOutputMetadata OutputMetadata { get; set; }
 
         [JsonIgnore]
         public RiskType RiskType { get; }
 
-        public Risk GetRisk();
+        [JsonIgnore]
+        protected Risk? Risk { get; set; }
+
+        public Risk GetRisk() => Risk ?? throw new NullReferenceException("Risk was null");
+
+        public void SetRisk(Risk value) => this.Risk = value;
+
 
         public JObject ToJObject()
         {

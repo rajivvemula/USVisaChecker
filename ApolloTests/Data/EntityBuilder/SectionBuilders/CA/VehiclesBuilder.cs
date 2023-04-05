@@ -1,23 +1,28 @@
 ﻿using ApolloTests.Data.EntityBuilder.Entities;
 using ApolloTests.Data.EntityBuilder.Models;
+using ApolloTests.Data.EntityBuilder.Models.Risks;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
-
+using System.Collections;
 
 namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
 {
-    public class VehiclesBuilder : List<Risk>, IRiskBuilder
+    public class VehiclesBuilder : List<VehicleRisk>, IRiskBuilder
     {
+  
+        public QuoteBuilder Builder { get; }
+        public Section Section => Section.Vehicles;
+        public HydratorUtil Hydrator => Builder.Hydrator;
+        public uint NumberOfRisks
+        {
+            get => (uint)Count;
+            set => this.SetNumberOfRisks(value);
+        }
         public VehiclesBuilder(QuoteBuilder Builder)
         {
             this.Builder = Builder;
-            this.Add(new Risk(RiskType.Vehicle));
+            this.AddOne();
         }
-        public QuoteBuilder Builder { get; }
-        public List<Risk> Self => this;
-        public Section Section => Section.Vehicles;
-        public HydratorUtil Hydrator => Builder.Hydrator;
-
         public JToken RunSendStrategy(Entity.Quote quote)   
         {
             Hydrator.Interpreter.SetVariable("ClassCode", this.Builder.ClassCodeKeyword.ClassCode);
@@ -47,6 +52,6 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             return result;
         }
 
-        
+        public void AddOne() => Add(new VehicleRisk());
     }
 }

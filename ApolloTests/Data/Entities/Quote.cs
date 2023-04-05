@@ -62,7 +62,13 @@ namespace ApolloTests.Data.Entity
             {
                 return _properties;
             }
-            return Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").Result.ElementAt(0);
+            try
+            {
+                return Cosmos.GetQuery("Application", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").Result.ElementAt(0);
+            }catch(Exception e)
+            {
+                throw new Exception($"Error retrieving Application: {this.Id} from {Cosmos.Endpoint}", e);
+            }
         }
 
         public dynamic GetProperty(String propertyName)

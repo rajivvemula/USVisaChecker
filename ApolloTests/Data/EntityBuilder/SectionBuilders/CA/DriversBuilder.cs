@@ -1,26 +1,26 @@
-﻿using ApolloTests.Data.EntityBuilder.Models;
+﻿using ApolloTests.Data.EntityBuilder.Models.Risks;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
 {
-    public class DriversBuilder : List<Risk>, IRiskBuilder
+    public class DriversBuilder : List<DriverRisk>, IRiskBuilder
     {
-        public List<Risk> Self => this;
         public Section Section => Section.Drivers;
-
         public QuoteBuilder Builder { get; }
         public HydratorUtil Hydrator => Builder.Hydrator;
+
+        public uint NumberOfRisks
+        {
+            get => (uint)Count;
+            set => this.SetNumberOfRisks(value);
+        }
 
         public DriversBuilder(QuoteBuilder quoteBuilder)
         {
             Builder = quoteBuilder;
-            Add(new Risk(RiskType.Driver));
+            this.AddOne();
         }
 
         public JToken RunSendStrategy(Entity.Quote quote)
@@ -46,5 +46,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             return result;
         }
 
+        public void AddOne() => Add(new DriverRisk());
+       
     }
 }

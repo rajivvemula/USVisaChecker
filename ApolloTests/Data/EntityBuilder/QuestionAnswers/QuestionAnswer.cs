@@ -228,6 +228,76 @@
             public static string AdditionalInterestCertificateHolderNotice { get; } = "AdditionalInterestCertificateHolderNotice";
 
             #endregion Additional Interest
+
+
+            #region Prior Claims
+            public static string DateOfLoss { get; } = "DateOfLoss";
+            public static string ClaimDesc { get; } = "ClaimDesc";
+            public static string EstimatedCost { get; } = "EstimatedCost";
+
+            #endregion Prior Claims
+
+
+            #region Locations & buildings
+            public static string BuildingLocationAddress { get; } = "BuildingLocationAddress";
+            public static string Buildings { get; } = "Buildings";
+            public static string CarbonMonoxideDetector { get; } = "CarbonMonoxideDetector";
+            public static string SmokeFireDetector { get; } = "SmokeFireDetector";
+            public static string BusinessOccupiedUnits { get; } = "BusinessOccupiedUnits";
+            public static string CondoTownAssociationName { get; } = "CondoTownAssociationName";
+            public static string CondoCoopUnitNumber { get; } = "CondoCoopUnitNumber";
+            public static string IsOrgACoop { get; } = "IsOrgACoop";
+            public static string CommercialOccupantPercent { get; } = "CommercialOccupantPercent";
+            public static string InsuranceTrusteeName { get; } = "InsuranceTrusteeName";
+            public static string UCIOActAssociation { get; } = "UCIOActAssociation";
+            public static string AssociationCreated1Jan1991 { get; } = "AssociationCreated1Jan1991";
+            public static string AssociationCreated29Oct1990 { get; } = "AssociationCreated29Oct1990";
+            public static string AssociationCreated7Aug1985 { get; } = "AssociationCreated7Aug1985";
+            public static string AssociationCreated1Jan1984 { get; } = "AssociationCreated1Jan1984";
+            public static string AssociationCreated1Jul1991 { get; } = "AssociationCreated1Jul1991";
+            public static string AssociationCreated1Jun1994 { get; } = "AssociationCreated1Jun1994";
+            public static string AssociationCreated28Sep1983 { get; } = "AssociationCreated28Sep1983";
+            public static string AssociationCreated1Oct1986 { get; } = "AssociationCreated1Oct1986";
+            public static string AssociationCreated1Jul1900 { get; } = "AssociationCreated1Jul1900";
+            public static string CarWashFullServeBayNumber { get; } = "CarWashFullServeBayNumber";
+            public static string BylawsConformCurrentStateAct { get; } = "BylawsConformCurrentStateAct";
+            public static string StudentUnitRentPercent { get; } = "StudentUnitRentPercent";
+            public static string CarWashSelfServeBayNumber { get; } = "CarWashSelfServeBayNumber";
+            public static string BuildingIncludeApartments { get; } = "BuildingIncludeApartments";
+            public static string SemiAnnualFireSystemDuctContractNotRestaurant { get; } = "SemiAnnualFireSystemDuctContractNotRestaurant";
+            public static string DanceCoverAlcoholKitchClosedNotRestaurant { get; } = "DanceCoverAlcoholKitchClosedNotRestaurant";
+            public static string SemiAnnualFireSystemDuctContractRestaurant { get; } = "SemiAnnualFireSystemDuctContractRestaurant";
+            public static string BarAlcoholOnPremise { get; } = "BarAlcoholOnPremise";
+            public static string DanceCoverAlcoholKitchClosedRestaurant { get; } = "DanceCoverAlcoholKitchClosedRestaurant";
+            public static string PremisePoolHotTub { get; } = "PremisePoolHotTub";
+            public static string BusinessTenantOccupyNumber1 { get; } = "BusinessTenantOccupyNumber1";
+            public static string CoverageEntireBuilding { get; } = "CoverageEntireBuilding";
+            public static string BuildingSqFt { get; } = "BuildingSqFt";
+            public static string BusinessSqFt { get; } = "BusinessSqFt";
+            public static string BuildingFinancialInterest { get; } = "BuildingFinancialInterest";
+            public static string HurricaneResistGlass { get; } = "HurricaneResistGlass";
+            public static string GuestRoomNumber { get; } = "GuestRoomNumber";
+            public static string AvgDailyRate { get; } = "AvgDailyRate";
+            public static string GrossSales12MonthExcludeGuestRooms { get; } = "GrossSales12MonthExcludeGuestRooms";
+            public static string PlaygroundAreas { get; } = "PlaygroundAreas";
+            public static string BuildingPoolNumber { get; } = "BuildingPoolNumber";
+            public static string GuestRoomEntrancesOnExterior { get; } = "GuestRoomEntrancesOnExterior";
+            public static string BuildingStoriesNumber { get; } = "BuildingStoriesNumber";
+            public static string BuildingYearBuilt { get; } = "BuildingYearBuilt";
+            public static string RoofUpdated25Years { get; } = "RoofUpdated25Years";
+            public static string BuildingConstructed { get; } = "BuildingConstructed";
+            public static string BuildingOccupiedConstructed { get; } = "BuildingOccupiedConstructed";
+            public static string BuildingResidentUnitNumber { get; } = "BuildingResidentUnitNumber";
+            public static string PropertyLeadAbatement { get; } = "PropertyLeadAbatement";
+            public static string LeadCertificateType { get; } = "LeadCertificateType";
+            public static string BuildingRegisteredMDDeptofEng { get; } = "BuildingRegisteredMDDeptofEng";
+            public static string UnitsObtainedLeadControlNumber { get; } = "UnitsObtainedLeadControlNumber";
+            public static string UnitsObtainedLeadComplianceNumber { get; } = "UnitsObtainedLeadComplianceNumber";
+            public static string CookingGreaseSmokeVapors { get; } = "CookingGreaseSmokeVapors";
+            public static string ClosedHealthCode5Years { get; } = "ClosedHealthCode5Years";
+            #endregion Locations & buildings
+
+
         }
     }
 }

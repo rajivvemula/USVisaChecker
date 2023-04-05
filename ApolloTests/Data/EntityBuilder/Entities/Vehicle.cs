@@ -1,4 +1,4 @@
-﻿using ApolloTests.Data.EntityBuilder.Models;
+﻿using ApolloTests.Data.EntityBuilder.Models.Risks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -8,20 +8,15 @@ namespace ApolloTests.Data.EntityBuilder.Entities
     public class Vehicle : IRiskEntity, IEntityBase
     {
         [JsonIgnore]
-        public IOutputMetadata OutputMetadata { get; set; } = new OutputMetadataVehicle();
-
-        [JsonIgnore]
         public RiskType RiskType => RiskType.Vehicle;
-
-        private Risk Risk { get; }
-
-        public Risk GetRisk() => Risk;
+        [JsonIgnore]
+        Risk? IRiskEntity.Risk { get; set; }
 
         public Vehicle(Risk risk)
         {
-            this.Risk = risk;
+            ((IRiskEntity)this).SetRisk(risk);
         }
-
+        public Vehicle() { }
         public string id { get; set; } = "00000000-0000-0000-0000-000000000000";
 
         public int riskId { get; set; } = 0;
@@ -74,22 +69,7 @@ namespace ApolloTests.Data.EntityBuilder.Entities
         public object? preVinRateRank { get; set; } = null;
 
         public int vinRateRank { get; set; } = 1;
-        public class OutputMetadataVehicle : IOutputMetadata
-        {
-            public List<QuestionResponse> QuestionResponses { get; set; } = new List<QuestionResponse>();
-            public VehicleLocation VehicleLocation { get; set; } = new VehicleLocation();
-
-            [HydratorAttr("ClassCode")]
-            public string? VehicleClassCode { get; set; }
-        }
-
-        public class VehicleLocation : IEntityBase
-        {
-            [HydratorAttr("PhysicalAddressId")]
-            public string? locationId { get; set; }
-
-
-        }
+       
     }
 
 

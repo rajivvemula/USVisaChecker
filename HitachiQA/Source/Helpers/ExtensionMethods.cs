@@ -45,7 +45,7 @@ namespace HitachiQA.Helpers
 
         public static bool ShouldSerialize(this PropertyInfo prop, object parent)
         {
-            var method = parent.GetType().GetMethod($"ShouldSerialize{prop.PropertyType.Name}");
+            var method = parent.GetType().GetMethod($"ShouldSerialize{prop.Name}");
             if (method != null)
             {
                 return (bool?)method.Invoke(parent, null) ?? throw new NullReferenceException($"Should serialize returned null {parent.GetType().FullName}.{prop.Name}");

@@ -1,36 +1,122 @@
-﻿using ApolloTests.Data.EntityBuilder.Entities;
+﻿using ApolloTests.Data.Entity.Question;
+using ApolloTests.Data.EntityBuilder.Entities;
+using ApolloTests.Data.EntityBuilder.Models;
+using ApolloTests.Data.EntityBuilder.QuestionAnswers;
+using DocumentFormat.OpenXml.VariantTypes;
+using DynamicExpresso;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
-
+using System.Reflection;
 
 namespace ApolloTests.Data.EntityBuilder
 {
+    public class StateChangeAttribute : Attribute
+    {
+        public string TargetAnswers;
+        public string? TargetSectionEntity;
+        public StateChangeAttribute(string targetAnswers, string? targetSectionEntity) {
+            this.TargetAnswers = targetAnswers;
+            this.TargetSectionEntity = targetSectionEntity;
+        }
+    }
     public static class StateChangesUtil
     {
-        public static void Hydrate(this List<QuestionResponse> questionAnswers, HydratorUtil hydrator)
+
+        private static AnswersBase GetAnswers(HydratorUtil hydratorUtil, PropertyInfo propInfo)
         {
+            var att = propInfo.GetAttr();
+            if (att != null)
+                return hydratorUtil.Interpreter.Eval<AnswersBase>(att.TargetAnswers);
+            
+            return hydratorUtil.CurrentAnswers ?? throw new NullReferenceException("current answers was null in the interpreter but List<QuestionResponse> found. you can also use HydratorAttr to explicitly point a AnswerBase object");
+        }
+        private static object? GetEntityInContext(HydratorUtil hydratorUtil, PropertyInfo propInfo)
+        {
+            var att = propInfo.GetAttr();
+            if (att != null)
+                return att.TargetSectionEntity == null? null : hydratorUtil.Interpreter.Eval(att.TargetSectionEntity);
+
+            return hydratorUtil.CurrentEntity;
+        }
+        private static StateChangeAttribute? GetAttr(this PropertyInfo propInfo) => propInfo?.GetCustomAttribute<StateChangeAttribute>();
+
+        public static void Hydrate(this List<QuestionResponse> questionAnswers, HydratorUtil hydrator, PropertyInfo propInfo)
+        {
+            AnswersBase answers = GetAnswers(hydrator, propInfo);
+            object? currentEntity = GetEntityInContext(hydrator, propInfo);
             string sectionName = SectionNames[hydrator.CurrentSection];
+            if(sectionName=="Locations")
+            {
+                sectionName = currentEntity?.GetType() == typeof(Location) ? "Locations" : "Buildings";
+            }
             if (hydrator.CurrentSection == Section.PolicyCoverages)
             {
-                var limit = (Limit?)hydrator.CurrentEntity ?? throw new NullReferenceException();
+                var limit = (Limit?)currentEntity ?? throw new NullReferenceException();
                 var covQ = ((JArray?)hydrator.Quote.GetCoverageQuestions(limit.coverageType.Name))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
                 questionAnswers.AddRange(covQ);
-                questionAnswers.LoadAnswers(hydrator);
+                questionAnswers.LoadAnswers(hydrator, answers);
                 return;
             }
 
             var questions = ((JArray?)hydrator.Quote.GetSectionQuestions(sectionName))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
-            questionAnswers.AddRange(questions);
+
+            
+            questionAnswers.AddRange(questions.Where(q=> !questionAnswers.Any(it=>it.questionId==q.questionId)));
 
             
 
-            questionAnswers.LoadAnswers(hydrator);
+            questionAnswers.LoadAnswers(hydrator, answers);
             counter = 0;
-            questionAnswers.StateChangeUntilHydrated(hydrator);
+            questionAnswers.StateChangeUntilHydrated(hydrator, propInfo);
+
+            if (questionAnswers.Any(q=> q.sectionId==0))
+            {
+                var sectionId = hydrator.Quote.Storyboard.GetSection(sectionName).Id;
+                questionAnswers.ForEach(it => it.sectionId = sectionId);
+            }
+
+            questionAnswers.CheckForRequiredQuestionsThatAreNull();
 
         }
 
-        private static void LoadAnswers(this List<QuestionResponse> questionAnswers, HydratorUtil hydrator, List<QuestionResponse>? stateChange=null)
+        private static void CheckForRequiredQuestionsThatAreNull(this List<QuestionResponse> questionAnswers)
+        {
+            List<QuestionResponse> RequiredQuestionsThatAreNull = new();
+
+            foreach (var question in questionAnswers)
+            {
+                if(question.isHidden)
+                {
+                    continue;
+                }
+                if ((question.response == null || (question.response is string res && res == string.Empty)) && (question.RequiresAnswer))
+                {
+                    RequiredQuestionsThatAreNull.Add(question);
+                }
+                //else if (question.questionType == 70 && question.response is string str && str ==string.Empty)
+                //{
+                    
+                //}
+            }
+
+            if (RequiredQuestionsThatAreNull.Any())
+            {
+                var helperStr = "";
+                var aliasesStr = "";
+                foreach (var question in RequiredQuestionsThatAreNull)
+                {
+
+                    var varName = question.alias?.Replace('-', '_') ?? throw new NullReferenceException($"Alias was null for question {question.Id}");
+                    aliasesStr += $"public static string {varName} {{ get; }} = \"{question.alias}\";\n";
+                    helperStr += $"public QuestionAnswer {varName} {{ get; set; }} = new QuestionAnswer(Alias.{varName}, null);\n";
+                }
+
+                throw new Exception($"required answers answered with null. please use the code below to fill them out \n\n on QuestionAnswers.QuestionAnswer \n{aliasesStr} \n\nunder QuestionAnswers: \n{helperStr}");
+            }
+
+        }
+
+        private static void LoadAnswers(this List<QuestionResponse> questionAnswers, HydratorUtil hydrator, AnswersBase Answers, List<QuestionResponse>? stateChange=null)
         {
 
             List<QuestionResponse> questionsToLoad= new List<QuestionResponse>();
@@ -52,14 +138,14 @@ namespace ApolloTests.Data.EntityBuilder
             }
             foreach (var question in questionsToLoad)
             {
-                hydrator.CurrentAnswers.NullGuard();
-                var builderAnswer = hydrator.CurrentAnswers.GetAnswer(question.questionAlias ?? throw new NullReferenceException());
+                Answers.NullGuard();
+                var builderAnswer = Answers.GetAnswer(question.questionAlias ?? throw new NullReferenceException());
                 if(builderAnswer.targetType != null)
                 {
                     if(builderAnswer.targetType ==typeof(HydratorUtil))
                     {
                         builderAnswer.variableName.NullGuard("variableName");
-                        var targetProp = builderAnswer.targetType.GetProperty(builderAnswer.variableName) ?? throw new NullReferenceException($"property not found: {builderAnswer.variableName}");
+                        var targetProp = builderAnswer.targetType.GetProperty(builderAnswer.variableName) ?? throw new NullReferenceException($"property not found: {builderAnswer.variableName} in {builderAnswer.targetType.Name}");
                         question.response = targetProp.GetValue(hydrator, null);
                         hydrator.Hydrate(question.response);
                     }
@@ -88,11 +174,11 @@ namespace ApolloTests.Data.EntityBuilder
 
 
         private static int counter = 0;
-        private static List<QuestionResponse> StateChangeUntilHydrated(this List<QuestionResponse> questionResponses, HydratorUtil hydrator)
+        private static List<QuestionResponse> StateChangeUntilHydrated(this List<QuestionResponse> questionResponses, HydratorUtil hydrator, PropertyInfo propInfo)
         {
             var quote = hydrator.Quote;
-            var section = hydrator.CurrentSection;
-            var entity = hydrator.CurrentEntity;
+            AnswersBase answers = GetAnswers(hydrator, propInfo);
+            var entity = GetEntityInContext(hydrator, propInfo);
 
             var body = new JObject()
             {
@@ -104,12 +190,15 @@ namespace ApolloTests.Data.EntityBuilder
 
             if (entity != null)
             {
-                string entityContextName = section switch
+                string entityContextName = entity switch
                 {
-                    Section.Drivers => "Driver",
-                    Section.Vehicles => "Vehicle",
-                    Section.PolicyAddlInterest => "AdditionalInterest",
-                    _ => throw new NotImplementedException("Please enter the property key added to this risk statechange request under entityContext"),
+                    Driver => "Driver",
+                    Vehicle=> "Vehicle",
+                    Party p => p.PartyTypeId == (int)PartyType.ADDITIONALINTEREST ? "AdditionalInterest": throw new NotImplementedException($"entityContextName not implemented for party type Id: {p.PartyTypeId}"),
+                    PriorClaim=> "PriorClaim",
+                    Location=> "Location",
+                    Building=> "Building",
+                    _ => throw new NotImplementedException("Please enter the property key added to this risk api/questionresponse/questionstatechanges request object under entityContext"),
                 };
 
                 JObject entityContext = (JObject)(body["entityContext"] ?? throw new NullReferenceException());
@@ -141,13 +230,13 @@ namespace ApolloTests.Data.EntityBuilder
             response.NullGuard();
             if (response.Any() && IsThereChange(questionResponses, response))
             {
-                questionResponses.LoadAnswers(hydrator, response);
+                questionResponses.LoadAnswers(hydrator, answers, response);
                 counter++;
                 if(counter==10)
                 {
                     throw new Exception("went through 20 state changes and it's still returning a quesiton");
                 }
-                return questionResponses.StateChangeUntilHydrated(hydrator);
+                return questionResponses.StateChangeUntilHydrated(hydrator, propInfo);
             }
             else
             {
@@ -180,6 +269,8 @@ namespace ApolloTests.Data.EntityBuilder
             {Section.Operations, "Operations"},
             {Section.PolicyCoverages, "Policy Coverages"},
             {Section.PolicyAddlInterest, "Policy Addl Interests"},
+            {Section.PriorClaims, "Prior Claims" },
+            {Section.Locations, "Locations" }
 
         };
 

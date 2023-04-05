@@ -111,9 +111,13 @@ namespace ApolloTests.Data.EntityBuilder.Models
 
         public long IndustryClassTaxonomyId { get; set; }
 
+
         [JsonProperty("industryClassTaxonomyClassName")]
         [HydratorAttr("IndustryClassTaxonomyClassName")]
         public string? IndustryClassTaxonomyClassName { get; set; }
+
+        public bool ShouldSerializeIndustryClassTaxonomyId() => this.LineId == 7;
+        public bool ShouldSerializeIndustryClassTaxonomyClassName() => this.LineId == 7;
 
         [JsonProperty("industryTypeId")]
         public object? IndustryTypeId { get; set; }
@@ -140,7 +144,7 @@ namespace ApolloTests.Data.EntityBuilder.Models
         public BusinessInformation BusinessInformation { get; set; } = new BusinessInformation();
 
         [JsonProperty("decidedValueFactor")]
-        public DecidedValueFactor DecidedValueFactor { get; set; } = new DecidedValueFactor();
+        public DecidedValueFactor DecidedValueFactor { get; set; } = new();
     }
 
     public partial class BusinessInformation

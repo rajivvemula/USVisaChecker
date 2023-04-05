@@ -26,11 +26,6 @@ namespace ApolloTests.Data.Entity
             this.Code.NullGuard();
 
         }
-        public enum LineEnum
-        {
-            BusinessOwner=3,
-            CommercialAuto=7
-        }
 
         public void Load()
         {
@@ -61,6 +56,8 @@ namespace ApolloTests.Data.Entity
 
 
         public readonly long Id;
+
+        public Lines LineEnum => (Lines)Id;
 
         private SubLine[]? _subLines = null;
         public SubLine[] SubLines => _subLines??=SQL.executeQuery($"SELECT * FROM [reference].[SubLine] WHERE ParentLineId={Id}").Select(it => new SubLine(it["Id"])).ToArray();

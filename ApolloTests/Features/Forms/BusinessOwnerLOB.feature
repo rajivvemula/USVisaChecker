@@ -1,4 +1,5 @@
-﻿Feature: BusinessOwnerLOB
+﻿@NoBrowser
+Feature: BusinessOwnerLOB
 
 @formsTests
 Scenario: Check System for untested forms

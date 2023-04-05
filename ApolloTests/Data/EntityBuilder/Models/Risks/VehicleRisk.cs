@@ -1,65 +1,32 @@
 ﻿using ApolloTests.Data.EntityBuilder.Entities;
-using ApolloTests.Data.EntityBuilder.QuestionAnswers;
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-
-namespace ApolloTests.Data.EntityBuilder.Models
+namespace ApolloTests.Data.EntityBuilder.Models.Risks
 {
-    [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
-    public class Risk
+    public class VehicleRisk : Risk
     {
-        public int? riskTypeId => (int?)SectionEntity?.RiskType;
+        public VehicleRisk() : base(RiskType.Vehicle)
+        {
 
-        [HydratorAttr("ClassCode")]
-        public string? classCode { get; set; } 
-
-        public IOutputMetadata outputMetadata => SectionEntity?.OutputMetadata ?? throw new NullReferenceException();
+        }
 
         [JsonProperty("vehicle")]
         public Vehicle Vehicle => SectionEntity?.RiskType == RiskType.Vehicle ? (Vehicle)SectionEntity : throw new InvalidOperationException();
 
-        [JsonProperty("driver")]
-        public Driver Driver => SectionEntity?.RiskType == RiskType.Driver ? (Driver)SectionEntity : throw new InvalidOperationException();
+        [HydratorAttr("ClassCode")]
+        public string? classCode { get; set; }
 
-        public bool ShouldSerializeDriver()=>SectionEntity?.RiskType==RiskType.Driver;
-        public bool ShouldSerializeVehicle() => SectionEntity?.RiskType == RiskType.Vehicle;
-        public bool ShouldSerializeclassCode() => SectionEntity?.RiskType == RiskType.Vehicle;
+        public override IOutputMetadata outputMetadata { get; set; } = new OutputMetadataVehicle();
 
 
-        [JsonIgnore]
-        public RiskAnswers QuestionAnswers = new();
-
-        [JsonIgnore]
-        public IRiskEntity? SectionEntity { get; set; }
-
-        [JsonIgnore]
-        public List<Limit> RiskLimits { get; set; } = new List<Limit>();
-
-        public Risk(RiskType riskType)
-        {
-            switch (riskType)
-            {
-                case RiskType.Vehicle:
-                    SectionEntity = new Vehicle(this);
-                    break;
-                case RiskType.Driver:
-                    SectionEntity = new Driver(this);
-                    break;
-            }
-
-        }
-        public void LoadEntityObject(JObject riskEntityObject)
-        {
-            SectionEntity.NullGuard();
-            SectionEntity = (IRiskEntity?)riskEntityObject.ToObject(SectionEntity.GetType()) ?? throw new NullReferenceException();
-        }
-
-        public override string ToString()
-        {
-            return JObject.FromObject(this).ToString();
-        }
+        //public bool ShouldSerializeVehicle() => SectionEntity?.RiskType == RiskType.Vehicle;
+        //public bool ShouldSerializeclassCode() => SectionEntity?.RiskType == RiskType.Vehicle;
 
         [JsonIgnore]
         public bool AddCollision
@@ -83,7 +50,7 @@ namespace ApolloTests.Data.EntityBuilder.Models
             {
                 string COVERAGE_NAME = "Collision";
                 var limit = RiskLimits.Getter(COVERAGE_NAME);
-                return limit?.selectedDeductibles?[0]??0;
+                return limit?.selectedDeductibles?[0] ?? 0;
             }
             set
             {
@@ -127,14 +94,19 @@ namespace ApolloTests.Data.EntityBuilder.Models
         }
 
 
+        public class OutputMetadataVehicle : IOutputMetadata
+        {
+            public List<QuestionResponse> QuestionResponses { get; set; } = new List<QuestionResponse>();
+            public VehicleLocation VehicleLocation { get; set; } = new VehicleLocation();
 
+            [HydratorAttr("ClassCode")]
+            public string? VehicleClassCode { get; set; }
+        }
 
-    }
-    public enum RiskType
-    {
-        Vehicle = 1,
-        Driver = 2,
-        Building = 3,
-        Location = 4
+        public class VehicleLocation : IEntityBase
+        {
+            [HydratorAttr("PhysicalAddressId")]
+            public string? locationId { get; set; }
+        }
     }
 }
