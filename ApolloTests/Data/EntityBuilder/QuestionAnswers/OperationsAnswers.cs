@@ -60,7 +60,7 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
 
         public QuestionAnswer VehicleSellOrLease { get; set; } = new QuestionAnswer(Alias.VehicleSellOrLease, "false");
 
-        public QuestionAnswer Salvage { get; set; } = new QuestionAnswer(Alias.Salvage, "Yes we have a repair shop, impound lot, or salvage yard");
+        public QuestionAnswer Salvage { get; set; } = new QuestionAnswer(Alias.Salvage, "No we only provide towing or roadside assistance services");
 
         public QuestionAnswer ServiceAccess { get; set; } = new QuestionAnswer(Alias.ServiceAccess, "Both on demand and pre-arranged");
 

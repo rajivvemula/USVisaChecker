@@ -6,7 +6,7 @@
 			<SERVER_HOST>https://bibaodev-fd.azurefd.net/api</SERVER_HOST>
 			<AUT_KEYVAULT_URI>https://xbibaoazckv-dev.vault.azure.net/</AUT_KEYVAULT_URI>
 			<KEYVAULT_URI>https://xbibaoazckv-automationqa.vault.azure.net/</KEYVAULT_URI>
-			<RATABLEOBJECTMANAGEMENTFUNCTION_URL>https://bibaaodev-ratableobjectmanagementfunction.azurewebsites.net/api/</RATABLEOBJECTMANAGEMENTFUNCTION_URL>
+			<RATABLEOBJECTMANAGEMENTFUNCTION_URL>https://bibaodev2-ratableobject.azurewebsites.net/api/</RATABLEOBJECTMANAGEMENTFUNCTION_URL>
 			<BROWSER>Chrome</BROWSER>
 		</EnvironmentVariables>
 	</RunConfiguration>

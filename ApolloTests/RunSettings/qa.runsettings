@@ -6,7 +6,7 @@
 			<SERVER_HOST>https://bibaoqa-fd.azurefd.net/api</SERVER_HOST>
 			<AUT_KEYVAULT_URI>https://xbibaoazckv-qa.vault.azure.net/</AUT_KEYVAULT_URI>
 			<KEYVAULT_URI>https://xbibaoazckv-automationqa.vault.azure.net/</KEYVAULT_URI>
-			<RATABLEOBJECTMANAGEMENTFUNCTION_URL>https://bibaoqa-ratableobjectmanagementfunction.azurewebsites.net/api/</RATABLEOBJECTMANAGEMENTFUNCTION_URL>
+			<RATABLEOBJECTMANAGEMENTFUNCTION_URL>https://bibaoqa-ratableobject.azurewebsites.net/api/</RATABLEOBJECTMANAGEMENTFUNCTION_URL>
 			<BROWSER>Chrome</BROWSER>
 		</EnvironmentVariables>
 	</RunConfiguration>
