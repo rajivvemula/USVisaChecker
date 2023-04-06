@@ -121,6 +121,8 @@
 
             public static string DynamicVehicleMoratorium { get; } = "DynamicVehicleMoratorium";
 
+            public static string SubmitProofOfInsuranceClaimsHistory { get; } = "SubmitProofOfInsuranceClaimsHistory";
+
             #endregion Operations
 
             #region Vehicles

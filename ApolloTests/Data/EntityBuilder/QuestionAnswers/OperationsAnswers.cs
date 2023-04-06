@@ -105,5 +105,7 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
         public QuestionAnswer HaulIntermodal { get; set; } = new QuestionAnswer(Alias.HaulIntermodal, "false");
 
         public QuestionAnswer DynamicVehicleMoratorium { get; set; } = new QuestionAnswer(Alias.DynamicVehicleMoratorium, "false");
+
+        public QuestionAnswer SubmitProofOfInsuranceClaimsHistory { get; set; } = new QuestionAnswer(Alias.SubmitProofOfInsuranceClaimsHistory, "false");
     }
 }
