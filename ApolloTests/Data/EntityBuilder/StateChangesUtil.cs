@@ -160,7 +160,16 @@ namespace ApolloTests.Data.EntityBuilder
                 }
                 else
                 {
-                    question.response = builderAnswer._response;
+                    // if question is multi-select type and response is empty
+                    // then a null is sent to apollo because the UI fails with an empty string
+                    if(question.questionType==70 && builderAnswer._response is string str && str ==string.Empty)
+                    {
+                        question.response = null;
+                    }
+                    else
+                    {
+                        question.response = builderAnswer._response;
+                    }
                 }
 
                 if(builderAnswer.AsJsonStr)

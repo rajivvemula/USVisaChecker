@@ -34,7 +34,7 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
             }
             Log.Info($"response for quesiton with alias {alias} not found Default=string.empty");
 
-            return new QuestionAnswer(alias, null);
+            return new QuestionAnswer(alias, "");
 
         }
         public void SetAnswer(string alias, object? value)
