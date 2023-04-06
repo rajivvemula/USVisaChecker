@@ -118,5 +118,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
         }
 
         public void AddOne() => AddOneBuilding();
+
+        public void RemoveAt(int index) => this.Last().Value.RemoveAt(index);
     }
 }

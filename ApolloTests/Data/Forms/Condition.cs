@@ -405,6 +405,13 @@ namespace ApolloTests.Data.Form
             }
             if (this.recipients!=null)
             {
+                string[] handledRecipients = new string[] { "INSURED", "LIENHOLDER", "LESSOR", "ADDITIONALINTEREST" };
+                var notHandled = recipients.Where(it => !handledRecipients.Contains(it));
+                if (notHandled.Any())
+                {
+                    throw new Exception($"Not Handled recipient {Log.stringify(notHandled)}");
+                }
+
                 //additional interest is now always added by default
                 if (quoteBuilder.PolicyAddlInterest.NumberOfParties<1)
                 {

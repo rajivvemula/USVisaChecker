@@ -16,6 +16,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
 
         public void AddOne();
 
+        public void RemoveAt(int index);
 
         public static readonly Dictionary<Section, RiskType> DefaultSectionRisk = new()
         {
