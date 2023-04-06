@@ -155,12 +155,15 @@ namespace ApolloTests.Data.Entity
         {
             var response = RestAPI.POST($"/quote/{Id}/referToUnderwriting", "\"Testing\"");
 
+            this.Tether.waitForTetherStatus("REFERRED");
+
             return response?? throw new Exception("ReferToUnderwriting returned null");
         }
 
         public JObject GenerateProposal()
         {
             var response = RestAPI.POST($"/quote/{Id}/proposal", null);
+            this.Tether.waitForTetherStatus("QUOTED");
 
             return response ?? throw new Exception("GenerateProposal returned null");
         }

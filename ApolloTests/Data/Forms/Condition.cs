@@ -436,7 +436,17 @@ namespace ApolloTests.Data.Form
             }
 
             var quote = quoteBuilder.Build();
-            var policy = quote.PurchaseThis();
+            Policy policy;
+            try
+            {
+                policy = quote.PurchaseThis();
+            }
+            catch(Exception)
+            {
+                quote.PostSummary();
+                policy = quote.PurchaseThis();
+            }
+
             Policy? endorsementRatableObject = null;
             Quote? endorsement = null;
 
