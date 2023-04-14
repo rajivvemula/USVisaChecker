@@ -2,61 +2,55 @@
 using ApolloTests.Data.EntityBuilder.Entities;
 using ApolloTests.Data.EntityBuilder.Models;
 using ApolloTests.Data.EntityBuilder.QuestionAnswers;
-using DocumentFormat.OpenXml.VariantTypes;
-using DynamicExpresso;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
 
 namespace ApolloTests.Data.EntityBuilder
 {
-    public class StateChangeAttribute : Attribute
-    {
-        public string TargetAnswers;
-        public string? TargetSectionEntity;
-        public StateChangeAttribute(string targetAnswers, string? targetSectionEntity) {
-            this.TargetAnswers = targetAnswers;
-            this.TargetSectionEntity = targetSectionEntity;
-        }
-    }
+
     public static class StateChangesUtil
     {
 
-        private static AnswersBase GetAnswers(HydratorUtil hydratorUtil, PropertyInfo propInfo)
-        {
-            var att = propInfo.GetAttr();
-            if (att != null)
-                return hydratorUtil.Interpreter.Eval<AnswersBase>(att.TargetAnswers);
-            
-            return hydratorUtil.CurrentAnswers ?? throw new NullReferenceException("current answers was null in the interpreter but List<QuestionResponse> found. you can also use HydratorAttr to explicitly point a AnswerBase object");
-        }
-        private static object? GetEntityInContext(HydratorUtil hydratorUtil, PropertyInfo propInfo)
-        {
-            var att = propInfo.GetAttr();
-            if (att != null)
-                return att.TargetSectionEntity == null? null : hydratorUtil.Interpreter.Eval(att.TargetSectionEntity);
-
-            return hydratorUtil.CurrentEntity;
-        }
-        private static StateChangeAttribute? GetAttr(this PropertyInfo propInfo) => propInfo?.GetCustomAttribute<StateChangeAttribute>();
-
+        /// 
+        /// Hydrate is called on List of question responses to trigger state changes flow
+        /// 
+        /// optional: 1 & 2 can be manipulated using StateChangeAttribute in this file, read more below this class
+        /// 
+        /// 1. load answers to be used during the process
+        /// 2. load the entity in context (e.g., Vehicle, Location
+        /// 3. load expected section name in the storyboard
+        /// 4. Handle special cases
+        ///     1. Policy coverages does not go through state changes, instead we just answer any question that needs answering and return
+        ///     2. Locations section has two possible entities to laod questions from, Locations & Buildings, we determine that by current entity's type
+        /// 5. using the Quote, get the initial questions for the current section
+        /// 6. Load initial answers
+        /// 7. Initiate the StateChange flow which will recursively call itself 
+        ///     until either :
+        ///         a. counter hits 20, a failure is thrown
+        ///         b. No new questions come back, success!
+        /// 8. some questions come back with sectionId=0, in that case we set it to the current section.
+        /// 9. Assert there are no unanswered required questions
+        /// 
         public static void Hydrate(this List<QuestionResponse> questionAnswers, HydratorUtil hydrator, PropertyInfo propInfo)
         {
             AnswersBase answers = GetAnswers(hydrator, propInfo);
             object? currentEntity = GetEntityInContext(hydrator, propInfo);
             string sectionName = SectionNames[hydrator.CurrentSection];
-            if(sectionName=="Locations")
+
+            switch(hydrator.CurrentSection)
             {
-                sectionName = currentEntity?.GetType() == typeof(Location) ? "Locations" : "Buildings";
+                case Section.PolicyCoverages:
+                    var limit = (Limit?)currentEntity ?? throw new NullReferenceException();
+                    var covQ = ((JArray?)hydrator.Quote.GetCoverageQuestions(limit.coverageType.Name))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
+                    questionAnswers.AddRange(covQ);
+                    questionAnswers.LoadAnswers(hydrator, answers);
+                    return;
+                case Section.Locations:
+                    sectionName = currentEntity?.GetType() == typeof(Location) ? "Locations" : "Buildings";
+                    break;
             }
-            if (hydrator.CurrentSection == Section.PolicyCoverages)
-            {
-                var limit = (Limit?)currentEntity ?? throw new NullReferenceException();
-                var covQ = ((JArray?)hydrator.Quote.GetCoverageQuestions(limit.coverageType.Name))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
-                questionAnswers.AddRange(covQ);
-                questionAnswers.LoadAnswers(hydrator, answers);
-                return;
-            }
+           
 
             var questions = ((JArray?)hydrator.Quote.GetSectionQuestions(sectionName))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
 
@@ -118,9 +112,13 @@ namespace ApolloTests.Data.EntityBuilder
 
         private static void LoadAnswers(this List<QuestionResponse> questionAnswers, HydratorUtil hydrator, AnswersBase Answers, List<QuestionResponse>? stateChange=null)
         {
+            // load answers into questionAnswers
 
+
+            //list to keep track of the question that need to be loaded
             List<QuestionResponse> questionsToLoad= new List<QuestionResponse>();
 
+            //if statechage==null, then this is the initial call. we will just load everything
             if (stateChange == null)
             {
                questionsToLoad.AddRange(questionAnswers.Where(q=> !q.isHidden));
@@ -131,16 +129,25 @@ namespace ApolloTests.Data.EntityBuilder
                 var idsToRemove = stateChange.Select(it => it.Id);
                 //remove state change from existing
                 questionAnswers.RemoveAll(q=> idsToRemove.Contains(q.Id));
-                //add state change to questionsToLoad
+                //add state change to questionsToLoad, so we know to answer them
                 questionsToLoad.AddRange(stateChange);
                 //add state change to existing
                 questionAnswers.AddRange(questionsToLoad);
             }
+
+            //iterate through each quesiton that needs answering and answer them
             foreach (var question in questionsToLoad)
             {
                 Answers.NullGuard();
+                //getting the answer object (NOT THE MODEL)
                 var builderAnswer = Answers.GetAnswer(question.questionAlias ?? throw new NullReferenceException());
-                if(builderAnswer.targetType != null)
+
+                //some question answers have a target type as attribute
+                //
+                // for example Vehicle question, we want to answer with HydratorUtil's CurrentEntity
+                //  [HydratorAttr(typeof(HydratorUtil), "CurrentEntity", AsJsonStr =true)]
+                //
+                if (builderAnswer.targetType != null)
                 {
                     if(builderAnswer.targetType ==typeof(HydratorUtil))
                     {
@@ -154,7 +161,12 @@ namespace ApolloTests.Data.EntityBuilder
                         throw new NotImplementedException($"{builderAnswer.targetType.Name} not implemented");
                     }
                 }
-                else if(builderAnswer.variableName!= null)
+
+                //
+                // Example: 
+                // [HydratorAttr("StateCode")] will load the varialbeName
+                //
+                else if (builderAnswer.variableName!= null)
                 {
                     question.response = hydrator.Interpreter.Eval(builderAnswer.variableName);
                 }
@@ -172,6 +184,7 @@ namespace ApolloTests.Data.EntityBuilder
                     }
                 }
 
+                //if the response needs to be sent as a raw string, then we convert it to it
                 if(builderAnswer.AsJsonStr)
                 {
                     question.response.NullGuard();
@@ -182,13 +195,43 @@ namespace ApolloTests.Data.EntityBuilder
         }
 
 
+        /// 
+        /// 7. Initiate the StateChange flow which will recursively call itself 
+        ///     until either :
+        ///         a. counter hits 20, a failure is thrown
+        ///         b. No new questions come back, success!
+        ///         
+        ///     1. load answers
+        ///     2. load entity in context
+        ///     3. create the body to call state changes
+        ///         3.1. if there is an entity, load it's property name to be set the JSON body
+        ///         3.2. if the entity is a risk, then we have to load the risk model
+        ///     4. send state changes request, retry if failed
+        ///     5. if any valid questions came back
+        ///         5.1. load those question's answers
+        ///         5.2. recursively call self
+        ///     6. Finally, questionResponses list is fully hydrated
+        /// 
+        ///
+
+
+
         private static int counter = 0;
-        private static List<QuestionResponse> StateChangeUntilHydrated(this List<QuestionResponse> questionResponses, HydratorUtil hydrator, PropertyInfo propInfo)
+        private static void StateChangeUntilHydrated(this List<QuestionResponse> questionResponses, HydratorUtil hydrator, PropertyInfo propInfo)
         {
+            //         
+            //     1. load answers
+            //     2. load entity in context
+            //
             var quote = hydrator.Quote;
             AnswersBase answers = GetAnswers(hydrator, propInfo);
             var entity = GetEntityInContext(hydrator, propInfo);
 
+            //
+            //     3. create the body to call state changes
+            //         3.1. if there is an entity, load it's property name to be set the JSON body
+            //         3.2. if the entity is a risk, then we have to load the risk model
+            //
             var body = new JObject()
             {
                 {"entityType", 4500 },
@@ -199,6 +242,9 @@ namespace ApolloTests.Data.EntityBuilder
 
             if (entity != null)
             {
+                //
+                //     3.1. if there is an entity, load it's property name to be set the JSON body
+                //
                 string entityContextName = entity switch
                 {
                     Driver => "Driver",
@@ -207,11 +253,15 @@ namespace ApolloTests.Data.EntityBuilder
                     PriorClaim=> "PriorClaim",
                     Location=> "Location",
                     Building=> "Building",
+                    Tool => "Tool",
                     _ => throw new NotImplementedException("Please enter the property key added to this risk api/questionresponse/questionstatechanges request object under entityContext"),
                 };
 
                 JObject entityContext = (JObject)(body["entityContext"] ?? throw new NullReferenceException());
 
+                //
+                //     3.2. if the entity is a risk, then we have to load the risk model
+                //
                 if (entity is IRiskEntity riskEntity)
                 {
                     hydrator.Hydrate(riskEntity);
@@ -226,6 +276,10 @@ namespace ApolloTests.Data.EntityBuilder
 
 
             }
+
+            //
+            //     4. send state changes request, retry if failed
+            //
             List<QuestionResponse>? response;
             try
             {
@@ -237,39 +291,68 @@ namespace ApolloTests.Data.EntityBuilder
                 response = ((JArray?)quote.RestAPI.POST("/questionresponse/questionstatechanges", body))?.ToObject<List<QuestionResponse>>();
             }
             response.NullGuard();
-            if (response.Any() && IsThereChange(questionResponses, response))
+
+            //
+            //     5. if any valid questions came back
+            //
+            if (response.Any() && response.Any(it => (it.response==null) || (it.response is string str && str == string.Empty)))
             {
+                //
+                //         5.1. load those question's answers
+                //
                 questionResponses.LoadAnswers(hydrator, answers, response);
                 counter++;
-                if(counter==10)
+                if(counter==20)
                 {
-                    throw new Exception("went through 20 state changes and it's still returning a quesiton");
+                    Log.Debug($"current answers: \n {Log.stringify(questionResponses)} \n current answers end ---");
+                    throw new Exception($"went through 20 state changes and it's still returning a quesiton \n {Log.stringify(response)}");
                 }
-                return questionResponses.StateChangeUntilHydrated(hydrator, propInfo);
+
+                //
+                //         5.2. recursively call self
+                // 
+                questionResponses.StateChangeUntilHydrated(hydrator, propInfo);
             }
-            else
-            {
-                return questionResponses;
-            }
+            //
+            //     6. Finally, questionResponses list is fully hydrated
+            //
+            return;
         }
 
-        private static bool IsThereChange(List<QuestionResponse> existing, List<QuestionResponse> stateChange)
+
+        /// <summary>
+        /// if StateChangeAttribute is present, load the answers
+        /// </summary>
+        /// <param name="hydratorUtil"></param>
+        /// <param name="propInfo"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        private static AnswersBase GetAnswers(HydratorUtil hydratorUtil, PropertyInfo propInfo)
         {
-            foreach(QuestionResponse response in stateChange)
-            {
-                QuestionResponse? matchingResponse = existing.FirstOrDefault(r => r.questionId == response.questionId);
+            var att = propInfo.GetAttr();
+            if (att != null)
+                return hydratorUtil.Interpreter.Eval<AnswersBase>(att.TargetAnswers);
 
-                if (matchingResponse == null || matchingResponse.isHidden != response.isHidden)
-                {
-                    // there is no question that matches the new state change
-                    // or the isHidden is different on the state change
-                    return true;
-                }
-            }
-
-            // No new changes found
-            return false;
+            return hydratorUtil.CurrentAnswers ?? throw new NullReferenceException("current answers was null in the interpreter but List<QuestionResponse> found. you can also use HydratorAttr to explicitly point a AnswerBase object");
         }
+        /// <summary>
+        /// if StateChangeAttribute is present, load the entity
+        /// </summary>
+        /// <param name="hydratorUtil"></param>
+        /// <param name="propInfo"></param>
+        /// <returns></returns>
+        private static object? GetEntityInContext(HydratorUtil hydratorUtil, PropertyInfo propInfo)
+        {
+            var att = propInfo.GetAttr();
+            if (att != null)
+                return att.TargetSectionEntity == null ? null : hydratorUtil.Interpreter.Eval(att.TargetSectionEntity);
+
+            return hydratorUtil.CurrentEntity;
+        }
+        private static StateChangeAttribute? GetAttr(this PropertyInfo propInfo) => propInfo?.GetCustomAttribute<StateChangeAttribute>();
+
+
+
 
         private static Dictionary<Section, string> SectionNames = new()
         {
@@ -278,10 +361,35 @@ namespace ApolloTests.Data.EntityBuilder
             {Section.Operations, "Operations"},
             {Section.PolicyCoverages, "Policy Coverages"},
             {Section.PolicyAddlInterest, "Policy Addl Interests"},
+            {Section.AdditionalInterests, "Additional Interests"},
             {Section.PriorClaims, "Prior Claims" },
-            {Section.Locations, "Locations" }
+            {Section.Locations, "Locations" },
+            {Section.Tools, "Tools" },
 
         };
 
+    }
+    /// <summary>
+    /// Sometimes we need to explicitly point to the Answers and Entity to be sent with statechanges <br/>
+    /// E.g., for Building, it has location object as a children <br/>
+    /// then, it caused an infinite loop because this tool loaded Building instead of Location, thus loading location again <br/> 
+    /// <br/>
+    /// EXAMPLE: <br/>
+    /// <br/>
+    /// Given that LocationRisk has been loaded in the Hydrators interpreter, we can do: <br/><br/>
+    /// <code>
+    ///  [StateChange("LocationRisk.QuestionAnswers", "LocationRisk.Location")]
+    ///  public List&lt;QuestionResponse&gt; QuestionResponses { get; set; } = new List&lt;QuestionResponse&gt;();
+    /// </code>
+    /// </summary>
+    public class StateChangeAttribute : Attribute
+    {
+        public string TargetAnswers;
+        public string? TargetSectionEntity;
+        public StateChangeAttribute(string targetAnswers, string? targetSectionEntity)
+        {
+            this.TargetAnswers = targetAnswers;
+            this.TargetSectionEntity = targetSectionEntity;
+        }
     }
 }

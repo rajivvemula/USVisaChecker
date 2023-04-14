@@ -81,7 +81,15 @@ namespace ApolloTests.Data.EntityBuilder
                     case CoverageType.PERSONAL_INJURY_PROTECTION:
                         limits.AddPersonalInjuryProtection();
                         break;
-
+                    case CoverageType.DAMAGE_TO_PREMISES_RENTED_TO_YOU:
+                        limits.AddDamageToPremisesRentedToYou();
+                        break;
+                    case CoverageType.GENERAL_LIABILITY:
+                        limits.AddGeneralLiability();
+                        break;
+                    case CoverageType.EMPLOYEE_DISHONESTY:
+                        limits.AddEmployeeDishonesty();
+                        break;
                     default:
                         throw new NotImplementedException($"Coverage Type: {coverageName} has not been implemented");
                 }
@@ -92,7 +100,7 @@ namespace ApolloTests.Data.EntityBuilder
             }
         }
 
-
+        #region Commercial Auto
         public static void AddBIPD(this List<Limit> limits)
         {
             limits.Add(new Limit(
@@ -291,5 +299,45 @@ namespace ApolloTests.Data.EntityBuilder
                         questionResponses: null
                         ));
         }
+        #endregion
+
+        #region BOP / GL
+
+        public static void AddDamageToPremisesRentedToYou(this List<Limit> limits)
+        {
+            limits.Add(new Limit(
+                       coverageType: new CoverageType(CoverageType.DAMAGE_TO_PREMISES_RENTED_TO_YOU),
+                       selectedDeductibleName: null,
+                       selectedDeductibles: new List<int>(),
+                       selectedLimitName: "Limit",
+                       selectedLimits: new List<int>() { 50000 },
+                       questionResponses: null
+                       ));
+        }
+        public static void AddGeneralLiability(this List<Limit> limits)
+        {
+            limits.Add(new Limit(
+                       coverageType: new CoverageType(CoverageType.GENERAL_LIABILITY),
+                       selectedDeductibleName: "Deductible",
+                       selectedDeductibles: new List<int>() { 1000 },
+                       selectedLimitName: "Limits",
+                       selectedLimits: new List<int>() { 300000, 600000, 600000 },
+                       questionResponses: null
+                       ));
+
+        }
+        public static void AddEmployeeDishonesty(this List<Limit> limits)
+        {
+            limits.Add(new Limit(
+                      coverageType: new CoverageType(CoverageType.EMPLOYEE_DISHONESTY),
+                      selectedDeductibleName: null,
+                      selectedDeductibles: new List<int>() ,
+                      selectedLimitName: "Limit",
+                      selectedLimits: new List<int>() { 10000},
+                      questionResponses: null
+                      ));
+        }
+
+        #endregion
     }
 }

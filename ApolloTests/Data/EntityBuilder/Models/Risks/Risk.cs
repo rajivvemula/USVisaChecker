@@ -14,6 +14,13 @@ namespace ApolloTests.Data.EntityBuilder.Models.Risks
 
         public abstract IOutputMetadata outputMetadata { get; set; }
 
+        [HydratorAttr("Quote.Tether.Id")]
+        [JsonProperty("tetherId")]
+        public long TetherId { get; set; }
+
+        //[JsonProperty("entityTypeId")]
+        //public long EntityTypeId { get; set; } = 4500;
+
         [JsonIgnore]
         public RiskAnswers QuestionAnswers { get; set; } = new();
 

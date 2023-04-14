@@ -25,7 +25,7 @@ namespace ApolloTests.StepDefinition.Forms
         private SQL SQL;
         private IConfiguration Configuration;
         private TestContext TestContext;
-        private FormContext? Context;
+        private FormTestContext? Context;
         private MiscHook MiscHook;
 
         public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook)
@@ -47,7 +47,7 @@ namespace ApolloTests.StepDefinition.Forms
             this.Form = Form.GetForm(new Data.Entity.Line(LineId), code, name);
             bool createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
             var policy = this.Form.condition.GetValidPolicy(createNewEntities);
-            this.Context = new FormContext(Form, policy);
+            this.Context = new FormTestContext(Form, policy);
             var policyId = policy.Id;
 
         }
@@ -71,7 +71,7 @@ namespace ApolloTests.StepDefinition.Forms
             Log.Info($"At: {Environment.GetEnvironmentVariable("HOST")}/policy/{this.Context?.Policy.Id}/document");
 
 
-            var body = new JObject()
+            var searchBody = new JObject()
             {
                 {"filters", new JObject(){
                     {"EntityReference", new JObject()
@@ -87,6 +87,7 @@ namespace ApolloTests.StepDefinition.Forms
                 { "orderBy", "insertDateTime" },
                 { "sortOrder", 1 },
             };
+
             var retries = Polly.Policy.HandleResult<bool>(false)
                 .WaitAndRetry(new[]
                     {
@@ -110,7 +111,7 @@ namespace ApolloTests.StepDefinition.Forms
                 JObject? documentObj =null;
                 retries.Execute(() =>
                 {
-                    JArray? documents = RestAPI.POST("/documentmetadata/search", body)?.results;
+                    JArray? documents = RestAPI.POST("/documentmetadata/search", searchBody)?.results;
                     documents.NullGuard();
                     documentObj = (JObject?)documents.FirstOrDefault(it => it.Value<string>("originalFileName")?.Contains(test.guid.ToString()) ?? false);
 
@@ -300,13 +301,13 @@ namespace ApolloTests.StepDefinition.Forms
         }
     }
 
-    public class FormContext
+    public class FormTestContext
     {
         public Form Form;
         public Data.Entity.Policy Policy;
         public List<Test> Tests;
 
-        public FormContext(Form form, Data.Entity.Policy policy)
+        public FormTestContext(Form form, Data.Entity.Policy policy)
         {
             this.Form = form;
             this.Policy = policy;
@@ -321,8 +322,7 @@ namespace ApolloTests.StepDefinition.Forms
                 this.guid = Guid.NewGuid();
                 this.documentName = $"[{recipient.RecipientTypeCode}] [{form.Edition}] {form.name} {guid}";
                 this.Recipient = recipient;
-                this.LoadBody(form, policy, recipient);
-
+                this.body = this.GetDocGenBody(form, policy, recipient);
                
             }
             public Recipient Recipient;
@@ -333,7 +333,7 @@ namespace ApolloTests.StepDefinition.Forms
             public string? filePath;
             public Guid guid;
 
-            private void LoadBody(Form form, Data.Entity.Policy policy, Recipient recipient)
+            private DocGenBody GetDocGenBody(Form form, Data.Entity.Policy policy, Recipient recipient)
             {
                 long? ratableObjectId = null;
 
@@ -345,13 +345,12 @@ namespace ApolloTests.StepDefinition.Forms
                     {
                         endorsement.GetSummary();
                         ratableObject = endorsement.GetRatableObject();
-
                     }
                     ratableObject.NullGuard($"RatableObject under policy: {policy.Id}");
                     ratableObjectId = ratableObject.Id;
                 }
 
-                this.body = new DocGenBody()
+                return new DocGenBody()
                 {
                     documentName = documentName,
                     entityId = policy.Id,
@@ -376,8 +375,6 @@ namespace ApolloTests.StepDefinition.Forms
                     recipientRoleTypeId = recipient.RecipientRoleTypeId == -1 ? null: recipient.RecipientRoleTypeId
                     //workflowPlanName = Configuration.GetVariable("GHOSTDRAFT_WORKFLOW_PLAN"),
                     //workflowServiceName = Configuration.GetVariable("GHOSTDRAFT_WORKFLOW_SERVICE"),
-
-
                 };
             }
 

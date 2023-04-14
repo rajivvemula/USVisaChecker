@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using static ApolloTests.Data.EntityBuilder.QuestionAnswers.QuestionAnswer;
 
-namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
+namespace ApolloTests.Data.EntityBuilder.QuestionAnswers.PartyAnswers
 {
-    public class PartyAnswers : AnswersBase
+    public class PartyAnswers_CA : AnswersBase
     {
         //typeID=3=blanket
-        //[HydratorAttr(true)]
         public QuestionAnswer AdditionalInterests { get; set; } = new QuestionAnswer(Alias.AdditionalInterests, "{\"additionalInterestTypeId\":3}");
         public QuestionAnswer AdditionalInterestName { get; set; } = new QuestionAnswer(Alias.AdditionalInterestName, "Addnl Interest Name Aut");
         //[HydratorAttr(true)]

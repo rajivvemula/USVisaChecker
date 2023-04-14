@@ -487,8 +487,6 @@ namespace ApolloTests.Data.Form
 
                 RunRatableObjectManagementFunction($"jobtrigger/{logicAppId}");
 
-                //SQL.executeQuery(@$"update j set LastRun = GETDATE(), NextRun = DATEADD(SECOND, 5, GETDATE())
-                //                   from system.job j where Id in ({logicAppId})");
                 //WAIT FOR JOB TO RUN
                 Thread.Sleep(7000);
 

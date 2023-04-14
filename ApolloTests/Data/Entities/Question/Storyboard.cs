@@ -81,12 +81,20 @@ namespace ApolloTests.Data.Entity.Question
                                             QS.SectionName
                                             FROM [question].[StoryboardSection]  SS
                                             LEFT JOIN Question.QuestionSection QS on QS.Id = SS.SectionId
-                                            where SS.StoryboardId = @StoryboardId and QS.SectionName=@SectionName
+                                            WHERE SS.StoryboardId = @StoryboardId 
+                                            AND QS.SectionName=@SectionName
+                                            ORDER BY QS.SectionGroupName ASC
                                             ;", 
                                             ("@StoryboardId", this.Id), 
                                             ("@SectionName", sectionName)
                                           );
-            return new Section(result[0]["Id"]);
+            try
+            {
+                return new Section(result[0]["Id"]);
+            }catch(Exception ex)
+            {
+                throw new Exception($"Error getting sectionName: {sectionName} from storyboardId: {this.Id}", ex);
+            }
         }
 
     }

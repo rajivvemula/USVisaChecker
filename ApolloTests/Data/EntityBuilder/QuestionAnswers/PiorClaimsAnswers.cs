@@ -10,7 +10,7 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
     public class PriorClaimAnsswers : AnswersBase
     {
         public QuestionAnswer DateOfLoss { get; set; } = new QuestionAnswer(Alias.DateOfLoss, "03/2020");
-        public QuestionAnswer ClaimDesc { get; set; } = new QuestionAnswer(Alias.ClaimDesc, "COVID HIT - by: Automation API Test");
+        public QuestionAnswer ClaimDesc { get; set; } = new QuestionAnswer(Alias.ClaimDesc, $"COVID HIT - by: Automation API Test {DateTime.Now:O}");
         public QuestionAnswer EstimatedCost { get; set; } = new QuestionAnswer(Alias.EstimatedCost, "100000");
     }
 }

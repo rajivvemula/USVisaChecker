@@ -3,7 +3,7 @@ using ApolloTests.Data.EntityBuilder.QuestionAnswers;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 
-namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
+namespace ApolloTests.Data.EntityBuilder.SectionBuilders
 {
     public class OperationsBuilder : OperationsAnswers, IBuilder
     {
@@ -24,8 +24,9 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             Hydrator.CurrentEntity = null;
             var questionAnswers = new List<QuestionResponse>();
             Hydrator.Hydrate(questionAnswers);
+            var sectionId = quote.Storyboard.GetSection("Operations").Id;
 
-            var response = Builder.RestAPI.POST($"quote/{quote.Id}/sections/{quote.Storyboard.GetSection("Operations").Id}/answers", questionAnswers.ToJArray());
+            var response = Builder.RestAPI.POST($"quote/{quote.Id}/sections/{sectionId}/answers", questionAnswers.ToJArray());
 
             return (JObject?)response ?? throw new NullReferenceException();
 

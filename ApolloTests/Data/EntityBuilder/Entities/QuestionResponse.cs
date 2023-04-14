@@ -41,6 +41,8 @@ namespace ApolloTests.Data.EntityBuilder.Entities
 
         public bool isHidden { get; set; }
 
+        public bool isDisabled { get; set; }
+
         [JsonProperty("question")]
         public Question? Question { get; set; } = null;
     }

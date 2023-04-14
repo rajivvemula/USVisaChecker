@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApolloTests.Data.EntityBuilder.SectionBuilders.BP
+namespace ApolloTests.Data.EntityBuilder.SectionBuilders.BOP
 {
     public class PriorClaimsBuilder : List<PriorClaim>, IBuilder
     {

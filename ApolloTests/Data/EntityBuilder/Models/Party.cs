@@ -1,5 +1,6 @@
 ﻿using ApolloTests.Data.EntityBuilder.Entities;
 using ApolloTests.Data.EntityBuilder.QuestionAnswers;
+using ApolloTests.Data.EntityBuilder.QuestionAnswers.PartyAnswers;
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -30,7 +31,10 @@ namespace ApolloTests.Data.EntityBuilder.Models
         }
 
         [JsonIgnore]
-        public PartyAnswers QuestionAnswers = new();
+        public PartyAnswers_CA QuestionAnswers_CA = new();
+
+        [JsonIgnore]
+        public PartyAnswers_BOP QuestionAnswers_BOP = new();
     }
 
     public enum PartyType

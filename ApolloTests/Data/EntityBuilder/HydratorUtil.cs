@@ -17,22 +17,10 @@ using ApolloTests.Data.EntityBuilder.Models.Risks;
 
 namespace ApolloTests.Data.EntityBuilder
 {
-    public class HydratorAttr : Attribute
-    {
-        public string? Name { get; set; }
-        public string[]? Names { get; set; }
-        public bool AsJsonStr { get; set; }
-        public Type? TargetType { get; set; }
 
-
-        public HydratorAttr(bool AsJsonStr) => this.AsJsonStr = AsJsonStr;
-        public HydratorAttr(string variableName, bool AsJsonStr=false) :this(AsJsonStr) => Name= variableName;
-        public HydratorAttr(string[] variableNames, bool AsJsonStr = false) : this(AsJsonStr) => Names = variableNames;
-        public HydratorAttr(Type targetType, string attributeName, bool AsJsonStr = false) : this(attributeName, AsJsonStr) => TargetType = targetType;
-
-    }
     public class HydratorUtil
     {
+        #region boilerplate props
         public Interpreter Interpreter { get; set; } = new();
         public Section CurrentSection { get; set; }
         public object? CurrentEntity { get; set; }
@@ -42,9 +30,10 @@ namespace ApolloTests.Data.EntityBuilder
             get { return _quote ?? throw new NullReferenceException("Attempted to access quote before it was loaded"); } 
             set { this._quote = value; } 
         }
-
+        #endregion
         public HydratorUtil()
         {
+            #region interpreter references
             this.Interpreter.Reference(typeof(LocationRisk));
             this.Interpreter.Reference(typeof(Risk));
             this.Interpreter.Reference(typeof(BuildingRisk));
@@ -54,9 +43,7 @@ namespace ApolloTests.Data.EntityBuilder
             this.Interpreter.Reference(typeof(JArray));
             this.Interpreter.Reference(typeof(JToken));
             this.Interpreter.Reference(typeof(JValue));
-
-
-
+            #endregion
         }
 
         /// <summary>
@@ -394,6 +381,20 @@ namespace ApolloTests.Data.EntityBuilder
                 throw;
             }
         }
+
+    }
+    public class HydratorAttr : Attribute
+    {
+        public string? Name { get; set; }
+        public string[]? Names { get; set; }
+        public bool AsJsonStr { get; set; }
+        public Type? TargetType { get; set; }
+
+
+        public HydratorAttr(bool AsJsonStr) => this.AsJsonStr = AsJsonStr;
+        public HydratorAttr(string variableName, bool AsJsonStr = false) : this(AsJsonStr) => Name = variableName;
+        public HydratorAttr(string[] variableNames, bool AsJsonStr = false) : this(AsJsonStr) => Names = variableNames;
+        public HydratorAttr(Type targetType, string attributeName, bool AsJsonStr = false) : this(attributeName, AsJsonStr) => TargetType = targetType;
 
     }
 }

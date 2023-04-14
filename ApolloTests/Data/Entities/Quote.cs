@@ -678,7 +678,7 @@ namespace ApolloTests.Data.Entity
                                   LEFT JOIN [rating].[RatingModifierCategoryType] T on T.Id = RM.RatingModifierCategoryTypeId
                                   LEFT JOIN [rating].[RatingModifierCategorySubtype] subT on subT.Id = RM.RatingModifierCategorySubtypeId
                                   LEFT JOIN location.StateProvince SP on SP.Id = RM.StateProvinceId
-                                  Where SP.Code = '{this.GoverningStateCode}' and subT.Code = '{ModifierCode}';")[0]["Id"];
+                                  Where SP.Code = '{this.GoverningStateCode}' and subT.Code = '{ModifierCode}' AND RM.LineId={this.Tether.LineId};")[0]["Id"];
             }
             catch
             {

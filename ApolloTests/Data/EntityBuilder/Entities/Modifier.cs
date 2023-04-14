@@ -32,9 +32,9 @@ namespace ApolloTests.Data.EntityBuilder.Entities
 
         public decimal totalActionResultPercentage { get; set; } = 0;
 
-        public decimal adjustmentPercentage { get; set; } = 0;
+        public decimal? adjustmentPercentage { get; set; } = null;
 
-        public JObject? adjustmentJustification { get; set; }
+        public string? adjustmentJustification { get; set; }
 
         public decimal totalPercentage { get; set; } = 0;
 
@@ -42,6 +42,7 @@ namespace ApolloTests.Data.EntityBuilder.Entities
 
         public void Add(decimal UWJudgementFactor)
         {
+            adjustmentPercentage ??= 0;
             adjustmentPercentage += UWJudgementFactor;
         }
 

@@ -1,11 +1,11 @@
-﻿using ApolloTests.Data.EntityBuilder.Models;
+﻿using ApolloTests.Data.EntityBuilder.Models.Modifiers;
 using DocumentFormat.OpenXml.Wordprocessing;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 
 namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
 {
-    public class ModifiersBuilder : Modifiers, IBuilder
+    public class ModifiersBuilder_CA : Modifiers_CA, IBuilder
     {
         public Section Section => Section.Modifiers;
 
@@ -13,7 +13,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
 
         public HydratorUtil Hydrator => Builder.Hydrator;
 
-        public ModifiersBuilder(QuoteBuilder builder)
+        public ModifiersBuilder_CA(QuoteBuilder builder)
         {
             Builder = builder;
         }

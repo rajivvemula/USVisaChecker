@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace ApolloTests.Data.EntityBuilder.Models
+namespace ApolloTests.Data.EntityBuilder.Models.Modifiers
 {
-    public class Modifiers
+    public class Modifiers_CA
     {
         public const string SAFETYORGANIZATION = "SAFETYORGANIZATION";
         public const string CLASSIFICATION = "CLASSIFICATION";
@@ -22,61 +22,49 @@ namespace ApolloTests.Data.EntityBuilder.Models
 
         public Modifier experienceModifier { get; set; } = new Modifier(ExperienceModifier);
 
-        public bool shouldApplyPreferredTrucking { get; set; }
+        public bool shouldApplyPreferredTrucking { get; set; } = false;
 
         public class ScheduleModifiers
         {
-            public Modifier SAFETYORGANIZATION { get; set; } = new Modifier(Modifiers.SAFETYORGANIZATION);
+            public Modifier SAFETYORGANIZATION { get; set; } = new Modifier(Modifiers_CA.SAFETYORGANIZATION);
 
-            public Modifier CLASSIFICATION { get; set; } = new Modifier(Modifiers.CLASSIFICATION);
+            public Modifier CLASSIFICATION { get; set; } = new Modifier(Modifiers_CA.CLASSIFICATION);
 
-            public Modifier MANAGEMENT { get; set; } = new Modifier(Modifiers.MANAGEMENT);
+            public Modifier MANAGEMENT { get; set; } = new Modifier(Modifiers_CA.MANAGEMENT);
 
-            public Modifier EMPLOYEES { get; set; } = new Modifier(Modifiers.EMPLOYEES);
+            public Modifier EMPLOYEES { get; set; } = new Modifier(Modifiers_CA.EMPLOYEES);
 
-            public Modifier EQUIPMENT { get; set; } = new Modifier(Modifiers.EQUIPMENT);
+            public Modifier EQUIPMENT { get; set; } = new Modifier(Modifiers_CA.EQUIPMENT);
 
-            public Modifier TOTAL { get; set; } = new Modifier(Modifiers.TOTAL);
+            public Modifier TOTAL { get; set; } = new Modifier(Modifiers_CA.TOTAL);
 
-            public enum ScheduleModifierType
-            {
-                SafetyOrganization,
-
-                Classification,
-
-                Management,
-
-                Employees,
-
-                Equipment
-            }
-
-            public void Add(ScheduleModifierType scheduleModifier, decimal UWJudgementFactor)
+            public void Add(string scheduleModifier, decimal UWJudgementFactor)
             {
                 switch (scheduleModifier)
                 {
-                    case ScheduleModifierType.SafetyOrganization:
+                    case Modifiers_CA.SAFETYORGANIZATION:
                         SAFETYORGANIZATION.Add(UWJudgementFactor);
                         break;
-
-                    case ScheduleModifierType.Classification:
+                    case Modifiers_CA.CLASSIFICATION:
                         CLASSIFICATION.Add(UWJudgementFactor);
                         break;
-
-                    case ScheduleModifierType.Management:
+                    case Modifiers_CA.MANAGEMENT:
                         MANAGEMENT.Add(UWJudgementFactor);
                         break;
-
-                    case ScheduleModifierType.Employees:
+                    case Modifiers_CA.EMPLOYEES:
                         EMPLOYEES.Add(UWJudgementFactor);
                         break;
-
-                    case ScheduleModifierType.Equipment:
+                    case Modifiers_CA.EQUIPMENT:
                         EQUIPMENT.Add(UWJudgementFactor);
                         break;
-
+                    case Modifiers_CA.TOTAL:
+                        TOTAL.Add(UWJudgementFactor);
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid modifier specified.");
                 }
             }
+
         }
     }
 }
