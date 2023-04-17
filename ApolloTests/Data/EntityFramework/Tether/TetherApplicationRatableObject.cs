@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ApolloTests.Data.EntityFramework.Context;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,8 +13,8 @@ namespace ApolloTests.Data.EntityFramework.Tether
     public class TetherApplicationRatableObject
     {
         [JsonIgnore]
-        public ApolloContext Context { get; }
-        public TetherApplicationRatableObject(ApolloContext context)
+        public SQLContext Context { get; }
+        public TetherApplicationRatableObject(SQLContext context)
         {
             this.Context = context;
         }

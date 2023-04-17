@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -23,12 +24,17 @@ namespace ApolloTests.Data.Entities
 
         public long coverageTypeId => coverageType.Id;
 
+        [NotMapped]
         public JArray? questionResponses;
 
         public long riskId;
 
         public List<Limit>? riskCoverages;
 
+        public Limit()
+        {
+
+        }
         public Limit(CoverageType coverageType,
                     string? selectedDeductibleName,
                     List<int> selectedDeductibles,

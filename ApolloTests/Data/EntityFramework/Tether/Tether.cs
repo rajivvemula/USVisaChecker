@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using ApolloTests.Data.Entities;
 using Newtonsoft.Json;
+using DocumentFormat.OpenXml.InkML;
+using ApolloTests.Data.EntityFramework.Context;
 
 namespace ApolloTests.Data.EntityFramework.Tether
 {
@@ -12,10 +14,12 @@ namespace ApolloTests.Data.EntityFramework.Tether
     {
 
         [JsonIgnore]
-        public ApolloContext Context { get; }
-        public Tether(ApolloContext context)
+        public SQLContext Context { get; }
+        public CosmosContext ContextCosmos { get; }
+        public Tether(SQLContext context)
         {
             Context = context;
+            ContextCosmos = context.CosmosContext;
         }
         public long Id { get; set; }
 
@@ -39,9 +43,13 @@ namespace ApolloTests.Data.EntityFramework.Tether
 
         public long CurrentApplicationId { get; set; }
 
+        public Quote CurrentQuote => this.ContextCosmos.Quotes.First(it=> it.Id == CurrentApplicationId);
+
         public DateTimeOffset? CurrentApplicationExpirationDate { get; set; }
 
         public long? CurrentRatableObjectId { get; set; }
+
+        public Policy CurrentPolicy => this.ContextCosmos.Policies.First(it => it.Id == CurrentRatableObjectId);
 
         public DateTimeOffset EffectiveDate { get; set; }
 
@@ -104,43 +112,28 @@ namespace ApolloTests.Data.EntityFramework.Tether
         {
             this.WaitForProperty("TetherStatusCode", statusCode, waitForNotInStatus);
         }
-        public static Tether GetLatestTether()
+        public static Tether GetLatestTether(SQLContext context)
         {
-            var tetherCandidates = GetSQLService().executeQuery($"SELECT TOP (1) Id FROM [tether].[Tether] where PolicyNumber is not null order by Id desc;");
-
-            if (tetherCandidates.Any())
-            {
-                return new Tether(tetherCandidates[0]["Id"]);
-            }
-            else
-            {
-                //Functions.GetQuotedQuoteThroughAPI();
-                return GetLatestTether();
-            }
+            return context.Tether.OrderBy(it=> it.Id).Last(it => it.PolicyNumber != null);
         }
-        public static Tether GetPastTether()
+        public static Tether GetPastTether(SQLContext context)
         {
-            var tetherCandidate = GetSQLService().executeQuery($"SELECT TOP (1) Id FROM [tether].[Tether] where PolicyNumber is not null and EffectiveDate < GETDATE() order by Id desc;");
+            return context.Tether.OrderBy(it => it.Id).Last(it => it.PolicyNumber != null && it.EffectiveDate < DateTimeOffset.Now);
 
-            return new Tether(tetherCandidate[0]["Id"]);
         }
 
-        public static Tether GetTether(long QuoteId)
+        public static Tether GetTether(CosmosContext context, long QuoteId)
         {
-            var tetherCandidates = GetSQLService().executeQuery(@$"SELECT TOP (1) [tether].[Tether].Id
-                                                    FROM [tether].[Tether]
-                                                    LEFT JOIN [tether].[TetherApplicationRatableObject] on [tether].[Tether].Id = [tether].[TetherApplicationRatableObject].TetherId
-                                                    where CurrentApplicationId = {QuoteId} OR ApplicationId = {QuoteId} ;");
-
             try
             {
-                return new Tether(tetherCandidates[0]["Id"]);
+                return context.Quotes.First(it => it.Id == QuoteId).Tether;
             }
             catch (Exception)
             {
                 Log.Critical($"Error retrieving Tether for ApplicationId: {QuoteId}");
                 throw;
             }
+          
         }
        
     }
