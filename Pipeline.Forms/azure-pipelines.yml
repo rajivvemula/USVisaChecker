@@ -8,7 +8,11 @@ pr: none
 
 schedules:
   - cron: "0 8 * * *" # Run every day at 3AM EST (8AM UTC)
-  
+    displayName: "Daily overnight test run"
+    always: true  # Run this pipeline even if there aren't source code changes (otherwise it may, for example, deploy to TESTING, then skip QA in the next morning)
+      branches:
+        include:
+        - master
 
 pool:
   vmImage: 'windows-latest'
