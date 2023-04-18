@@ -35,6 +35,8 @@ stages:
         - task: UseDotNet@2
           inputs:
             version: 6.0.x
+        # This script will consume all Variables that end with _VARNAME and load the variable names into appsettings.json
+        # then once the secrets are downloaded, FileTransform task can be run to consume the downloaded secrets.
         - task: PowerShell@2
           inputs:
             targetType: 'inline'

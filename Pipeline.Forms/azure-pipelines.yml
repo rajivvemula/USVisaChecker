@@ -2,87 +2,50 @@
 
 
 # Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger: none
 
-pr:
- - master
+pr: none
+
+schedules:
+  - cron: "0 8 * * *" # Run every day at 3AM EST (8AM UTC)
+  
 
 pool:
   vmImage: 'windows-latest'
 
-variables:
-- name: SourceDir
-  value: '$(Build.SourcesDirectory)/ApolloQA'
+parameters:
+  - name: TargetEnvironment
+    displayName: Environment
+    type: string
+    default: QA
+    values:
+    - QA
+    - QA2
+    - QAInt
+    - Dev1
+    - Dev2
+    - Dev3
+    - Dev4
 
 stages:
 
-- stage: QA
-  displayName: 'QA'
-  condition: or(eq('${{ variables.environmentLabel}}', ''), eq('${{ variables.environmentLabel}}', 'QA'))
+- stage: Trigger
+  displayName: 'Trigger'
   jobs: 
-  - job: RunAutomatedTest
-    displayName: 'Run Automated Tests'
-    timeoutInMinutes: 120
+  - job: Trigger
+    displayName: 'Trigger Test Plans'
     steps:
-    - template: 'azure-run-steps.yml'
-      parameters: 
-        environmentLabel: 'QA'
-        KEY_VAULT: 'xbibaoazckv-qa'
+    - task: PowerShell@2
+      displayName: 'Run trigger script'
+      inputs:
+        targetType: filePath
+        filePath: $(System.DefaultWorkingDirectory)/Pipeline.Forms/triggerTestPlanRun.ps1
+      env:
+        PlanId: 96142 
+        TargetEnvironment: ${{ parameters.TargetEnvironment }}
+        TargetReleaseId: 5 
+        ACCESS_TOKEN: $(System.AccessToken)
+        ADO_ORG: biberk
+        ADO_PROJ: biBERK 
 
-- stage: QAInt
-  displayName: 'QAInt'
-  condition: or(eq('${{ variables.environmentLabel}}', ''), eq('${{ variables.environmentLabel}}', 'QAInt'))
 
-  jobs: 
-  - template: 'azure-aproval.yml'
-    parameters: 
-      environment: automation_qaint
-
-  - job: RunAutomatedTest
-    timeoutInMinutes: 120
-    displayName: 'Run Automated Tests'
-    steps:
-    - template: 'azure-run-steps.yml'
-      parameters: 
-        environmentLabel: 'QAInt'
-        KEY_VAULT: 'xbibaoazckv-qaint'
-
-- stage: QA2
-  displayName: 'QA2'
-  condition: or(eq('${{ variables.environmentLabel}}', ''), eq('${{ variables.environmentLabel}}', 'QA2'))
-
-  jobs: 
-  - template: 'azure-aproval.yml'
-    parameters: 
-      environment: automation_qa2
-
-  - job: RunAutomatedTest
-    timeoutInMinutes: 120
-
-    displayName: 'Run Automated Tests'
-    steps:
-    - template: 'azure-run-steps.yml'
-      parameters: 
-        environmentLabel: 'QA2'
-        KEY_VAULT: 'xbibaoazckv2-qa2'
-
-- stage: UAT
-  displayName: 'UAT'
-  condition: or(eq('${{ variables.environmentLabel}}', ''), eq('${{ variables.environmentLabel}}', 'UAT'))
-  jobs: 
-  - template: 'azure-aproval.yml'
-    parameters: 
-     environment: 'automation_uat' 
-       
-  
-  - job: RunAutomatedTest
-    timeoutInMinutes: 120
-    displayName: 'Run Automated Tests'
-    steps:
-    - template: 'azure-run-steps.yml'
-      parameters: 
-        environmentLabel: 'UAT'
-        KEY_VAULT: 'xbibaoazckv-uat'

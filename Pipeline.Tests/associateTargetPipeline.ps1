@@ -4,7 +4,7 @@ $pipelineId= $Env:TARGET_ENV_PIPELINE_ID
 
 write "RunId: ${runId}"
 write "pipelineId: ${pipelineId}"
-write "AccessToken: ${AccessToken}"
+#write "AccessToken: ${AccessToken}"
 
 
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
