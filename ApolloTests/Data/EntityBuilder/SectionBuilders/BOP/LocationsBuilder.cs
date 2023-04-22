@@ -1,6 +1,6 @@
 ﻿using ApolloTests.Data.EntityBuilder.Entities;
 using ApolloTests.Data.EntityBuilder.Models;
-using ApolloTests.Data.EntityBuilder.Models.Risks;
+using ApolloTests.Data.Entities.Risk;
 using DocumentFormat.OpenXml.Wordprocessing;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
@@ -62,12 +62,13 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
                 }
             }
         }
+
         public LocationsBuilder(QuoteBuilder Builder)
         {
             this.Builder = Builder;
             this.AddOne();
         }
-        public JToken RunSendStrategy(Entity.Quote quote)   
+        public JToken RunSendStrategy(Data.Entities.Quote quote)   
         {
             Hydrator.Interpreter.SetVariable("ClassCode", this.Builder.ClassCodeKeyword.ClassCode);
 
@@ -108,13 +109,13 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             return result;
         }
 
-        public void AddOneLocation() => this.Add(new LocationRisk(), new List<BuildingRisk>());
+        public void AddOneLocation() => this.Add(new LocationRisk(true), new List<BuildingRisk>());
         public void AddOneBuilding()
         {
             if (this.NumberOfLocations == 0)
-                this.Add(new LocationRisk(), new List<BuildingRisk> { new BuildingRisk() });
+                this.Add(new LocationRisk(true), new List<BuildingRisk> { new BuildingRisk(true) });
             else
-                this.Last().Value.Add(new BuildingRisk());
+                this.Last().Value.Add(new BuildingRisk(true));
         }
 
         public void AddOne() => AddOneBuilding();

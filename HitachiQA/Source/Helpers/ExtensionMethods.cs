@@ -52,5 +52,6 @@ namespace HitachiQA.Helpers
             }
             return true;
         }
+
     }
 }

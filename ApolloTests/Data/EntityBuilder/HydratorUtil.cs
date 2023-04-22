@@ -9,11 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using ApolloTests.Data.EntityBuilder.SectionBuilders;
-using ApolloTests.Data.EntityBuilder.Models.Risks;
+using ApolloTests.Data.Entities.Risk;
 
 namespace ApolloTests.Data.EntityBuilder
 {
@@ -25,8 +22,8 @@ namespace ApolloTests.Data.EntityBuilder
         public Section CurrentSection { get; set; }
         public object? CurrentEntity { get; set; }
         public AnswersBase? CurrentAnswers { get; set; }
-        private Entity.Quote? _quote = null;
-        public Entity.Quote Quote { 
+        private Data.Entities.Quote? _quote = null;
+        public Data.Entities.Quote Quote { 
             get { return _quote ?? throw new NullReferenceException("Attempted to access quote before it was loaded"); } 
             set { this._quote = value; } 
         }
@@ -35,7 +32,7 @@ namespace ApolloTests.Data.EntityBuilder
         {
             #region interpreter references
             this.Interpreter.Reference(typeof(LocationRisk));
-            this.Interpreter.Reference(typeof(Risk));
+            this.Interpreter.Reference(typeof(RiskBase));
             this.Interpreter.Reference(typeof(BuildingRisk));
             this.Interpreter.Reference(typeof(AnswersBase));
             this.Interpreter.Reference(typeof(RiskAnswers));
@@ -143,36 +140,46 @@ namespace ApolloTests.Data.EntityBuilder
                 // 4.)if the object is not a deadend, iterate through it's properties and hydrate them using recursion.
                 else if (!isDeadEnd(obj))
                 {
-                    // 4.1) Add the self variable to the interpreter so that we can use it in the attribute (E.g. [HydratorAttr(Name="self.Id")] would load the property with the Id member of the property's class)
-                    Interpreter.SetVariable("self", obj);
+                    
+                        // 4.1) Add the self variable to the interpreter so that we can use it in the attribute (E.g. [HydratorAttr(Name="self.Id")] would load the property with the Id member of the property's class)
+                        Interpreter.SetVariable("self", obj);
 
-                    //    4.2) iterate through the properties in the current object's class
-                    foreach (var property in obj?.GetType()?.GetProperties() ?? throw new InvalidCastException("object is not DeadEnd but is Null, please load it"))
-                    {
-                        //    4.3) check for ShouldSerialize: https://www.newtonsoft.com/json/help/html/conditionalproperties.htm, if false don't hydrate
-                        var shouldSerialize = property.ShouldSerialize(obj);
-                        //    4.4) check for JsonIgnore attribute, if present don't hydrate
-                        var jsonIgnore = property?.GetCustomAttribute<JsonIgnoreAttribute>() != null;
-                        if (!shouldSerialize || jsonIgnore)
+                        var props = obj?.GetType()?.GetProperties() ?? throw new InvalidCastException("object is not DeadEnd but is Null, please load it");
+                        //    4.2) iterate through the properties in the current object's class
+                        foreach (var property in props)
                         {
-                            continue;
+                            try
+                            {
+                                //    4.3) check for ShouldSerialize: https://www.newtonsoft.com/json/help/html/conditionalproperties.htm, if false don't hydrate
+                                var shouldSerialize = property.ShouldSerialize(obj);
+                                //    4.4) check for JsonIgnore attribute, if present don't hydrate
+                                var jsonIgnore = property?.GetCustomAttribute<JsonIgnoreAttribute>() != null;
+                                if (!shouldSerialize || jsonIgnore)
+                                {
+                                    continue;
+                                }
+                                property.NullGuard();
+                                //    4.5) get the property value and pass it to this funciton again by reference (means pass the memory location, not the value)
+                                //    note: step 4 will happen until the property is a deadend, then step 5 will be executed
+                                var propValObj = property.GetValue(obj, null);
+                                Hydrate(ref propValObj, property);
+
+
+                                //    4.6) finally, check if there is a set method in the current property, if there is. Then we set it to the new value
+                                //    note: if there is a new value, if not it just sets it to whatever it was at first
+                                if (property.SetMethod != null)
+                                {
+                                    property.SetValue(obj, propValObj);
+                                }
+                            }   
+                            catch (Exception ex)
+                            {
+                                throw new Exception($"Error while hydrating Property: {property.Name} from Type: {obj.GetType().Name} Parent: {prop?.DeclaringType?.Name ?? "null"}\n", ex);
+                            }
+
                         }
-                        property.NullGuard();
-                        //    4.5) get the property value and pass it to this funciton again by reference (means pass the memory location, not the value)
-                        //    note: step 4 will happen until the property is a deadend, then step 5 will be executed
-                        var propValObj = property.GetValue(obj, null);
-                        Hydrate(ref propValObj, property);
-
-
-                        //    4.6) finally, check if there is a set method in the current property, if there is. Then we set it to the new value
-                        //    note: if there is a new value, if not it just sets it to whatever it was at first
-                        if (property.SetMethod != null)
-                        {
-                            property.SetValue(obj, propValObj);
-                        }
-
-                    }
-                    Interpreter.SetVariable("self", null);
+                        Interpreter.SetVariable("self", null);
+                    
                 }
 
                 //5.) finally, if object is deadend, we grab the name provided to the attribute and interpret it using the interpreter
@@ -199,7 +206,17 @@ namespace ApolloTests.Data.EntityBuilder
                         {
                             try
                             {
-                                castedValue = Convert.ChangeType(interpretedVal, prop.PropertyType);
+                                
+                                if (Nullable.GetUnderlyingType(prop.PropertyType) is var underlyingType && underlyingType!=null)
+                                {
+                                    castedValue = Convert.ChangeType(interpretedVal, underlyingType);
+                                }
+                                else
+                                {
+                                    // The types are not compatible, so we need to convert the value using Convert.ChangeType
+                                    castedValue = Convert.ChangeType(interpretedVal, prop.PropertyType);
+                                }
+                               // castedValue = Convert.ChangeType(interpretedVal, prop.PropertyType);
                             }
                             catch(Exception ex)
                             {
@@ -269,7 +286,7 @@ namespace ApolloTests.Data.EntityBuilder
             typeof(QuoteBuilder).Name,
             typeof(Interpreter).Name,
             typeof(HydratorUtil).Name,
-            typeof(Entity.Quote).Name,
+            //typeof(Entity.Quote).Name,
         };
 
         public dynamic GetObject(string fileName)

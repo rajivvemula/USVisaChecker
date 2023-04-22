@@ -1,6 +1,5 @@
-﻿using ApolloTests.Data.Entity;
-using ApolloTests.Data.EntityBuilder.Entities;
-
+﻿using ApolloTests.Data.Entities.Coverage;
+using ApolloTests.Data.Entities.Enums;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 
@@ -20,11 +19,11 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
             //default coverages in each LOB is different but the send strategy is the same
             switch(builder.Line.LineEnum)
             {
-                case Data.Entities.Lines.CommercialAuto:
+                case LineEnum.CommercialAuto:
                     this.AddBIPD();
 
                     break;
-                case Data.Entities.Lines.BusinessOwner:
+                case LineEnum.BusinessOwner:
                     this.AddEmployeeDishonesty();
                     this.AddDamageToPremisesRentedToYou();
                     this.AddGeneralLiability();
@@ -37,8 +36,12 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
         {
             this.Setter(coverageType);
         }
+        public void Add(string coverageType)
+        {
+            this.Setter(coverageType);
+        }
 
-        public JToken RunSendStrategy(Quote Quote)
+        public JToken RunSendStrategy(Data.Entities.Quote Quote)
         {
             Builder.Hydrator.CurrentSection = Section;
             Builder.Hydrator.CurrentEntity = null;
@@ -46,8 +49,10 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
             var body = new JArray();
             foreach (var limit in this)
             {
-                if (!limit.coverageType.isVehicleLevel)
+
+                if (!limit.CoverageType.isVehicleLevel)
                 {
+                    Builder.Hydrator.CurrentEntity = limit;
                     Builder.Hydrator.CurrentAnswers = limit.QuestionAnswers;
                     Hydrator.Hydrate(limit);
                     body.Add(JObject.FromObject(limit.ToJObject()));
@@ -61,15 +66,15 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
 
         public void BIPD_SplitLimit(int BI_PerPerson = 100000, int BI_perOccurrence = 300000, int PD_perOccurrence = 500000)
         {
-            var limit = Find(it => it.coverageType.Name == CoverageType.BIPD);
+            var limit = Find(it => it.CoverageType.Name == CoverageType.BIPD);
 
             if (limit == null)
             {
                 this.AddBIPD();
             }
 
-            this[0].selectedLimitName = "Split Limit";
-            this[0].selectedLimits = new List<int> { BI_PerPerson, BI_perOccurrence, PD_perOccurrence };
+            this[0].SelectedLimitName = "Split Limit";
+            this[0].SelectedLimits = new List<int> { BI_PerPerson, BI_perOccurrence, PD_perOccurrence };
         }
     }
 }

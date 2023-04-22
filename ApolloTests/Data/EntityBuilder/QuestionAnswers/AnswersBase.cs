@@ -1,6 +1,7 @@
 ﻿using HitachiQA.Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -13,6 +14,7 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
         /// <summary>
         /// Retrieves all quesiton answer properties in the current object (whatever object implements this class)
         /// </summary>
+        [NotMapped]
         private IEnumerable<PropertyInfo> QuestionAnswers => GetType().GetProperties().Where(prop => prop.PropertyType == typeof(QuestionAnswer));
         public QuestionAnswer GetAnswer(string alias)
         {
@@ -37,7 +39,7 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
             return new QuestionAnswer(alias, "");
 
         }
-        public void SetAnswer(string alias, object? value)
+        public void SetAnswer(string alias, string? value)
         {
             foreach (var prop in this.QuestionAnswers)
             {

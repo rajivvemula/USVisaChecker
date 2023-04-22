@@ -1,21 +1,19 @@
-﻿using ApolloTests.Data.Entities;
-using ApolloTests.Data.Entity;
-using HitachiQA.Helpers;
+﻿using HitachiQA.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
-using Quote = ApolloTests.Data.Entity.Quote;
-using static ApolloTests.Data.Entity.Policy;
-using DocumentFormat.OpenXml.Presentation;
+
 using ApolloTests.Data.EntityBuilder;
-using ApolloTests.Data.EntityBuilder.SectionBuilders;
+using ApolloTests.Data.Entities.Context;
+using ApolloTests.Data.Entities.Coverage;
+using ApolloTests.Data.Entities.Tether;
+using ApolloTests.Data.Entities;
 
 namespace ApolloTests.Data.Form
 {
     public class Condition:BaseEntity
     {
         public String? stateCode;
-        public List<Entity.CoverageType>? coverageTypes;
+        public List<string> coverageTypes;
         //Key=alias value=response
         public Dictionary<string, string>? questionResponses;
         public Boolean splitLimitBIPD;
@@ -47,7 +45,7 @@ namespace ApolloTests.Data.Form
         public Condition(String stateCode, List<string> coverageTypes, Dictionary<string, string> questionResponses, Boolean splitLimitBIPD, Boolean endorsement, Boolean issuedEndorsement, Boolean materializedBillToday,Boolean canceled, Boolean canceledFuture, Boolean reinstated, Boolean rescindedCancelation, Dictionary<string, string> vehicle)
         {
             this.stateCode = stateCode?.ToUpper();
-            this.coverageTypes = coverageTypes == null ? new List<CoverageType>(): coverageTypes.Select(it => new CoverageType(it)).ToList();
+            this.coverageTypes = coverageTypes == null ? new List<string>(): coverageTypes;
             this.questionResponses = questionResponses;
             this.splitLimitBIPD = splitLimitBIPD;
             this.endorsement = endorsement;
@@ -83,25 +81,26 @@ namespace ApolloTests.Data.Form
          *  
          *  
          */
-        public Policy GetValidPolicy(bool createNewQuote = false)
+        public Entities.Policy GetValidPolicy(bool createNewQuote, IObjectContainer OC)
         {
             if(!createNewQuote)
             {
-                var policy = FindPolicyForThis();
+                var policy = FindPolicyForThis(OC);
                 if (policy != null)
                 {
                     return policy;
                 }
             }
             
-            return this.CreatePolicyForThis();
+            return this.CreatePolicyForThis(OC);
 
             throw new NotImplementedException($"No policy was found in the system for {this} \nFunction to create quote for given condition needs to be implemented");
         }
 
-        public Policy? FindPolicyForThis()
+        public Entities.Policy? FindPolicyForThis(IObjectContainer objectContainer)
         {
-            
+            var cosmosContext = objectContainer.Resolve<CosmosContext>();
+            var sqlContext = objectContainer.Resolve<SQLContext>();
             var conditions = new List<string>();
             var validTetherIds = new List<long>();
             //<app,tether>
@@ -155,7 +154,8 @@ namespace ApolloTests.Data.Form
             {
                 foreach (var type in this.coverageTypes)
                 {
-                    conditions.Add($"ARRAY_CONTAINS(c.SelectedCoverages, {{ \"CoverageTypeId\": {type.Id} }}, true) ");
+                    var typeId = sqlContext.CoverageType.First(it => it.Name == type).Id;
+                    conditions.Add($"ARRAY_CONTAINS(c.SelectedCoverages, {{ \"CoverageTypeId\": {typeId} }}, true) ");
                 }
 
             }
@@ -171,8 +171,8 @@ namespace ApolloTests.Data.Form
             }
             if (this.splitLimitBIPD)
             {
-                var type = new CoverageType(CoverageType.BIPD);
-                conditions.Add($"ARRAY_CONTAINS(c.SelectedCoverages, {{ \"CoverageTypeId\": {type.Id},  \"SelectedLimitName\": \"Split Limit\"}}, true) ");
+                var typeId = sqlContext.CoverageType.First(it => it.Name == CoverageType.BIPD);
+                conditions.Add($"ARRAY_CONTAINS(c.SelectedCoverages, {{ \"CoverageTypeId\": {typeId},  \"SelectedLimitName\": \"Split Limit\"}}, true) ");
 
             }
             if(this.recipients!=null)
@@ -209,7 +209,7 @@ namespace ApolloTests.Data.Form
                         bool hasFinanced = false;
                         bool hasLeased = false;
 
-                        var currentApp = new Tether(tetherGroup.Key).CurrentApplicationId;
+                        var currentApp = Tether.GetTether(sqlContext, tetherGroup.Key).CurrentApplicationId;
                         
                         //iterate through each risk associated to this tether
                         foreach (var risk in tetherGroup)
@@ -354,13 +354,17 @@ namespace ApolloTests.Data.Form
                 var applicationQuery = $@"
                     SELECT TOP 1 * FROM c
                     WHERE {generatedConditionStr}
-                    ORDER BY c.Id DESC";
-                Log.Debug(applicationQuery);
+                    ORDER BY c._ts DESC";
+                //Log.Debug(applicationQuery);
+
+                
                 var result = Cosmos.GetQuery("Application", applicationQuery).Result;
                 if (result.Any())
                 {
-                    var quote = new Quote(result[0]);
-                    return quote.GetCurrentRatableObject();
+                    Log.Debug("Matched Application: " + Log.stringify($"{result[0].Id}={result[0].BusinessInformation.Name}"));
+                    long Id = result[0].Id;
+                    var quote = cosmosContext.Quotes.First(it => it.Id == Id);
+                    return quote.RatableObject;
                 }
             }
             
@@ -372,10 +376,10 @@ namespace ApolloTests.Data.Form
         /// 
         /// </summary>
         /// <returns></returns>
-        private Policy CreatePolicyForThis()
+        private Entities.Policy CreatePolicyForThis(IObjectContainer objectContainer)
         {
             stateCode ??= "IL";
-            QuoteBuilder quoteBuilder = coverageTypes?.Any() ?? false ? new QuoteBuilder(this.Form.Line, stateCode, coverageTypes) : new QuoteBuilder(this.Form.Line, stateCode);
+            QuoteBuilder quoteBuilder = coverageTypes?.Any() ?? false ? new QuoteBuilder(objectContainer, this.Form.Line, stateCode, coverageTypes) : new QuoteBuilder(objectContainer, this.Form.Line, stateCode);
 
             if (this.questionResponses != null)
             {
@@ -387,7 +391,7 @@ namespace ApolloTests.Data.Form
             }
             if(stateCode == "MI")
             {
-                quoteBuilder.PolicyCoverages.First(it => it.GetCoverageType().Name == CoverageType.BIPD).selectedLimits = new List<int>() { 510000 };
+                quoteBuilder.PolicyCoverages.First(it => it.GetCoverageType().Name == CoverageType.BIPD).SelectedLimits = new List<int>() { 510000 };
             }
             if (splitLimitBIPD)
             {
@@ -436,7 +440,7 @@ namespace ApolloTests.Data.Form
             }
 
             var quote = quoteBuilder.Build();
-            Policy policy;
+            Entities.Policy policy;
             try
             {
                 policy = quote.PurchaseThis();
@@ -447,8 +451,8 @@ namespace ApolloTests.Data.Form
                 policy = quote.PurchaseThis();
             }
 
-            Policy? endorsementRatableObject = null;
-            Quote? endorsement = null;
+            Entities.Policy? endorsementRatableObject = null;
+            Entities.Quote? endorsement = null;
 
             if (this.endorsement || issuedEndorsement)
             {
@@ -460,7 +464,7 @@ namespace ApolloTests.Data.Form
                 }
                 endorsement.CreateEndorsementHeader(policy.Id);
                 endorsement.PostSummary();
-                endorsementRatableObject = endorsement.GetRatableObject();
+                endorsementRatableObject = endorsement.RatableObject;
                 Log.Debug("Endorsement RatableObject Id: " + endorsementRatableObject?.Id);
             }
             if (this.issuedEndorsement)
@@ -469,7 +473,6 @@ namespace ApolloTests.Data.Form
                 endorsementRatableObject.NullGuard(nameof(endorsementRatableObject));
                 RestAPI.PATCH($"quote/{endorsement.Id}", new { ApplicationStatus = 4000 });
                 endorsementRatableObject.IssueEndorsement();
-                endorsementRatableObject.CacheProps();
             }
             if (this.materializedBillToday)
             {
@@ -504,7 +507,7 @@ namespace ApolloTests.Data.Form
             }
             if (this.reinstated)
             {
-                var cancelPolicy = new CancelPolicyObject()
+                var cancelPolicy = new Entities.Policy.CancelPolicyObject()
                 {
                     cancelDenyReasonTypeId = CancellationReason.PolicyCancelledAndReissued,
                     cancellationInitiatedBy = CancellationInitiatedBy.Carrier,
@@ -513,16 +516,18 @@ namespace ApolloTests.Data.Form
                 };
                 Thread.Sleep(5000);
                 policy.Cancel(cancelPolicy);
-                policy.Tether.Load();
-                policy.Tether.SetProperty("PolicyCancellationEffectiveDate", DateTimeOffset.UtcNow.AddDays(-1));
-                policy.Tether.SetProperty("EffectiveDate", policy.Tether.EffectiveDate.AddDays(-2));
-                policy.Tether.SetProperty("ExpirationDate", policy.Tether.ExpirationDate.AddDays(-2));
+                
+                policy.Tether.Reload();
+                policy.Tether.PolicyCancellationEffectiveDate = DateTimeOffset.UtcNow.AddDays(-1);
+                policy.Tether.EffectiveDate = policy.Tether.EffectiveDate.AddDays(-2);
+                policy.Tether.ExpirationDate = policy.Tether.ExpirationDate.AddDays(-2);
+
 
                 var cancelJobId = SQL.executeQuery("select * from system.job where [Name]='CancelPolicies';")[0]["Id"];
 
                 RunRatableObjectManagementFunction($"jobtrigger/{cancelJobId}");
                 //WAIT FOR JOB TO RUN
-                Thread.Sleep(5000);
+                Thread.Sleep(10000);
 
                 policy.Tether.waitForTetherStatus("CANCELLED");
 
@@ -531,14 +536,7 @@ namespace ApolloTests.Data.Form
 
 
 
-            }
-            
-
-
-
-            quote.CacheProps();
-            policy.CacheProps();
-            
+            }            
 
             return issuedEndorsement? endorsementRatableObject ?? throw new NullReferenceException("endorsementRatableObject"): policy;
         }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,9 @@ using System.Threading.Tasks;
 
 namespace ApolloTests.Data.EntityBuilder.Entities
 {
-    public class Modifier : IEntityBase
+    public class Modifier 
     {
-        public Modifier(string modifierCode)
-        {
-            this.ModifierCode = modifierCode;
-        }
+     
         [JsonIgnore]
         public string ModifierCode { get; set; }
 
@@ -28,22 +26,39 @@ namespace ApolloTests.Data.EntityBuilder.Entities
         [HydratorAttr("Quote.GetRatingModifierId(self.ModifierCode)")]
         public long ratingModifierId { get; set; }
 
-        public List<JObject> actionResults { get; set; } = new List<JObject>();
+        [JsonProperty("actionResults")]
+        public List<JObject> ActionResults { get; set; }
 
-        public decimal totalActionResultPercentage { get; set; } = 0;
+        [JsonProperty("totalActionResultPercentage")]
+        public decimal TotalActionResultPercentage { get; set; }
 
-        public decimal? adjustmentPercentage { get; set; } = null;
+        [JsonProperty("adjustmentPercentage")]
+        public decimal? AdjustmentPercentage { get; set; }
 
-        public string? adjustmentJustification { get; set; }
+        [JsonProperty("adjustmentJustification")]
+        public string? AdjustmentJustification { get; set; }
 
-        public decimal totalPercentage { get; set; } = 0;
+        [JsonProperty("totalPercentage")]
+        public decimal TotalPercentage { get; set; }
 
-        public decimal totalFactor { get; set; } = 0;
+        [JsonProperty("totalFactor")]
+        public decimal TotalFactor { get; set; }
+
+        public Modifier(string modifierCode)
+        {
+            this.ModifierCode = modifierCode;
+            ActionResults = new List<JObject>();
+            TotalActionResultPercentage = 0;
+            AdjustmentPercentage = null;
+            AdjustmentJustification = null;
+            TotalPercentage = 0;
+            TotalFactor = 0;
+        }
 
         public void Add(decimal UWJudgementFactor)
         {
-            adjustmentPercentage ??= 0;
-            adjustmentPercentage += UWJudgementFactor;
+            AdjustmentPercentage ??= 0;
+            AdjustmentPercentage += UWJudgementFactor;
         }
 
     }

@@ -1,4 +1,4 @@
-﻿using ApolloTests.Data.EntityBuilder.Models.Risks;
+﻿using ApolloTests.Data.Entities.Risk;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 
@@ -23,7 +23,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             this.AddOne();
         }
 
-        public JToken RunSendStrategy(Entity.Quote quote)
+        public JToken RunSendStrategy(Data.Entities.Quote quote)
         {
             JArray result = new JArray();
             Hydrator.CurrentSection = Section;
@@ -46,7 +46,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             return result;
         }
 
-        public void AddOne() => Add(new DriverRisk());
+        public void AddOne() => Add(new DriverRisk(true));
        
     }
 }

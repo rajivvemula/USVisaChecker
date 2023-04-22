@@ -1,138 +1,33 @@
-﻿using HitachiQA.Helpers;
-using Newtonsoft.Json.Linq;
+﻿using ApolloTests.Data.Entities.Context;
+using HitachiQA.Helpers;
 using Newtonsoft.Json;
-using ApolloTests.Data.Entities;
+using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ApolloTests.Data.Entity
+
+namespace ApolloTests.Data.Entities
 {
-    public class Policy:BaseEntity
+    public class Policy : BaseEntityEF
     {
-        public enum EntityStatusEnum
-        {
-            Active = 0,
+        public Policy(CosmosContext context) : base(context) { }
 
-            Deleted = 1,
+        [Key]
+        public string id { get; set; }
+        public string ApplicationNumber { get; set; }
+        public long TetherId { get; set; }
+        public long ApplicationId { get; set; }
+        public Quote Quote => this.ContextCosmos.Quotes.First(it => it.Id == ApplicationId);
+        public Tether.Tether Tether => this.ContextSQL.Tether.First(it => it.Id == TetherId);
+        public long _ts { get; set; }
 
-            Draft = 2,
+        [Required]
+        public string Discriminator { get; set; }
 
-            Archive = 3
-        }
+        [NotMapped]
+        public int EntityTypeId => 100;
 
-        public enum CancellationInitiatedBy
-        {
-            Insured,
 
-            Carrier,
-
-            System
-        }
-
-        public enum CancellationReason
-        {
-            /// <summary>
-            /// Policy cancelled and reissued. - INTERNAL USE ONLY
-            /// </summary>
-            PolicyCancelledAndReissued = 13,
-
-            /// <summary>
-            /// Substantial change in risk which increased risk of loss after policy issued or renewed
-            /// </summary>
-            SubstantialChangeInRisk = 6,
-
-            /// <summary>
-            /// NON-PAYMENT OF PREMIUM
-            /// </summary>
-            NonPaymentOfPremium = 4,
-
-            /// <summary>
-            /// Non-payment of deductible
-            /// </summary>
-            NonPaymentOfDeductible = 7,
-
-            /// <summary>
-            /// Loss or suspension of driver's license
-            /// </summary>
-            LossOrSuspensionOfDriversLicense = 53,
-
-            /// <summary>
-            /// Cancelled by Insured
-            /// </summary>
-            CancelledByInsured = 23
-        }
-
-        public enum ReasonForChangeEndorsement
-        {
-            CustomerInitiated = 1,
-
-            CarrierInitiated = 2,
-
-            AgencyInitiated = 3,
-
-            Other = 4
-        }
-
-        public readonly long Id;
-
-        public readonly int EntityTypeId = 100;
-
-        public Policy(int Id)
-        {
-            this.Id = Id;
-            //Log.Debug("Policy Id: " + Id);
-        }
-        [JsonConstructor]
-        public Policy(long Id)
-        {
-            this.Id = Id;
-            //Log.Debug("Policy Id: " + Id);
-        }
-
-        public Policy(JObject policyProps)
-        {
-            this.Id = policyProps["Id"]?.ToObject<long?>()?? throw new Exception("Id returned null");
-            this._properties = policyProps;
-        }
-
-        public dynamic? this[String propertyName]
-        {
-            get
-            {
-                var method = this.GetType().GetProperty(propertyName);
-                if (method != null)
-                {
-                    return method.GetGetMethod()?.Invoke(this, null);
-                }
-                else
-                {
-                    return GetProperty(propertyName);
-                }
-            }
-            set
-            {
-                Cosmos.setProperty("RatableObject", $"SELECT * FROM c WHERE c.Id={this.Id}", propertyName, value);
-            }
-        }
-
-        private JObject? _properties = null;
-        public Policy CacheProps()
-        {
-            this._properties = Cosmos.GetQuery("RatableObject", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").Result.ElementAt(0);
-            return this;
-        }
-        public dynamic GetProperties()
-        {
-            if (_properties != null)
-            {
-                return _properties;
-            }
-            return Cosmos.GetQuery("RatableObject", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").Result.ElementAt(0);
-        }
-
-        public dynamic GetProperty(String propertyName)
-        {
-            var property = this.GetProperties()[propertyName];
-            return property;
-        }
 
         //public static Policy GetLatestPolicy()
         //{
@@ -163,16 +58,15 @@ namespace ApolloTests.Data.Entity
         public dynamic? Cancel(CancelPolicyObject cancelPolicyObject)
         {
             var response = RestAPI.POST($"/policy/cancelpolicy/{Id}", cancelPolicyObject.ToJObject());
-            this.Tether.waitForTetherProperty("PolicyCancellationEffectiveDate", null, true);
+            this.Tether.WaitForProperty("PolicyCancellationEffectiveDate", null, true);
 
             return response;
         }
         public dynamic Reinstate()
         {
-            Tether.Load();
             var reinstatePolicy = new ReinstatePolicyObject()
             {
-                reinstatementDate = Tether.PolicyCancellationEffectiveDate??throw new NullReferenceException($"tether Id: {this.Tether.Id} Tether.PolicyCancellationEffectiveDate")
+                reinstatementDate = Tether.PolicyCancellationEffectiveDate ?? throw new NullReferenceException($"tether Id: {this.Tether.Id} Tether.PolicyCancellationEffectiveDate")
             };
 
             return Reinstate(reinstatePolicy);
@@ -180,8 +74,8 @@ namespace ApolloTests.Data.Entity
         public dynamic Reinstate(ReinstatePolicyObject cancelPolicyObject)
         {
             var response = RestAPI.POST($"/policy/{Id}/reinstate", cancelPolicyObject.ToJObject());
-            
-            return response?? throw new NullReferenceException();
+
+            return response ?? throw new NullReferenceException();
         }
         public dynamic RescindCancelation()
         {
@@ -195,8 +89,9 @@ namespace ApolloTests.Data.Entity
         }
         public Quote CreateDraftPolicyEndorsement()
         {
-            var response = RestAPI.POST($"/policy/{Id}/endorsement/", null);
-            return new Quote(response);
+            JObject response = RestAPI.POST($"/policy/{Id}/endorsement/", null);
+            
+            return this.ContextCosmos.Quotes.First(it=> it.Id== response.Value<long>("Id"));
         }
 
         public dynamic? IssueEndorsement()
@@ -206,185 +101,61 @@ namespace ApolloTests.Data.Entity
             return response;
         }
 
-        //public static Policy GetLatestAuthTransaction()
+        //public static policy getlatestauthtransaction()
         //{
-        //    return new Policy((int)Cosmos.GetQuery("AuthorizeNetTransaction", "SELECT * FROM c WHERE c.RatableObjectStatusValue = \"Issued\" OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
+        //    return new policy((int)cosmos.getquery("authorizenettransaction", "select * from c where c.ratableobjectstatusvalue = \"issued\" offset 0 limit 1").elementat(0)["id"]);
         //}
-
+        [Obsolete("please use Policy.Quote")]
         public Quote GetQuote()
         {
-            return new Quote(GetProperties()["ApplicationId"].ToObject<int>());
+            return this.Quote;
         }
 
         public dynamic GetVehicleTypeRisk()
         {
-            return this.GetQuote().GetVehicleTypeRisk();
-        }
-
-        public List<Vehicle> GetVehicles()
-        {
-            return this.GetQuote().GetVehicles();
+            return this.Quote.GetVehicleTypeRisk();
         }
 
         public List<Quote> GetDraftEndorsements()
         {
-            var endorsements = SQL.executeQuery(@"SELECT *
-                               FROM [tether].[TetherApplicationRatableObject]
-                               where TetherId = @TetherId AND StatusId=@StatusId; ", ("@TetherId", Tether.Id), ("@StatusId", EntityStatusEnum.Draft));
-
             try
             {
-                return endorsements.Select(it => new Quote(it["ApplicationId"])).ToList();
+                var appIds = this.Tether.TetherApplicationRatableObjects.OrderBy(it => it.Id).Where(it => it.StatusId == (int)EntityStatusEnum.Draft);
+                return appIds.Select(it=>  this.ContextCosmos.Quotes.First(quote => quote.Id == it.ApplicationId)).ToList();
             }
             catch (Exception)
             {
                 Log.Debug($"PolicyId: {this.Id} TetherId: {Tether.Id}  failed to GetEndorsements");
-                endorsements.ForEach(it => Log.Debug($"{{ {it} }},"));
 
                 throw;
             }
         }
 
-        public Tether Tether
-        {
-            get
-            {
-                return new Tether(this.GetProperty("TetherId").ToObject<long>());
-            }
-        }
+        public string PolicyNumber { get; set; }
 
-        public string PolicyNumber
-        {
-            get
-            {
-                return GetProperty(nameof(PolicyNumber));
-            }
-        }
+        public DateTime TimeFrom { get; set; }
 
-        public DateTime TimeFrom
-        {
-            get
-            {
-                return Convert.ToDateTime((string)this.GetProperty(nameof(TimeFrom)));
-            }
-            set
-            {
-                this[nameof(TimeFrom)] = value.ToString("O");
-            }
-        }
+        public DateTime TimeTo { get; set; }
 
-        public DateTime TimeTo
-        {
-            get
-            {
-                return Convert.ToDateTime((string)this.GetProperty(nameof(TimeTo)));
-            }
-            set
-            {
-                this[nameof(TimeTo)] = value.ToString("O");
-            }
-        }
+        public string LatestRatingResponseGroupId { get; set; }
 
-        public DateTime? CancellationDate
-        {
-            get
-            {
-                var cancellationDate = this.GetProperty("CancellationDate");
+        [NotMapped]
+        public JArray? RatingGroup => RestAPI.GET($"/rating/group/{LatestRatingResponseGroupId}");
 
-                return cancellationDate ?? Convert.ToDateTime((string?)cancellationDate);
-            }
-        }
+        public bool? AccidentPreventionCredit => throw new NotImplementedException("might need rating factor model");
 
-        public string LatestRatingResponseGroupId
-        {
-            get
-            {
-                return this.GetProperty(nameof(LatestRatingResponseGroupId));
-            }
-        }
+        public String CoveredAutos => throw new NotImplementedException("might need rating factor model");
+        public String? MotorCarrierFiling => throw new NotImplementedException("might need rating factor model");
 
-        public JArray? RatingGroup
-        {
-            get
-            {
-                return RestAPI.GET($"/rating/group/{LatestRatingResponseGroupId}");
-            }
-        }
+        public String BillingType => throw new NotImplementedException("might need rating factor model");
 
-        public bool? AccidentPreventionCredit
-        {
-            get
-            {
-                return (bool)(this?["RatingFactors"]?["AccidentPreventionCredit"]??false);
-            }
-        }
+        public int SelectedRatingPackageId { get; set; }
 
-        public String CoveredAutos
-        {
-            get
-            {
-                //broken
-                return (String?)this["RatingFactors"]?["CoveredAutos"]?? throw new Exception("covered autos returned null");
-            }
-        }
+        public String PaymentPlan => throw new NotImplementedException("might need rating factor model");
 
-        public String? MotorCarrierFiling
-        {
-            get
-            {
-                return (String?)this["Metadata"]?["MotorCarrierFiling"];
-            }
-        }
+        public String isEft => throw new NotImplementedException("might need rating factor model");
 
-        public String BillingType
-        {
-            get
-            {
-                //broken
-                return (String?)this["RatingFactors"]?["BillingType"] ?? throw new Exception("RatingFactors.BillingType returned null");
-            }
-        }
-
-        public int RatingPackageID
-        {
-            get
-            {
-                //return (String)this["SelectedRatingPackageId"]["RatingPackageID"];
-                return int.Parse((String)this.GetProperty("SelectedRatingPackageId"));
-            }
-        }
-
-        public String PaymentPlan
-        {
-            get
-            {
-                //broken
-                return (String?)this["RatingFactors"]?["paymentPlan"]?? throw new Exception("RatingFactors.paymentPlan returned null");
-            }
-        }
-
-        public String isEft
-        {
-            get
-            {
-                return (String?)this["RatingFactors"]?["IsEft"] ?? throw new Exception("RatingFactors.IsEft returned null");
-            }
-        }
-
-        public int? RadiusOfOperation
-        {
-            get
-            {
-                if (int.TryParse((String?)this["Metadata"]?["RadiusOfOperation"] ?? throw new Exception("Metadata.RadiusOfOpertion returned null"), out int result))
-                {
-                    return result;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        public int? RadiusOfOperation => throw new NotImplementedException("might need metadata model");
 
         public class CancelPolicyObject
         {
@@ -428,5 +199,6 @@ namespace ApolloTests.Data.Entity
                 return JObject.FromObject(this);
             }
         }
+
     }
 }

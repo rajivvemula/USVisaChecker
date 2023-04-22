@@ -17,7 +17,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
         {
             Builder = builder;
         }
-        public JToken RunSendStrategy(Entity.Quote quote)
+        public JToken RunSendStrategy(Data.Entities.Quote quote)
         {
             Hydrator.CurrentSection = Section;
             Hydrator.CurrentAnswers = this;

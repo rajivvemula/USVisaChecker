@@ -1,4 +1,5 @@
 ﻿using ApolloTests.Data.Entities;
+using ApolloTests.Data.Entities.Risk;
 using HitachiQA.Driver;
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
@@ -176,18 +177,9 @@ namespace ApolloTests.Data.Rating
 
             }
 
-            private JObject GetRisk(long riskId)
+            private VehicleRisk GetCurrentVehicleRisk()
             {
-                return ((JArray?)this.Engine.root["Risks"])?.ToObject<List<dynamic>>()?.Find(risk => risk["RiskId"] == riskId)?? throw new NullReferenceException();
-            }
-
-            private JObject GetCurrentVehicleRisk()
-            {
-                var riskId = ((Entity.Vehicle)this.Engine.interpreter.Eval("Vehicle"))?["RiskId"]??throw new NullReferenceException();
-
-                var risk = GetRisk(riskId);
-                
-                return risk;
+                return this.Engine.interpreter.Eval<VehicleRisk>("Vehicle"); 
             }
 
             private decimal BaseRateFactors
@@ -201,7 +193,7 @@ namespace ApolloTests.Data.Rating
                 get
                 {
 
-                    var classCode = GetCurrentVehicleRisk()?["VehicleClassCode"]?.ToObject<int>() ?? 0;
+                    var classCode = GetCurrentVehicleRisk().ClassCode?.ToObject<int>() ?? 0;
                     return classCode;
                 }
             }
@@ -212,8 +204,8 @@ namespace ApolloTests.Data.Rating
                 get
                 {
                     var risk = GetCurrentVehicleRisk();
-
-                    var locationID = risk?["OutputMetaDataEntity"]?["VehicleDriverLocation"]?["LocationId"];
+                    var metadata = (OutputMetadataVehicle)risk.OutputMetadata;
+                    var locationID = metadata.VehicleLocation.LocationId;
                     if (locationID == null)
                     {
                         //Log.Debug("Location ID null " + risk.ToString());
@@ -276,16 +268,16 @@ namespace ApolloTests.Data.Rating
                     foreach (var driver in drivers)
                     {
                         int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
-                        int dob = int.Parse(driver.DateOfBirth.ToString("yyyyMMdd"));
+                        int dob = int.Parse(driver.Driver.DateOfBirth.ToString("yyyyMMdd"));
                         int age = (now - dob) / 10000;
                         if (age < 55)
                         {
                             continue;
                         }
 
-                        bool defensiveDriving = driver.GetQuestionResponse(root, "IL-DefensiveDriving")?.ToObject<bool?>() ?? false;
-                        bool LastYearViolation = driver.GetQuestionResponse(root, "IL-LastYearViolation")?.ToObject<bool?>() ?? false;
-                        bool Last3YearsLicenseSuspended = driver.GetQuestionResponse(root, "IL-Last3YearsLicenseSuspended")?.ToObject<bool?>() ?? false;
+                        bool defensiveDriving = driver.OutputMetadata.GetQuestionResponse("IL-DefensiveDriving")?.ToObject<bool?>() ?? false;
+                        bool LastYearViolation = driver.OutputMetadata.GetQuestionResponse( "IL-LastYearViolation")?.ToObject<bool?>() ?? false;
+                        bool Last3YearsLicenseSuspended = driver.OutputMetadata.GetQuestionResponse( "IL-Last3YearsLicenseSuspended")?.ToObject<bool?>() ?? false;
 
 
                         if (defensiveDriving && !LastYearViolation && !Last3YearsLicenseSuspended)

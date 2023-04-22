@@ -1,5 +1,5 @@
 using ApolloTests.Data.Entities;
-using ApolloTests.Data.Entity;
+using ApolloTests.Data.Entities.Coverage;
 using HitachiQA.Driver;
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
@@ -500,16 +500,16 @@ namespace ApolloTests.Data.Rating
                     foreach (var driver in drivers)
                     {
                         int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
-                        int dob = int.Parse(driver.DateOfBirth.ToString("yyyyMMdd"));
+                        int dob = int.Parse(driver.Driver.DateOfBirth.ToString("yyyyMMdd"));
                         int age = (now - dob) / 10000;
                         if (age < 55)
                         {
                             continue;
                         }
 
-                        bool defensiveDriving = driver.GetQuestionResponse(root, "IL-DefensiveDriving") == "true" ? true : false;
-                        bool LastYearViolation = driver.GetQuestionResponse(root, "IL-LastYearViolation") == "true" ? true : false;
-                        bool Last3YearsLicenseSuspended = driver.GetQuestionResponse(root, "IL-Last3YearsLicenseSuspended") == "true" ? true : false;
+                        bool defensiveDriving = driver.OutputMetadata.GetQuestionResponse("IL-DefensiveDriving") == "true" ? true : false;
+                        bool LastYearViolation = driver.OutputMetadata.GetQuestionResponse("IL-LastYearViolation") == "true" ? true : false;
+                        bool Last3YearsLicenseSuspended = driver.OutputMetadata.GetQuestionResponse( "IL-Last3YearsLicenseSuspended") == "true" ? true : false;
 
 
                         if (defensiveDriving && !LastYearViolation && !Last3YearsLicenseSuspended)
@@ -541,10 +541,10 @@ namespace ApolloTests.Data.Rating
                         return 1;
                     }
 
-                    var driverFactors = new Dictionary<Driver, Factor.Resolvable>();
+                    var driverFactors = new Dictionary<Entities.Risk.Driver, Factor.Resolvable>();
                     foreach (var driver in this.Engine.root.GetDrivers())
                     {
-                        if (bool.Parse(driver.GetQuestionResponse(this.Engine.root, "ExcludeDriver")) == false) 
+                        if (bool.Parse(driver.OutputMetadata.GetQuestionResponse("ExcludeDriver")) == false) 
                         {
                             int points = driver.GetPoints(this.Engine.root, this.GetAlgorithmAssignment().DriverRatingPlan?? throw new NullReferenceException());
                             Log.Debug("Points: " + points);
@@ -554,13 +554,13 @@ namespace ApolloTests.Data.Rating
                             var factor = Factor.GetFactor("Individual Driver Rating Factor").GetResolvable(this.Engine);
 
                             factor.Resolve();
-                            Log.Debug($"Driver: {driver.LicenseNo} {factor.Value}");
-                            driverFactors.Add(driver, factor);
+                            Log.Debug($"Driver: {driver.Driver.LicenseNo} {factor.Value}");
+                            driverFactors.Add(driver.Driver, factor);
 
                         }
                     }
 
-                    int powerUnitCount = this.Engine.root.GetVehicles().Where(it=>!it.IsNonPowered()).Count();
+                    int powerUnitCount = this.Engine.root.GetVehicles().Where(it=>!it.Vehicle.IsNonPowered()).Count();
 
                     List<decimal> factors = driverFactors.Select(it => it.Value.Value?? throw new NullReferenceException()).ToList();
 
@@ -734,8 +734,8 @@ namespace ApolloTests.Data.Rating
                     var algorithmAssignment = GetAlgorithmAssignment();
 
                     var limit = (Limit)this.Engine.interpreter.Eval("Limit");
-                    bool? isCombined = limit.selectedLimitName?.ToLower()?.Contains("combined");
-                    int limitCount = limit.selectedLimits.Count;
+                    bool? isCombined = limit.SelectedLimitName?.ToLower()?.Contains("combined");
+                    int limitCount = limit.SelectedLimits.Count;
 
                     if (limitCount == 0)
                     {
@@ -862,12 +862,13 @@ namespace ApolloTests.Data.Rating
                     var vehicles = this.Engine.root.GetVehicles();
                     foreach(var vehicle in vehicles)
                     {
-                        if(vehicle.BodyCategoryTypeId == 5 && Engine.root.getLimits(vehicle).FirstOrDefault(it=> it.GetCoverageType().Name == "Collision" || it.GetCoverageType().Name == "Comprehensive") != null)
+                        int GVW = int.Parse(vehicle.Vehicle.GrossVehicleWeight);
+                        if (vehicle.Vehicle.BodyCategoryTypeId == 5 && Engine.root.getLimits(vehicle.Vehicle).FirstOrDefault(it=> it.GetCoverageType().Name == "Collision" || it.GetCoverageType().Name == "Comprehensive") != null)
                         {
                             semiTrailerCount++;
                             continue;
                         }
-                        else if(vehicle.BodySubCategoryTypeId == 23 || vehicle.GrossVehicleWeight>=20001)
+                        else if(vehicle.Vehicle.BodySubCategoryTypeId == 23 || GVW >= 20001)
                         {
                             pullingUnitCount++;
                         }
@@ -1060,11 +1061,11 @@ namespace ApolloTests.Data.Rating
 
 
 
-                    var Limit = (Limit)this.Engine.interpreter.Eval("Limit");
+                    var Limit = this.Engine.interpreter.Eval<Limit>("Limit");
 
-                    var dailyLimit = Limit.selectedLimits[0];
-                    var numberOfDays = Limit.selectedLimits[1];
-                    var total = Limit.selectedLimits[2];
+                    var dailyLimit = Limit.SelectedLimits[0];
+                    var numberOfDays = Limit.SelectedLimits[1];
+                    var total = Limit.SelectedLimits[2];
                     var downtime = (string?)KnownFields?[0].Value?? throw new NullReferenceException();
 
 

@@ -1,40 +1,60 @@
-﻿using BoDi;
-using Castle.Components.DictionaryAdapter.Xml;
+﻿using ApolloTests.Data.Entities.Context;
 using Castle.DynamicProxy;
 using HitachiQA.Helpers;
+using Newtonsoft.Json;
 using Polly;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ApolloTests.Data.Entities
 {
-    public class BaseEntity 
+    public abstract class BaseEntity
     {
 
-
-
+        [NotMapped]
+        [JsonIgnore]
         public SQL SQL;
+
+        [NotMapped]
+        [JsonIgnore]
         public Cosmos Cosmos;
+
+        [NotMapped]
+        [JsonIgnore]
         public RestAPI RestAPI;
+
+        [NotMapped]
+        [JsonIgnore]
         public Functions Functions;
+
+        [NotMapped]
+        [JsonIgnore]
         public ServiceBus ServiceBus;
+
         public BaseEntity()
         {
-            SQL=GetSQLService();
-            Cosmos=GetCosmosService();  
-            RestAPI=GetRestAPIService();
-            ServiceBus=GetServiceBusService();
+            SQL = GetSQLService();
+            Cosmos = GetCosmosService();
+            RestAPI = GetRestAPIService();
+            ServiceBus = GetServiceBusService();
             Functions = Main.ObjectContainer.Resolve<Functions>();
         }
         public static SQL GetSQLService()
         {
             return Main.ObjectContainer.Resolve<SQL>();
-            
+
         }
         public static Cosmos GetCosmosService()
         {
-            return Main.ObjectContainer.Resolve<Cosmos>(); 
+            return Main.ObjectContainer.Resolve<Cosmos>();
         }
-            
+
         public static RestAPI GetRestAPIService()
         {
             return Main.ObjectContainer.Resolve<RestAPI>();
@@ -56,7 +76,7 @@ namespace ApolloTests.Data.Entities
         public T? GetPropertyValue<T>(string propertyName)
         {
             var prop = this.GetType().GetProperty(propertyName);
-            if(prop==null)
+            if (prop == null)
             {
                 throw new Exception($"Property {propertyName} was not found on {this.GetType().FullName}");
             }
@@ -69,7 +89,7 @@ namespace ApolloTests.Data.Entities
             string typeName;
             if (this is IProxyTargetAccessor)
             {
-                typeName = (this as IProxyTargetAccessor).DynProxyGetTarget().GetType().BaseType.FullName?? throw new NullReferenceException();
+                typeName = (this as IProxyTargetAccessor).DynProxyGetTarget().GetType().BaseType.FullName ?? throw new NullReferenceException();
             }
             else
                 typeName = this.GetType().FullName;
@@ -84,11 +104,11 @@ namespace ApolloTests.Data.Entities
                 result = this.GetPropertyValue<object>(propName);
                 if (waitForValueNotEqual)
                 {
-                    return result != value;
+                    return !result.Equals(value);
                 }
                 else
                 {
-                    return result == value;
+                    return result.Equals(value);
                 }
 
             });

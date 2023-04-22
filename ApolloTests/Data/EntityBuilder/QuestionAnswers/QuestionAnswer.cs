@@ -8,17 +8,17 @@
     {
         public readonly string _alias;
 
-        public object? _response;
+        public string? _response;
         public bool PopulateWhenHidden { get; set; } = false;
         public bool AsJsonStr { get; set; } = false;
         public string? variableName { get; set; }
         public Type? targetType { get; set; }
-        public QuestionAnswer(string alias, object? response)
+        public QuestionAnswer(string alias, string? response)
         {
             _alias = alias;
             _response = response;
         }
-        public QuestionAnswer(string alias, object? response, bool populateWhenHidden)
+        public QuestionAnswer(string alias, string? response, bool populateWhenHidden)
         {
             _alias = alias;
             _response = response;

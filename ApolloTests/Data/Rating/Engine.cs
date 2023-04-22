@@ -1,16 +1,10 @@
 ﻿using DynamicExpresso;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
-using ApolloTests.Data.Entity;
 using ApolloTests.Data.Entities;
+using ApolloTests.Data.Entities.Coverage;
 
 namespace ApolloTests.Data.Rating
 {
@@ -170,7 +164,6 @@ namespace ApolloTests.Data.Rating
         /// </summary>
         public List<JObject> Run()
         {
-            root.CacheProps();
             latestResults = new List<JObject>();
 
             var vehicles = root.GetVehicles();
@@ -183,15 +176,15 @@ namespace ApolloTests.Data.Rating
                     {
                         interpreter.SetVariable("Vehicle", vehicle);
 
-                        if (vehicle.IsNonPowered() && limit.GetCoverageType().IsNonPoweredVehicle_Unapplicable())
+                        if (vehicle.Vehicle.IsNonPowered() && limit.GetCoverageType().IsNonPoweredVehicle_Unapplicable())
                         {
                             continue;
                         }
 
-                        var vehicleLimit = limit.GetCoverageType().isVehicleLevel ? limit.riskCoverages?.Find(it => it.riskId == vehicle.RiskId) : limit;
+                        var vehicleLimit = limit.GetCoverageType().isVehicleLevel ? limit.RiskCoverages?.Find(it => it.RiskId == vehicle.Vehicle.RiskId) : limit;
                         vehicleLimit.NullGuard();
                         var rateResults = RunForLimit(vehicleLimit);
-                        rateResults.Add("Vehicle", JObject.FromObject(vehicle.GetProperties()));
+                        rateResults.Add("Vehicle", vehicle.Vehicle.ToJObject());
                         latestResults.Add(rateResults);
                     }
                 }
@@ -437,7 +430,7 @@ namespace ApolloTests.Data.Rating
         }
 
 
-        public AlgorithmAssignment getAlgorithmAssignment(Entity.CoverageType coverageType, string ClassCode)
+        public AlgorithmAssignment getAlgorithmAssignment(CoverageType coverageType, string ClassCode)
         {
             AlgorithmAssignment? result = null;
 
@@ -464,7 +457,7 @@ namespace ApolloTests.Data.Rating
                     }
                     else
                     {
-                        foreach(var possibleName in Entity.CoverageType.Persisted)
+                        foreach(var possibleName in CoverageType.Persisted)
                         {
                             if (possibleName.Value == coverageType.Name && row.TryGetValue(possibleName.Key, out value))
                             {

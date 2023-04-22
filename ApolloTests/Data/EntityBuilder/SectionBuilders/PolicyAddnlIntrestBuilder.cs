@@ -1,4 +1,5 @@
 ﻿using ApolloTests.Data.EntityBuilder.Models;
+using ApolloTests.Data.Entities.Enums;
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -48,7 +49,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
             }
         }
 
-        public JToken RunSendStrategy(Entity.Quote quote)
+        public JToken RunSendStrategy(Data.Entities.Quote quote)
         {
             Builder.Hydrator.CurrentSection = Section;
 
@@ -61,10 +62,10 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
                 //
                 switch (Builder.Line.LineEnum)
                 {
-                    case Data.Entities.Lines.BusinessOwner:
+                    case LineEnum.BusinessOwner:
                         Builder.Hydrator.CurrentAnswers = party.QuestionAnswers_BOP;
                         break;
-                    case Data.Entities.Lines.CommercialAuto:
+                    case LineEnum.CommercialAuto:
                         Builder.Hydrator.CurrentAnswers = party.QuestionAnswers_CA;
                         break;
                     default:

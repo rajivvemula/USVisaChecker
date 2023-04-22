@@ -1,81 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Newtonsoft.Json.Linq;
+﻿using ApolloTests.Data.Entities.Context;
 using HitachiQA.Helpers;
-using ApolloTests.Data.Entities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ApolloTests.Data.Entity
+namespace ApolloTests.Data.Entities
 {
-    public class Claim:BaseEntity
+    public class Claim : BaseEntity
     {
-        public readonly int Id;
-
-        public Claim(int Id)
+        public CosmosContext Context { get; }
+        public SQLContext SQLContext { get; }
+        public Claim(CosmosContext context)
         {
-            this.Id = Id;
-        }
-
-        public Claim(string property, int value)
-        {
-            this.Id = (int)Cosmos.GetQuery("Claim", $"SELECT * FROM c Where c.{property}={value} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result.ElementAt(0)["Id"];
+            Context = context;
+            this.SQLContext = context.SQLContext;
 
         }
+        [Key]
+        public string id { get; set; }
+        public long Id { get; set; }
+        public string ApplicationNumber { get; set; }
+        [Required]
+        public string Discriminator { get; set; }
+        public long _ts { get; set; }
 
-        public Claim(string property, string value)
-        {
-            this.Id = (int)Cosmos.GetQuery("Claim", $"SELECT * FROM c Where c.{property}='{value}' ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result.ElementAt(0)["Id"];
+        [JsonProperty("claimNumber")]
+        public string ClaimNumber { get; set; }
 
-        }
+        [JsonProperty("ClaimStateId")]
+        public int ClaimStateId { get; set; }
 
-        public dynamic this[String propertyName]
-        {
-            get
-            {
-                var method = this.GetType().GetProperty(propertyName);
-                if (method != null)
-                {
-                    return method.GetGetMethod()?.Invoke(this, null)?? throw new Exception();
+        public bool isFNOL => ClaimStateId == 0 ? true : false;
 
-                }
-                else
-                {
-                    return GetProperty(propertyName);
-                }
-            }
-        }
-
-        //public static Claim GetLatestClaim()
-        //{
-        //    return new Claim((int)Cosmos.GetQuery("Claim", "SELECT * FROM c ORDER BY c._ts DESC OFFSET 0 LIMIT 1").ElementAt(0)["Id"]);
-        //}
-
-        public dynamic GetProperties()
-        {
-            return Cosmos.GetQuery("Claim", $"SELECT * FROM c WHERE c.Id = {this.Id} OFFSET 0 LIMIT 1").Result.ElementAt(0);
-        }
-        public dynamic GetProperty(String propertyName)
-        {
-            var property = this.GetProperties()[propertyName];
-            return property == null ? "" : property;
-        }
-
-        private String? _ClaimNumber { get; set; } = null;
-        public string ClaimNumber
-        {
-            get
-            {
-                return _ClaimNumber ??= GetProperty("claimNumber");
-            }
-        }
-
-        public bool isFNOL
-        {
-            get
-            {
-                return GetProperty("ClaimStateId") == 0 ? true : false;
-            }
-        }
     }
+
 }
+

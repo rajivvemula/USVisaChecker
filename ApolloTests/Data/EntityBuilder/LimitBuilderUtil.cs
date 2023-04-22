@@ -1,5 +1,5 @@
-﻿using ApolloTests.Data.Entity;
-using ApolloTests.Data.EntityBuilder.Entities;
+﻿using ApolloTests.Data.EntityBuilder.SectionBuilders;
+using ApolloTests.Data.Entities.Coverage;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace ApolloTests.Data.EntityBuilder
         {
             if (value)
             {
-                if (limits.Any(it => it.coverageType.Name == coverageName))
+                if (limits.Any(it => it.CoverageType.Name == coverageName))
                 {
                     throw new InvalidOperationException($"Limit already exists with Coverage Type {coverageName}");
                 }
@@ -103,8 +103,9 @@ namespace ApolloTests.Data.EntityBuilder
         #region Commercial Auto
         public static void AddBIPD(this List<Limit> limits)
         {
+            
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.BIPD),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.BIPD),
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>(),
                         selectedLimitName: "Combined Single Limit",
@@ -116,7 +117,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddMedicalPayments(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                      coverageType: new CoverageType(CoverageType.MEDICAL_PAYMENTS),
+                      coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.MEDICAL_PAYMENTS),
                       selectedDeductibleName: null,
                       selectedDeductibles: new List<int>(),
                       selectedLimitName: "Combined Single Limit",
@@ -128,7 +129,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddCollision(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                      coverageType: new CoverageType(CoverageType.COLLISION),
+                      coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.COLLISION),
                       selectedDeductibleName: "Deductible",
                       selectedDeductibles: new List<int>() { 1000 },
                       selectedLimitName: null,
@@ -140,7 +141,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddComprehensive(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.COMPREHENSIVE),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.COMPREHENSIVE),
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>() { 1000 },
                         selectedLimitName: null,
@@ -152,7 +153,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddVehicleUnderinsuredMotorists(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.UNDERINSURED_MOTORIST),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.UNDERINSURED_MOTORIST),
                         selectedDeductibleName: null,
                         selectedLimitName: "Combined Single Limit",
                         selectedLimits: new List<int>() { 100000 },
@@ -164,7 +165,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddVehicleUninsuredMotorists(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.UNINSURED_MOTORIST),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.UNINSURED_MOTORIST),
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
                         selectedLimitName: "Combined Single Limit",
@@ -175,7 +176,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddUninsuredUnderinsuredBI(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.UNINSURED_UNDERINSURED_BI),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.UNINSURED_UNDERINSURED_BI),
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
                         selectedLimitName: "Combined Single Limit",
@@ -187,7 +188,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddCargo(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.CARGO),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.CARGO),
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>() { 1000 },
                         selectedLimitName: "Combined Single Limit",
@@ -199,7 +200,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddRentalReimbursement(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.RENTAL_REIMBURSEMENT),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.RENTAL_REIMBURSEMENT),
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
                         selectedLimitName: "Options",
@@ -211,7 +212,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddInTow(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.IN_TOW),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.IN_TOW),
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>() { 1000 },
                         selectedLimitName: "Combined Single Limit",
@@ -223,7 +224,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddTrailerInterchange(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.TRAILER_INTERCHANGE),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.TRAILER_INTERCHANGE),
                         selectedDeductibleName: "Deductible",
                         selectedDeductibles: new List<int>() { 1000, 1000 },
                         selectedLimitName: "Combined Single Limit",
@@ -234,7 +235,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddUninsuredMotoristBIPD(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                         coverageType: new CoverageType(CoverageType.UNINSURED_BIPD),
+                         coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.UNINSURED_BIPD),
                          selectedDeductibleName: null,
                          selectedDeductibles: new List<int>(),
                          selectedLimitName: "Combined Single Limit",
@@ -246,7 +247,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddUninsuredMotoristPD(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                         coverageType: new CoverageType(CoverageType.UNINSURED_MOTORIST_PD),
+                         coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.UNINSURED_MOTORIST_PD),
                          selectedDeductibleName: null,
                          selectedDeductibles: new List<int>(),
                          selectedLimitName: "Combined Single Limit",
@@ -258,7 +259,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddUninsuredMotoristBI(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.UNINSURED_MOTORIST_BI),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.UNINSURED_MOTORIST_BI),
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
                         selectedLimitName: "Combined Single Limit",
@@ -269,7 +270,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddUninsuredUnderinsurredBIPD(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.UNINSURED_UNDERINSURED_BIPD),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.UNINSURED_UNDERINSURED_BIPD),
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
                         selectedLimitName: "Combined Single Limit",
@@ -280,7 +281,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddUnderinsurredBI(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.UNDERINSURED_MOTORIST_BI),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.UNDERINSURED_MOTORIST_BI),
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
                         selectedLimitName: "Combined Single Limit",
@@ -291,7 +292,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddPersonalInjuryProtection(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                        coverageType: new CoverageType(CoverageType.PERSONAL_INJURY_PROTECTION),
+                        coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.PERSONAL_INJURY_PROTECTION),
                         selectedDeductibleName: null,
                         selectedDeductibles: new List<int>(),
                         selectedLimitName: "Personal Injury Protection Limit",
@@ -306,7 +307,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddDamageToPremisesRentedToYou(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                       coverageType: new CoverageType(CoverageType.DAMAGE_TO_PREMISES_RENTED_TO_YOU),
+                       coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.DAMAGE_TO_PREMISES_RENTED_TO_YOU),
                        selectedDeductibleName: null,
                        selectedDeductibles: new List<int>(),
                        selectedLimitName: "Limit",
@@ -317,7 +318,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddGeneralLiability(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                       coverageType: new CoverageType(CoverageType.GENERAL_LIABILITY),
+                       coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.GENERAL_LIABILITY),
                        selectedDeductibleName: "Deductible",
                        selectedDeductibles: new List<int>() { 1000 },
                        selectedLimitName: "Limits",
@@ -329,7 +330,7 @@ namespace ApolloTests.Data.EntityBuilder
         public static void AddEmployeeDishonesty(this List<Limit> limits)
         {
             limits.Add(new Limit(
-                      coverageType: new CoverageType(CoverageType.EMPLOYEE_DISHONESTY),
+                      coverageType: CoverageType.GetCoverageType(((IBuilder)limits).Builder.SQLContext, CoverageType.EMPLOYEE_DISHONESTY),
                       selectedDeductibleName: null,
                       selectedDeductibles: new List<int>() ,
                       selectedLimitName: "Limit",

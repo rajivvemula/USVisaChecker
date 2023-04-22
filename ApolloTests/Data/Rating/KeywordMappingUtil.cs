@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ApolloTests.Data.Entities;
-using ApolloTests.Data.Entity;
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
+using ApolloTests.Data.Entities.Reference;
+using ApolloTests.Data.Entities.Coverage;
+using ApolloTests.Data.Entities.Enums;
+using ApolloTests.Data.Entities;
 
 namespace ApolloTests.Data.Rating
 {
@@ -20,10 +22,10 @@ namespace ApolloTests.Data.Rating
         public string? KeywordName { get; private set; }
         public int? IndustryClassTaxonomyId { get; private set; }
         public string? TaxonomyName { get; private set; }
-        public BuildingGroups BuildingGroup { get; set; }
+        public BuildingGroupEnum BuildingGroup { get; set; }
 
         //optiona, will only be loaded when constructed using the GetUsingAlgorithmCode function
-        public Entity.CoverageType? coverage { get; private set; }
+        public string? CoverageType { get; private set; }
 
         //set of different invokers to this class
         public static KeywordMappingUtil GetUsingClassCode(Line line, string classCode, String? OptionalCoverage = null) => Get(line, "reference.RiskClassType.Code", classCode, OptionalCoverage);
@@ -98,13 +100,13 @@ namespace ApolloTests.Data.Rating
             return new KeywordMappingUtil()
             {
                 ClassCode = group["ClassCode"],
-                IndustryClassTaxonomyId = group["IndustryClassTaxonomyId"] is DBNull? null: group["IndustryClassTaxonomyId"],
+                IndustryClassTaxonomyId = group["IndustryClassTaxonomyId"] is DBNull ? null : group["IndustryClassTaxonomyId"],
                 KeywordId = group["KeywordId"],
                 KeywordName = group["KeywordName"],
                 TaxonomyName = group["TaxonomyName"] is DBNull ? null : group["TaxonomyName"],
                 //default to office until we implement correct mapping
-                BuildingGroup = BuildingGroups.Office,
-                coverage = coverage == null ? null :new Entity.CoverageType(coverage)
+                BuildingGroup = BuildingGroupEnum.Office,
+                CoverageType = coverage
 
             };
 
@@ -145,7 +147,7 @@ namespace ApolloTests.Data.Rating
                 KeywordId = group["KeywordId"],
                 KeywordName = group["KeywordName"],
                 TaxonomyName = group["TaxonomyName"],
-                coverage = coverage == null ? null : new Entity.CoverageType(coverage)
+                CoverageType = coverage
 
             };
 

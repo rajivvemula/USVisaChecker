@@ -186,7 +186,7 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
         public QuestionAnswer DaycareMaxChildren { get; set; } = new QuestionAnswer(Alias.DaycareMaxChildren, "2");
         public QuestionAnswer ResidentialPercent { get; set; } = new QuestionAnswer(Alias.ResidentialPercent, "0");
         public QuestionAnswer CommercialPercent { get; set; } = new QuestionAnswer(Alias.CommercialPercent, "100");
-        public QuestionAnswer IndustrialPercent { get; set; } = new QuestionAnswer(Alias.IndustrialPercent, '0');
+        public QuestionAnswer IndustrialPercent { get; set; } = new QuestionAnswer(Alias.IndustrialPercent, "0");
         public QuestionAnswer CaregiversPerChild { get; set; } = new QuestionAnswer(Alias.CaregiversPerChild, "true");
         public QuestionAnswer NumberFoodCarts { get; set; } = new QuestionAnswer(Alias.NumberFoodCarts, "0");
         public QuestionAnswer RoofingCondosTownTracts { get; set; } = new QuestionAnswer(Alias.RoofingCondosTownTracts, "false");

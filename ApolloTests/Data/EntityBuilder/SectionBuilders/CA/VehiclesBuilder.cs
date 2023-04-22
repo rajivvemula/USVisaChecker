@@ -1,6 +1,6 @@
 ﻿using ApolloTests.Data.EntityBuilder.Entities;
 using ApolloTests.Data.EntityBuilder.Models;
-using ApolloTests.Data.EntityBuilder.Models.Risks;
+using ApolloTests.Data.Entities.Risk;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Collections;
@@ -23,7 +23,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             this.Builder = Builder;
             this.AddOne();
         }
-        public JToken RunSendStrategy(Entity.Quote quote)   
+        public JToken RunSendStrategy(Data.Entities.Quote quote)   
         {
             Hydrator.Interpreter.SetVariable("ClassCode", this.Builder.ClassCodeKeyword.ClassCode);
 
@@ -45,13 +45,13 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
                 risk.LoadEntityObject((JObject)riskResponse.ElementAt(0));
                 var limitsBody = risk.RiskLimits.ToJArray();
 
-                JToken riskLimitRes = this.Builder.RestAPI.POST($"quote/{quote.Id}/risk/{risk.Vehicle.riskId}/limits", limitsBody) ?? throw new NullReferenceException();
+                JToken riskLimitRes = this.Builder.RestAPI.POST($"quote/{quote.Id}/risk/{risk.Vehicle.RiskId}/limits", limitsBody) ?? throw new NullReferenceException();
                 result.Add(riskLimitRes);
             }
 
             return result;
         }
 
-        public void AddOne() => Add(new VehicleRisk());
+        public void AddOne() => Add(new VehicleRisk(true));
     }
 }

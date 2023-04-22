@@ -137,8 +137,8 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
         public QuestionAnswer BuildingStoriesNumber { get; set; } = new QuestionAnswer(Alias.BuildingStoriesNumber, "1");
         public QuestionAnswer BuildingYearBuilt { get; set; } = new QuestionAnswer(Alias.BuildingYearBuilt, "2015");
         public QuestionAnswer RoofUpdated25Years { get; set; } = new QuestionAnswer(Alias.RoofUpdated25Years, "true");
-        public QuestionAnswer BuildingConstructed { get; set; } = new QuestionAnswer(Alias.BuildingConstructed, "Masonry");
-        public QuestionAnswer BuildingOccupiedConstructed { get; set; } = new QuestionAnswer(Alias.BuildingOccupiedConstructed, "Masonry");
+        public QuestionAnswer BuildingConstructed { get; set; } = new QuestionAnswer(Alias.BuildingConstructed, "MasonryNonCombustible");
+        public QuestionAnswer BuildingOccupiedConstructed { get; set; } = new QuestionAnswer(Alias.BuildingOccupiedConstructed, "MasonryNonCombustible");
         public QuestionAnswer BuildingResidentUnitNumber { get; set; } = new QuestionAnswer(Alias.BuildingResidentUnitNumber, "0");
         public QuestionAnswer PropertyLeadAbatement { get; set; } = new QuestionAnswer(Alias.PropertyLeadAbatement, "true");
         public QuestionAnswer LeadCertificateType { get; set; } = new QuestionAnswer(Alias.LeadCertificateType, "LeadHazardFree");

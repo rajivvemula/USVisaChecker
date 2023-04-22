@@ -1,11 +1,15 @@
-﻿using ApolloTests.Data.Entities;
-using ApolloTests.Data.Entity;
-using ApolloTests.Data.EntityBuilder.Models;
+﻿using ApolloTests.Data.EntityBuilder.Models;
 using ApolloTests.Data.EntityBuilder.SectionBuilders;
 using ApolloTests.Data.EntityBuilder.SectionBuilders.BOP;
 using ApolloTests.Data.EntityBuilder.SectionBuilders.CA;
+using ApolloTests.Data.Entities;
+using ApolloTests.Data.Entities.Context;
+using ApolloTests.Data.Entities.Coverage;
+using ApolloTests.Data.Entities.Enums;
+using ApolloTests.Data.Entities.Reference;
 using ApolloTests.Data.Rating;
 using HitachiQA.Helpers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ApolloTests.Data.EntityBuilder
@@ -41,7 +45,7 @@ namespace ApolloTests.Data.EntityBuilder
     /// 
     public class QuoteBuilder : BaseEntity
     {
-
+        public Data.Entities.Quote? Quote { get; set; }
         public Line Line { get; set; }
         public string State { get; set; } = "IL";
         public KeywordMappingUtil ClassCodeKeyword { get; set; }
@@ -50,34 +54,38 @@ namespace ApolloTests.Data.EntityBuilder
 
         public HydratorUtil Hydrator = new HydratorUtil();
 
-        public Entity.Quote? QuoteEntity=null;
+        public IObjectContainer ObjectContainer { get; }
+        public CosmosContext CosmosContext { get; }
+        public SQLContext SQLContext { get; }
 
         /// <summary>
         /// Main Constructor
         /// </summary>
-        public QuoteBuilder(Line line, string state, List<CoverageType>? coverageTypes=null)
+        public QuoteBuilder(IObjectContainer OC, Line line, string state, List<string>? coverageTypes=null)
         {
+            ObjectContainer = OC;
+            CosmosContext = OC.Resolve<CosmosContext>();
+            SQLContext = OC.Resolve<SQLContext>();
             coverageTypes ??= new();
-            this.State = state;
-            this.Line = line;
+            State = state;
+            Line = line;
 
             //
             // 1. On initialize, the constructor initializes all sections regardless of LOB
             //
             #region Initialize all sections
-            this.QuoteCreateBody = new();
-            this.Vehicles = new(this);
-            this.Drivers = new(this);
-            this.Modifiers_CA = new(this);
+            Vehicles = new(this);
+            Drivers = new(this);
+            Modifiers_CA = new(this);
 
-            this.PriorClaims= new(this);
-            this.Locations= new(this);
-            this.Tools= new(this);
-            this.Modifiers_BOP = new(this);           
+            PriorClaims = new(this);
+            Locations = new(this);
+            Tools = new(this);
+            Modifiers_BOP = new(this);           
 
-            this.Operations = new(this);
-            this.PolicyCoverages = new(this);
-            this.PolicyAddlInterest = new(this);
+            Operations = new(this);
+            PolicyCoverages = new(this);
+            PolicyAddlInterest = new(this);
             #endregion
 
             //
@@ -88,16 +96,16 @@ namespace ApolloTests.Data.EntityBuilder
             {
                 switch (line.LineEnum)
                 {
-                    case Lines.BusinessOwner:
+                    case LineEnum.BusinessOwner:
                         throw new NotImplementedException($"{line.Name} Coverage assignment for BOP needs to be implemented");
                     //break;
-                    case Lines.CommercialAuto:
+                    case LineEnum.CommercialAuto:
 
                         PolicyCoverages.Add(cov);
-                        switch (cov.Name)
+                        switch (cov)
                         {
                             case CoverageType.TRAILER_INTERCHANGE:
-                                Vehicles[0].Vehicle.grossVehicleWeight = "30000";
+                                Vehicles[0].Vehicle.GrossVehicleWeight = "30000";
                                 break;
 
                             case CoverageType.IN_TOW:
@@ -124,14 +132,12 @@ namespace ApolloTests.Data.EntityBuilder
 
         }
         #region Secondary Constructors
-        public QuoteBuilder(Line line, string state, KeywordMappingUtil classCodeKeyword) : this(line, state, classCodeKeyword.coverage ?? new CoverageType("BIPD"))
+        public QuoteBuilder(IObjectContainer OC, Line line, string state, KeywordMappingUtil classCodeKeyword) : this(OC, line, state, new List<string> { classCodeKeyword.CoverageType ?? CoverageType.BIPD })
         {
-            State = state;
             ClassCodeKeyword = classCodeKeyword;
         }
-        public QuoteBuilder(Line line, string state, string algorithmCode) : this(line, state, KeywordMappingUtil.GetUsingAlgorithmCode(line, algorithmCode, state)) { }
+        public QuoteBuilder(IObjectContainer OC, Line line, string state, string algorithmCode) : this(OC, line, state, KeywordMappingUtil.GetUsingAlgorithmCode(line, algorithmCode, state)) { }
 
-        public QuoteBuilder(Line line, string state, CoverageType coverageType) : this(line, state, new List<CoverageType>() { coverageType }) { }
         #endregion
 
 
@@ -166,53 +172,54 @@ namespace ApolloTests.Data.EntityBuilder
         /// <returns>Quote object representing the newly created Quote in Apollo</returns>
         
         // 4. Build()
-        public Quote Build(bool forceQuotedStatus = true)
+        public Data.Entities.Quote Build(bool forceQuotedStatus = true)
         {   //
             // 5. Quote is created in Apollo
             //
-            this.QuoteEntity ??= CreateQuote();
+            this.Quote ??= CreateQuote();
+            this.Hydrator.Quote = Quote;
+            
 
             //
             // 6. depending on the LOB, run each section's send strategy
             //
             switch (Line.Id)
             {
-                case (long)Lines.CommercialAuto:
+                case (int)LineEnum.CommercialAuto:
                     RunAllSendStrategies_CA();
 
                     break;
-                case (long)Lines.BusinessOwner:
+                case (int)LineEnum.BusinessOwner:
                     RunAllSendStrategies_BOP();
 
                     break;
                 default: throw new NotImplementedException();
             }
-
-            var summary = this.QuoteEntity.PostSummary();
+            
+            var summary = this.Quote.PostSummary();
 
             summary.NullGuard();
-            Log.Debug("Quote Id: " + QuoteEntity.Id);
+            Log.Debug("Quote Id: " + Quote.Id);
             Log.Debug("Rating Group Id (rating worksheet): \n" + $"{Environment.GetEnvironmentVariable("HOST")}/rating/ratings-worksheet/" + (summary?["ratingGroupId"] ?? "null") + "\n");
             if (summary?["errors"]?.Count() > 0 || summary?["ratingResponses"] == null)
             {
                 Log.Critical(summary);
-                throw Functions.HandleFailure($"Premium generation was unsuccessful Quote: {QuoteEntity.Id} Premium: " + summary?["ratingResponses"]);
+                throw Functions.HandleFailure($"Premium generation was unsuccessful Quote: {Quote.Id} Premium: " + summary?["ratingResponses"]);
             }
 
-            if (QuoteEntity["ApplicationStatusKey"] != 4000 && forceQuotedStatus)
+            if (Quote.ApplicationStatusKey != 4000 && forceQuotedStatus)
             {
-                QuoteEntity.ReferToUnderwriting();
+                //Quote.ReferToUnderwriting();
 
-                QuoteEntity.GenerateProposal();
+                //Quote.GenerateProposal();
             }
 
-            return this.QuoteEntity;
+            return this.Quote;
         }
 
 
-        public QuoteCreate QuoteCreateBody;
 
-        public Entity.Quote CreateQuote()
+        public Data.Entities.Quote CreateQuote()
         {
             //
             //    1. Interpreter is initialized to hydrate properties see HydratorUtil.cs for detailed documentation
@@ -221,11 +228,11 @@ namespace ApolloTests.Data.EntityBuilder
             this.Hydrator.Interpreter.SetVariable("KeywordId", this.ClassCodeKeyword.KeywordId);
             switch(this.Line.LineEnum)
             {
-                case Lines.CommercialAuto:
+                case LineEnum.CommercialAuto:
                     this.Hydrator.Interpreter.SetVariable("IndustryClassTaxonomyClassName", this.ClassCodeKeyword.TaxonomyName);
                     this.Hydrator.Interpreter.SetVariable("IndustryClassTaxonomyId", this.ClassCodeKeyword.IndustryClassTaxonomyId);
                     break;
-                case Lines.BusinessOwner:
+                case LineEnum.BusinessOwner:
                     this.Hydrator.Interpreter.SetVariable("BuildingGroupId", (int)this.ClassCodeKeyword.BuildingGroup);
                     break;
                 default: throw new NotImplementedException();
@@ -239,29 +246,29 @@ namespace ApolloTests.Data.EntityBuilder
             this.Hydrator.Interpreter.SetVariable("SubLineId", this.Line.Id);
             this.Hydrator.Interpreter.SetVariable("EffectiveDate", this.EffectiveDate);
             this.Hydrator.Interpreter.SetVariable("ExpirationDate", this.ExpirationDate);
-            String jsonString = new StreamReader($"Data/EntityBuilder/Entities/CreateAddress/{this.State.ToUpper()}.json").ReadToEnd();
-            var addressObj = JObject.Parse(jsonString);
+            String addressObjStr = new StreamReader($"Data/EntityBuilder/Entities/CreateAddress/{this.State.ToUpper()}.json").ReadToEnd();
+            var addressObj = JObject.Parse(addressObjStr);
             this.Hydrator.Interpreter.SetVariable("AddressObject", addressObj);
-            
+
             //
             //     4. hydrate QuoteCreate object
             //
-            this.Hydrator.Hydrate(this.QuoteCreateBody);
-            dynamic response = RestAPI.POST("/quote/create", this.QuoteCreateBody) ?? throw new NullReferenceException();
+            Quote = new Quote();
+            this.Hydrator.Hydrate(Quote);
+            JObject response = RestAPI.POST("/quote/create", this.Quote) ?? throw new NullReferenceException();
+            Quote = CosmosContext.Quotes.First(it => it.Id == response.Value<long>("id"));
 
             //
             //     5. store the rest of the relevant datapoints
             //
-            this.Hydrator.Interpreter.SetVariable("ApplicationId", response.id);
-            this.Hydrator.Interpreter.SetVariable("QuoteId", response.id);
+            this.Hydrator.Interpreter.SetVariable("ApplicationId", Quote.Id);
+            this.Hydrator.Interpreter.SetVariable("QuoteId", Quote.Id);
             this.Hydrator.Interpreter.SetVariable("StateCode", this.State);
             this.Hydrator.Interpreter.SetVariable("PhysicalAddressId", response["addressIds"][0]);
             this.Hydrator.Interpreter.SetVariable("GoverningStateId", response["governingStateId"]);
+            this.Hydrator.Interpreter.SetVariable("Quote", Quote);
 
-            var quote = new Quote((int)response.id);
-            this.Hydrator.Interpreter.SetVariable("Quote", quote);
-            this.Hydrator.Quote = quote;
-            return quote;
+            return Quote;
         }
 
 
@@ -278,13 +285,13 @@ namespace ApolloTests.Data.EntityBuilder
         //     
         private void RunAllSendStrategies_CA()
         {
-            QuoteEntity.NullGuard();
-            this.Vehicles.RunSendStrategy(QuoteEntity);
-            this.Drivers.RunSendStrategy(QuoteEntity);
-            this.Operations.RunSendStrategy(QuoteEntity);
-            this.PolicyCoverages.RunSendStrategy(QuoteEntity);
-            this.Modifiers_CA.RunSendStrategy(QuoteEntity);
-            this.PolicyAddlInterest.RunSendStrategy(QuoteEntity);
+            Quote.NullGuard();
+            this.Vehicles.RunSendStrategy(Quote);
+            this.Drivers.RunSendStrategy(Quote);
+            this.Operations.RunSendStrategy(Quote);
+            this.PolicyCoverages.RunSendStrategy(Quote);
+            this.Modifiers_CA.RunSendStrategy(Quote);
+            this.PolicyAddlInterest.RunSendStrategy(Quote);
         }
 
         //
@@ -296,14 +303,14 @@ namespace ApolloTests.Data.EntityBuilder
         //     
         private void RunAllSendStrategies_BOP()
         {
-            QuoteEntity.NullGuard();
-            this.PriorClaims.RunSendStrategy(QuoteEntity);
-            this.Locations.RunSendStrategy(QuoteEntity);
-            this.Tools.RunSendStrategy(QuoteEntity);    
-            this.Operations.RunSendStrategy(QuoteEntity);
-            this.PolicyCoverages.RunSendStrategy(QuoteEntity);
-            this.Modifiers_BOP.RunSendStrategy(QuoteEntity);
-            this.PolicyAddlInterest.RunSendStrategy(QuoteEntity);
+            Quote.NullGuard();
+            this.PriorClaims.RunSendStrategy(Quote);
+            this.Locations.RunSendStrategy(Quote);
+            this.Tools.RunSendStrategy(Quote);    
+            this.Operations.RunSendStrategy(Quote);
+            this.PolicyCoverages.RunSendStrategy(Quote);
+            this.Modifiers_BOP.RunSendStrategy(Quote);
+            this.PolicyAddlInterest.RunSendStrategy(Quote);
         }
 
     }

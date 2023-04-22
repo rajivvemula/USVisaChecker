@@ -1,5 +1,4 @@
-﻿using ApolloTests.Data.Entity;
-using ApolloTests.Data.EntityBuilder.Entities;
+﻿using ApolloTests.Data.EntityBuilder.Entities;
 using ApolloTests.Data.EntityBuilder.Models;
 using DocumentFormat.OpenXml.Wordprocessing;
 using HitachiQA.Helpers;
@@ -25,7 +24,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.BOP
             Builder = builder;
             this.AddOne();
         }
-        public JToken RunSendStrategy(Entity.Quote quote)
+        public JToken RunSendStrategy(Data.Entities.Quote quote)
         {
             Hydrator.CurrentSection = Section;
             var result = new JArray();

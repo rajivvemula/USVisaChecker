@@ -1,7 +1,8 @@
-﻿using ApolloTests.Data.Entity.Question;
-using ApolloTests.Data.EntityBuilder.Entities;
+﻿using ApolloTests.Data.EntityBuilder.Entities;
 using ApolloTests.Data.EntityBuilder.Models;
 using ApolloTests.Data.EntityBuilder.QuestionAnswers;
+using ApolloTests.Data.Entities.Coverage;
+using ApolloTests.Data.Entities.Risk;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
@@ -42,7 +43,7 @@ namespace ApolloTests.Data.EntityBuilder
             {
                 case Section.PolicyCoverages:
                     var limit = (Limit?)currentEntity ?? throw new NullReferenceException();
-                    var covQ = ((JArray?)hydrator.Quote.GetCoverageQuestions(limit.coverageType.Name))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
+                    var covQ = ((JArray?)hydrator.Quote.GetCoverageQuestions(limit.CoverageType.Name))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
                     questionAnswers.AddRange(covQ);
                     questionAnswers.LoadAnswers(hydrator, answers);
                     return;
@@ -55,7 +56,7 @@ namespace ApolloTests.Data.EntityBuilder
             var questions = ((JArray?)hydrator.Quote.GetSectionQuestions(sectionName))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
 
             
-            questionAnswers.AddRange(questions.Where(q=> !questionAnswers.Any(it=>it.questionId==q.questionId)));
+            questionAnswers.AddRange(questions.Where(q=> !questionAnswers.Any(it=>it.QuestionId==q.QuestionId)));
 
             
 
@@ -63,10 +64,10 @@ namespace ApolloTests.Data.EntityBuilder
             counter = 0;
             questionAnswers.StateChangeUntilHydrated(hydrator, propInfo);
 
-            if (questionAnswers.Any(q=> q.sectionId==0))
+            if (questionAnswers.Any(q=> q.SectionId==0))
             {
                 var sectionId = hydrator.Quote.Storyboard.GetSection(sectionName).Id;
-                questionAnswers.ForEach(it => it.sectionId = sectionId);
+                questionAnswers.ForEach(it => it.SectionId = sectionId);
             }
 
             questionAnswers.CheckForRequiredQuestionsThatAreNull();
@@ -79,11 +80,11 @@ namespace ApolloTests.Data.EntityBuilder
 
             foreach (var question in questionAnswers)
             {
-                if(question.isHidden)
+                if(question.IsHidden??false)
                 {
                     continue;
                 }
-                if ((question.response == null || (question.response is string res && res == string.Empty)) && (question.RequiresAnswer))
+                if ((question.Response == null || (question.Response is string res && res == string.Empty)) && (question.RequiresAnswer??false))
                 {
                     RequiredQuestionsThatAreNull.Add(question);
                 }
@@ -100,8 +101,8 @@ namespace ApolloTests.Data.EntityBuilder
                 foreach (var question in RequiredQuestionsThatAreNull)
                 {
 
-                    var varName = question.alias?.Replace('-', '_') ?? throw new NullReferenceException($"Alias was null for question {question.Id}");
-                    aliasesStr += $"public static string {varName} {{ get; }} = \"{question.alias}\";\n";
+                    var varName = question.Alias?.Replace('-', '_') ?? throw new NullReferenceException($"Alias was null for question {question.Id}");
+                    aliasesStr += $"public static string {varName} {{ get; }} = \"{question.Alias}\";\n";
                     helperStr += $"public QuestionAnswer {varName} {{ get; set; }} = new QuestionAnswer(Alias.{varName}, null);\n";
                 }
 
@@ -121,7 +122,7 @@ namespace ApolloTests.Data.EntityBuilder
             //if statechage==null, then this is the initial call. we will just load everything
             if (stateChange == null)
             {
-               questionsToLoad.AddRange(questionAnswers.Where(q=> !q.isHidden));
+               questionsToLoad.AddRange(questionAnswers.Where(q=> !q.IsHidden??false));
             }
             else
             {
@@ -140,56 +141,63 @@ namespace ApolloTests.Data.EntityBuilder
             {
                 Answers.NullGuard();
                 //getting the answer object (NOT THE MODEL)
-                var builderAnswer = Answers.GetAnswer(question.questionAlias ?? throw new NullReferenceException());
+                var builderAnswer = Answers.GetAnswer(question.QuestionAlias ?? throw new NullReferenceException());
 
-                //some question answers have a target type as attribute
-                //
-                // for example Vehicle question, we want to answer with HydratorUtil's CurrentEntity
-                //  [HydratorAttr(typeof(HydratorUtil), "CurrentEntity", AsJsonStr =true)]
-                //
+               
+
+                object response;
+
                 if (builderAnswer.targetType != null)
                 {
-                    if(builderAnswer.targetType ==typeof(HydratorUtil))
+                    //some question answers have a target type as attribute
+                    //
+                    // for example Vehicle question, we want to answer with HydratorUtil's CurrentEntity
+                    //  [HydratorAttr(typeof(HydratorUtil), "CurrentEntity", AsJsonStr =true)]
+                    //
+                    if (builderAnswer.targetType ==typeof(HydratorUtil))
                     {
                         builderAnswer.variableName.NullGuard("variableName");
                         var targetProp = builderAnswer.targetType.GetProperty(builderAnswer.variableName) ?? throw new NullReferenceException($"property not found: {builderAnswer.variableName} in {builderAnswer.targetType.Name}");
-                        question.response = targetProp.GetValue(hydrator, null);
-                        hydrator.Hydrate(question.response);
+                        response = targetProp.GetValue(hydrator, null);
+                        hydrator.Hydrate(response);
                     }
                     else
                     {
                         throw new NotImplementedException($"{builderAnswer.targetType.Name} not implemented");
                     }
                 }
-
-                //
-                // Example: 
-                // [HydratorAttr("StateCode")] will load the varialbeName
-                //
                 else if (builderAnswer.variableName!= null)
                 {
-                    question.response = hydrator.Interpreter.Eval(builderAnswer.variableName);
+                    //
+                    // Example: 
+                    // [HydratorAttr("StateCode")] will load the varialbeName
+                    //
+                    response = hydrator.Interpreter.Eval(builderAnswer.variableName);
                 }
                 else
                 {
                     // if question is multi-select type and response is empty
                     // then a null is sent to apollo because the UI fails with an empty string
-                    if(question.questionType==70 && builderAnswer._response is string str && str ==string.Empty)
+                    if(question.QuestionType==70 && builderAnswer._response is string str && str ==string.Empty)
                     {
-                        question.response = null;
+                        response = null;
                     }
                     else
                     {
-                        question.response = builderAnswer._response;
+                        response = builderAnswer._response;
                     }
                 }
 
                 //if the response needs to be sent as a raw string, then we convert it to it
-                if(builderAnswer.AsJsonStr)
+                if (builderAnswer.AsJsonStr)
                 {
-                    question.response.NullGuard();
-                    question.response = JToken.FromObject(question.response).ToString(Newtonsoft.Json.Formatting.None);
+                    response.NullGuard();
+                    response = JToken.FromObject(response).ToString(Newtonsoft.Json.Formatting.None);
                 }
+
+                question.Response = (String)response;
+
+
             }
 
         }
@@ -262,11 +270,11 @@ namespace ApolloTests.Data.EntityBuilder
                 //
                 //     3.2. if the entity is a risk, then we have to load the risk model
                 //
-                if (entity is IRiskEntity riskEntity)
+                if (entity.IsRiskEntity())
                 {
-                    hydrator.Hydrate(riskEntity);
-                    entityContext.Add(entityContextName, riskEntity?.ToJToken()?? throw new NullReferenceException());
-                    entityContext.Add("ApplicationRisk", new JObject() { { entityContextName.ToLower(), riskEntity?.ToJToken() } });
+                    hydrator.Hydrate(entity);
+                    entityContext.Add(entityContextName, entity?.ToJToken()?? throw new NullReferenceException());
+                    entityContext.Add("ApplicationRisk", new JObject() { { entityContextName.ToLower(), entity?.ToJToken() } });
                 }
                 else
                 {
@@ -295,7 +303,7 @@ namespace ApolloTests.Data.EntityBuilder
             //
             //     5. if any valid questions came back
             //
-            if (response.Any() && response.Any(it => (it.response==null) || (it.response is string str && str == string.Empty)))
+            if (response.Any() && response.Any(it => (it.Response==null) || (it.Response is string str && str == string.Empty)))
             {
                 //
                 //         5.1. load those question's answers
@@ -367,6 +375,18 @@ namespace ApolloTests.Data.EntityBuilder
             {Section.Tools, "Tools" },
 
         };
+
+        private static bool IsRiskEntity(this object obj)
+        {
+            if (   obj is Vehicle
+                || obj is Driver 
+                || obj is Location 
+                || obj is Building)
+            {
+                return true;
+            }
+            return false;
+        }
 
     }
     /// <summary>

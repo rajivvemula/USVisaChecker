@@ -8,7 +8,7 @@ using Polly;
 using Newtonsoft.Json;
 using HitachiQA.Hooks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using ApolloTests.Data.Entities.Context;
 
 namespace ApolloTests.StepDefinition.Forms
 {
@@ -27,14 +27,20 @@ namespace ApolloTests.StepDefinition.Forms
         private TestContext TestContext;
         private FormTestContext? Context;
         private MiscHook MiscHook;
+        private CosmosContext CosmosContext;
+        private SQLContext SQLContext;
 
-        public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook)
+        private IObjectContainer ObjectContainer;
+        public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook, IObjectContainer objectContainer)
         {
             this.RestAPI = restAPI;
             this.SQL= SQL;
             this.Configuration = config;
             this.TestContext= TC;
             this.MiscHook = miscHook;
+            this.CosmosContext= objectContainer.Resolve<CosmosContext>();
+            this.SQLContext = objectContainer.Resolve<SQLContext>();
+            this.ObjectContainer = objectContainer;
 
         }
 
@@ -44,9 +50,10 @@ namespace ApolloTests.StepDefinition.Forms
             this.code = code;
             this.name = name;
             this.LineId = LineId;
-            this.Form = Form.GetForm(new Data.Entity.Line(LineId), code, name);
+            var line = SQLContext.Line.Find(LineId);
+            this.Form = Form.GetForm(line, code, name);
             bool createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
-            var policy = this.Form.condition.GetValidPolicy(createNewEntities);
+            var policy = this.Form.condition.GetValidPolicy(createNewEntities, ObjectContainer);
             this.Context = new FormTestContext(Form, policy);
             var policyId = policy.Id;
 
@@ -86,6 +93,7 @@ namespace ApolloTests.StepDefinition.Forms
                 //{ "init", null },
                 { "orderBy", "insertDateTime" },
                 { "sortOrder", 1 },
+                { "pageSize", 1000 }
             };
 
             var retries = Polly.Policy.HandleResult<bool>(false)
@@ -304,10 +312,10 @@ namespace ApolloTests.StepDefinition.Forms
     public class FormTestContext
     {
         public Form Form;
-        public Data.Entity.Policy Policy;
+        public Data.Entities.Policy Policy;
         public List<Test> Tests;
 
-        public FormTestContext(Form form, Data.Entity.Policy policy)
+        public FormTestContext(Form form, Data.Entities.Policy policy)
         {
             this.Form = form;
             this.Policy = policy;
@@ -317,7 +325,7 @@ namespace ApolloTests.StepDefinition.Forms
         }
         public class Test
         {
-            public Test(Form form, Data.Entity.Policy policy, Recipient recipient)
+            public Test(Form form, Data.Entities.Policy policy, Recipient recipient)
             {
                 this.guid = Guid.NewGuid();
                 this.documentName = $"[{recipient.RecipientTypeCode}] [{form.Edition}] {form.name} {guid}";
@@ -333,18 +341,18 @@ namespace ApolloTests.StepDefinition.Forms
             public string? filePath;
             public Guid guid;
 
-            private DocGenBody GetDocGenBody(Form form, Data.Entity.Policy policy, Recipient recipient)
+            private DocGenBody GetDocGenBody(Form form, Data.Entities.Policy policy, Recipient recipient)
             {
                 long? ratableObjectId = null;
 
                 if (form.condition.endorsement)
                 {
                     var endorsement = policy.GetDraftEndorsements().Last();
-                    var ratableObject = endorsement.GetRatableObject();
+                    var ratableObject = endorsement.RatableObject;
                     if(ratableObject==null)
                     {
                         endorsement.GetSummary();
-                        ratableObject = endorsement.GetRatableObject();
+                        ratableObject = endorsement.RatableObject;
                     }
                     ratableObject.NullGuard($"RatableObject under policy: {policy.Id}");
                     ratableObjectId = ratableObject.Id;

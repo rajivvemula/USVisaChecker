@@ -1,5 +1,6 @@
-﻿using ApolloTests.Data.Entities;
-using ApolloTests.Data.Entity;
+﻿using ApolloTests.Data.Entities.Reference;
+using ApolloTests.Data.Entities;
+
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
