@@ -52,6 +52,9 @@ namespace HitachiQA.Hooks
                 }
                 targetStatus.outcomes.Add(newOutcome);
 
+                currentStatuses.ForEach(s => s.outcomes.RemoveAll(it => (DateTime.Now - it.TimeStamp).TotalDays > 1));
+                currentStatuses.RemoveAll(s => !s.outcomes.Any());
+
                 Environment.SetEnvironmentVariable(SCENARIOSTATUS, JArray.FromObject(currentStatuses).ToString(Newtonsoft.Json.Formatting.None), EnvironmentVariableTarget.User);
             }
             finally
@@ -74,7 +77,14 @@ namespace HitachiQA.Hooks
             {
                 return null;
             }
-            return JArray.Parse(statusStr).ToObject<List<ScenarioStatus>>();
+            try
+            {
+                return JArray.Parse(statusStr).ToObject<List<ScenarioStatus>>();
+            }
+            catch(Exception)
+            {
+                return null;
+            }
 
 
         }
@@ -93,9 +103,11 @@ namespace HitachiQA.Hooks
         public class Outcome
         {
             public bool error;
+            public DateTimeOffset TimeStamp;
             public Outcome(UnitTestOutcome outcome)
             {
-                this.error = outcome != UnitTestOutcome.Passed;
+                error = outcome != UnitTestOutcome.Passed;
+                TimeStamp = DateTimeOffset.Now;
             }
             
         }

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using HitachiQA.Hooks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ApolloTests.Data.Entities.Context;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApolloTests.StepDefinition.Forms
 {
@@ -52,8 +53,11 @@ namespace ApolloTests.StepDefinition.Forms
             this.LineId = LineId;
             var line = SQLContext.Line.Find(LineId);
             this.Form = Form.GetForm(line, code, name);
-            bool createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error??false;
-            var policy = this.Form.condition.GetValidPolicy(false, ObjectContainer);
+            if(!bool.TryParse(Configuration.GetVariable("FORM_CREATE_NEW_ENTITIES", true), out bool createNewEntities))
+            {
+                createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error ?? false;
+            }
+            var policy = this.Form.condition.GetValidPolicy(createNewEntities, ObjectContainer);
             this.Context = new FormTestContext(Form, policy);
             var policyId = policy.Id;
 

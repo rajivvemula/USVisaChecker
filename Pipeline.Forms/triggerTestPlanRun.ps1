@@ -32,8 +32,8 @@ if (-not $Env:TargetReleaseId) {
     exit
 }
   
-if (-not $Env:ACCESS_TOKEN) {
-    Write-Error "ACCESS_TOKEN environment variable is not set. [Required]"
+if (-not $Env:BEARER_TOKEN -and -not $Env:PAT_TOKEN) {
+    Write-Error "BEARER_TOKEN or PAT_TOKEN environment variables not set. [Required]"
     exit
 }
 
@@ -55,13 +55,17 @@ if (-not $Env:ADO_PROJ) {
 
 $planId = $Env:PlanId
 $envName = $Env:TargetEnvironment
-$AccessToken= $Env:ACCESS_TOKEN
+$BearerToken= $Env:ACCESS_TOKEN
+$PATToken = $Env:PAT_TOKEN
 $releaseId = $Env:TargetReleaseId
 $org = $Env:ADO_ORG
 $proj = $Env:ADO_PROJ
 echo "PlanId: $planId"
 echo "EnvName: $envName" 
-#echo "AccessToken: ${AccessToken}"
+echo "releaseId: $releaseId" 
+echo "org: $org"
+echo "proj: $proj" 
+#echo "BearerToken: ${BearerToken}"
 
 
 
@@ -69,7 +73,12 @@ echo "EnvName: $envName"
 # Retrieving target test points
 #
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-$headers.Add("Authorization", "Bearer ${AccessToken}")
+if($BearerToken){
+    $headers.Add("Authorization", "Bearer ${BearerToken}")
+}
+else {
+    $headers.Add("Authorization", "Basic ${PATToken}")
+}
 $headers.Add("Content-Type", "application/json")
 
 
@@ -91,7 +100,6 @@ foreach ($suite in $suites)
     }
 }
 echo "retrieved target testpoints"
-echo "test point count: $testpointIds.length"
 
 #--------------------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------------------

@@ -48,7 +48,7 @@ stages:
         PlanId: 96142 
         TargetEnvironment: ${{ parameters.TargetEnvironment }}
         TargetReleaseId: 5 
-        ACCESS_TOKEN: $(System.AccessToken)
+        BEARER_TOKEN: $(System.AccessToken)
         ADO_ORG: biberk
         ADO_PROJ: biBERK 
 
