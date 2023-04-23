@@ -66,7 +66,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
 
         public void BIPD_SplitLimit(int BI_PerPerson = 100000, int BI_perOccurrence = 300000, int PD_perOccurrence = 500000)
         {
-            var limit = Find(it => it.CoverageType.Name == CoverageType.BIPD);
+            var limit = Find(it => it.CoverageType.TypeName == CoverageType.BIPD);
 
             if (limit == null)
             {

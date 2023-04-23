@@ -102,12 +102,21 @@ namespace ApolloTests.Data.Entities
             var success = wait.Execute(() =>
             {
                 result = this.GetPropertyValue<object>(propName);
+
                 if (waitForValueNotEqual)
                 {
+                    if(value==null)
+                    {
+                        return result != null;
+                    }
                     return !result.Equals(value);
                 }
                 else
                 {
+                    if (value == null)
+                    {
+                        return result == null;
+                    }
                     return result.Equals(value);
                 }
 

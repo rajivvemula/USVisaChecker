@@ -11,20 +11,20 @@ namespace ApolloTests.Data.EntityBuilder
 {
     public static class LimitBuilder
     {
-        public static void RemoveLimit(this List<Limit> limits, CoverageType coverage) => limits.RemoveLimit(coverage.Name);
+        public static void RemoveLimit(this List<Limit> limits, CoverageType coverage) => limits.RemoveLimit(coverage.TypeName);
         public static void RemoveLimit(this List<Limit> limits, string coverageName)
         {
-            limits.RemoveAll(limit => limit.GetCoverageType().Name == coverageName);
+            limits.RemoveAll(limit => limit.GetCoverageType().TypeName == coverageName);
         }
-        public static Limit? Getter(this List<Limit> limits, string coverageName) => limits.Find(c => c.GetCoverageType().Name == coverageName);
+        public static Limit? Getter(this List<Limit> limits, string coverageName) => limits.Find((Predicate<Limit>)(c => c.GetCoverageType().TypeName == coverageName));
 
-        public static void Setter(this List<Limit> limits, CoverageType coverageType, bool value = true) => limits.Setter(coverageType.Name, value);
+        public static void Setter(this List<Limit> limits, CoverageType coverageType, bool value = true) => limits.Setter(coverageType.TypeName, value);
 
         public static void Setter(this List<Limit> limits, string coverageName, bool value = true)
         {
             if (value)
             {
-                if (limits.Any(it => it.CoverageType.Name == coverageName))
+                if (limits.Any(it => it.CoverageType.TypeName == coverageName))
                 {
                     throw new InvalidOperationException($"Limit already exists with Coverage Type {coverageName}");
                 }

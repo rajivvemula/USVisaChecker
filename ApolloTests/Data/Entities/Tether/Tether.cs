@@ -59,7 +59,8 @@ namespace ApolloTests.Data.Entities.Tether
 
         public DateTimeOffset? PolicyCancellationDate { get; set; }
 
-        public DateTimeOffset? PolicyCancellationEffectiveDate { get; set; }
+        [ListenForChanges]
+        public virtual DateTimeOffset? PolicyCancellationEffectiveDate { get; set; }
 
         public DateTimeOffset? PolicyCancellationMailingDate { get; set; }
 

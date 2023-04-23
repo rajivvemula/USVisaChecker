@@ -739,7 +739,7 @@ namespace ApolloTests.Data.Rating
 
                     if (limitCount == 0)
                     {
-                        throw new Exception($"Coverage {limit.GetCoverageType().Name} had no limits selected");
+                        throw new Exception($"Coverage {limit.GetCoverageType().TypeName} had no limits selected");
 
                     }
                     if (isCombined == null)
@@ -863,7 +863,7 @@ namespace ApolloTests.Data.Rating
                     foreach(var vehicle in vehicles)
                     {
                         int GVW = int.Parse(vehicle.Vehicle.GrossVehicleWeight);
-                        if (vehicle.Vehicle.BodyCategoryTypeId == 5 && Engine.root.getLimits(vehicle.Vehicle).FirstOrDefault(it=> it.GetCoverageType().Name == "Collision" || it.GetCoverageType().Name == "Comprehensive") != null)
+                        if (vehicle.Vehicle.BodyCategoryTypeId == 5 && Engine.root.getLimits(vehicle.Vehicle).FirstOrDefault(it=> it.GetCoverageType().TypeName == "Collision" || it.GetCoverageType().TypeName == "Comprehensive") != null)
                         {
                             semiTrailerCount++;
                             continue;

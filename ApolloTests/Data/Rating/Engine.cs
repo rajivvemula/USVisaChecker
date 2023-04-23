@@ -205,7 +205,7 @@ namespace ApolloTests.Data.Rating
         private JObject RunForLimit(Limit limit)
         {
             var coverageType = limit.GetCoverageType();
-            Log.Debug($"Current Coverage: {coverageType.Name}");
+            Log.Debug($"Current Coverage: {coverageType.TypeName}");
 
             interpreter.SetVariable("Limit", limit);
             AlgorithmAssignment algorithmAssignment = getAlgorithmAssignment(limit.GetCoverageType(), KnownField.GetKnownField("Class Code").Resolve(this)?.ToString()??throw new NullReferenceException());
@@ -219,7 +219,7 @@ namespace ApolloTests.Data.Rating
             interpreter.SetVariable("CoverageCode", coverageCode);
 
 
-            var rateResults = new JObject() { { "CoverageCode", coverageCode }, { "CoverageName", coverageType.Name } };
+            var rateResults = new JObject() { { "CoverageCode", coverageCode }, { "CoverageName", coverageType.TypeName } };
 
             loadResolvedAlgorithmFactors(coverageCode, ref rateResults);
             JObject factors = (JObject)(rateResults["Factors"] ?? throw new NullReferenceException());
@@ -450,7 +450,7 @@ namespace ApolloTests.Data.Rating
                         RatingGroup = row["Rating Group"]
                     };
 
-                    if (row.TryGetValue(coverageType.Name, out var value))
+                    if (row.TryGetValue(coverageType.TypeName, out var value))
                     {
                         result.CoverageCode = value;
 
@@ -459,7 +459,7 @@ namespace ApolloTests.Data.Rating
                     {
                         foreach(var possibleName in CoverageType.Persisted)
                         {
-                            if (possibleName.Value == coverageType.Name && row.TryGetValue(possibleName.Key, out value))
+                            if (possibleName.Value == coverageType.TypeName && row.TryGetValue(possibleName.Key, out value))
                             {
                                 result.CoverageCode = value;
 
@@ -479,7 +479,7 @@ namespace ApolloTests.Data.Rating
             
             if(string.IsNullOrWhiteSpace(result?.CoverageCode))
             {
-                throw new KeyNotFoundException($"Coverage Type: [{coverageType.Name}] Class Code: [{ClassCode}] did not match any Algorithms");
+                throw new KeyNotFoundException($"Coverage Type: [{coverageType.TypeName}] Class Code: [{ClassCode}] did not match any Algorithms");
 
             }
             return result;
@@ -491,12 +491,12 @@ namespace ApolloTests.Data.Rating
             DefaultCoverageAlgorithms.Merge(CoverageAlgorithms?[GoverningStateCode]?? throw new NullReferenceException());
 
             JToken? coverageCode = null;
-            if (DefaultCoverageAlgorithms?.TryGetValue(coverageType.Name, out coverageCode) ?? false)
+            if (DefaultCoverageAlgorithms?.TryGetValue(coverageType.TypeName, out coverageCode) ?? false)
             {
                 return coverageCode?.ToString();
             }
             
-            throw new Exception($"couldn't find algorithm Assignment for Coverage Type: {coverageType.Name} on state {GoverningStateCode}\n please check Data/Rating/CoverageAlgorithms.json");
+            throw new Exception($"couldn't find algorithm Assignment for Coverage Type: {coverageType.TypeName} on state {GoverningStateCode}\n please check Data/Rating/CoverageAlgorithms.json");
             
         }
 

@@ -20,10 +20,6 @@ namespace ApolloTests.Data.Entities.Coverage
 
         public string TypeName { get; set; }
 
-        [JsonIgnore]
-        [NotMapped]
-        public string Name => TypeName;
-
         public string Aliases { get; set; }
 
         public int SortOrder { get; set; }
@@ -50,15 +46,15 @@ namespace ApolloTests.Data.Entities.Coverage
 
         [NotMapped]
         [JsonIgnore]
-        public bool isVehicleLevel => _vehicleLevelCoverages.Find(it => it == Name) != null;
+        public bool isVehicleLevel => _vehicleLevelCoverages.Find((Predicate<string>)(it => it == this.TypeName)) != null;
 
         [NotMapped]
         [JsonIgnore]
-        public bool calculatedPerRisk => _CalculatedOncePerPolicy.Find(it => it == Name) == null;
+        public bool calculatedPerRisk => _CalculatedOncePerPolicy.Find((Predicate<string>)(it => it == this.TypeName)) == null;
 
         public bool IsNonPoweredVehicle_Unapplicable()
         {
-            return DONT_APPLY_TO_NON_POWERED_VEHICLES.Contains(this.Name);
+            return DONT_APPLY_TO_NON_POWERED_VEHICLES.Contains(this.TypeName);
         }
 
         private static readonly List<string> DONT_APPLY_TO_NON_POWERED_VEHICLES = new List<string>

@@ -43,7 +43,7 @@ namespace ApolloTests.Data.EntityBuilder
             {
                 case Section.PolicyCoverages:
                     var limit = (Limit?)currentEntity ?? throw new NullReferenceException();
-                    var covQ = ((JArray?)hydrator.Quote.GetCoverageQuestions(limit.CoverageType.Name))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
+                    var covQ = ((JArray?)hydrator.Quote.GetCoverageQuestions(limit.CoverageType.TypeName))?.ToObject<List<QuestionResponse>>() ?? throw new NullReferenceException();
                     questionAnswers.AddRange(covQ);
                     questionAnswers.LoadAnswers(hydrator, answers);
                     return;

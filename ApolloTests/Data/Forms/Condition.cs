@@ -154,7 +154,7 @@ namespace ApolloTests.Data.Form
             {
                 foreach (var type in this.coverageTypes)
                 {
-                    var typeId = sqlContext.CoverageType.First(it => it.Name == type).Id;
+                    var typeId = sqlContext.CoverageType.First(it => it.TypeName == type).Id;
                     conditions.Add($"ARRAY_CONTAINS(c.SelectedCoverages, {{ \"CoverageTypeId\": {typeId} }}, true) ");
                 }
 
@@ -171,7 +171,7 @@ namespace ApolloTests.Data.Form
             }
             if (this.splitLimitBIPD)
             {
-                var typeId = sqlContext.CoverageType.First(it => it.Name == CoverageType.BIPD);
+                var typeId = sqlContext.CoverageType.First(it => it.TypeName == CoverageType.BIPD).Id;
                 conditions.Add($"ARRAY_CONTAINS(c.SelectedCoverages, {{ \"CoverageTypeId\": {typeId},  \"SelectedLimitName\": \"Split Limit\"}}, true) ");
 
             }
@@ -357,8 +357,13 @@ namespace ApolloTests.Data.Form
                     ORDER BY c._ts DESC";
                 //Log.Debug(applicationQuery);
 
-                
-                var result = Cosmos.GetQuery("Application", applicationQuery).Result;
+                List<dynamic> result;
+                try { 
+                    result = Cosmos.GetQuery("Application", applicationQuery).Result;
+                }
+                catch(Exception ex) {
+                    throw new Exception($"error running query: \n{applicationQuery}\n", ex);
+                }
                 if (result.Any())
                 {
                     Log.Debug("Matched Application: " + Log.stringify($"{result[0].Id}={result[0].BusinessInformation.Name}"));
@@ -391,7 +396,7 @@ namespace ApolloTests.Data.Form
             }
             if(stateCode == "MI")
             {
-                quoteBuilder.PolicyCoverages.First(it => it.GetCoverageType().Name == CoverageType.BIPD).SelectedLimits = new List<int>() { 510000 };
+                quoteBuilder.PolicyCoverages.First(it => it.GetCoverageType().TypeName == CoverageType.BIPD).SelectedLimits = new List<int>() { 510000 };
             }
             if (splitLimitBIPD)
             {
