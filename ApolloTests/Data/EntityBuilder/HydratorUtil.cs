@@ -192,10 +192,11 @@ namespace ApolloTests.Data.EntityBuilder
 
                     //    5.3) Interpret the Attribute's name
                     //         note: see interpreter here: https://github.com/davideicardi/DynamicExpresso
+
                     var interpretedVal = Interpreter.Eval(varAtt.Name);
 
                     //    5.4) change the type returned by the Interpreter to the same as the current obj (prop.PropertyType)
-                    object castedValue;
+                    object? castedValue;
                     try
                     {
                         if(interpretedVal is JToken token)
@@ -206,7 +207,10 @@ namespace ApolloTests.Data.EntityBuilder
                         {
                             try
                             {
-                                
+                                if(interpretedVal==null)
+                                {
+                                    castedValue = null;
+                                }
                                 if (Nullable.GetUnderlyingType(prop.PropertyType) is var underlyingType && underlyingType!=null)
                                 {
                                     castedValue = Convert.ChangeType(interpretedVal, underlyingType);
@@ -230,14 +234,15 @@ namespace ApolloTests.Data.EntityBuilder
                     }
 
                     //    5.5) if the final value is null or whitespace then fail
-                    if (castedValue == null || (castedValue is string && string.IsNullOrWhiteSpace(castedValue.ToString())))
-                    {
-                        Log.Error($"{prop.Name} returned null for {varAtt.Name}");
-                        throw new NullReferenceException();
+                    if (castedValue == null || (castedValue is string && string.IsNullOrWhiteSpace(castedValue.ToString()))) {
+                        Log.Info($"{prop.Name} returned null for {varAtt.Name}");
+                    }
+                    else {
+                        //    5.6) otherwise load the current object with the interpreted value, already casted
+                        obj = castedValue;
                     }
 
-                    //    5.6) otherwise load the current object with the interpreted value, already casted
-                    obj = castedValue;
+                    
                 }
                 //old implementation used @ to identify variables, this is not obsolete
                 else if (obj is string varName && (varName.StartsWith('@') || varName.StartsWith("JSON@")))

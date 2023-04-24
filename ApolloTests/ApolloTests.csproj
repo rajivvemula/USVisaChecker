@@ -76,8 +76,8 @@
     <ProjectReference Include="..\HitachiQA\HitachiQA.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Features\Quote.feature.cs">
-      <DependentUpon>Quote.feature</DependentUpon>
+    <Compile Update="Features\Quote.UI.feature.cs">
+      <DependentUpon>Quote.UI.feature</DependentUpon>
     </Compile>
   </ItemGroup>
 

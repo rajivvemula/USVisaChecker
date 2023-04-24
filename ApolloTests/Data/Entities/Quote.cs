@@ -355,28 +355,35 @@ namespace ApolloTests.Data.Entities
                 }
             }
         }
-        public dynamic GetVehicleTypeRisk()
+        public JObject GetRisksByType(RiskTypeEnum type)
         {
-            int riskTypeId = 1;
-
-            return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}") ?? throw new Exception("GetVehicleTypeRisk returned null 2");
+            return RestAPI.GET($"/quote/{this.Id}/risktype/{(int)type}") ?? throw new Exception("GetDriverTypeRisk returned null 2");
         }
 
         public List<VehicleRisk> GetVehicles()
         {
-            return ((JArray?)GetVehicleTypeRisk()["risks"] ?? throw new NullReferenceException()).Select(risk => risk.ToObject<VehicleRisk>()).ToList();
-        }
-
-        public JObject GetDriverTypeRisk()
-        {
-            int riskTypeId = 2;
-            return RestAPI.GET($"/quote/{this.Id}/risktype/{riskTypeId}") ?? throw new Exception("GetDriverTypeRisk returned null 2");
+            return ((JArray?)GetRisksByType(RiskTypeEnum.Vehicle)["risks"] ?? throw new NullReferenceException()).Select(risk => risk.ToObject<VehicleRisk>()).ToList();
         }
 
         public List<Risk.DriverRisk> GetDrivers()
         {
 
-            return ((JArray?)GetDriverTypeRisk()["risks"] ?? throw new NullReferenceException()).Select(risk => risk.ToObject<Risk.DriverRisk>()).ToList();
+            return ((JArray?)GetRisksByType(RiskTypeEnum.Driver)["risks"] ?? throw new NullReferenceException()).Select(risk => risk.ToObject<Risk.DriverRisk>()).ToList();
+        }
+
+        public List<Risk.LocationRisk> GetLocations()
+        {
+            return ((JArray?)GetRisksByType(RiskTypeEnum.Location)["risks"] ?? throw new NullReferenceException())
+                .Select(risk => risk.ToObject<Risk.LocationRisk>())
+                .Where(it=> it.RiskTypeId==(int)RiskTypeEnum.Location)
+                .ToList();
+        }
+        public List<Risk.BuildingRisk> GetBuildings()
+        {
+            return ((JArray?)GetRisksByType(RiskTypeEnum.Building)["risks"] ?? throw new NullReferenceException())
+                .Select(risk => risk.ToObject<Risk.BuildingRisk>())
+                .Where(it => it.RiskTypeId == (int)RiskTypeEnum.Building)
+                .ToList();
         }
 
         public dynamic GetSectionQuestions(string sectionName)

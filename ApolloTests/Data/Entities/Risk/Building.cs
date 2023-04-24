@@ -64,7 +64,7 @@ namespace ApolloTests.Data.Entities.Risk
         // RestAPI only properties
         //
         //
-        [HydratorAttr("LocationRiskResponse[\"location\"][\"riskId\"]")]
+        [HydratorAttr("LocationRiskResponse==null? 0: (LocationRiskResponse as JObject)[\"location\"][\"riskId\"]")]
         [JsonProperty("locationRiskId")]
         [NotMapped]
         public int? LocationRiskId { get; set; }

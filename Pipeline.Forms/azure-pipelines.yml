@@ -4,6 +4,7 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 trigger: none
 
+
 pr: none
 
 schedules:

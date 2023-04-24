@@ -126,6 +126,8 @@ namespace ApolloTests.Data.EntityBuilder
             //by default accounting services keyword is loaded
             ClassCodeKeyword ??= KeywordMappingUtil.GetUsingKeywordName(line, "Accounting Services");
 
+            HydrateNewQuoteObject();
+
             //
             // 3. once initialized, then the developer/user can make all desired modifications to the defaults
             //
@@ -176,7 +178,7 @@ namespace ApolloTests.Data.EntityBuilder
         {   //
             // 5. Quote is created in Apollo
             //
-            this.Quote ??= CreateQuote();
+            CreateQuote();
             this.Hydrator.Quote = Quote;
             
 
@@ -217,16 +219,14 @@ namespace ApolloTests.Data.EntityBuilder
             return this.Quote;
         }
 
-
-
-        public Data.Entities.Quote CreateQuote()
+        public void HydrateNewQuoteObject()
         {
             //
             //    1. Interpreter is initialized to hydrate properties see HydratorUtil.cs for detailed documentation
             //    2. set variables relevant to the LOB (IndustryClassTaxonomyId vs BuildingGroupId)
             //
             this.Hydrator.Interpreter.SetVariable("KeywordId", this.ClassCodeKeyword.KeywordId);
-            switch(this.Line.LineEnum)
+            switch (this.Line.LineEnum)
             {
                 case LineEnum.CommercialAuto:
                     this.Hydrator.Interpreter.SetVariable("IndustryClassTaxonomyClassName", this.ClassCodeKeyword.TaxonomyName);
@@ -254,9 +254,16 @@ namespace ApolloTests.Data.EntityBuilder
             //     4. hydrate QuoteCreate object
             //
             Quote = new Quote();
+            this.Hydrator.Quote = Quote;
             this.Hydrator.Hydrate(Quote);
+        }
+
+        public Quote CreateQuote()
+        {
+            
             JObject response = RestAPI.POST("/quote/create", this.Quote) ?? throw new NullReferenceException();
             Quote = CosmosContext.Quotes.First(it => it.Id == response.Value<long>("id"));
+            this.Hydrator.Quote = Quote;
 
             //
             //     5. store the rest of the relevant datapoints

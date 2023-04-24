@@ -55,7 +55,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
                 }
                 else
                 {
-                    while (this.Count != value)
+                    while (this.Values.Select(it=>it.Count).Sum()!= value)
                     {
                         this.AddOneBuilding();
                     }
@@ -68,7 +68,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             this.Builder = Builder;
             this.AddOne();
         }
-        public JToken RunSendStrategy(Data.Entities.Quote quote)   
+        public JToken RunSendStrategy(Data.Entities.Quote quote)
         {
             Hydrator.Interpreter.SetVariable("ClassCode", this.Builder.ClassCodeKeyword.ClassCode);
 
@@ -83,6 +83,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
                 Builder.Hydrator.CurrentEntity = locationRisk.Location;
                 Builder.Hydrator.CurrentAnswers = locationRisk.QuestionAnswers;
                 Hydrator.Hydrate(locationRisk);
+               
                 var locationBody = new JArray(locationRisk.ToJObject());
                 JArray? locationRes = this.Builder.RestAPI.POST($"quote/{quote.Id}/risk", locationBody) ?? throw new NullReferenceException();
                 result.Add(locationRes.ElementAt(0));
@@ -90,18 +91,21 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
                 locationRisk.LoadEntityObject((JObject)locationRes.ElementAt(0));
 
 
-                foreach (var buildingRisk in location.Value)
+                if (quote.SubLineId != (long)SubLineEnum.GeneralLiability)
                 {
-                    Hydrator.Interpreter.SetVariable("BuildingRisk", buildingRisk);
+                    foreach (var buildingRisk in location.Value)
+                    {
+                        Hydrator.Interpreter.SetVariable("BuildingRisk", buildingRisk);
 
-                    Builder.Hydrator.CurrentEntity = buildingRisk.Building;
-                    Builder.Hydrator.CurrentAnswers = buildingRisk.QuestionAnswers;
-                    Hydrator.Hydrate(buildingRisk);
-                    var buildingBody = new JArray(buildingRisk.ToJObject());
-                    JArray? buildingRes = this.Builder.RestAPI.POST($"quote/{quote.Id}/risk", buildingBody) ?? throw new NullReferenceException();
-                    result.Add(buildingRes.ElementAt(0));
-                    buildingRisk.LoadEntityObject((JObject)buildingRes.ElementAt(0));
+                        Builder.Hydrator.CurrentEntity = buildingRisk.Building;
+                        Builder.Hydrator.CurrentAnswers = buildingRisk.QuestionAnswers;
+                        Hydrator.Hydrate(buildingRisk);
+                        var buildingBody = new JArray(buildingRisk.ToJObject());
+                        JArray? buildingRes = this.Builder.RestAPI.POST($"quote/{quote.Id}/risk", buildingBody) ?? throw new NullReferenceException();
+                        result.Add(buildingRes.ElementAt(0));
+                        buildingRisk.LoadEntityObject((JObject)buildingRes.ElementAt(0));
 
+                    }
                 }
 
             }

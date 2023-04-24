@@ -55,7 +55,7 @@ if (-not $Env:ADO_PROJ) {
 
 $planId = $Env:PlanId
 $envName = $Env:TargetEnvironment
-$BearerToken= $Env:ACCESS_TOKEN
+$BearerToken= $Env:BEARER_TOKEN
 $PATToken = $Env:PAT_TOKEN
 $releaseId = $Env:TargetReleaseId
 $org = $Env:ADO_ORG
@@ -74,31 +74,31 @@ echo "proj: $proj"
 #
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 if($BearerToken){
+    echo "Loaded bearer token"
     $headers.Add("Authorization", "Bearer ${BearerToken}")
 }
 else {
-    $headers.Add("Authorization", "Basic ${PATToken}")
+    echo "Loaded basic token"
+    $B64Pat = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("`:$PATToken"))
+    $headers.Add("Authorization", "Basic ${B64Pat}")
 }
 $headers.Add("Content-Type", "application/json")
 
 
 $suitesURL = "https://dev.azure.com/$org/$proj/_apis/test/Plans/${planId}/suites?api-version=5.0"
 $suitesRes = Invoke-RestMethod $suitesURL -Method 'GET' -Headers $headers
-
-$envSuite = $suitesRes.value | Where-Object { $_.parent.name -ieq $envName }
-$suites = $suitesRes.value | Where-Object { $_.parent.id -eq $envSuite[0].id }
+$environmentSuite = $suitesRes.value | Where-Object { $_.name -ieq $envName }
 
 $testpointIds = @()
 
-foreach ($suite in $suites)
-{
-    $testPointsUrl = "https://dev.azure.com/$org/$proj/_apis/testplan/Plans/${planId}/Suites/$($suite.id)/TestPoint?api-version=7.0&continuationToken=0%3B1000"
+$testPointsUrl = "https://dev.azure.com/$org/$proj/_apis/testplan/Plans/${planId}/Suites/$($environmentSuite.id)/TestPoint?api-version=7.0&continuationToken=0%3B1000&isRecursive=true"
+$pointsRes = Invoke-RestMethod $testPointsUrl -Method 'GET' -Headers $headers 
 
-    $pointsRes = Invoke-RestMethod $testPointsUrl -Method 'GET' -Headers $headers
-    foreach ($point in $pointsRes.value) {
-        $testpointIds += $point.id
-    }
+foreach ($point in $pointsRes.value) {
+    $testpointIds += $point.id
 }
+
+echo $($testpointIds.count)
 echo "retrieved target testpoints"
 
 #--------------------------------------------------------------------------------------------------------------------------------------

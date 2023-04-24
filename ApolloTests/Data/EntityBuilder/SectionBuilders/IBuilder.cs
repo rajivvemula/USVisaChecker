@@ -14,7 +14,8 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
 
         [JsonIgnore]
         public Section Section { get; }
-        
+
+        public JToken RunSendStrategy() => RunSendStrategy(Builder.Quote);
         public JToken RunSendStrategy(Data.Entities.Quote Quote);
        
     }

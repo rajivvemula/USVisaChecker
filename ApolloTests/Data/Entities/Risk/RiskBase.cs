@@ -80,12 +80,11 @@ namespace ApolloTests.Data.Entities.Risk
         }
 
         [Key]
-        [JsonIgnore]
+        [JsonProperty("id")]
         public new long Id { get; set; }
 
 
-
-        [JsonProperty("id")]
+        [JsonIgnore]
         public string? id { get; set; }
 
         [JsonIgnore]

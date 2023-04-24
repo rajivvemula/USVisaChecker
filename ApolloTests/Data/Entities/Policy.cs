@@ -113,7 +113,7 @@ namespace ApolloTests.Data.Entities
 
         public dynamic GetVehicleTypeRisk()
         {
-            return this.Quote.GetVehicleTypeRisk();
+            return this.Quote.GetRisksByType(RiskTypeEnum.Vehicle);
         }
 
         public List<Quote> GetDraftEndorsements()
