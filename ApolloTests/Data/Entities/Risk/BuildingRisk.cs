@@ -8,19 +8,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApolloTests.Data.EntityBuilder;
 
 namespace ApolloTests.Data.Entities.Risk
 {
     public class BuildingRisk : RiskBase
     {
         public BuildingRisk(CosmosContext context) : base(context) { }
-        public BuildingRisk() { }
 
-        public BuildingRisk(bool loadDefaults)
+        public BuildingRisk(QuoteBuilder builder, bool loadDefaults = true) : base(builder)
         {
-            if(loadDefaults)
+            if (loadDefaults)
                 LoadDefaults();
         }
+        public BuildingRisk() { }
+
         public void LoadDefaults()
         {
             RiskTypeId = (int)RiskTypeEnum.Building;
@@ -41,7 +43,7 @@ namespace ApolloTests.Data.Entities.Risk
         }
 
         [JsonProperty("building")]
-        public virtual new Building Building { get; set; }
+        public override Building Building { get; set; }
 
         [JsonConverter(typeof(ConcreteTypeConverter<OutputMetadataBuilding>))]
         public override IOutputMetadata OutputMetadata { get; set; } = new OutputMetadataBuilding();

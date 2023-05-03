@@ -61,14 +61,14 @@ namespace ApolloTests.Data.EntityBuilder
         /// <summary>
         /// Main Constructor
         /// </summary>
-        public QuoteBuilder(IObjectContainer OC, Line line, string state, List<string>? coverageTypes=null)
+        public QuoteBuilder(IObjectContainer OC, LineEnum line, string state, List<string>? coverageTypes=null)
         {
             ObjectContainer = OC;
             CosmosContext = OC.Resolve<CosmosContext>();
             SQLContext = OC.Resolve<SQLContext>();
             coverageTypes ??= new();
             State = state;
-            Line = line;
+            Line = this.SQLContext.Line.Find((int)line);
 
             //
             // 1. On initialize, the constructor initializes all sections regardless of LOB
@@ -94,14 +94,17 @@ namespace ApolloTests.Data.EntityBuilder
             //iterate through each coverage type in this builder and make sure to meet the necesary condition
             foreach (var cov in coverageTypes)
             {
-                switch (line.LineEnum)
+                switch (line)
                 {
                     case LineEnum.BusinessOwner:
-                        throw new NotImplementedException($"{line.Name} Coverage assignment for BOP needs to be implemented");
+                        throw new NotImplementedException($"{Line.Name} Coverage assignment for BOP needs to be implemented");
                     //break;
                     case LineEnum.CommercialAuto:
 
-                        PolicyCoverages.Add(cov);
+                        if(!PolicyCoverages.Any(x=> x.CoverageType.TypeName==cov))
+                        {
+                            PolicyCoverages.Add(cov);
+                        }
                         switch (cov)
                         {
                             case CoverageType.TRAILER_INTERCHANGE:
@@ -113,7 +116,7 @@ namespace ApolloTests.Data.EntityBuilder
                                 break;
 
                             case CoverageType.CARGO:
-                                ClassCodeKeyword ??= KeywordMappingUtil.GetUsingKeywordName(line, "Towing Services");
+                                ClassCodeKeyword ??= KeywordMappingUtil.GetUsingKeywordName(line, "Fulfillment Center");
                                 break;
 
                             case CoverageType.RENTAL_REIMBURSEMENT:
@@ -125,7 +128,6 @@ namespace ApolloTests.Data.EntityBuilder
             }
             //by default accounting services keyword is loaded
             ClassCodeKeyword ??= KeywordMappingUtil.GetUsingKeywordName(line, "Accounting Services");
-
             HydrateNewQuoteObject();
 
             //
@@ -134,11 +136,13 @@ namespace ApolloTests.Data.EntityBuilder
 
         }
         #region Secondary Constructors
-        public QuoteBuilder(IObjectContainer OC, Line line, string state, KeywordMappingUtil classCodeKeyword) : this(OC, line, state, new List<string> { classCodeKeyword.CoverageType ?? CoverageType.BIPD })
+        public QuoteBuilder(IObjectContainer OC, LineEnum line, string state, KeywordMappingUtil classCodeKeyword) : this(OC, line, state, new List<string> { classCodeKeyword.CoverageType ?? CoverageType.BIPD })
         {
             ClassCodeKeyword = classCodeKeyword;
+            HydrateNewQuoteObject();
+
         }
-        public QuoteBuilder(IObjectContainer OC, Line line, string state, string algorithmCode) : this(OC, line, state, KeywordMappingUtil.GetUsingAlgorithmCode(line, algorithmCode, state)) { }
+        public QuoteBuilder(IObjectContainer OC, LineEnum line, string state, string algorithmCode) : this(OC, line, state, KeywordMappingUtil.GetUsingAlgorithmCode(line, algorithmCode, state)) { }
 
         #endregion
 
@@ -174,12 +178,11 @@ namespace ApolloTests.Data.EntityBuilder
         /// <returns>Quote object representing the newly created Quote in Apollo</returns>
         
         // 4. Build()
-        public Data.Entities.Quote Build(bool forceQuotedStatus = true)
+        public Quote Build(bool forceQuotedStatus = true)
         {   //
             // 5. Quote is created in Apollo
             //
             CreateQuote();
-            this.Hydrator.Quote = Quote;
             
 
             //
@@ -211,12 +214,15 @@ namespace ApolloTests.Data.EntityBuilder
 
             if (Quote.ApplicationStatusKey != 4000 && forceQuotedStatus)
             {
-                //Quote.ReferToUnderwriting();
+                Quote.ReferToUnderwriting();
 
-                //Quote.GenerateProposal();
+                Quote.GenerateProposal();
             }
 
-            return this.Quote;
+
+            Quote = this.CosmosContext.Quotes.First(it=> it.Id== Quote.Id);
+
+            return Quote;
         }
 
         public void HydrateNewQuoteObject()
@@ -274,7 +280,7 @@ namespace ApolloTests.Data.EntityBuilder
             this.Hydrator.Interpreter.SetVariable("PhysicalAddressId", response["addressIds"][0]);
             this.Hydrator.Interpreter.SetVariable("GoverningStateId", response["governingStateId"]);
             this.Hydrator.Interpreter.SetVariable("Quote", Quote);
-
+            Log.Info($"Created quote: {Quote.Id}");
             return Quote;
         }
 

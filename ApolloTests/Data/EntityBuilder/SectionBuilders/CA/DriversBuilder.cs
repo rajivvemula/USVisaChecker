@@ -46,7 +46,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             return result;
         }
 
-        public void AddOne() => Add(new DriverRisk(true));
+        public void AddOne() => Add(new DriverRisk(Builder));
        
     }
 }

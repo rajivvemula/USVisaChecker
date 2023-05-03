@@ -36,7 +36,8 @@ namespace ApolloTests.Data.Entities.Tether
 
         public DateTimeOffset? CurrentApplicationExpirationDate { get; set; }
 
-        public long? CurrentRatableObjectId { get; set; }
+        [ListenForChanges]
+        public virtual long? CurrentRatableObjectId { get; set; }
 
         public Policy CurrentPolicy => this.ContextCosmos.Policies.First(it => it.Id == CurrentRatableObjectId);
 

@@ -8,6 +8,8 @@ using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using AngleSharp.Dom;
+using HitachiQA.Helpers;
+using System.Collections;
 
 namespace ApolloTests.Data.Entities.Context
 {
@@ -38,13 +40,13 @@ namespace ApolloTests.Data.Entities.Context
         {
             base.OnModelCreating(modelBuilder);
             CheckForJTokens(modelBuilder);
-            CheckForNullValues(modelBuilder);
+            //CheckForNullValues(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-
+            
             //optionsBuilder.LogTo(Console.WriteLine);
 
             var extension = optionsBuilder.Options.FindExtension<ProxiesOptionsExtension>()
@@ -57,18 +59,30 @@ namespace ApolloTests.Data.Entities.Context
         }
         private static void CheckForNullValues(ModelBuilder modelBuilder)
         {
-            
-            //foreach (var ent in modelBuilder.Model.GetEntityTypes())
-            //{
-            //    Log.Info("\n\n"+ent.Name);
-            //    foreach (var property in ent.ClrType.Properties())
-            //    {
-            //        if(property.PropertyType.IsGenericType)
-            //        {
-            //            Log.Info( property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)  ? $"Nullable: {property.Name}" : $"Not-Nullable: {property.Name}");
-            //        }
-            //    }
-            //}
+            //var client = Main.ObjectContainer.Resolve<Cosmos>();
+            //
+            // This function will print all types that are Not-Nullable,
+            // then you must see in the database if any Not-Nullable is null
+            // if it's null or doesn't exist, then the property must be set as nullable
+            //
+            foreach (var ent in modelBuilder.Model.GetEntityTypes())
+            {
+                Log.Info("\n\n" + ent.Name);
+                foreach (var property in ent.ClrType.Properties())
+                {
+                    
+                    if( property.GetSetMethod() !=null && property.GetCustomAttribute<NotMappedAttribute>() == null)
+                    {
+                        var type = property.PropertyType;
+                        var originalType = Nullable.GetUnderlyingType(type);
+                        if (originalType==null &&(type.IsPrimitive || !typeof(IEnumerable).IsAssignableFrom(type)))
+                        {
+                            Log.Info(type == typeof(Nullable<>) ? $"Nullable: {property.Name}" : $"Not-Nullable: {property.Name} Type: {type} ");
+                        }
+                    }
+                }
+                
+            }
         }
         private static void CheckForJTokens(ModelBuilder modelBuilder)
         {

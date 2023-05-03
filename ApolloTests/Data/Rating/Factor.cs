@@ -414,10 +414,9 @@ namespace ApolloTests.Data.Rating
                     {
                         resolvable.Resolve();
                     }
-                    catch(Exception)
+                    catch(Exception ex)
                     {
-                        Log.Error($"Error Resolving KnownField {resolvable.Name}");
-                        throw;
+                        throw new Exception($"Error Resolving KnownField {resolvable.Name}", ex);
                     }
 
                     this.KnownFields.Add(resolvable);
@@ -481,11 +480,11 @@ namespace ApolloTests.Data.Rating
                 {
                     var ratableObj = this.Engine.root.RatableObject;
                     var lifespan = ratableObj.TimeTo - ratableObj.TimeFrom;
+                    var totalDaysYear = DateTime.IsLeapYear(ratableObj.TimeTo.Year) && ratableObj.TimeTo.Month > 2 ? 366 : 365;
+                    this.parsedValue = $"{lifespan.TotalDays} / {totalDaysYear}";
 
-                    this.parsedValue = $"{lifespan.TotalDays} / 365";
 
-
-                    return decimal.Parse(lifespan.TotalDays.ToString()) / 365;
+                    return decimal.Parse(lifespan.TotalDays.ToString()) / totalDaysYear;
                 }
             }
             private decimal AccidentPreventionFactor
@@ -549,7 +548,7 @@ namespace ApolloTests.Data.Rating
                             int points = driver.GetPoints(this.Engine.root, this.GetAlgorithmAssignment().DriverRatingPlan?? throw new NullReferenceException());
                             Log.Debug("Points: " + points);
 
-                            this.Engine.interpreter.SetVariable("Driver", driver);
+                            this.Engine.interpreter.SetVariable("DriverRisk", driver);
 
                             var factor = Factor.GetFactor("Individual Driver Rating Factor").GetResolvable(this.Engine);
 

@@ -113,13 +113,13 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             return result;
         }
 
-        public void AddOneLocation() => this.Add(new LocationRisk(true), new List<BuildingRisk>());
+        public void AddOneLocation() => this.Add(new LocationRisk(Builder), new List<BuildingRisk>());
         public void AddOneBuilding()
         {
             if (this.NumberOfLocations == 0)
-                this.Add(new LocationRisk(true), new List<BuildingRisk> { new BuildingRisk(true) });
+                this.Add(new LocationRisk(Builder), new List<BuildingRisk> { new BuildingRisk(Builder) });
             else
-                this.Last().Value.Add(new BuildingRisk(true));
+                this.Last().Value.Add(new BuildingRisk(Builder));
         }
 
         public void AddOne() => AddOneBuilding();

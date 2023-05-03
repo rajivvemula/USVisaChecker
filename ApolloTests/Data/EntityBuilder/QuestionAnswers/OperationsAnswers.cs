@@ -107,6 +107,19 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
         public QuestionAnswer DynamicVehicleMoratorium { get; set; } = new QuestionAnswer(Alias.DynamicVehicleMoratorium, "false");
 
         public QuestionAnswer SubmitProofOfInsuranceClaimsHistory { get; set; } = new QuestionAnswer(Alias.SubmitProofOfInsuranceClaimsHistory, "false");
+
+        public QuestionAnswer VehicleInventory { get; set; } = new QuestionAnswer(Alias.VehicleInventory, "false");
+
+        public QuestionAnswer RentVehicles { get; set; } = new QuestionAnswer(Alias.RentVehicles, "false");
+
+        public QuestionAnswer HaulAnyHazardous { get; set; } = new QuestionAnswer(Alias.HaulAnyHazardous, "false");
+
+        public QuestionAnswer EnterCustomerHome { get; set; } = new QuestionAnswer(Alias.EnterCustomerHome, "false");
+
+        public QuestionAnswer Amazon { get; set; } = new QuestionAnswer(Alias.Amazon, "false");
+
+        public QuestionAnswer ServicesProvide { get; set; } = new QuestionAnswer(Alias.ServicesProvide, "Moving Services Only");
+
         #endregion
 
         #region BOP/GL

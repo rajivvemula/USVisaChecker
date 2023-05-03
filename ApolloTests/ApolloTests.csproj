@@ -79,6 +79,8 @@
     <Compile Update="Features\Quote.UI.feature.cs">
       <DependentUpon>Quote.UI.feature</DependentUpon>
     </Compile>
+    <Compile Update="Features\Rating\CA\Keywords.feature.cs">
+      <DependentUpon>Keywords.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
-
 </Project>

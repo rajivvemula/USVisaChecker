@@ -12,10 +12,10 @@
     "source": "VehicleClassCode"
   },
   "Covered Autos": {
-    "source": "root.CoveredAutos"
+    "source": "\"Scheduled Autos\""
   },
   "Radius": {
-    "source": "root.RadiusOfOperation"
+    "source": "int.Parse(root.GetQuestionResponse(\"VehicleRadius\"))"
   },
   "Vehicle Age": {
     "setter": "Vehicle.YearOfManufacture = DateTime.Now.Year - value",
@@ -25,7 +25,7 @@
     "source": "root.GetVehicles().Count"
   },
   "Motor Carrier Filing Type": {
-    "source": "root.MotorCarrierFiling"
+    "source": "MotorCarrierFilingType"
   },
   "Insurance Score Tier": {
     "source": "InsuranceScoreTier"
@@ -34,7 +34,7 @@
     "source": "Territory"
   },
   "Organization Type": {
-    "source": "root.Organization.TypeName"
+    "source": "root.BusinessInformation.BusinessType.Name"
   },
   "Billing Type": {
     "source": "BillingType"
@@ -55,24 +55,24 @@
     "source":"Vehicle.BodySubCategoryTypeId"
   },
   "GVW/GCW": {
-    "source": "Vehicle.GrossVehicleWeight"
+    "source": "Vehicle.GrossVehicleWeight==null? 0 : decimal.Parse(Vehicle.GrossVehicleWeight)"
   },
   "Business Experience": {
-    "source": "DateTime.Now.Year - root.Organization.YearBusinessStarted"
+    "source": "DateTime.Now.Year - root.BusinessInformation.YearBusinessStarted"
   },
   "Limit": {
-    "source": "Limit.selectedLimits[0]",
+    "source": "Limit.SelectedLimits[0]",
     "type": "Currency"
   },
   "Seating Capacity": {
-    "source": "Vehicle.SeatingCapacity"
+    "source": "int.Parse(Vehicle.SeatingCapacity)"
   },
   //CAB response
   "Inspection Count": {
     "source": "root.InspectionCount"
   },
   "Deductible": {
-    "source": "Limit.selectedDeductibles != null && Limit.selectedDeductibles.Count > 0 ? Limit.selectedDeductibles[0] : 0"
+    "source": "Limit.SelectedDeductibles != null && Limit.SelectedDeductibles.Count > 0 ? Limit.SelectedDeductibles[0] : 0"
   },
   //default to false as per BUG 31745
   "Combined Deductible": {
@@ -85,7 +85,7 @@
     "source": "false"
   },
   "Team Driving": {
-    "source": "root.GetQuestionResponse(\"TeamDriving\")"
+    "source": "root.GetQuestionResponse(\"TeamDriving\")?? \"false\""
   },
   //CAB response
   "Out Of Service Violation Ratio": {
@@ -102,10 +102,10 @@
     "source": "root.TotalBASICViolationWeight"
   },
   "Safety Features": {
-    "source": "Vehicle.SafetyFeatures"
+    "source": "Vehicle.SafetyFeatures ?? false"
   },
   "Anti-Theft Category": {
-    "source": "Vehicle.AntiTheft"
+    "source": "Vehicle.Antitheft==true? \"Type 1\" : \"Not Applicable\""
   },
   "Auto Coverage Type": {
     "source": "\"Physical Damage - Comprehensive\""
@@ -114,28 +114,28 @@
     "source": "AlgorithmAssignment.DriverRatingPlan"
   },
   "Driver Points": {
-    "source": "Driver.GetPoints(root, AlgorithmAssignment.DriverRatingPlan)"
+    "source": "DriverRisk.GetPoints(root, AlgorithmAssignment.DriverRatingPlan)"
   },
   "Driver Age": {
-    "source": "Driver.Age"
+    "source": "DriverRisk.Driver.Age"
   },
   "Increased Limit Group": {
     "source": "AlgorithmAssignment.IncreasedLimitGroup"
   },
   "Combined Single Limit": {
-    "source": "Limit.selectedLimits[0]",
+    "source": "Limit.SelectedLimits[0]",
     "type": "Currency"
   },
   "Bodily Injury Limit Per Person": {
-    "source": "Limit.selectedLimits[0]",
+    "source": "Limit.SelectedLimits[0]",
     "type": "Currency"
   },
   "Bodily Injury Limit Per Occurrence": {
-    "source": "Limit.selectedLimits[1]",
+    "source": "Limit.SelectedLimits[1]",
     "type": "Currency"
   },
   "Property Damage Limit Per Occurrence": {
-    "source": "Limit.selectedLimits.ElementAtOrDefault(2)",
+    "source": "Limit.SelectedLimits.ElementAtOrDefault(2)",
     "type": "Currency"
   },
   //default to false as per paula
@@ -143,17 +143,17 @@
     "source": "false"
   },
   "Add On Coverage": {
-    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")?? \"No\"",
+    "source": "Limit.GetQuestionResponse(\"AtFaultLiability\")?? \"No\"",
     "type": "Boolean"
 
   },
   "Add On": {
-    "source": "Limit.getQuestionResponse(\"AtFaultLiability\")?? \"No\"",
+    "source": "Limit.GetQuestionResponse(\"AtFaultLiability\")?? \"No\"",
     "type": "Boolean"
 
   },
   "Benefits Limit": {
-    "source": "Limit.selectedLimits[0]"
+    "source": "Limit.SelectedLimits[0]"
   },
   "Written Agreement": {
     "source": "root.GetQuestionResponse(\"TrailerInterchangeAgreements\")",
@@ -167,31 +167,31 @@
     "source": "\"Collision\""
   },
   "Other Than Collision Deductible": {
-    "source": "Limit.selectedDeductibles[0]"
+    "source": "Limit.SelectedDeductibles[0]"
   },
   "Collision Deductible": {
-    "source": "Limit.selectedDeductibles[1]"
+    "source": "Limit.SelectedDeductibles[1]"
   },
   "State": {
     "source": "State"
   },
   "Auto Liability Limit":{
-    "source": "Limit.selectedLimits[0]"
+    "source": "Limit.SelectedLimits[0]"
   },
   "Cargo that is Hauled":{
     "source": "root.GetQuestionResponse(\"Haul\")"
   },
   "Theft Coverage":{
-    "source": "Limit.getQuestionResponse(\"IncludeCargoTheftCoverage\")"
+    "source": "Limit.GetQuestionResponse(\"IncludeCargoTheftCoverage\")"
   },
   "Named Perils Coverage":{
-    "source": "Limit.getQuestionResponse(\"IncludeCargoNamedPerilsCoverage\")"
+    "source": "Limit.GetQuestionResponse(\"IncludeCargoNamedPerilsCoverage\")"
   },
   "Earned Freight Coverage":{
-    "source": "((string)Limit.getQuestionResponse(\"IncludeEarnedFreightCoverage\")).ToLower() == \"true\" ? \"Included\" : \"Excluded\""
+    "source": "((string)Limit.GetQuestionResponse(\"IncludeEarnedFreightCoverage\")).ToLower() == \"true\" ? \"Included\" : \"Excluded\""
   },
   "Customer Cargo Coverage":{
-    "source": "Limit.getQuestionResponse(\"CustomerCargoCoverage\")"
+    "source": "Limit.GetQuestionResponse(\"CustomerCargoCoverage\")"
   },
   "Driver Count":{
     "source": "root.GetDrivers().Count"
@@ -203,7 +203,7 @@
     "source": "Boolean.Parse((string)root.GetQuestionResponse(\"OnCall\")) ? 24 : 23"
   },
   "Downtime":{
-    "source": "Limit.getQuestionResponse(\"RentalDowntimeIncluded\")"
+    "source": "Limit.GetQuestionResponse(\"RentalDowntimeIncluded\")"
   }
 }
   

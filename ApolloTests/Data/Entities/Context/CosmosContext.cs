@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ApolloTests.Data.Entities.Coverage;
 
 namespace ApolloTests.Data.Entities.Context
 {
@@ -31,6 +32,8 @@ namespace ApolloTests.Data.Entities.Context
         {
             modelBuilder.Entity<Quote>().ToContainer("Application");
             modelBuilder.Entity<Quote>().HasDiscriminator(it => it.Discriminator).HasValue("ApplicationEntity");
+            modelBuilder.Entity<Quote>().OwnsMany<Limit>(limit => limit.SelectedCoverages, inner => inner.OwnsMany<Limit>(limit => limit.RiskCoverages));
+
 
             modelBuilder.Entity<Policy>().ToContainer("RatableObject");
             modelBuilder.Entity<Policy>().HasDiscriminator(it => it.Discriminator).HasValue("RatableObjectEntity");
@@ -38,14 +41,6 @@ namespace ApolloTests.Data.Entities.Context
             modelBuilder.Entity<Claim>().ToContainer("Claim");
             modelBuilder.Entity<Claim>().HasDiscriminator(it => it.Discriminator).HasValue("ClaimEntity");
 
-            //modelBuilder.Entity<RiskBase>()
-            //    .HasOne(r => r.Vehicle);
-            //modelBuilder.Entity<RiskBase>()
-            //   .HasOne(r => r.Driver);
-            //modelBuilder.Entity<RiskBase>()
-            //   .HasOne(r => r.Building);
-            //modelBuilder.Entity<RiskBase>()
-            //   .HasOne(r => r.Location);
 
             modelBuilder.Entity<RiskBase>()
                 .ToContainer("Tether")
@@ -55,53 +50,7 @@ namespace ApolloTests.Data.Entities.Context
                 .HasValue<BuildingRisk>(3)
                 .HasValue<LocationRisk>(4)
                 ;
-            //modelBuilder.Entity<RiskBase>()
-            //    .HasOne(r => r.Driver)
-            //    .WithOne()
-            //    .HasForeignKey<DriverRisk>(it=> it.Id)
-            //    //.IsRequired(false)
-            //    ;
-            //modelBuilder.Entity<RiskBase>()
-            //    .HasOne(r => r.Building)
-            //    .WithOne()
-            //    .HasForeignKey<BuildingRisk>(it => it.Id)
-            //    //.IsRequired(false)
-            //    ;
-            //modelBuilder.Entity<RiskBase>()
-            //    .HasOne(r => r.Vehicle)
-            //    .WithOne()
-            //    .HasForeignKey<VehicleRisk>(it => it.Id)
-            //    //.IsRequired(false)
-            //    ;
-            //modelBuilder.Entity<RiskBase>()
-            //    .HasOne(r => r.Location)
-            //    .WithOne()
-            //    .HasForeignKey<LocationRisk>(it => it.Id)
-                //.IsRequired(false)
-                ;
-            //modelBuilder.Entity<VehicleRisk>()
-            //    .HasBaseType<RiskBase>()
-            //    .ToContainer("Tether")
-            //    .IgnoreOtherRisks()
-            //    .HasDiscriminator(it => it.RiskTypeId).HasValue(1);
 
-            //modelBuilder.Entity<DriverRisk>()
-            //    .HasBaseType<RiskBase>()
-            //    .ToContainer("Tether")
-            //    .IgnoreOtherRisks()
-            //    .HasDiscriminator(it => it.RiskTypeId).HasValue(2);
-
-            //modelBuilder.Entity<BuildingRisk>()
-            //    .HasBaseType<RiskBase>()
-            //    .ToContainer("Tether")
-            //    .IgnoreOtherRisks()
-            //    .HasDiscriminator(it => it.RiskTypeId).HasValue(3);
-
-            //modelBuilder.Entity<Risk.LocationRisk>()
-            //    .HasBaseType<RiskBase>()
-            //    .ToContainer("Tether")
-            //    .IgnoreOtherRisks()
-            //    .HasDiscriminator(it => it.RiskTypeId).HasValue(4);
 
             base.OnModelCreating(modelBuilder);
 

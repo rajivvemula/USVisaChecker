@@ -8,7 +8,7 @@ using ApolloTests.Data.Entities.Reference;
 using ApolloTests.Data.Entities.Coverage;
 using ApolloTests.Data.Entities.Enums;
 using ApolloTests.Data.Entities;
-
+using CovType = ApolloTests.Data.Entities.Coverage.CoverageType;
 namespace ApolloTests.Data.Rating
 {
     //this is a object made up to retrieve the relationship between a class code and a keyword
@@ -16,7 +16,7 @@ namespace ApolloTests.Data.Rating
     {
 
 
-        public Line Line { get; }
+        public LineEnum Line { get; }
         public string? ClassCode { get; private set; }
         public int KeywordId { get; private set; }
         public string? KeywordName { get; private set; }
@@ -28,13 +28,13 @@ namespace ApolloTests.Data.Rating
         public string? CoverageType { get; private set; }
 
         //set of different invokers to this class
-        public static KeywordMappingUtil GetUsingClassCode(Line line, string classCode, String? OptionalCoverage = null) => Get(line, "reference.RiskClassType.Code", classCode, OptionalCoverage);
-        public static KeywordMappingUtil GetUsingClassCodes(Line line, List<string> classCodes, String? OptionalCoverage = null) => Get(line, "reference.RiskClassType.Code", classCodes, OptionalCoverage);
-        public static KeywordMappingUtil GetUsingKeywordId(Line line, string keywordId) => Get(line, "Keyword.Id", keywordId);
-        public static KeywordMappingUtil GetUsingKeywordName(Line line, string Keyword) => Get(line, "[Keyword].[Name]", Keyword);
+        public static KeywordMappingUtil GetUsingClassCode(LineEnum line, string classCode, String? OptionalCoverage = null) => Get(line, "reference.RiskClassType.Code", classCode, OptionalCoverage);
+        public static KeywordMappingUtil GetUsingClassCodes(LineEnum line, List<string> classCodes, String? OptionalCoverage = null) => Get(line, "reference.RiskClassType.Code", classCodes, OptionalCoverage);
+        public static KeywordMappingUtil GetUsingKeywordId(LineEnum line, string keywordId) => Get(line, "Keyword.Id", keywordId);
+        public static KeywordMappingUtil GetUsingKeywordName(LineEnum line, string Keyword) => Get(line, "[Keyword].[Name]", Keyword);
 
         //uses an algorithm code to find a valid corresponding ClassCode and Keyword
-        public static KeywordMappingUtil GetUsingAlgorithmCode(Line line, string AlgorithmCode, string stateCode)
+        public static KeywordMappingUtil GetUsingAlgorithmCode(LineEnum line, string AlgorithmCode, string stateCode)
         {
             //AT.1 table describes what algorithm is used depending on class code & coverage
             //AT.1 table varies by state
@@ -69,6 +69,12 @@ namespace ApolloTests.Data.Rating
             if(classCodeCandidates.Count>1)
             {
                 Log.Debug("coverage:" + coverage);
+                if(CovType.Persisted.ContainsKey(coverage))
+                {
+                    coverage= CovType.Persisted[coverage];
+                    Log.Debug("translated coverage:" + coverage);
+
+                }
                 return GetUsingClassCodes(line,classCodeCandidates, coverage);
             }
 
@@ -77,7 +83,7 @@ namespace ApolloTests.Data.Rating
         }
         //since this is some sort of constructor, we just need the coverage to load it into the actual object
         //this function is flexible enough to search for any valid property and criteria
-        private static KeywordMappingUtil Get(Line line, string property, object criteria, String? coverage = null)
+        private static KeywordMappingUtil Get(LineEnum line, string property, object criteria, String? coverage = null)
         {
             var result = GetSQLService().executeQuery(@$"SELECT reference.RiskClassType.Code as ClassCode,reference.Keyword.Id as KeywordId,reference.Keyword.Name as KeywordName,reference.KeywordDefault.IndustryClassTaxonomyId,reference.IndustryClassTaxonomy.Name as TaxonomyName
                                 FROM  reference.RiskClassType
@@ -85,7 +91,8 @@ namespace ApolloTests.Data.Rating
                                 LEFT JOIN reference.IndustryClassTaxonomy ON reference.IndustryClassTaxonomy.Id = reference.KeywordDefault.IndustryClassTaxonomyId
                                 LEFT JOIN reference.Keyword ON reference.keyword.Id = reference.KeywordDefault.KeywordId
                                 WHERE {property} = @criteria
-                                AND reference.KeywordDefault.SubLineId={line.Id}
+                                AND reference.KeywordDefault.IsLineEligible=1
+                                AND reference.KeywordDefault.SubLineId={(int)line}
                                 ;", ("@criteria",criteria)
                              );
 
@@ -114,7 +121,7 @@ namespace ApolloTests.Data.Rating
         }
 
         //same function as above but plural
-        private static KeywordMappingUtil Get(Line line, string property, List<string> criterias, String? coverage = null)
+        private static KeywordMappingUtil Get(LineEnum line, string property, List<string> criterias, String? coverage = null)
         {
             //to store the valid matching Record
 
@@ -126,7 +133,8 @@ namespace ApolloTests.Data.Rating
                                 LEFT JOIN reference.Keyword ON reference.keyword.Id = reference.KeywordDefault.KeywordId
                                 WHERE {property} in (@criteria)
                                 AND reference.Keyword.Id IS NOT NULL
-                                AND reference.KeywordDefault.SubLineId={line.Id}
+                                AND reference.KeywordDefault.IsLineEligible=1
+                                AND reference.KeywordDefault.SubLineId={(int)line}
                                 ;", ("@criteria", criterias)
                              );
             //a match is crucial here

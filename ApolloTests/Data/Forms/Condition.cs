@@ -384,7 +384,7 @@ namespace ApolloTests.Data.Form
         private Entities.Policy CreatePolicyForThis(IObjectContainer objectContainer)
         {
             stateCode ??= "IL";
-            QuoteBuilder quoteBuilder = coverageTypes?.Any() ?? false ? new QuoteBuilder(objectContainer, this.Form.Line, stateCode, coverageTypes) : new QuoteBuilder(objectContainer, this.Form.Line, stateCode);
+            QuoteBuilder quoteBuilder = coverageTypes?.Any() ?? false ? new QuoteBuilder(objectContainer, this.Form.Line.LineEnum, stateCode, coverageTypes) : new QuoteBuilder(objectContainer, this.Form.Line.LineEnum, stateCode);
 
             if (this.questionResponses != null)
             {

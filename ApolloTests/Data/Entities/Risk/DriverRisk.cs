@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApolloTests.Data.EntityBuilder;
 
 namespace ApolloTests.Data.Entities.Risk
 {
@@ -18,13 +19,14 @@ namespace ApolloTests.Data.Entities.Risk
 
     {
         public DriverRisk(CosmosContext context) : base(context) {}
-        public DriverRisk() { }
-        public DriverRisk(bool loadDefaults)
+
+        public DriverRisk(QuoteBuilder builder, bool loadDefaults=true): base(builder)
         {
             if (loadDefaults)
                 LoadDefaults();
             
         }
+        public DriverRisk() { }
         public void LoadDefaults()
         {
             RiskTypeId = (int)RiskTypeEnum.Driver;
@@ -60,7 +62,7 @@ namespace ApolloTests.Data.Entities.Risk
         }
 
         [JsonProperty("driver")]
-        public virtual new Driver Driver { get; set; }
+        public override Driver Driver { get; set; }
 
         [JsonConverter(typeof(ConcreteTypeConverter<OutputMetadataDriver>))]
         public override IOutputMetadata OutputMetadata { get; set; }
@@ -70,7 +72,7 @@ namespace ApolloTests.Data.Entities.Risk
         public int GetPoints(Quote quote, string DriverRatingPlan)
         {
             int resultPoints = 0;
-            List<Dictionary<string, string>> DR2 = Functions.ParseCSV("/Data/RatingManual/DR.2.csv");
+            List<Dictionary<string, string>> DR2 = Functions.ParseCSV(".\\Data\\RatingManual\\DR.2.csv");
 
             var year = 365;
             var three_years = year * 3;

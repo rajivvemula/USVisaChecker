@@ -12,7 +12,7 @@ namespace ApolloTests.Data.Entities.Risk
 {
     public class Vehicle : BaseEntityEF
     {
-        public Vehicle(CosmosContext ctx):base(ctx) { }
+        public Vehicle(CosmosContext ctx) : base(ctx) { }
 
         public Vehicle()
         {
@@ -53,9 +53,9 @@ namespace ApolloTests.Data.Entities.Risk
 
         [JsonProperty("costNew")]
         [NotMapped]
-        public string? CostNewStr { 
-            get => CostNew.ToString(); 
-            set=>CostNew = value==null?null:int.Parse(value);
+        public string? CostNewStr {
+            get => CostNew.ToString();
+            set => CostNew = value == null ? null : int.Parse(value);
         }
 
         [JsonProperty("estimatedCurrentValue")]
@@ -86,12 +86,12 @@ namespace ApolloTests.Data.Entities.Risk
         public decimal? OutOfServiceViolationRatio { get; set; }
 
         [JsonProperty("riskId")]
-        public int RiskId { get; set; }
+        public long RiskId { get; set; }
 
         [JsonProperty("safetyFeatures")]
         public bool? SafetyFeatures { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty("seatingCapacity")]
         public string? SeatingCapacity { get; set; }
 
         [JsonIgnore]
@@ -101,7 +101,7 @@ namespace ApolloTests.Data.Entities.Risk
         [NotMapped]
         public string? StatedAmountStr
         {
-            get => StatedAmount==null ? "" : StatedAmount.ToString();
+            get => StatedAmount == null ? "" : StatedAmount.ToString();
             set => StatedAmount = string.IsNullOrWhiteSpace(value) ? null : int.Parse(value);
         }
 
@@ -113,6 +113,33 @@ namespace ApolloTests.Data.Entities.Risk
 
         [JsonProperty("typeId")]
         public int? TypeId { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
+        public VehicleTypeEnum? Type => (VehicleTypeEnum)TypeId;
+
+        [JsonIgnore]
+        [NotMapped]
+        public string? TypeName { get
+            {
+                if (Type == null) return null;
+
+                return Type switch
+                {
+                    VehicleTypeEnum.Car => "Car",
+                    VehicleTypeEnum.Van => "Van",
+                    VehicleTypeEnum.WorkTruck => "Work Truck",
+                    VehicleTypeEnum.PPT => "PPT",
+                    VehicleTypeEnum.AllOther => "All Other",
+                    VehicleTypeEnum.Publics => "Publics",
+                    VehicleTypeEnum.Tractor => "Tractor",
+                    VehicleTypeEnum.Special => "Special",
+                    VehicleTypeEnum.Trailer => "Trailer",
+                    VehicleTypeEnum.SemiTrailer => "Semi-Trailer",
+                    _ => throw new NotImplementedException(Type.ToString()),
+                };
+            } 
+        }
 
         [JsonProperty("useStatedAmount")]
         public bool UseStatedAmount { get; set; }
@@ -143,16 +170,12 @@ namespace ApolloTests.Data.Entities.Risk
 
     public class VehicleDriverLocation
     {
-        [JsonIgnore]
         public int? DriverId { get; set; }
 
-        [JsonIgnore]
         public int? GaragingLocation { get; set; }
 
-        [JsonIgnore]
-        public int? LocationId { get; set; }
+        public long? LocationId { get; set; }
 
-        [JsonIgnore]
         public int? OperationRadius { get; set; }
     }
 

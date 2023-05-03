@@ -35,9 +35,8 @@ namespace ApolloTests.Data.Entities
             BusinessInformation = new BusinessInformation();
             DecidedValueFactor = new DecidedValueFactor();
         }
-        [Key]
         [JsonIgnore]
-        public string id { get; set; }
+        public string? id { get; set; }
 
         [Required]
         [JsonIgnore]
@@ -47,6 +46,7 @@ namespace ApolloTests.Data.Entities
         public long _ts { get; set; }
 
         [JsonProperty("id")]
+        [Key]
         public new long? Id { get; set; }
 
         [JsonProperty("lineId")]
@@ -208,7 +208,7 @@ namespace ApolloTests.Data.Entities
 
         [JsonIgnore]
         [NotMapped]
-        public Tether.Tether Tether => ContextSQL.Tether.First(tether => tether.Id == TetherId);
+        public virtual Tether.Tether Tether => ContextSQL.Tether.First(tether => tether.Id == TetherId);
 
         public static Quote GetLatestQuote(CosmosContext context)
         {
@@ -301,8 +301,8 @@ namespace ApolloTests.Data.Entities
             return response ?? throw new Exception("CreateEndorsementHeader returned null");
 
         }
-
-        public List<Limit> SelectedCoverages { get; set; }
+        [JsonProperty("selectedCoverages")]
+        public virtual List<Limit> SelectedCoverages { get; set; }
 
         public IEnumerable<Coverage.CoverageType> getCoverageTypes(Vehicle risk)
         {
@@ -329,6 +329,14 @@ namespace ApolloTests.Data.Entities
 
         public List<Limit> getLimits()
         {
+            var selectedCoverages = SelectedCoverages;
+            selectedCoverages.ForEach(it => it.CoverageType = ContextSQL.CoverageType.Find(it.CoverageTypeId));
+            selectedCoverages.ForEach(it => {
+                if (it.RiskCoverages != null) {
+                    it.RiskCoverages.ForEach(riskLimit => riskLimit.CoverageType = it.CoverageType);
+                }
+            });
+
             return this.SelectedCoverages;
         }
 
@@ -389,7 +397,8 @@ namespace ApolloTests.Data.Entities
         public dynamic GetSectionQuestions(string sectionName)
         {
             var sectionId = this.Storyboard.GetSection(sectionName).Id;
-            return RestAPI.GET($"/quote/{this.Id}/sections/{sectionId}/questions")?["questionDefinitions"] ?? throw new Exception("GetSectionQuestions returned null");
+            var response = RestAPI.GET($"questions/4500/{this.Id}/sections/{sectionId}/questions");
+            return response?["questionDefinitions"] ?? throw new Exception("GetSectionQuestions returned null");
         }
 
         public dynamic GetCoverageQuestions(string coverageTypeName)
@@ -410,13 +419,13 @@ namespace ApolloTests.Data.Entities
             
         }
 
-        public dynamic? GetQuestionResponse(string alias)
+        public string? GetQuestionResponse(string alias)
         {
             foreach (QuestionResponse res in this.QuestionResponses)
             {
                 if (res.Alias == alias)
                 {
-                    return res.Response.ToObject<dynamic>();
+                    return res.Response;
                 }
             }
             return null;
@@ -492,7 +501,7 @@ namespace ApolloTests.Data.Entities
 
         [JsonIgnore]
         [NotMapped]
-        public Policy RatableObject => ContextCosmos.Policies.OrderByDescending(it => it._ts).First(it => it.ApplicationId == Id);
+        public virtual Policy RatableObject => ContextCosmos.Policies.OrderByDescending(it => it._ts).First(it => it.ApplicationId == Id);
 
 
         [JsonIgnore]
@@ -509,8 +518,8 @@ namespace ApolloTests.Data.Entities
         {
             if (_CAB == null)
             {
-                string baseURL = Main.Configuration.GetVariable("CAB_BASEURL_SECRETNAME");
-                string APIKEY = Main.Configuration.GetVariable("CAB_API_KEY_SECRETNAME");
+                string baseURL = Main.Configuration.GetVariable("CAB_BASEURL");
+                string APIKEY = Main.Configuration.GetVariable("CAB_API_KEY");
 
                 var usDot = GetQuestionResponse("USDOT#");
                 if (usDot == null)
@@ -581,12 +590,11 @@ namespace ApolloTests.Data.Entities
         }
         [NotMapped]
         [JsonIgnore]
-        public dynamic ScheduleModifiers => (JObject?)GetAPIObj()?["scheduleModifiers"] ?? throw new Exception("scheduleModifiers returned null");
+        public virtual dynamic ScheduleModifiers => (JObject?)GetAPIObj()?["scheduleModifiers"] ?? throw new Exception("scheduleModifiers returned null");
 
         private decimal getScheduleModifier(string modifierName)
         {
             var obj = ScheduleModifiers[modifierName];
-            obj.NullGuard();
             decimal percentage = obj["adjustmentPercentage"]?.ToObject<decimal?>() ?? 0;
             foreach (JObject action in obj["actionResults"] ?? throw new NullReferenceException($"scheduleModifier.{modifierName}.actionResults returned null"))
             {
@@ -706,20 +714,46 @@ namespace ApolloTests.Data.Entities
                 throw;
             }
         }
+        [JsonIgnore]
+        [NotMapped]
+        public int InsuranceScore
+        {
+            get
+            {
+                var response = Cosmos.GetQuery("NcfResponse", $"SELECT * FROM c where c.TetherId = {this.Tether.Id} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result;
+                if(response.Any() && response.ElementAt(0)["RawScore"] is string rawScore)
+                {
+                    if (rawScore == "No Hit")
+                        return 998;
+                    if (rawScore == "No Score")
+                        return 999;
+                    try
+                    {
+                        return int.Parse(rawScore);
+                    }
+                    catch(Exception ex)
+                    {
+                        throw new Exception($"error parsing '{rawScore}' into an integer", ex);
+                    }
+
+                }
+               //nothing found means No Hit =998
+                return 998;
+
+            }
+        }
 
     }
 
-    public partial class BusinessInformation
+    public partial class BusinessInformation : BaseEntityEF
     {
-        public BusinessInformation(ApolloContext _)
-        {
-
-        }
+        public new long? Id { get; set; }
+        public BusinessInformation(CosmosContext context) : base(context) { }
         public BusinessInformation()
         {
             BusinessTypeEntityId = 1;
-            YearBusinessStarted = "2021";
-            YearOwnershipStarted = "2021";
+            YearBusinessStarted = 2021;
+            YearOwnershipStarted = 2021;
             TaxTypeId = 0;
             TaxId = "34-5678974";
             BusinessPhoneNumber = "2017999999";
@@ -756,16 +790,24 @@ namespace ApolloTests.Data.Entities
         public long? IndustryClassTaxonomyId { get; set; }
 
         [JsonProperty("businessTypeEntityId")]
-        public long? BusinessTypeEntityId { get; set; }
+        public int? BusinessTypeEntityId { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
+        public BusinessType? BusinessType => BusinessTypeEntityId==null?null: ContextSQL.BusinessType.Find(BusinessTypeEntityId);
+
+        [JsonIgnore]
+        [NotMapped]
+        public string? BusinessTypeName => BusinessType?.Name;
 
         [JsonProperty("businessSubTypeId")]
         public long? BusinessSubTypeId { get; set; }
 
         [JsonProperty("yearBusinessStarted")]
-        public string YearBusinessStarted { get; set; }
+        public int YearBusinessStarted { get; set; }
 
         [JsonProperty("yearOwnershipStarted")]
-        public string YearOwnershipStarted { get; set; }
+        public int YearOwnershipStarted { get; set; }
 
         [JsonProperty("taxTypeId")]
         public long? TaxTypeId { get; set; }
@@ -806,6 +848,8 @@ namespace ApolloTests.Data.Entities
 
         [JsonProperty("sites")]
         public List<Site> Sites { get; set; }
+
+
     }
 
     public partial class Phone

@@ -1,4 +1,5 @@
-﻿using ApolloTests.Data.EntityBuilder.Entities;
+﻿using ApolloTests.Data.Entities.Context;
+using ApolloTests.Data.EntityBuilder.Entities;
 using ApolloTests.Data.EntityBuilder.QuestionAnswers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,25 +15,24 @@ namespace ApolloTests.Data.Entities.Coverage
     public class Limit 
     {
 
-
         [JsonProperty("selectedDeductibleName")]
-        public string SelectedDeductibleName { get; set; }
+        public string? SelectedDeductibleName { get; set; }
 
         [JsonProperty("selectedDeductibles")]
-        public List<int> SelectedDeductibles { get; set; }
+        public List<int>? SelectedDeductibles { get; set; }
 
         [JsonProperty("selectedLimitName")]
-        public string SelectedLimitName { get; set; }
+        public string? SelectedLimitName { get; set; }
 
         [JsonProperty("selectedLimits")]
-        public List<int> SelectedLimits { get; set; }
+        public List<int>? SelectedLimits { get; set; }
 
         [JsonIgnore]
         [NotMapped]
         public CoverageType CoverageType { get; set; }
 
         [JsonProperty("coverageTypeId")]
-        public long CoverageTypeId { get; set; }
+        public long? CoverageTypeId { get; set; }
 
         [JsonProperty("questionResponses")]
         public List<QuestionResponse> QuestionResponses { get; set; }
@@ -41,50 +41,27 @@ namespace ApolloTests.Data.Entities.Coverage
         public long? RiskId { get; set; }
 
         [JsonProperty("riskCoverages")]
-        public List<Limit> RiskCoverages { get; set; }
+        public virtual List<Limit> RiskCoverages { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public LimitAnswers QuestionAnswers { get; set; }
+        public LimitAnswers? QuestionAnswers { get; set; }
 
-        public Limit(CoverageType coverageType, string selectedDeductibleName, List<int> selectedDeductibles,
-            string selectedLimitName, List<int> selectedLimits, List<QuestionResponse> questionResponses,
-            long? riskId = null, List<Limit> riskCoverages = null
-            )
+        public Limit(CoverageType coverageType)
         {
-            CoverageType = coverageType;
+            CoverageType= coverageType;
             CoverageTypeId = coverageType.Id;
-            SelectedDeductibleName = selectedDeductibleName;
-            SelectedDeductibles = selectedDeductibles;
-            SelectedLimitName = selectedLimitName;
-            SelectedLimits = selectedLimits;
-            QuestionResponses = questionResponses ?? new List<QuestionResponse>();
-            RiskId = riskId;
-            RiskCoverages = riskCoverages ?? new List<Limit>();
-            QuestionAnswers = new();
-        }
-        [JsonConstructor]
-        public Limit(long coverageTypeId, string selectedDeductibleName, List<int> selectedDeductibles,
-                   string selectedLimitName, List<int> selectedLimits, List<QuestionResponse> questionResponses,
-                   long? riskId = null, List<Limit> riskCoverages = null
-                   )
-        {
-            CoverageTypeId = coverageTypeId;
-            SelectedDeductibleName = selectedDeductibleName;
-            SelectedDeductibles = selectedDeductibles;
-            SelectedLimitName = selectedLimitName;
-            SelectedLimits = selectedLimits;
-            QuestionResponses = questionResponses ?? new List<QuestionResponse>();
-            RiskId = riskId;
-            RiskCoverages = riskCoverages ?? new List<Limit>();
-            QuestionAnswers = new();
+            RiskId = 0;
         }
 
         public Limit(long coverageTypeId)
         {
             CoverageTypeId = coverageTypeId;
+            RiskId = 0;
         }
-
+        public Limit() { 
+            RiskId= 0;
+        }
 
         public CoverageType GetCoverageType()
         {

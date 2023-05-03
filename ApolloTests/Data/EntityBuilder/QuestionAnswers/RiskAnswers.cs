@@ -85,6 +85,17 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
 
         public QuestionAnswer VehicleSeatCount { get; set; } = new QuestionAnswer(Alias.VehicleSeatCount, "4");
 
+        public QuestionAnswer TowingAssistance { get; set; } = new QuestionAnswer(Alias.TowingAssistance, "No");
+
+        public QuestionAnswer EscortConstruction { get; set; } = new QuestionAnswer(Alias.EscortConstruction, "false");
+        public QuestionAnswer Landfills { get; set; } = new QuestionAnswer(Alias.Landfills, "false");
+
+        public QuestionAnswer TaxiMeterSingle { get; set; } = new QuestionAnswer(Alias.TaxiMeterSingle, "false");
+
+        public QuestionAnswer Outpatient { get; set; } = new QuestionAnswer(Alias.Outpatient, "false");
+
+
+
         #endregion
 
         #region Location & Building

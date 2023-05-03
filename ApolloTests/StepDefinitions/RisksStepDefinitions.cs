@@ -33,7 +33,7 @@ namespace ApolloTests.StepDefinitions
         public void GivenNewQuoteIsCreatedFor(string subLineCode)
         {
             var subLine = SQLContext.SubLine.First(it=> it.Code == subLineCode.ToUpper());
-            var quoteBuilder = new QuoteBuilder(ObjectContainer, subLine.ParentLine, "IL");
+            var quoteBuilder = new QuoteBuilder(ObjectContainer, subLine.ParentLine.LineEnum, "IL");
             quoteBuilder.Quote.SubLineId = subLine.Id;
             var createdQuote = quoteBuilder.CreateQuote();
             Shared.SetValue("Quote", "Builder", quoteBuilder);

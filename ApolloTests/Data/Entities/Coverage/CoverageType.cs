@@ -12,7 +12,7 @@ namespace ApolloTests.Data.Entities.Coverage
     {
         public static CoverageType GetCoverageType(SQLContext ctx, int Id)=> ctx.CoverageType.First(it=> it.Id == Id);
 
-        public static CoverageType GetCoverageType(SQLContext ctx, string TypeName ) => ctx.CoverageType.First(it => it.TypeName == TypeName);
+        public static CoverageType? GetCoverageType(SQLContext ctx, string TypeName ) => ctx.CoverageType.FirstOrDefault(it => it.TypeName == TypeName);
 
 
 
@@ -24,25 +24,6 @@ namespace ApolloTests.Data.Entities.Coverage
 
         public int SortOrder { get; set; }
 
-        public string Description { get; set; }
-
-        public string InsertedBy { get; set; }
-
-        public DateTimeOffset InsertDateTime { get; set; }
-
-        public long InsertedByPersonId { get; set; }
-
-        public string UpdatedBy { get; set; }
-
-        public DateTimeOffset? UpdateDateTime { get; set; }
-
-        public long? UpdatedByPersonId { get; set; }
-
-        public int SourceSystemId { get; set; }
-
-        public string SourceSystemKey { get; set; }
-
-        public int? StatusId { get; set; }
 
         [NotMapped]
         [JsonIgnore]

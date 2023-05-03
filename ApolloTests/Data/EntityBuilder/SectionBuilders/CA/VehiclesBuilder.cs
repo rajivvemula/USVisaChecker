@@ -42,7 +42,9 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
                 JArray? riskResponse = this.Builder.RestAPI.POST($"quote/{quote.Id}/risk", body)??throw new NullReferenceException();
                 result.Add(riskResponse.ElementAt(0));
 
-                risk.LoadEntityObject((JObject)riskResponse.ElementAt(0));
+                risk.LoadEntityObject((JObject)riskResponse.ElementAt(0)["risk"]);
+                var vehicleRisksAcross = Builder.PolicyCoverages.Where(it => it.CoverageType.isVehicleLevel);
+                risk.RiskLimits.AddRange(vehicleRisksAcross);
                 var limitsBody = risk.RiskLimits.ToJArray();
 
                 JToken riskLimitRes = this.Builder.RestAPI.POST($"quote/{quote.Id}/risk/{risk.Vehicle.RiskId}/limits", limitsBody) ?? throw new NullReferenceException();
@@ -52,6 +54,6 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             return result;
         }
 
-        public void AddOne() => Add(new VehicleRisk(true));
+        public void AddOne() => Add(new VehicleRisk(Builder));
     }
 }

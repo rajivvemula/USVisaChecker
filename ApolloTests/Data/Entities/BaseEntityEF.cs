@@ -1,4 +1,5 @@
 ﻿using ApolloTests.Data.Entities.Context;
+using ApolloTests.Data.EntityBuilder;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,37 +29,15 @@ namespace ApolloTests.Data.Entities
         }
 
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public virtual long Id { get; set; }
 
-        [JsonIgnore]
-        public CosmosContext ContextCosmos { get; }
-
-        [JsonIgnore]
-        public SQLContext ContextSQL { get; }
-
-        [JsonIgnore]
-        public ApolloContext Context { get; }
-
-        public BaseEntityEF(CosmosContext context)
-        {
-            Context = context;
-            ContextCosmos = context.CosmosContext;
-            ContextSQL = context.SQLContext;
-        }
-        public BaseEntityEF(SQLContext context)
-        {
-            Context = context;
-            ContextCosmos = context.CosmosContext;
-            ContextSQL = context.SQLContext;
-
-        }
+        public BaseEntityEF(CosmosContext context) : base(context) { }
+        public BaseEntityEF(SQLContext context) : base(context) { }
+        public BaseEntityEF(QuoteBuilder builder) : base(builder) { }
+        public BaseEntityEF() { }
 
         public void Reload() => Context.Entry(this).Reload();
 
-        public BaseEntityEF()
-        {
-
-        }
 
 
     }

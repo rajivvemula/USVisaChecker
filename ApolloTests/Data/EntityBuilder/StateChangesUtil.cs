@@ -102,7 +102,7 @@ namespace ApolloTests.Data.EntityBuilder
                 {
 
                     var varName = question.Alias?.Replace('-', '_') ?? throw new NullReferenceException($"Alias was null for question {question.Id}");
-                    aliasesStr += $"public static string {varName} {{ get; }} = \"{question.Alias}\";\n";
+                    aliasesStr += $"public const string {varName} = \"{question.Alias}\";\n";
                     helperStr += $"public QuestionAnswer {varName} {{ get; set; }} = new QuestionAnswer(Alias.{varName}, null);\n";
                 }
 
@@ -139,6 +139,10 @@ namespace ApolloTests.Data.EntityBuilder
             //iterate through each quesiton that needs answering and answer them
             foreach (var question in questionsToLoad)
             {
+                if(question.Alias== "Salvage")
+                {
+                    Log.Debug(question.Response);
+                }
                 Answers.NullGuard();
                 //getting the answer object (NOT THE MODEL)
                 var builderAnswer = Answers.GetAnswer(question.QuestionAlias ?? throw new NullReferenceException());

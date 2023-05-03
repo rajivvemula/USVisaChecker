@@ -25,8 +25,7 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
             Hydrator.CurrentAnswers = null;
             Hydrator.Hydrate(this);
             var body = this.ToJObject();
-            var response = (JObject?)Builder.RestAPI.PATCH($"/quote/{quote.Id}", body);
-            response.NullGuard();
+            var response = Builder.RestAPI.PATCH($"/quote/{quote.Id}", body);
 
             return response;
 

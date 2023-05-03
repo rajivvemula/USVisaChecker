@@ -21,6 +21,7 @@ namespace ApolloTests.Data.Entities.Context
         public DbSet<Storyboard> Storyboard { get; set; }
         public DbSet<StoryboardSection> StoryboardSection { get; set; }
         public DbSet<Section> Section { get; set; }
+        public DbSet<BusinessType> BusinessType { get; set; }
 
         public SQLContext(IConfiguration config) : base(config) { }
 

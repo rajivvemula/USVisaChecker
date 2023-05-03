@@ -127,6 +127,22 @@
 
             public const string SubmitProofOfInsuranceClaimsHistory   = "SubmitProofOfInsuranceClaimsHistory";
 
+            public const string TowingAssistance = "TowingAssistance";
+
+            public const string VehicleInventory = "VehicleInventory";
+
+            public const string RentVehicles = "RentVehicles";
+
+            public const string EscortConstruction = "EscortConstruction";
+
+            public const string HaulAnyHazardous = "HaulAnyHazardous";
+
+            public const string EnterCustomerHome = "EnterCustomerHome";
+
+            public const string Amazon = "Amazon";
+
+            public const string ServicesProvide = "ServicesProvide";
+
             #endregion Operations
 
             #region Vehicles
@@ -181,6 +197,11 @@
 
             public const string VehicleSeatCount   = "VehicleSeatCount";
 
+            public const string Landfills = "Landfills";
+
+            public const string TaxiMeterSingle = "TaxiMeterSingle";
+
+            public const string Outpatient = "Outpatient";
 
             #endregion Vehicles
 

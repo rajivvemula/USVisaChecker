@@ -149,7 +149,7 @@ namespace ApolloTests.Data.Entities
 
         public String BillingType => throw new NotImplementedException("might need rating factor model");
 
-        public int SelectedRatingPackageId { get; set; }
+        public int? SelectedRatingPackageId { get; set; }
 
         public String PaymentPlan => throw new NotImplementedException("might need rating factor model");
 

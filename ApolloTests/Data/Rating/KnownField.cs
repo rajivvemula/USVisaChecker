@@ -115,10 +115,9 @@ namespace ApolloTests.Data.Rating
                         resolvedValue = Engine.interpreter.Eval(KnownField.Source);
                         //Log.Debug($"{this.KnownField.Name } resolved to {resolvedValue}");
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        Log.Error("failed interpreting Field: " + KnownField);
-                        throw;
+                        throw new Exception($"failed interpreting Field: {KnownField}\n", ex);
                     }
                 }
 
@@ -179,7 +178,7 @@ namespace ApolloTests.Data.Rating
 
             private VehicleRisk GetCurrentVehicleRisk()
             {
-                return this.Engine.interpreter.Eval<VehicleRisk>("Vehicle"); 
+                return this.Engine.interpreter.Eval<VehicleRisk>("VehicleRisk"); 
             }
 
             private decimal BaseRateFactors
@@ -199,28 +198,20 @@ namespace ApolloTests.Data.Rating
             }
 
             
-            private int? Territory
+            private int Territory
             {
                 get
                 {
                     var risk = GetCurrentVehicleRisk();
-                    var metadata = (OutputMetadataVehicle)risk.OutputMetadata;
-                    var locationID = metadata.VehicleLocation.LocationId;
-                    if (locationID == null)
-                    {
-                        //Log.Debug("Location ID null " + risk.ToString());
-                        return null;
-                    }
-                    var zip = GetSQLService().executeQuery($"SELECT PostalCode FROM [location].[Address] where Id = {locationID}")[0]["PostalCode"];
+                    var locationID = (risk.OutputMetadata as OutputMetadataVehicle).VehicleDriverLocation.LocationId??throw new NullReferenceException($"Vehicle Risk: {risk.Id}\n LocationId returned null\n");
+                    var address = this.Engine.ContextSQL.Address.Find(locationID);
+
+                    var zip = address.PostalCode;
                     var data = Engine.getTable("TT.1");
-                    
 
-                    if (int.TryParse(data.Find(row => row["Zip Code"] == zip)?["Territory"], out int value))
-                    { return value; }
-
-                    //Log.Debug("No Match Null" + risk.ToString());
-                    return null;
-
+                    var row = data.Find(row => row["Zip Code"] == zip);
+                    return int.Parse(row["Territory"]);
+                   
                 }
             }
 
@@ -228,30 +219,28 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    throw new NotImplementedException();
-                    //var org = this.Engine.root.Organization;
-                    //int score = org.InsuranceScore ?? 998;
+                    int score = this.Engine.root.InsuranceScore;
 
 
-                    //int fleetSize = this.Engine.root.GetVehicles().Count;
+                    int fleetSize = this.Engine.root.GetVehicles().Count;
 
-                    //String type = org.TypeName;
+                    String type = this.Engine.root.BusinessInformation.BusinessTypeName;
 
 
-                    //foreach (Dictionary<String, String> row in Engine.getTable("CT.2"))
-                    //{
+                    foreach (Dictionary<String, String> row in Engine.getTable("CT.2"))
+                    {
 
-                    //    if (Functions.parseRatingFactorNumericalValues(row["Fleet Size Lower Bound"]) <= fleetSize &&
-                    //        Functions.parseRatingFactorNumericalValues(row["Fleet Size Upper Bound"]) >= fleetSize &&
-                    //        Functions.parseRatingFactorNumericalValues(row["Insurance Score Lower Bound"]) <= score &&
-                    //        Functions.parseRatingFactorNumericalValues(row["Insurance Score Upper Bound"]) >= score &&
-                    //        row["Organization Type"] == type
-                    //        )
-                    //    {
-                    //        return row["Insurance Score Tier"];
-                    //    }
-                    //}
-                    //throw new KeyNotFoundException($"No Score tier found for   Insurrance Score: [[{score}]  -  Org Type: [{type}]  -  Fleet Size: [{fleetSize}]");
+                        if (Engine.parseRatingFactorNumericalValues(row["Fleet Size Lower Bound"]) <= fleetSize &&
+                            Engine.parseRatingFactorNumericalValues(row["Fleet Size Upper Bound"]) >= fleetSize &&
+                            Engine.parseRatingFactorNumericalValues(row["Insurance Score Lower Bound"]) <= score &&
+                            Engine.parseRatingFactorNumericalValues(row["Insurance Score Upper Bound"]) >= score &&
+                            row["Organization Type"] == type
+                            )
+                        {
+                            return row["Insurance Score Tier"];
+                        }
+                    }
+                    throw new KeyNotFoundException($"No Score tier found for   Insurrance Score: [[{score}]  -  Org Type: [{type}]  -  Fleet Size: [{fleetSize}]");
 
                 }
             }
@@ -374,6 +363,34 @@ namespace ApolloTests.Data.Rating
                 {
                     this.parsedValue = this.Engine.root.GoverningStateName;
                     return this.Engine.root.GoverningStateCode;
+                }
+            }
+
+           private string MotorCarrierFilingType
+            {
+                get
+                {
+                    if(bool.TryParse(Engine.root.GetQuestionResponse("FmscaOperating"), out var fmsca))
+                    {
+                        if(fmsca && bool.Parse(Engine.root.GetQuestionResponse("USDOT")))
+                        {
+                            return "Multi-State or Federal (ICC/FHWA)";
+                        }
+                        
+                    }
+                    
+                    var singleStateTriggers = new List<string>() { "IL-Authority", "SC-Authority", "TXAuth", "CaliOperatingAuth", "PUC" };
+                    foreach (var alias in singleStateTriggers)
+                    {
+                        if (bool.TryParse(alias, out var answer))
+                        {
+                            if (answer)
+                                return "Single State";
+
+                        }
+                    }
+                    return "None";
+                    
                 }
             }
 

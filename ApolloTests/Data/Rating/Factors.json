@@ -264,7 +264,9 @@
     "KnownFields": [],
     "nameUI": [ "Facultative Re-insurance Adjustment" ],
     "source": "FacultativeReInsuranceAdjustmentFactor",
-    "CustomCalculation": true
+    "CustomCalculation": true,
+    "displayOnly": true
+
   },
   "Experience Rating": {
     "KnownFields": [],
@@ -276,14 +278,16 @@
     "KnownFields": [],
     "nameUI": [ "Renewal Rate Cap" ],
     "source": "RenewalRateCapFactor",
-    "CustomCalculation": true
+    "CustomCalculation": true,
+    "displayOnly": true
+
   },
   "Policy Term Factor": {
     "KnownFields": [],
     "nameUI": [ "Policy Term Factor" ],
     "source": "PolicyTermFactor",
     "CustomCalculation": true,
-    "displayOnly": true
+    "displayOnly": false
   },
   "MinimumRatingValueFactors": {
     "KnownFields": [],

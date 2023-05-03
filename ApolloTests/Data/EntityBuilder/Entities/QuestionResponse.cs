@@ -52,7 +52,8 @@ namespace ApolloTests.Data.EntityBuilder.Entities
         public bool? IsDisabled { get; set; }
 
         [JsonProperty("question")]
-        public Question? Question { get; set; } = null;
+        [NotMapped]
+        public Question Question { get; set; } = null;
     }
 
     public class Question

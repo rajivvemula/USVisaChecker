@@ -4,6 +4,7 @@ using ApolloTests.Data.Entities.Context;
 using HitachiQA.Helpers;
 using Microsoft.Azure.Cosmos.Core.Collections;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApolloTests.Data.Entities.Risk
 {
@@ -11,12 +12,12 @@ namespace ApolloTests.Data.Entities.Risk
     {
         public VehicleRisk(CosmosContext context) : base(context) { }
         public VehicleRisk() { }
-        public VehicleRisk(bool loadDefaults)
+        public VehicleRisk(QuoteBuilder builder, bool loadDefaults=true) : base(builder)
         {
             if (loadDefaults)
                 LoadDefaults();
-
         }
+
         public void LoadDefaults()
         {
             RiskTypeId = (int)RiskTypeEnum.Vehicle;
@@ -52,12 +53,13 @@ namespace ApolloTests.Data.Entities.Risk
         }
 
         [JsonProperty("vehicle")]
-        public new Vehicle Vehicle { get; set; }
+        public override Vehicle Vehicle { get; set; }
 
         [JsonConverter(typeof(ConcreteTypeConverter<OutputMetadataVehicle>))]
         public override IOutputMetadata OutputMetadata { get; set; }
 
         [JsonIgnore]
+        [NotMapped]
         public bool AddCollision
         {
             get
@@ -68,11 +70,13 @@ namespace ApolloTests.Data.Entities.Risk
             set
             {
                 string COVERAGE_NAME = "Collision";
-                RiskLimits.Setter(COVERAGE_NAME, value);
+                var cov = this.ContextSQL.CoverageType.First(it => it.TypeName == COVERAGE_NAME);
+                RiskLimits.Setter(cov, value);
             }
         }
 
         [JsonIgnore]
+        [NotMapped]
         public int CollisionDeductible
         {
             get
@@ -90,6 +94,8 @@ namespace ApolloTests.Data.Entities.Risk
             }
         }
         [JsonIgnore]
+        [NotMapped]
+
         public bool AddComprehensive
         {
             get
@@ -100,10 +106,13 @@ namespace ApolloTests.Data.Entities.Risk
             set
             {
                 string COVERAGE_NAME = "Comprehensive";
-                RiskLimits.Setter(COVERAGE_NAME, value);
+                var cov = this.ContextSQL.CoverageType.First(it => it.TypeName == COVERAGE_NAME);
+                RiskLimits.Setter(cov, value);
             }
         }
         [JsonIgnore]
+        [NotMapped]
+
         public int ComprehensiveDeductible
         {
             get
@@ -127,6 +136,9 @@ namespace ApolloTests.Data.Entities.Risk
     {
         public List<QuestionResponse> QuestionResponses { get; set; } = new List<QuestionResponse>();
         public VehicleLocation VehicleLocation { get; set; } = new VehicleLocation();
+
+        [JsonProperty("vehicleDriverLocation")]
+        public VehicleDriverLocation VehicleDriverLocation { get; set; }
 
         [HydratorAttr("ClassCode")]
         public string? VehicleClassCode { get; set; }

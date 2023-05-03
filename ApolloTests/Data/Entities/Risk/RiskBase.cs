@@ -21,10 +21,11 @@ namespace ApolloTests.Data.Entities.Risk
     {
 
         public RiskBase(CosmosContext ctx) : base(ctx) { }
-        public RiskBase()
+        public RiskBase(QuoteBuilder builder) : base(builder)
         {
             QuestionAnswers = new();
         }
+        public RiskBase() { }
 
         [NotMapped]
         [JsonProperty("outputMetadata")]

@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 using ApolloTests.Data.Entities;
 using ApolloTests.Data.Entities.Coverage;
+using ApolloTests.Data.Entities.Reference;
 
 namespace ApolloTests.Data.Rating
 {
@@ -12,7 +13,7 @@ namespace ApolloTests.Data.Rating
     {
         private static readonly dynamic Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader("Data/Rating/Factors.json").ReadToEnd())?? throw new NullReferenceException();
         private static readonly dynamic KnownFields =  JsonConvert.DeserializeObject<JObject>(new StreamReader( $"Data/Rating/KnownFields.json").ReadToEnd()) ?? throw new NullReferenceException();
-        private static JObject PersistedData = JsonConvert.DeserializeObject<JObject>(new StreamReader( @"StepDefinition\Rating\persistedData.json").ReadToEnd()) ?? throw new NullReferenceException();
+        //private static JObject PersistedData = JsonConvert.DeserializeObject<JObject>(new StreamReader( @"StepDefinition\Rating\persistedData.json").ReadToEnd()) ?? throw new NullReferenceException();
         private static JObject CoverageAlgorithms = JsonConvert.DeserializeObject<JObject>(new StreamReader( @"Data/Rating/CoverageAlgorithms.json").ReadToEnd()) ?? throw new NullReferenceException();
 
         /// <returns>
@@ -143,7 +144,7 @@ namespace ApolloTests.Data.Rating
         /// constructed with a root object which in the future could be a Policy or Quote. <br/><br/>
         /// <param name="CoverageCode"> To be removed in the future, (iteration through all policy coverages need to be implemented)</param>
         /// </summary>
-        public Engine(Quote root)
+        public Engine(Quote root): base(root.ContextCosmos)
         {
             this.root = root;
             this.GoverningStateCode = root.GoverningStateCode;
@@ -152,6 +153,12 @@ namespace ApolloTests.Data.Rating
             interpreter.Reference(typeof(JObject));
             interpreter.Reference(typeof(AlgorithmAssignment));
             interpreter.Reference(typeof(Limit));
+            interpreter.Reference(typeof(Quote));
+            interpreter.Reference(typeof(BusinessInformation));
+            interpreter.Reference(typeof(CoverageType));
+            interpreter.Reference(typeof(Line));
+            interpreter.Reference(typeof(SubLine));
+            interpreter.Reference(typeof(Policy));
 
             interpreter.SetVariable("root", this.root);
 
@@ -167,14 +174,15 @@ namespace ApolloTests.Data.Rating
             latestResults = new List<JObject>();
 
             var vehicles = root.GetVehicles();
-
-            foreach(var limit in root.getLimits())
+            var limits = root.getLimits();
+            foreach (var limit in limits)
             {
                 if (limit.GetCoverageType().calculatedPerRisk)
                 {
                     foreach (var vehicle in vehicles)
                     {
-                        interpreter.SetVariable("Vehicle", vehicle);
+                        interpreter.SetVariable("Vehicle", vehicle.Vehicle);
+                        interpreter.SetVariable("VehicleRisk", vehicle);
 
                         if (vehicle.Vehicle.IsNonPowered() && limit.GetCoverageType().IsNonPoweredVehicle_Unapplicable())
                         {
@@ -292,10 +300,9 @@ namespace ApolloTests.Data.Rating
                 {
                     factorValue = factor["Value"]?.ToObject<decimal?>()?? throw new NullReferenceException();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Log.Error($"Error parsing factor {factor?["Value"] ?? null} into decimal ");
-                    throw;
+                    throw new Exception($"Error parsing factor's value {factor} into decimal \n", ex);
                 }
 
                 if (string.IsNullOrWhiteSpace(operation))
@@ -352,7 +359,10 @@ namespace ApolloTests.Data.Rating
                 {
                     throw new ArgumentException($"Operation: {operation} is not being handled in Data.Rating.Engine.Run()");
                 }
-
+                if(factorName== "Policy Term Factor")
+                {
+                    factor["parsedValue"] = $"TermFactorPremium: {premium:0}";
+                }
                 factor.Add("currentPremium", premium);
 
             }
@@ -424,7 +434,12 @@ namespace ApolloTests.Data.Rating
                 }
 
             }
-
+            var errors = result.Values().Where(it => it["KnownFields"].Any() && it.Value<decimal?>("Value")==null);
+            if (errors.Any())
+            {
+                throw new Exception("The following factors didn't resolve\n" + Log.stringify(errors));
+            }
+           
             rateResult.Add("Factors", result);
             
         }
@@ -512,5 +527,22 @@ namespace ApolloTests.Data.Rating
         /// <returns>
         ///  the corresponding algorithm code
         /// </returns>
+        /// 
+
+        public static int? parseRatingFactorNumericalValues(String value)
+        {
+            if (value.Contains("+"))
+            {
+                return int.MaxValue;
+            }
+            else if (int.TryParse(value, out int intValue))
+            {
+                return intValue;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

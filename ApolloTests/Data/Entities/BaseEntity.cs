@@ -1,4 +1,5 @@
 ﻿using ApolloTests.Data.Entities.Context;
+using ApolloTests.Data.EntityBuilder;
 using Castle.DynamicProxy;
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
@@ -36,6 +37,30 @@ namespace ApolloTests.Data.Entities
         [NotMapped]
         [JsonIgnore]
         public ServiceBus ServiceBus;
+
+
+        [JsonIgnore]
+        public CosmosContext ContextCosmos { get; }
+
+        [JsonIgnore]
+        public SQLContext ContextSQL { get; }
+
+        [JsonIgnore]
+        public ApolloContext Context { get; }
+
+        public BaseEntity(CosmosContext context):this()
+        {
+            Context = context;
+            ContextCosmos = context.CosmosContext;
+            ContextSQL = context.SQLContext;
+        }
+        public BaseEntity(SQLContext context):this()
+        {
+            Context = context;
+            ContextCosmos = context.CosmosContext;
+            ContextSQL = context.SQLContext;
+        }
+        public BaseEntity(QuoteBuilder builder) : this(builder.SQLContext) { }
 
         public BaseEntity()
         {

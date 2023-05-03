@@ -15,13 +15,14 @@ namespace ApolloTests.Data.Entities.Risk
 
     {
         public LocationRisk(CosmosContext context) : base(context) { }
-        public LocationRisk() { }
-        public LocationRisk(bool loadDefaults)
+        public LocationRisk(QuoteBuilder builder, bool loadDefaults=true) : base(builder)
         {
             if(loadDefaults)
                 LoadDefaults();
             
         }
+        public LocationRisk() { }
+
         public void LoadDefaults()
         {
             RiskTypeId = (int)RiskTypeEnum.Location;
@@ -36,7 +37,7 @@ namespace ApolloTests.Data.Entities.Risk
 
         }
         [JsonProperty("location")]
-        public virtual new Location Location { get; set; }
+        public override Location Location { get; set; }
 
         [JsonConverter(typeof(ConcreteTypeConverter<OutputMetadataLocation>))]
         public override IOutputMetadata OutputMetadata { get; set; }
