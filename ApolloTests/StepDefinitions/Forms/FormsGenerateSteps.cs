@@ -49,16 +49,18 @@ namespace ApolloTests.StepDefinition.Forms
         [Given(@"condition for form with code '([^']*)' and '([^']*)' and lineId=(.*) is met")]
         public void GivenConditionForFormWithCodeAndStateIsMet(string code, string name, int LineId)
         {
-            throw new Exception();
             this.code = code;
             this.name = name;
             this.LineId = LineId;
             var line = SQLContext.Line.Find(LineId);
             this.Form = Form.GetForm(line, code, name);
-            if(!bool.TryParse(Configuration.GetVariable("FORM_CREATE_NEW_ENTITIES", true), out bool createNewEntities))
+            string? testPointConfiguration = (string?)TestContext.Properties["__Tfs_TestConfigurationName__"];
+            bool createNewEntities = testPointConfiguration?.Contains("FORM_CREATE_NEW_ENTITIES") == true;
+            if(bool.TryParse(Configuration.GetVariable("FORM_CREATE_NEW_ENTITIES", true), out bool createNew))
             {
-                createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error ?? false;
+                createNewEntities = createNew;
             }
+
             var policy = this.Form.condition.GetValidPolicy(createNewEntities, ObjectContainer);
             this.Context = new FormTestContext(Form, policy);
             var policyId = policy.Id;
