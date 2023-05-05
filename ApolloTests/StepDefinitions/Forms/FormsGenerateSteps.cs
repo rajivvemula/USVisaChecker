@@ -42,12 +42,14 @@ namespace ApolloTests.StepDefinition.Forms
             this.CosmosContext= objectContainer.Resolve<CosmosContext>();
             this.SQLContext = objectContainer.Resolve<SQLContext>();
             this.ObjectContainer = objectContainer;
+            Log.Info(TC.Properties);
 
         }
 
         [Given(@"condition for form with code '([^']*)' and '([^']*)' and lineId=(.*) is met")]
         public void GivenConditionForFormWithCodeAndStateIsMet(string code, string name, int LineId)
         {
+            throw new Exception();
             this.code = code;
             this.name = name;
             this.LineId = LineId;

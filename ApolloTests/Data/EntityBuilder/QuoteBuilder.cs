@@ -281,6 +281,7 @@ namespace ApolloTests.Data.EntityBuilder
             this.Hydrator.Interpreter.SetVariable("GoverningStateId", response["governingStateId"]);
             this.Hydrator.Interpreter.SetVariable("Quote", Quote);
             Log.Info($"Created quote: {Quote.Id}");
+            Log.Info($"Insured: { Quote.BusinessInformation.Name}");
             return Quote;
         }
 
