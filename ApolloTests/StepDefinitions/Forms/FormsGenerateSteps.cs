@@ -60,10 +60,8 @@ namespace ApolloTests.StepDefinition.Forms
             {
                 createNewEntities = createNew;
             }
-
             var policy = this.Form.condition.GetValidPolicy(createNewEntities, ObjectContainer);
             this.Context = new FormTestContext(Form, policy);
-            var policyId = policy.Id;
 
         }
 
