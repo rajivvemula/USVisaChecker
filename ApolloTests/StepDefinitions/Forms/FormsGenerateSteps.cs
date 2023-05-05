@@ -89,7 +89,7 @@ namespace ApolloTests.StepDefinition.Forms
                         {
                             { "EntityId",this.Context?.Policy.Id.ToString() },
                             { "EntityTypeId", this.Context?.Policy.EntityTypeId},
-                            { "SearchType", this.Context?.Policy.EntityTypeId}
+                            { "SearchType", 1}
                         }.ToString(Newtonsoft.Json.Formatting.None)
                     }
                 }

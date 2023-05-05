@@ -18,6 +18,7 @@ namespace HitachiQA
         private static IConfiguration _Config;
         public static IConfiguration Configuration { get { return _Config ??= BuildConfig(); } }
         public static IObjectContainer ObjectContainer;
+        public static string RunId { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         [BeforeFeature(Order = 1)]

@@ -247,7 +247,7 @@ namespace ApolloTests.Data.EntityBuilder
             //
             //     3. set the rest of the variables (Effective Date, LOB)
             //
-            this.Hydrator.Interpreter.SetVariable("OrganizationName", $"Automation API org {DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
+            this.Hydrator.Interpreter.SetVariable("OrganizationName", $"Automation API org Run:{Main.RunId}-{DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
             this.Hydrator.Interpreter.SetVariable("LineId", this.Line.Id);
             this.Hydrator.Interpreter.SetVariable("SubLineId", this.Line.Id);
             this.Hydrator.Interpreter.SetVariable("EffectiveDate", this.EffectiveDate);
