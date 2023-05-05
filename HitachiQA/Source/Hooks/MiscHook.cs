@@ -20,6 +20,18 @@ namespace HitachiQA.Hooks
         }
         public ScenarioStatus? CurrentScenarioStatus => GetStatuses()?.FirstOrDefault(it => it.scenarioName == TestContext.TestName);
 
+        [BeforeTestRun]
+        public static void CreateRunId()
+        {
+            var runId = Main.Configuration.GetVariable("test.RunId");
+            if(string.IsNullOrWhiteSpace(runId))
+            {
+                runId = DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+                Main.Configuration["test.RunId"] = runId;
+            }
+            Main.RunId = runId;
+        }
+
         [AfterScenario]
         public static void initialize(TestContext testContext)
         {
