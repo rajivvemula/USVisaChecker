@@ -116,7 +116,7 @@ namespace ApolloTests.Data.Form
             var tethers = SQL.executeQuery(@$"SELECT Id as TetherId, CurrentApplicationId 
                             FROM [tether].[Tether] 
                             where 
-                            EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() 
+                            ExpirationDate >= GETDATE() 
                             AND GoverningStateId = {stateId}
                             AND LineId={this.Form.Line.Id}
                             AND PolicyNumber is not null");
@@ -138,11 +138,11 @@ namespace ApolloTests.Data.Form
 
             if(scopeIntoThisRun)
             {
-                conditions.Add($"contains(c.BusinessInformation.Name, 'Run:{Main.RunId}')");
+                conditions.Add($"contains(c.BusinessInformation.Name, 'Run:{Main.RunId}-')");
             }
             else
             {
-                conditions.Add($"NOT contains(c.BusinessInformation.Name, 'Run:{Main.RunId}')");
+                conditions.Add($"NOT contains(c.BusinessInformation.Name, 'Run:{Main.RunId}-')");
             }
 
             if (this.coverageTypes != null && this.coverageTypes.Any())

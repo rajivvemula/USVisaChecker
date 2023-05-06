@@ -29,7 +29,7 @@ namespace HitachiQA.Hooks
                 runId = DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
                 Main.Configuration["test.RunId"] = runId;
             }
-            Main.RunId = runId;
+            Main.RunId = "1683347211867";
         }
 
         [AfterScenario]
