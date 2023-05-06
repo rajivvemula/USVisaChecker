@@ -142,7 +142,7 @@ namespace ApolloTests.Data.Form
             }
             else
             {
-                conditions.Add($"NOT contains(c.BusinessInformation.Name, 'Run:{Main.RunId}-')");
+                conditions.Add($"NOT contains(c.BusinessInformation.Name, 'Run:')");
             }
 
             if (this.coverageTypes != null && this.coverageTypes.Any())
