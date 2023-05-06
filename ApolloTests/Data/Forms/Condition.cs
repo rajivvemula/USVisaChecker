@@ -105,11 +105,7 @@ namespace ApolloTests.Data.Form
             var validAppIds = new Dictionary<long, long>();
 
 
-            if (string.IsNullOrWhiteSpace(this.stateCode))
-            {
-                this.stateCode = "IL";
-            }
-            var stateId = SQL.executeQuery(@$"SELECT Id  
+            long? stateId = string.IsNullOrWhiteSpace(this.stateCode)? null: (long)SQL.executeQuery(@$"SELECT Id  
                                     FROM [location].[StateProvince]
                                     Where Code='{this.stateCode}';")[0]["Id"];
 
@@ -117,7 +113,7 @@ namespace ApolloTests.Data.Form
                             FROM [tether].[Tether] 
                             where 
                             ExpirationDate >= GETDATE() 
-                            AND GoverningStateId = {stateId}
+                            {(stateId==null? "": $"AND GoverningStateId ={stateId}")}
                             AND LineId={this.Form.Line.Id}
                             AND PolicyNumber is not null");
 
@@ -344,7 +340,6 @@ namespace ApolloTests.Data.Form
             {
                 var appIds = validTetherIds.Select(it=> validAppIds[it]);
                 conditions.Add($"c.Id in ({string.Join(", ", appIds)})");
-                conditions.Add($"c.ApplicationStatusValue=\"Issued\"");
                 var generatedConditionStr = string.Join(" AND ", conditions);
                 var applicationQuery = $@"
                     SELECT TOP 1 * FROM c

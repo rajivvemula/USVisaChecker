@@ -101,9 +101,9 @@ namespace ApolloTests.Data.Entities
         }
         public Quote CreateDraftPolicyEndorsement()
         {
-            JObject response = RestAPI.POST($"/policy/{Id}/endorsement/", null);
+            long quoteId = RestAPI.POST($"/policy/{Id}/endorsement/", null);
             
-            return this.ContextCosmos.Quotes.First(it=> it.Id== response.Value<long>("Id"));
+            return this.ContextCosmos.Quotes.First(it=> it.Id== quoteId);
         }
 
         public dynamic? IssueEndorsement()

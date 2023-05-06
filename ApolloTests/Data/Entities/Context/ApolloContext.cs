@@ -46,6 +46,10 @@ namespace ApolloTests.Data.Entities.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+            optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Trace)
+            .EnableDetailedErrors()
+            .EnableSensitiveDataLogging()
+            ;
             
             //optionsBuilder.LogTo(Console.WriteLine);
 
