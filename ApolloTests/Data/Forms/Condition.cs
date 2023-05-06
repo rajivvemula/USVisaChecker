@@ -81,23 +81,21 @@ namespace ApolloTests.Data.Form
          *  
          *  
          */
-        public Entities.Policy GetValidPolicy(bool createNewQuote, IObjectContainer OC)
+        public Entities.Policy GetValidPolicy(bool useNewEntitiesOnly, IObjectContainer OC)
         {
-            if(!createNewQuote)
+            if(useNewEntitiesOnly)
             {
-                var policy = FindPolicyForThis(OC);
-                if (policy != null)
-                {
-                    return policy;
-                }
+                var policy =  FindPolicyForThis(OC, true);
+                return policy == null ? this.CreatePolicyForThis(OC) : policy;
             }
-            
-            return this.CreatePolicyForThis(OC);
+            else
+            {
+                return FindPolicyForThis(OC, false);
+            }
 
-            throw new NotImplementedException($"No policy was found in the system for {this} \nFunction to create quote for given condition needs to be implemented");
         }
 
-        public Entities.Policy? FindPolicyForThis(IObjectContainer objectContainer)
+        public Entities.Policy? FindPolicyForThis(IObjectContainer objectContainer, bool scopeIntoThisRun)
         {
             var cosmosContext = objectContainer.Resolve<CosmosContext>();
             var sqlContext = objectContainer.Resolve<SQLContext>();
@@ -106,49 +104,46 @@ namespace ApolloTests.Data.Form
             //<app,tether>
             var validAppIds = new Dictionary<long, long>();
 
+
             if (string.IsNullOrWhiteSpace(this.stateCode))
             {
-                var tethers = SQL.executeQuery(@$"SELECT Id as TetherId, CurrentApplicationId 
-                                FROM [tether].[Tether] 
-                                where 
-                                EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() 
-                                AND GoverningStateId = 1
-                                AND LineId={this.Form.Line.Id}
-                                AND PolicyNumber is not null");
-                var tetherIds = tethers.Select(it=> (long)it["TetherId"]);
-                foreach(var tether in tethers)
-                {
-                    long tetherId = (long)tether["TetherId"];
-                    validAppIds.Add(tetherId, (long)tether["CurrentApplicationId"]);
-                    validTetherIds.Add(tetherId);
-                }
+                this.stateCode = "IL";
+            }
+            var stateId = SQL.executeQuery(@$"SELECT Id  
+                                    FROM [location].[StateProvince]
+                                    Where Code='{this.stateCode}';")[0]["Id"];
+
+            var tethers = SQL.executeQuery(@$"SELECT Id as TetherId, CurrentApplicationId 
+                            FROM [tether].[Tether] 
+                            where 
+                            EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() 
+                            AND GoverningStateId = {stateId}
+                            AND LineId={this.Form.Line.Id}
+                            AND PolicyNumber is not null");
+
+            var tetherIds = tethers.Select(it => (long)it["TetherId"]);
+            foreach (var tether in tethers)
+            {
+                long tetherId = (long)tether["TetherId"];
+                validAppIds.Add(tetherId, (long)tether["CurrentApplicationId"]);
+                validTetherIds.Add(tetherId);
+            }
+
+            
+
+            
+            
+
+            if (validTetherIds.Count == 0) { return null; }
+
+            if(scopeIntoThisRun)
+            {
+                conditions.Add($"contains(c.BusinessInformation.Name, 'Run:{Main.RunId}')");
             }
             else
             {
-                var stateId = SQL.executeQuery(@$"SELECT Id  
-                                     FROM [location].[StateProvince]
-                                     Where Code='{this.stateCode}';")[0]["Id"];
-
-                var tethers = SQL.executeQuery(@$"SELECT Id as TetherId, CurrentApplicationId 
-                                FROM [tether].[Tether] 
-                                where 
-                                EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() 
-                                AND GoverningStateId = {stateId}
-                                AND LineId={this.Form.Line.Id}
-                                AND PolicyNumber is not null");
-
-                var tetherIds = tethers.Select(it => (long)it["TetherId"]);
-                foreach (var tether in tethers)
-                {
-                    long tetherId = (long)tether["TetherId"];
-                    validAppIds.Add(tetherId, (long)tether["CurrentApplicationId"]);
-                    validTetherIds.Add(tetherId);
-                }
-
+                conditions.Add($"NOT contains(c.BusinessInformation.Name, 'Run:{Main.RunId}')");
             }
-
-
-            if (validTetherIds.Count == 0) { return null; }
 
             if (this.coverageTypes != null && this.coverageTypes.Any())
             {
@@ -198,7 +193,7 @@ namespace ApolloTests.Data.Form
 
 
                     //to load all resulting valid tethers
-                    var tethers = new List<long>();
+                    var tetherCandidates = new List<long>();
 
                     // group all risks with their TetherId
                     // ending with a group for each tether (group is basically a list of risks associated to that tether)
@@ -229,17 +224,17 @@ namespace ApolloTests.Data.Form
 
                         //if we need both, then only add if both matchd
                         if (both && hasFinanced && hasLeased)
-                            tethers.Add(tetherGroup.Key);
+                            tetherCandidates.Add(tetherGroup.Key);
                         //if we need 1, only add that one
                         else if(!both && lienHolder && hasFinanced)
-                            tethers.Add(tetherGroup.Key);
+                            tetherCandidates.Add(tetherGroup.Key);
                         //if we need 1, only add that one
                         else if (!both && lessor && hasLeased)
-                            tethers.Add(tetherGroup.Key);
+                            tetherCandidates.Add(tetherGroup.Key);
                     }
 
                     //finally, remove all previously valid tether that are no longer valid after checking this
-                    validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                    validTetherIds.RemoveAll(it => !tetherCandidates.Contains(it));
 
                 }               
 
@@ -256,8 +251,8 @@ namespace ApolloTests.Data.Form
                                                             AND RatableObjectId is not null;");
 
 
-                var tethers = draftEndorsements.Select(it => (long)it["TetherId"]);
-                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                var tetherCandidates = draftEndorsements.Select(it => (long)it["TetherId"]);
+                validTetherIds.RemoveAll(it => !tetherCandidates.Contains(it));
                 
             }
             if(this.issuedEndorsement)
@@ -274,31 +269,31 @@ namespace ApolloTests.Data.Form
                                     ) AS subquery
                                     WHERE [Current] = 'true' -- reference the alias in the outer query
                                     ORDER BY TetherId desc;");
-                var tethers = result.Select(it => (long)it["TetherId"]);
-                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                var tetherCandidates = result.Select(it => (long)it["TetherId"]);
+                validTetherIds.RemoveAll(it => !tetherCandidates.Contains(it));
 
             }
             if (this.materializedBillToday)
             {
-                var tethers = MaterializedBills.Select(it => (long)it["TetherId"]);
-                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                var tetherCandidates = MaterializedBills.Select(it => (long)it["TetherId"]);
+                validTetherIds.RemoveAll(it => !tetherCandidates.Contains(it));
 
             }
             if (this.canceled)
             {
                 var canceled = SQL.executeQuery("SELECT Id as TetherId FROM [tether].[Tether] where EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() and PolicyCancellationEffectiveDate < GETDATE();");
 
-                var tethers = canceled.Select(it => (long)it["TetherId"]);
+                var tetherCandidates = canceled.Select(it => (long)it["TetherId"]);
 
-                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                validTetherIds.RemoveAll(it => !tetherCandidates.Contains(it));
             }
             if (this.canceledFuture)
             {
                 var canceled = SQL.executeQuery("SELECT Id as TetherId FROM [tether].[Tether] where EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() and PolicyCancellationEffectiveDate > GETDATE();");
 
-                var tethers = canceled.Select(it => (long)it["TetherId"]);
+                var tetherCandidates = canceled.Select(it => (long)it["TetherId"]);
 
-                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                validTetherIds.RemoveAll(it => !tetherCandidates.Contains(it));
             }
             if (this.rescindedCancelation)
             {
@@ -312,17 +307,17 @@ namespace ApolloTests.Data.Form
                                                     LEFT JOIN tether.TetherHistoryEventType ET on TH2.EventTypeId = ET.Id 
                                                     WHERE TH2.EventTypeId = 20
                                                     order by TH2.TetherId desc");
-                var tethers = rescinded.Select(it => (long)it["TetherId"]);
-                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                var tetherCandidates = rescinded.Select(it => (long)it["TetherId"]);
+                validTetherIds.RemoveAll(it => !tetherCandidates.Contains(it));
 
             }
             if (this.reinstated)
             {
                 var reinstated = SQL.executeQuery("SELECT Id as TetherId FROM [tether].[Tether] where EffectiveDate <= GETDATE() AND ExpirationDate >= GETDATE() and PolicyReinstatementDate < GETDATE();");
 
-                var tethers = reinstated.Select(it => (long)it["TetherId"]);
+                var tetherCandidates = reinstated.Select(it => (long)it["TetherId"]);
 
-                validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                validTetherIds.RemoveAll(it => !tetherCandidates.Contains(it));
             }
             if (this.vehicle != null)
             {
@@ -339,16 +334,16 @@ namespace ApolloTests.Data.Form
                     validTetherIds = new List<long>();
                 else
                 {
-                    var tethers = validVehicles.Select(it => (long)it["TetherId"]);
+                    var tetherCandidates = validVehicles.Select(it => (long)it["TetherId"]);
 
-                    validTetherIds.RemoveAll(it => !tethers.Contains(it));
+                    validTetherIds.RemoveAll(it => !tetherCandidates.Contains(it));
                 }
             }
 
             if(validTetherIds.Count > 0)
             {
                 var appIds = validTetherIds.Select(it=> validAppIds[it]);
-                conditions.Add($"c.Id in ({string.Join(", ",appIds)})");
+                conditions.Add($"c.Id in ({string.Join(", ", appIds)})");
                 conditions.Add($"c.ApplicationStatusValue=\"Issued\"");
                 var generatedConditionStr = string.Join(" AND ", conditions);
                 var applicationQuery = $@"
@@ -503,8 +498,28 @@ namespace ApolloTests.Data.Form
             //6.)    if < PropertyName > was provided, call Check<PropertyName> function sending in the match object by reference
             if (this.canceled || rescindedCancelation)
             {
+                policy.Tether.EffectiveDate = policy.Tether.EffectiveDate.AddDays(-2);
+                policy.Tether.ExpirationDate = policy.Tether.ExpirationDate.AddDays(-2);
+                policy.Tether.ContextSQL.SaveChanges();
                 Thread.Sleep(5000);
                 policy.Cancel();
+            }
+            if(canceledFuture)
+            {
+                policy.Tether.EffectiveDate = policy.Tether.EffectiveDate.AddDays(-2);
+                policy.Tether.ExpirationDate = policy.Tether.ExpirationDate.AddDays(-2);
+                policy.Tether.ContextSQL.SaveChanges();
+
+                Thread.Sleep(5000);
+                var cancelPolicy = new Entities.Policy.CancelPolicyObject()
+                {
+                    cancelDenyReasonTypeId = CancellationReason.CancelledByInsured,
+                    cancellationInitiatedBy = CancellationInitiatedBy.Carrier,
+                    cancellationUnderwriterReason = "Testing",
+                    policyCancellationEffectiveDate = DateTime.Now.AddDays(2).ToString("O")
+                };
+                policy.Cancel(cancelPolicy);
+
             }
             if (rescindedCancelation)
             {
@@ -526,18 +541,12 @@ namespace ApolloTests.Data.Form
                 policy.Tether.PolicyCancellationEffectiveDate = DateTimeOffset.UtcNow.AddDays(-1);
                 policy.Tether.EffectiveDate = policy.Tether.EffectiveDate.AddDays(-2);
                 policy.Tether.ExpirationDate = policy.Tether.ExpirationDate.AddDays(-2);
-
-
-                var cancelJobId = SQL.executeQuery("select * from system.job where [Name]='CancelPolicies';")[0]["Id"];
-
-                RunRatableObjectManagementFunction($"jobtrigger/{cancelJobId}");
-                //WAIT FOR JOB TO RUN
-                Thread.Sleep(10000);
-
-                policy.Tether.waitForTetherStatus("CANCELLED");
+                policy.Tether.ContextSQL.SaveChanges();
+                policy.TimeFrom = policy.Tether.EffectiveDate;
+                policy.TimeTo = policy.Tether.ExpirationDate;
 
                 policy.Reinstate();
-                policy.Tether.waitForTetherStatus("ISSUED");
+
 
 
 
