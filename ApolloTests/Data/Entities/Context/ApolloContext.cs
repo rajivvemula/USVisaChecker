@@ -50,8 +50,8 @@ namespace ApolloTests.Data.Entities.Context
             //.EnableDetailedErrors()
             //.EnableSensitiveDataLogging()
             //;
-            
-            //optionsBuilder.LogTo(Console.WriteLine);
+
+
 
             var extension = optionsBuilder.Options.FindExtension<ProxiesOptionsExtension>()
             ?? new ProxiesOptionsExtension();
