@@ -75,6 +75,8 @@ namespace ApolloTests.StepDefinition.Forms
             catch(Exception ex)
             {
                 var msg = $"error creating/retireving policy for form: {code}  - {name} in line {LineId}";
+                throw new Exception(msg, ex);
+
                 #if DEBUG
                 throw new Exception(msg, ex);
                 #else
