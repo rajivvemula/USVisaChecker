@@ -46,10 +46,10 @@ namespace ApolloTests.Data.Entities.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Trace)
-            .EnableDetailedErrors()
-            .EnableSensitiveDataLogging()
-            ;
+            //optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Trace)
+            //.EnableDetailedErrors()
+            //.EnableSensitiveDataLogging()
+            //;
             
             //optionsBuilder.LogTo(Console.WriteLine);
 
@@ -63,6 +63,7 @@ namespace ApolloTests.Data.Entities.Context
         }
         private static void CheckForNullValues(ModelBuilder modelBuilder)
         {
+            //broken
             //var client = Main.ObjectContainer.Resolve<Cosmos>();
             //
             // This function will print all types that are Not-Nullable,
