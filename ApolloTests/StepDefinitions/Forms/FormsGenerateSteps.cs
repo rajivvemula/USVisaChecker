@@ -67,15 +67,16 @@ namespace ApolloTests.StepDefinition.Forms
             try
             {
                 policy = this.Form.condition.GetValidPolicy(useNewEntities, ObjectContainer);
-                if (policy == null)
-                {
-                    RuntimeProvider.TestInconclusive($"No policy was found for form: {code}  - {name} in line {LineId}");
-                }
+                
             }
             catch(Exception ex)
             {
                 var msg = $"error creating/retireving policy for form: {code}  - {name} in line {LineId}";
                 throw new Exception(msg, ex);
+            }
+            if (policy == null)
+            {
+                RuntimeProvider.TestInconclusive($"No policy was found for form: {code}  - {name} in line {LineId}");
             }
             this.Context = new FormTestContext(Form, policy);
 
