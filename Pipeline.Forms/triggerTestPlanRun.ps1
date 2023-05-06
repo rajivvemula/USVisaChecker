@@ -57,12 +57,12 @@ $planId = $Env:PlanId
 $envName = $Env:TargetEnvironment
 $BearerToken= $Env:BEARER_TOKEN
 $PATToken = $Env:PAT_TOKEN
-$releaseId = $Env:TargetReleaseId
+$definitionId = $Env:TargetReleaseId
 $org = $Env:ADO_ORG
 $proj = $Env:ADO_PROJ
 echo "PlanId: $planId"
 echo "EnvName: $envName" 
-echo "releaseId: $releaseId" 
+echo "releaseId: $definitionId" 
 echo "org: $org"
 echo "proj: $proj" 
 #echo "BearerToken: ${BearerToken}"
@@ -89,21 +89,34 @@ $suitesURL = "https://dev.azure.com/$org/$proj/_apis/test/Plans/${planId}/suites
 $suitesRes = Invoke-RestMethod $suitesURL -Method 'GET' -Headers $headers
 $environmentSuite = $suitesRes.value | Where-Object { $_.name -ieq $envName }
 
-$testpointIds = @()
+# $testpointIds = @()
 
 $testPointsUrl = "https://dev.azure.com/$org/$proj/_apis/testplan/Plans/${planId}/Suites/$($environmentSuite.id)/TestPoint?api-version=7.0&continuationToken=0%3B1000&isRecursive=true"
 $pointsRes = Invoke-RestMethod $testPointsUrl -Method 'GET' -Headers $headers 
 
-foreach ($point in $pointsRes.value) {
-    $testpointIds += $point.id
-}
+$configurationGroups = $pointsRes.value | Group-Object -Property {$_.configuration.id}
 
-echo $($testpointIds.count)
+
+
+# foreach ($point in $pointsRes.value) {
+#     $testpointIds += $point.id
+# }
+
+echo "configuration groups count: $($configurationGroups.count)"
 echo "retrieved target testpoints"
 
 #--------------------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------------------
 
+
+foreach($configurationGroup in $configurationGroups)
+{
+$testpointIds =@()
+
+foreach ($point in $configurationGroup.Group) {
+    $testpointIds += $point.id
+}
+echo "testpoint count: $($testpointIds.count)"
 
 
 #
@@ -143,7 +156,7 @@ echo "created test run"
 #
 # Send release trigger
 #
-$definitionUrl = "https://vsrm.dev.azure.com/$org/$proj/_apis/release/definitions/${releaseId}?api-version=7.0"
+$definitionUrl = "https://vsrm.dev.azure.com/$org/$proj/_apis/release/definitions/${definitionId}?api-version=7.0"
 $definitionRes = Invoke-RestMethod $definitionUrl -Method 'GET' -Headers $headers
 
 $buildDefinitionId = $definitionRes.artifacts[0].definitionReference.definition.id
@@ -166,7 +179,7 @@ $releaseJson = @"
             }
         }
     ],
-    "definitionId": $releaseId,
+    "definitionId": $definitionId,
     "description": "",
     "isDraft": false,
     "manualEnvironments": [
@@ -252,6 +265,7 @@ $envUpdateJson = @"
 "@
 $environmentUpdateRes = Invoke-RestMethod "https://vsrm.dev.azure.com/$org/$proj/_apis/release/releases/${releaseId}/environments/${environmentId}?api-version=7.0" -Method 'PATCH' -Headers $headers -Body $envUpdateJson
 
+}
 #--------------------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------------------
 
