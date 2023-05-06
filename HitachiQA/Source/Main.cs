@@ -8,6 +8,9 @@ using Microsoft.Extensions.Azure;
 using HitachiQA.Helpers;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using static Org.BouncyCastle.Math.EC.ECCurve;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Newtonsoft.Json.Linq;
 
 namespace HitachiQA
 {
@@ -65,8 +68,7 @@ namespace HitachiQA
 
         public static IConfiguration BuildConfig()
         {
-            var sw = new Stopwatch();
-                sw.Start();
+            
 
             Console.WriteLine("BUILDING CONFIG");
 
@@ -87,32 +89,63 @@ namespace HitachiQA
             {
                 //disabled
             }
-            else
+            else if(config.GetVariable("CACHE_SECRETS", true) is String secret_cache && secret_cache != null && secret_cache.ToLower() == "true")
             {
-                var appConfigUri = config.GetVariable("APP_CONFIG_URI", true);
-                var keyVaultUri = config.GetVariable("KEYVAULT_URI", true);
+                string filePath = "./localcache/secrets.json";
+                if (File.Exists(filePath)) {
+                    builder.AddJsonFile(filePath);
+                    config = builder.Build();
+                }
+                else {
+                    config = loadSecrets(config, builder);
+                    var secretsToCache = new List<string>();
+                    var allKeys = config.GetChildren().Select(it => it.Key);
 
-                var AUTappConfigUri = config.GetVariable("AUT_APP_CONFIG_URI", true);
-                var AUTkeyVaultUri = config.GetVariable("AUT_KEYVAULT_URI", true);
-
-                attemptLoadAppConfig(builder, appConfigUri, "App Config");
-                attemptLoadKeyVault(builder, keyVaultUri, "Keyvalut");
-
-                attemptLoadAppConfig(builder, AUTappConfigUri, "AUT App Config");
-                attemptLoadKeyVault(builder, AUTkeyVaultUri, "AUT Keyvault");
-
+                    var secretProviders = config.Providers.Where(it => it is AzureKeyVaultConfigurationProvider).Select(it=>(AzureKeyVaultConfigurationProvider)it);
+                    foreach(var provider in secretProviders)
+                    {
+                        IEnumerable<string> providerKeys = allKeys.Where(it => provider.TryGet(it, out string value) && value != null);
+                        secretsToCache.AddRange(providerKeys);
+                    }
+                    JObject secrets = new JObject();
+                    secretsToCache.ForEach(it=> secrets.Add(it, config.GetVariable(it)));
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath) ?? throw new NullReferenceException($"{filePath} directory returned null"));
+                    File.WriteAllText(filePath, secrets.ToString());
+                }
             }
-            sw.Stop();
-            Console.WriteLine($"BuildConfig loading svc: {sw.Elapsed.TotalSeconds}");
-            sw.Restart();
-            sw.Start();
-            config = builder.Build();
-            Console.WriteLine("BUILT CONFIG SUCCESSFULLY");
+            else {
+
+                config = loadSecrets(config, builder);
+            }
+            
             
            
             CheckPossibleVariableTypos(config);
+
+            return config;
+
+        }
+
+        private static IConfigurationRoot loadSecrets(IConfigurationRoot config, IConfigurationBuilder builder)
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            var appConfigUri = config.GetVariable("APP_CONFIG_URI", true);
+            var keyVaultUri = config.GetVariable("KEYVAULT_URI", true);
+
+            var AUTappConfigUri = config.GetVariable("AUT_APP_CONFIG_URI", true);
+            var AUTkeyVaultUri = config.GetVariable("AUT_KEYVAULT_URI", true);
+
+            attemptLoadAppConfig(builder, appConfigUri, "App Config");
+            attemptLoadKeyVault(builder, keyVaultUri, "Keyvalut");
+
+            attemptLoadAppConfig(builder, AUTappConfigUri, "AUT App Config");
+            attemptLoadKeyVault(builder, AUTkeyVaultUri, "AUT Keyvault");
+
+            config = builder.Build();
             sw.Stop();
             Console.WriteLine($"BuildConfig built svc: {sw.Elapsed.TotalSeconds}");
+            Console.WriteLine("BUILT CONFIG SUCCESSFULLY");
 
             return config;
 

@@ -2,6 +2,7 @@
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Polly;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -60,6 +61,14 @@ namespace ApolloTests.Data.Entities
             var response = RestAPI.POST($"/policy/cancelpolicy/{Id}", cancelPolicyObject.ToJObject());
             this.Tether.WaitForProperty("PolicyCancellationEffectiveDate", null, true);
 
+            if(DateTime.Parse(cancelPolicyObject.policyCancellationEffectiveDate)<DateTime.Now)
+            {
+                var cancelJobId = SQL.executeQuery("select * from system.job where [Name]='CancelPolicies';")[0]["Id"];
+                RunRatableObjectManagementFunction($"jobtrigger/{cancelJobId}");
+                Tether.waitForTetherStatus("CANCELLED");
+            }
+            
+
             return response;
         }
         public dynamic Reinstate()
@@ -71,10 +80,13 @@ namespace ApolloTests.Data.Entities
 
             return Reinstate(reinstatePolicy);
         }
-        public dynamic Reinstate(ReinstatePolicyObject cancelPolicyObject)
+        public dynamic Reinstate(ReinstatePolicyObject reinstateObject)
         {
-            var response = RestAPI.POST($"/policy/{Id}/reinstate", cancelPolicyObject.ToJObject());
-
+            var response = RestAPI.POST($"/policy/{Id}/reinstate", reinstateObject.ToJObject());
+            if (reinstateObject.reinstatementDate < DateTime.Now)
+            {
+                Tether.waitForTetherStatus("ISSUED");
+            }
             return response ?? throw new NullReferenceException();
         }
         public dynamic RescindCancelation()
@@ -89,9 +101,9 @@ namespace ApolloTests.Data.Entities
         }
         public Quote CreateDraftPolicyEndorsement()
         {
-            JObject response = RestAPI.POST($"/policy/{Id}/endorsement/", null);
+            long quoteId = RestAPI.POST($"/policy/{Id}/endorsement/", null);
             
-            return this.ContextCosmos.Quotes.First(it=> it.Id== response.Value<long>("Id"));
+            return this.ContextCosmos.Quotes.First(it=> it.Id== quoteId);
         }
 
         public dynamic? IssueEndorsement()
@@ -133,9 +145,9 @@ namespace ApolloTests.Data.Entities
 
         public string PolicyNumber { get; set; }
 
-        public DateTime TimeFrom { get; set; }
+        public DateTimeOffset TimeFrom { get; set; }
 
-        public DateTime TimeTo { get; set; }
+        public DateTimeOffset TimeTo { get; set; }
 
         public string LatestRatingResponseGroupId { get; set; }
 
@@ -168,7 +180,7 @@ namespace ApolloTests.Data.Entities
 
             public CancellationInitiatedBy cancellationInitiatedBy { get; set; }
 
-            public string? cancellationUnderwriterReason { get; set; }
+            public string? cancellationUnderwriterReason { get; set; } = "Testing";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public DateTime? reinstatementDate { get; set; }

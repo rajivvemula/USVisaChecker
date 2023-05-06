@@ -100,6 +100,7 @@ namespace ApolloTests.Data.Entities
         public long CarrierId { get; set; }
 
         [JsonProperty("producerId")]
+        [NotMapped]
         public long? ProducerId { get; set; }
 
         [JsonProperty("tetherId")]
@@ -160,33 +161,41 @@ namespace ApolloTests.Data.Entities
 
         [JsonProperty("industryClassTaxonomyId")]
         [HydratorAttr("IndustryClassTaxonomyId")]
+        [NotMapped]
         public long? IndustryClassTaxonomyId { get; set; }
 
 
         [JsonProperty("industryClassTaxonomyClassName")]
         [HydratorAttr("IndustryClassTaxonomyClassName")]
-        public string IndustryClassTaxonomyClassName { get; set; }
+        [NotMapped]
+        public string? IndustryClassTaxonomyClassName { get; set; }
 
         public bool ShouldSerializeIndustryClassTaxonomyId() => LineId == 7;
         public bool ShouldSerializeIndustryClassTaxonomyClassName() => LineId == 7;
 
         [JsonProperty("industryTypeId")]
+        [NotMapped]
         public long? IndustryTypeId { get; set; }
 
         [JsonProperty("industryTypeName")]
-        public string IndustryTypeName { get; set; }
+        [NotMapped]
+        public string? IndustryTypeName { get; set; }
 
         [JsonProperty("industryTypeCode")]
-        public string IndustryTypeCode { get; set; }
+        [NotMapped]
+        public string? IndustryTypeCode { get; set; }
 
         [JsonProperty("subIndustryTypeId")]
+        [NotMapped]
         public long? SubIndustryTypeId { get; set; }
 
         [JsonProperty("subIndustryTypeName")]
-        public string SubIndustryTypeName { get; set; }
+        [NotMapped]
+        public string? SubIndustryTypeName { get; set; }
 
         [JsonProperty("subIndustryTypeCode")]
-        public string SubIndustryTypeCode { get; set; }
+        [NotMapped]
+        public string? SubIndustryTypeCode { get; set; }
 
         [JsonProperty("questionResponses")]
         public List<EntityBuilder.Entities.QuestionResponse> QuestionResponses { get; set; }
@@ -768,7 +777,7 @@ namespace ApolloTests.Data.Entities
         public string Name { get; set; }
 
         [JsonProperty("alternateName")]
-        public string AlternateName { get; set; }
+        public string? AlternateName { get; set; }
 
         [JsonProperty("partyId")]
         public long? PartyId { get; set; }
@@ -804,22 +813,22 @@ namespace ApolloTests.Data.Entities
         public long? BusinessSubTypeId { get; set; }
 
         [JsonProperty("yearBusinessStarted")]
-        public int YearBusinessStarted { get; set; }
+        public int? YearBusinessStarted { get; set; }
 
         [JsonProperty("yearOwnershipStarted")]
-        public int YearOwnershipStarted { get; set; }
+        public int? YearOwnershipStarted { get; set; }
 
         [JsonProperty("taxTypeId")]
         public long? TaxTypeId { get; set; }
 
         [JsonProperty("taxId")]
-        public string TaxId { get; set; }
+        public string? TaxId { get; set; }
 
         [JsonProperty("dba")]
-        public string DBA { get; set; }
+        public string? DBA { get; set; }
 
         [JsonProperty("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [JsonProperty("businessPhoneNumber")]
         public string BusinessPhoneNumber { get; set; }
@@ -864,10 +873,10 @@ namespace ApolloTests.Data.Entities
             PhoneTypeId = 0;
         }
         [JsonProperty("number")]
-        public string Number { get; set; }
+        public string? Number { get; set; }
 
         [JsonProperty("extension")]
-        public string Extension { get; set; }
+        public string? Extension { get; set; }
 
         [JsonProperty("phoneTypeId")]
         public long? PhoneTypeId { get; set; }
@@ -884,7 +893,7 @@ namespace ApolloTests.Data.Entities
             InternetTypeId = 2;
         }
         [JsonProperty("address")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [JsonProperty("internetTypeId")]
         public long? InternetTypeId { get; set; }

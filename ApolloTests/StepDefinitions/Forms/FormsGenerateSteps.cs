@@ -10,6 +10,7 @@ using HitachiQA.Hooks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ApolloTests.Data.Entities.Context;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace ApolloTests.StepDefinition.Forms
 {
@@ -30,6 +31,7 @@ namespace ApolloTests.StepDefinition.Forms
         private MiscHook MiscHook;
         private CosmosContext CosmosContext;
         private SQLContext SQLContext;
+        private IUnitTestRuntimeProvider RuntimeProvider;
 
         private IObjectContainer ObjectContainer;
         public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook, IObjectContainer objectContainer)
@@ -41,7 +43,9 @@ namespace ApolloTests.StepDefinition.Forms
             this.MiscHook = miscHook;
             this.CosmosContext= objectContainer.Resolve<CosmosContext>();
             this.SQLContext = objectContainer.Resolve<SQLContext>();
+            this.RuntimeProvider = objectContainer.Resolve<IUnitTestRuntimeProvider>();
             this.ObjectContainer = objectContainer;
+            Log.Info(TC.Properties);
 
         }
 
@@ -53,13 +57,28 @@ namespace ApolloTests.StepDefinition.Forms
             this.LineId = LineId;
             var line = SQLContext.Line.Find(LineId);
             this.Form = Form.GetForm(line, code, name);
-            if(!bool.TryParse(Configuration.GetVariable("FORM_CREATE_NEW_ENTITIES", true), out bool createNewEntities))
+            string? testPointConfiguration = (string?)TestContext.Properties["__Tfs_TestConfigurationName__"];
+            bool useNewEntities = testPointConfiguration?.Contains("FORM_CREATE_NEW_ENTITIES") == true;
+            if(bool.TryParse(Configuration.GetVariable("FORM_CREATE_NEW_ENTITIES", true), out bool createNew))
             {
-                createNewEntities = MiscHook.CurrentScenarioStatus?.outcomes?.Last()?.error ?? false;
+                useNewEntities = createNew;
             }
-            var policy = this.Form.condition.GetValidPolicy(createNewEntities, ObjectContainer);
+            Data.Entities.Policy policy = null;
+            try
+            {
+                policy = this.Form.condition.GetValidPolicy(useNewEntities, ObjectContainer);
+                
+            }
+            catch(Exception ex)
+            {
+                var msg = $"error creating/retireving policy for form: {code}  - {name} in line {LineId}\n";
+                throw new Exception(msg, ex);
+            }
+            if (policy == null)
+            {
+                RuntimeProvider.TestInconclusive($"No policy was found for form: {code}  - {name} in line {LineId}");
+            }
             this.Context = new FormTestContext(Form, policy);
-            var policyId = policy.Id;
 
         }
 
@@ -103,10 +122,13 @@ namespace ApolloTests.StepDefinition.Forms
             var retries = Polly.Policy.HandleResult<bool>(false)
                 .WaitAndRetry(new[]
                     {
-                    TimeSpan.FromSeconds(3),
                     TimeSpan.FromSeconds(5),
-                    TimeSpan.FromSeconds(10),
-                    TimeSpan.FromSeconds(15)
+                    TimeSpan.FromSeconds(3),
+                    TimeSpan.FromSeconds(2),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(5)
                     }
                 );
             //give it 3 seconds to procees before checking
@@ -184,11 +206,11 @@ namespace ApolloTests.StepDefinition.Forms
         {
             if(this.Context?.Tests.Any(it=> it.error!=null)?? false)
             {
-                #if DEBUG
+#if DEBUG
                     throw new Exception(string.Join("\n\n\n", this.Context.Tests.Where(it=>it.error!=null).Select(it=> $"body: {it.body}\n{it.error}")));
-                #else
+#else
                     throw new Exception(string.Join("\n\n\n", this.Context.Tests.Where(it=>it.error!=null).Select(it=> $"{it.error}")));
-                #endif
+#endif
             }
         }
 

@@ -38,6 +38,7 @@ namespace ApolloTests.StepDefinitions
             var createdQuote = quoteBuilder.CreateQuote();
             Shared.SetValue("Quote", "Builder", quoteBuilder);
             Shared.SetValue("Quote", "Quote", createdQuote);
+            
 
         }
 

@@ -35,7 +35,7 @@ namespace ApolloTests.Data.Entities.Coverage
         public long? CoverageTypeId { get; set; }
 
         [JsonProperty("questionResponses")]
-        public List<QuestionResponse> QuestionResponses { get; set; }
+        public List<QuestionResponse>? QuestionResponses { get; set; }
 
         [JsonProperty("riskId")]
         public long? RiskId { get; set; }

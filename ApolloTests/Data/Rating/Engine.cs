@@ -137,7 +137,7 @@ namespace ApolloTests.Data.Rating
         public readonly Quote root;
 
         public readonly string GoverningStateCode;
-        public readonly DateTime EffectiveDate;
+        public readonly DateTimeOffset EffectiveDate;
 
         /// <summary>
         /// Rating Engine to calculate premium using Known Field's values and mapping them to the Rating Manuals. <br/><br/>
