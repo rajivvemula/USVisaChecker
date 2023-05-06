@@ -176,7 +176,11 @@ namespace ApolloTests.StepDefinition.Forms
                         test.filePath = formFilePath;
 
                     }
-                    TestContext.AddResultFile(formFilePath);
+                    if(!File.Exists(test.filePath))
+                    {
+                        throw new Exception($"Successfully ran {$"document/{documentObj["id"]}"} but no document found in the filepath returned");
+                    }
+                    TestContext.AddResultFile(test.filePath);
                 }
             }
             ThrowErrorsIfAny();
@@ -316,8 +320,11 @@ namespace ApolloTests.StepDefinition.Forms
 
             }
             if (unmatchedName.Count > 0)
+            {
                 Log.Info("(blank)\n\n\n");
-            Log.Info("Unmatched Names:");
+                Log.Info("Unmatched Names:");
+            }
+                
 
             foreach (var item in unmatchedName)
             {
