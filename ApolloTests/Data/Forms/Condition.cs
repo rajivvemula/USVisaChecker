@@ -7,8 +7,7 @@ using ApolloTests.Data.Entities.Context;
 using ApolloTests.Data.Entities.Coverage;
 using ApolloTests.Data.Entities.Tether;
 using ApolloTests.Data.Entities;
-using Polly;
-
+using static Polly.RetrySyntax;
 namespace ApolloTests.Data.Form
 {
     public class Condition:BaseEntity
@@ -90,6 +89,7 @@ namespace ApolloTests.Data.Form
             var retry = Polly.Policy
                 .Handle<Exception>()
                 .WaitAndRetry(3, attempt=>TimeSpan.FromSeconds(1));
+            
             return retry.Execute(() =>
             {
                 if (useNewEntitiesOnly)
