@@ -7,6 +7,7 @@ using ApolloTests.Data.Entities.Context;
 using ApolloTests.Data.Entities.Coverage;
 using ApolloTests.Data.Entities.Tether;
 using ApolloTests.Data.Entities;
+using Polly;
 
 namespace ApolloTests.Data.Form
 {
@@ -57,42 +58,50 @@ namespace ApolloTests.Data.Form
             this.issuedEndorsement = issuedEndorsement;
             this.rescindedCancelation = rescindedCancelation;
         }
-        
+
+
+
 
         /// <summary>
-        /// this function iterates through all valid policies in order to find one that matches this object's properties
+        /// <para> this function iterates through all valid policies in order to find one that matches this object's properties </para>
+        /// <para> this function will attempt 3 times to retrieve/generate a policy before failing </para>
         /// </summary>
         /// <returns>Policy that matches all the properties in the object context</returns>
-        /**
-         *  1.) for each valid RatableObject (Policy) in the system (issued and not archived)
-         *  2.)    var policyOBJ is the cosmos object of the policy in context
-         *  3.)    let match = true  (will be set to false on any mismatch with the policy in context and this object's properties)
-         *  4.)    initialize the policy and quote objects usign the cosmos objects
-         *  
-         *  5.)    if StateCode was provided and if the governing state from the policy is not equal to the StateCode provided turn flag off and continue to the next iteration (policy)
-         *  6.)    if <PropertyName> was provided, call Check<PropertyName> function sending in the match object by reference 
-         *         note: ref keyword sends in the object's memory location rather than the value, 
-         *         meaning that if it match=false; occurs on the called function, the value of match in GetValidPolicy() will also change to false
-         *         
-         *  7.)    finally, if the match flag is still true, return the policy in context
-         *         note:it means we have a policy that matches all of the properties in this object
-         *  
-         *  
-         *  
-         *  
-         */
         public Entities.Policy GetValidPolicy(bool useNewEntitiesOnly, IObjectContainer OC)
         {
-            if(useNewEntitiesOnly)
+            /**
+             *  1.) for each valid RatableObject (Policy) in the system (issued and not archived)
+             *  2.)    var policyOBJ is the cosmos object of the policy in context
+             *  3.)    let match = true  (will be set to false on any mismatch with the policy in context and this object's properties)
+             *  4.)    initialize the policy and quote objects usign the cosmos objects
+             *  
+             *  5.)    if StateCode was provided and if the governing state from the policy is not equal to the StateCode provided turn flag off and continue to the next iteration (policy)
+             *  6.)    if <PropertyName> was provided, call Check<PropertyName> function sending in the match object by reference 
+             *         note: ref keyword sends in the object's memory location rather than the value, 
+             *         meaning that if it match=false; occurs on the called function, the value of match in GetValidPolicy() will also change to false
+             *         
+             *  7.)    finally, if the match flag is still true, return the policy in context
+             *         note:it means we have a policy that matches all of the properties in this object
+             *  
+             *  
+             *  
+             *  
+             */
+            var retry = Polly.Policy
+                .Handle<Exception>()
+                .WaitAndRetry(3, attempt=>TimeSpan.FromSeconds(1));
+            return retry.Execute(() =>
             {
-                var policy =  FindPolicyForThis(OC, true);
-                return policy == null ? this.CreatePolicyForThis(OC) : policy;
-            }
-            else
-            {
-                return FindPolicyForThis(OC, false);
-            }
-
+                if (useNewEntitiesOnly)
+                {
+                    var policy = FindPolicyForThis(OC, true);
+                    return policy == null ? this.CreatePolicyForThis(OC) : policy;
+                }
+                else
+                {
+                    return FindPolicyForThis(OC, false);
+                }
+            });
         }
 
         public Entities.Policy? FindPolicyForThis(IObjectContainer objectContainer, bool scopeIntoThisRun)
