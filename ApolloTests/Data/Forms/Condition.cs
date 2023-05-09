@@ -89,7 +89,7 @@ namespace ApolloTests.Data.Form
             var retry = Polly.Policy
                 .Handle<Exception>()
                 .WaitAndRetry(3, attempt=>TimeSpan.FromSeconds(1));
-            
+                
             return retry.Execute(() =>
             {
                 if (useNewEntitiesOnly)
