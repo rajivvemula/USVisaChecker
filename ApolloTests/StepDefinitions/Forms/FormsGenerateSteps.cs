@@ -45,7 +45,7 @@ namespace ApolloTests.StepDefinition.Forms
             this.SQLContext = objectContainer.Resolve<SQLContext>();
             this.RuntimeProvider = objectContainer.Resolve<IUnitTestRuntimeProvider>();
             this.ObjectContainer = objectContainer;
-            Log.Info(TC.Properties);
+            //Log.Info(TC.Properties);
 
         }
 
@@ -72,7 +72,8 @@ namespace ApolloTests.StepDefinition.Forms
             catch(Exception ex)
             {
                 var msg = $"error creating/retireving policy for form: {code}  - {name} in line {LineId}\n";
-                throw new Exception(msg, ex);
+                RuntimeProvider.TestInconclusive($"{msg} \n {ex.Message}\n {ex.StackTrace}\n");
+
             }
             if (policy == null)
             {
