@@ -28,6 +28,7 @@ namespace ApolloTests.Data.Entities
 
                 var context = (DbContext?)contextProp.GetGetMethod()?.Invoke(instance, null);
                 context.NullGuard();
+                context.Entry(instance).State = EntityState.Detached;
                 context.Entry(instance).Reload();
             }
 

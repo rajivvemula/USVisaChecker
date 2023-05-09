@@ -95,8 +95,8 @@ namespace ApolloTests.Data.Entities.Tether
 
         public int StatusId { get; set; }
 
+        [ListenForChanges]
         public virtual List<TetherApplicationRatableObject> TetherApplicationRatableObjects { get; set; }
-
 
         public string TetherStatusCode => this.TetherApplicationRatableObjects.Last().TetherStatusType.ToString();
         public void waitForTetherStatus(string statusCode, bool waitForNotInStatus = false)

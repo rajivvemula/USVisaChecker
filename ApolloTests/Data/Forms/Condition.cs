@@ -102,26 +102,35 @@ namespace ApolloTests.Data.Form
             var conditions = new List<string>();
             var validTetherIds = new List<long>();
             //<app,tether>
-            var validAppIds = new Dictionary<long, long>();
+            var validTether_AppIds = new Dictionary<long, long>();
 
 
             long? stateId = string.IsNullOrWhiteSpace(this.stateCode)? null: (long)SQL.executeQuery(@$"SELECT Id  
                                     FROM [location].[StateProvince]
                                     Where Code='{this.stateCode}';")[0]["Id"];
 
-            var tethers = SQL.executeQuery(@$"SELECT Id as TetherId, CurrentApplicationId 
-                            FROM [tether].[Tether] 
-                            where 
-                            ExpirationDate >= GETDATE() 
-                            {(stateId==null? "": $"AND GoverningStateId ={stateId}")}
+            // the below object looks into the tethers on current term only along with the following conditions
+            // - tether not expired
+            // - tether was issued
+            // - LOB is within current form's LOB
+            // - if there's a state in the condition, makes sure tether is from that state 
+            var tethers = SQL.executeQuery(@$"
+                          select q.RootTetherId, q.Id as TetherId, CurrentApplicationId, q.termId
+                        from (
+                            select RootTetherId, id, CurrentApplicationId, termid, row_number() over (partition by roottetherid order by termid desc) as rowId
+                            from tether.Tether 
+                            where FirstIssuedDate is not null
+                            AND ExpirationDate >= GETDATE()
                             AND LineId={this.Form.Line.Id}
-                            AND PolicyNumber is not null");
+                            {(stateId==null? "": $"AND GoverningStateId ={stateId}")}
+                        ) q
+                        where q.rowid = 1
+            ");
 
-            var tetherIds = tethers.Select(it => (long)it["TetherId"]);
             foreach (var tether in tethers)
             {
                 long tetherId = (long)tether["TetherId"];
-                validAppIds.Add(tetherId, (long)tether["CurrentApplicationId"]);
+                validTether_AppIds.Add(tetherId, (long)tether["CurrentApplicationId"]);
                 validTetherIds.Add(tetherId);
             }
 
@@ -338,7 +347,7 @@ namespace ApolloTests.Data.Form
 
             if(validTetherIds.Count > 0)
             {
-                var appIds = validTetherIds.Select(it=> validAppIds[it]);
+                var appIds = validTetherIds.Select(it=> validTether_AppIds[it]);
                 conditions.Add($"c.Id in ({string.Join(", ", appIds)})");
                 var generatedConditionStr = string.Join(" AND ", conditions);
                 var applicationQuery = $@"
@@ -446,8 +455,8 @@ namespace ApolloTests.Data.Form
                 policy = quote.PurchaseThis();
             }
 
-            Entities.Policy? endorsementRatableObject = null;
-            Entities.Quote? endorsement = null;
+            Policy endorsementRatableObject = null;
+            Quote endorsement = null;
 
             if (this.endorsement || issuedEndorsement)
             {
@@ -455,7 +464,7 @@ namespace ApolloTests.Data.Form
                 endorsement = policy.CreateDraftPolicyEndorsement();
                 if(policy.GetDraftEndorsements().Count ==0)
                 {
-                    throw new Exception("Endorsement Not Created Yet");
+                    throw new Exception($"Endorsement Not Created Yet, policy: {policy.Id}, expected endorsementId: {endorsement.Id}");
                 }
                 endorsement.CreateEndorsementHeader(policy.Id);
                 endorsement.PostSummary();
