@@ -91,7 +91,7 @@ namespace HitachiQA
             }
             else if(config.GetVariable("CACHE_SECRETS", true) is String secret_cache && secret_cache != null && secret_cache.ToLower() == "true")
             {
-                string filePath = "./localcache/secrets.json";
+                string filePath = $"./localcache/secrets{config.GetVariable("AUT_KEYVAULT_URI").Replace("https://", "").Replace("net/","net")}.json";
                 if (File.Exists(filePath)) {
                     builder.AddJsonFile(filePath);
                     config = builder.Build();

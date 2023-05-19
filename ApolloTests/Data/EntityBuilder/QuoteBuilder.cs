@@ -268,7 +268,16 @@ namespace ApolloTests.Data.EntityBuilder
         {
             
             JObject response = RestAPI.POST("/quote/create", this.Quote) ?? throw new NullReferenceException();
-            Quote = CosmosContext.Quotes.First(it => it.Id == response.Value<long>("id"));
+            try
+            {
+                JObject app = this.Cosmos.GetQuery($"Application", $"select * from c where c.Id = {response.Value<long>("id")}").Result[0];
+                Log.Info(app);
+                Quote = CosmosContext.Quotes.First(it => it.Id == response.Value<long>("id"));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving application from cosmos: {response.Value<long>("id")}\n", ex);
+            }
             this.Hydrator.Quote = Quote;
 
             //
@@ -299,6 +308,7 @@ namespace ApolloTests.Data.EntityBuilder
         //     
         private void RunAllSendStrategies_CA()
         {
+            CheckIfRatesAreLoaded(State);
             Quote.NullGuard();
             this.Vehicles.RunSendStrategy(Quote);
             this.Drivers.RunSendStrategy(Quote);
@@ -325,6 +335,22 @@ namespace ApolloTests.Data.EntityBuilder
             this.PolicyCoverages.RunSendStrategy(Quote);
             this.Modifiers_BOP.RunSendStrategy(Quote);
             this.PolicyAddlInterest.RunSendStrategy(Quote);
+        }
+
+        private void CheckIfRatesAreLoaded(string stateCode)
+        {
+            var result = SQL.executeQuery(@"
+                                select s.[Code], rt.[Name]
+                            FROM [rating].[ReferenceTable] rt
+                            LEFT JOIN [rating].[ReferenceTableStateProvince] sp on sp.ReferenceTableId = rt.Id
+                            LEFT JOIN [location].[StateProvince] s on s.Id = sp.StateProvinceId
+                            WHERE rt.Name like 'AT.1' 
+                            AND s.[Code]=@stateCode
+                        ", ("@stateCode", stateCode));
+            if(!result.Any())
+            {
+                throw new Exception($"Rates tables are not loaded for state: {stateCode}");
+            }
         }
 
     }

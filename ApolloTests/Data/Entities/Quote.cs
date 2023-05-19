@@ -40,7 +40,7 @@ namespace ApolloTests.Data.Entities
 
         [Required]
         [JsonIgnore]
-        public string Discriminator { get; set; }
+        public string? Discriminator { get; set; }
 
         [JsonIgnore]
         public long _ts { get; set; }
