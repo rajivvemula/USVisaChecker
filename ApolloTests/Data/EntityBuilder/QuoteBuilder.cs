@@ -339,14 +339,16 @@ namespace ApolloTests.Data.EntityBuilder
 
         private void CheckIfRatesAreLoaded(string stateCode)
         {
-            var result = SQL.executeQuery(@"
+            var result = SQL.executeQuery(@$"
                                 select s.[Code], rt.[Name]
-                            FROM [rating].[ReferenceTable] rt
-                            LEFT JOIN [rating].[ReferenceTableStateProvince] sp on sp.ReferenceTableId = rt.Id
-                            LEFT JOIN [location].[StateProvince] s on s.Id = sp.StateProvinceId
-                            WHERE rt.Name like 'AT.1' 
-                            AND s.[Code]=@stateCode
-                        ", ("@stateCode", stateCode));
+                                FROM [rating].[ReferenceTable] rt
+                                LEFT JOIN [rating].[ReferenceTableStateProvince] sp on sp.ReferenceTableId = rt.Id
+                                LEFT JOIN [location].[StateProvince] s on s.Id = sp.StateProvinceId
+                                WHERE rt.Name like 'AT.1' 
+                                AND s.[Code]=@stateCode
+                                AND (@effectiveDate BETWEEN rt.TimeFrom AND rt.TimeTo)
+                                AND rt.LineId = @lineId
+                                ", ("@stateCode", stateCode), ("@lineId", Line.Id), ("@effectiveDate", EffectiveDate.ToString("d")));
             if(!result.Any())
             {
                 throw new Exception($"Rates tables are not loaded for state: {stateCode}");
