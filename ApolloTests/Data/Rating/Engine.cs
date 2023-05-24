@@ -6,6 +6,7 @@ using TechTalk.SpecFlow;
 using ApolloTests.Data.Entities;
 using ApolloTests.Data.Entities.Coverage;
 using ApolloTests.Data.Entities.Reference;
+using NUnit.Framework;
 
 namespace ApolloTests.Data.Rating
 {
@@ -26,7 +27,7 @@ namespace ApolloTests.Data.Rating
 
             return table;
         }
-        public static IEnumerable<Dictionary<String, String>> GetTable(String tableName, string stateCode, string? effectiveDate)
+        public IEnumerable<Dictionary<String, String>> GetTable(String tableName, string stateCode, string? effectiveDate)
         {
 
             string whereClause;
@@ -62,7 +63,7 @@ namespace ApolloTests.Data.Rating
 
             }
 
-            var columns = GetSQLService().executeQuery($@"SELECT tableColumn.AttributeName, tableColumn.AttributeColumn
+            var columns = SQL.executeQuery($@"SELECT tableColumn.AttributeName, tableColumn.AttributeColumn
                                             FROM [rating].[ReferenceTable] RatingTable
                                             LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
                                             LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
@@ -73,7 +74,7 @@ namespace ApolloTests.Data.Rating
             var sortOrderColumnRow = columns.Find(it => ((String)it["AttributeName"]).Contains("SortOrder"));
 
             
-            var attributes = GetSQLService().executeQuery($@"SELECT TableAttributes.*
+            var attributes = SQL.executeQuery($@"SELECT TableAttributes.*
                                                 FROM [rating].[ReferenceTable] RatingTable
                                                 LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
                                                 LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
@@ -138,6 +139,7 @@ namespace ApolloTests.Data.Rating
 
         public readonly string GoverningStateCode;
         public readonly DateTimeOffset EffectiveDate;
+        public readonly Dictionary<Exception,string> factorErrors = new();
 
         /// <summary>
         /// Rating Engine to calculate premium using Known Field's values and mapping them to the Rating Manuals. <br/><br/>
@@ -148,7 +150,7 @@ namespace ApolloTests.Data.Rating
         {
             this.root = root;
             this.GoverningStateCode = root.GoverningStateCode;
-            this.EffectiveDate = root.RatableObject.TimeFrom;
+            this.EffectiveDate = root.Tether.EffectiveDate;
             this.interpreter = new Interpreter();
             interpreter.Reference(typeof(JObject));
             interpreter.Reference(typeof(AlgorithmAssignment));
@@ -164,15 +166,14 @@ namespace ApolloTests.Data.Rating
 
         }
 
-        public List<JObject>? latestResults; 
+        public RatingOutput LatestOutput { get; set; }
 
         /// <summary>
         /// Run the engine to calculate premium using Known Field's values and mapping them to the Rating Manuals. <br/><br/>
         /// </summary>
-        public List<JObject> Run()
+        public RatingOutput Run()
         {
-            latestResults = new List<JObject>();
-
+            LatestOutput = new RatingOutput(ObjectContainer);
             var vehicles = root.GetVehicles();
             var limits = root.getLimits();
             foreach (var limit in limits)
@@ -188,29 +189,44 @@ namespace ApolloTests.Data.Rating
                         {
                             continue;
                         }
-
+                        
                         var vehicleLimit = limit.GetCoverageType().isVehicleLevel ? limit.RiskCoverages?.Find(it => it.RiskId == vehicle.Vehicle.RiskId) : limit;
-                        vehicleLimit.NullGuard();
-                        var rateResults = RunForLimit(vehicleLimit);
-                        rateResults.Add("Vehicle", vehicle.Vehicle.ToJObject());
-                        latestResults.Add(rateResults);
+                        if(vehicleLimit!=null)
+                        {
+                            var rateResults = RunForLimit(vehicleLimit);
+                            rateResults.Vehicle = vehicle.Vehicle;
+                            LatestOutput.Results.Add(rateResults);
+                        }                        
                     }
                 }
                 else
                 {
                     interpreter.SetVariable("Vehicle", null);
                     var rateResults = RunForLimit(limit);
-                    latestResults.Add(rateResults);
+                    LatestOutput.Results.Add(rateResults);
 
                 }
 
 
             }
+            if(factorErrors.Any())
+            {
+               var errors = new List<string>();
+                foreach(var err in factorErrors)
+                {
+                    //errors.Add($"Factor: {err.Value} \nerror: {err.Key.Message}\n {err.Key.InnerException.Message} \n {err.Key.StackTrace} \n {err.Key.InnerException.StackTrace}");
+                    errors.Add($"Factor: {err.Value} \nerror: {err.Key}");
 
-            return latestResults;
+                }
+                Log.Info(LatestOutput);
+                LatestOutput.generateReport();
+                throw new Exception(string.Join("\n\n", errors));
+            }
+            return LatestOutput;
         }
 
-        private JObject RunForLimit(Limit limit)
+
+        private RatingResult RunForLimit(Limit limit)
         {
             var coverageType = limit.GetCoverageType();
             Log.Debug($"Current Coverage: {coverageType.TypeName}");
@@ -226,19 +242,19 @@ namespace ApolloTests.Data.Rating
             coverageCode.NullGuard();
             interpreter.SetVariable("CoverageCode", coverageCode);
 
-
-            var rateResults = new JObject() { { "CoverageCode", coverageCode }, { "CoverageName", coverageType.TypeName } };
-
-            loadResolvedAlgorithmFactors(coverageCode, ref rateResults);
-            JObject factors = (JObject)(rateResults["Factors"] ?? throw new NullReferenceException());
+            var factors = loadResolvedAlgorithmFactors(coverageCode);
 
             decimal premium = 0;
 
             List<Dictionary<string, string>> algorithmFormula = getTable(coverageCode);
-            for (int i = 0; i < algorithmFormula.Count(); i++)
+            for (int i = 0; i < algorithmFormula.Count; i++)
             {
                 
                 var row = algorithmFormula[i];
+                var prevRow = (i == 0) ? null : algorithmFormula[i - 1];
+                var nextRow = (i >= algorithmFormula.Count - 1) ? null : algorithmFormula[i + 1];
+                var nextnextRow = (i >= algorithmFormula.Count - 2) ? null : algorithmFormula[i + 2];
+
                 string operation = row["Operation"];
                 string factorName = row["Rating Factor"];
 
@@ -246,7 +262,6 @@ namespace ApolloTests.Data.Rating
                 {
                     continue;
                 }
-                JObject factor;
 
                 if (operation == "Round [0]")
                 {
@@ -256,103 +271,68 @@ namespace ApolloTests.Data.Rating
                 else if (operation.Trim() == "=")
                 {
                     var _factor = new Factor(factorName, new string[] { factorName }, new KnownField[0]);
+                    _factor.LoadOC(ObjectContainer);
                     _factor.displayOnly = true;
                     var _resolvable = _factor.GetResolvable(this);
                     _resolvable.Value = premium;
                     _resolvable.parsedValue = premium.ToString("C0");
-                    if (factors.ContainsKey(factorName))
-                    {
-                        factors[factorName] = JObject.FromObject(_resolvable);
-                    }
-                    else
-                    {
-                        factors.Add(factorName, JObject.FromObject(_resolvable));
-                    }
+                    _resolvable.FullName = factorName;
+                    _resolvable.IndexOnFormula = i;
+                    factors.Add(_resolvable);    
                     continue;
                 }
 
+                Factor.Resolvable factor;
                 try
                 {
-                    if (factors.ContainsKey($"{coverageCode}.{factorName}"))
-                    {
-                        factor = (JObject?)factors[$"{coverageCode}.{factorName}"]??throw new NullReferenceException();
+                    factor = factors.First(factor => factor.FullName == $"{coverageCode}.{factorName}" || factor.FullName == factorName);
+                    factor.IndexOnFormula = i;
 
-                    }
-                    else
-                    {
-                        factor = (JObject?)factors[factorName] ?? throw new NullReferenceException(); 
-                    }
-                    if (factor == null)
-                    {
-                        throw new KeyNotFoundException($"Factor name: {factorName} was not found in {rateResults} ");
-                    }
-
-                }
-                catch (Exception)
-                {
-                    Log.Critical($"Row=> {JObject.FromObject(row)}");
-                    throw Functions.HandleFailure($"couldn't find factor {factorName} in Factors.json");
-
-                }
-
-                decimal factorValue;
-                try
-                {
-                    factorValue = factor["Value"]?.ToObject<decimal?>()?? throw new NullReferenceException();
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"Error parsing factor's value {factor} into decimal \n", ex);
+                    Log.Critical($"Formula Row=> {JObject.FromObject(row)}");
+                    throw new Exception($"couldn't find factor {factorName} in Factors.json", ex);
+
                 }
 
-                if (string.IsNullOrWhiteSpace(operation))
+                if( factor.Factor.Condition!=null && this.interpreter.Eval<bool>(factor.Factor.Condition)==false)
+                {
+                    Log.Info($"skipping factor {factor.FullName} because condition resolved to false {factor.Factor.Condition}");
+                    continue;
+                }
+                if (factor.Error!=null)
+                {
+                    Log.Info($"skipping factor {factor.FullName} due to errors resolving it");
+                    continue;
+                }
+
+                decimal factorValue = factor.Value??throw new NullReferenceException("Factor's value can't be null");
+
+                if (string.IsNullOrWhiteSpace(operation) || operation=="+")
                 {
                     premium += factorValue;
                 }
-                else if (operation.ToUpper() == "X")
+                else if (operation.ToUpper() == "X" || operation=="*")
                 {
                     premium = premium * factorValue;
                 }
                 else if (operation == "Maximum")
                 {
-                    var rowNext = algorithmFormula[++i];
-                    string factorNameNext = rowNext["Rating Factor"];
-                    JObject factorNext;
-
+                    //we're computing next row now
+                    i++;
+                    string factorNameNext = nextRow["Rating Factor"];
                     try
                     {
-                        if (factors.ContainsKey($"{coverageCode}.{factorNameNext}"))
-                        {
-                            factorNext = (JObject?)factors[$"{coverageCode}.{factorNameNext}"] ?? throw new NullReferenceException();
-
-                        }
-                        else
-                        {
-                            factorNext = (JObject?)factors[factorNameNext] ?? throw new NullReferenceException();
-                        }
-                        if (factor == null)
-                        {
-                            throw new KeyNotFoundException($"Factor name: {factorNameNext} was not found in {rateResults} ");
-                        }
-
+                        var factorNext = factors.First(factor => factor.FullName == $"{coverageCode}.{factorNameNext}" || factor.FullName == factorNameNext);
+                        factorNext.IndexOnFormula = i;
+                        premium += Math.Max(factorValue, factorNext.Value ?? throw new NullReferenceException());
 
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        Log.Error($"couldn't find factor {factorNameNext} in rate results {rateResults}");
-                        throw;
+                        throw new Exception($"Error finding next row factor {factorNameNext} in the list of factors \n {Log.stringify(factors.Select(it => it.FullName))} \n formula: \n{Log.stringify(algorithmFormula)}", ex);
                     }
-                    decimal factorValueNext;
-                    try
-                    {
-                        factorValueNext = factorNext["Value"]?.ToObject<decimal>()?? throw new NullReferenceException();
-                    }
-                    catch (Exception)
-                    {
-                        Log.Error($"Error parsing factor name: {factorNameNext} value: {factorNext?["Value"] ?? null} into decimal ");
-                        throw;
-                    }
-                    premium += Math.Max(factorValue, factorValueNext);
                 }
 
                 else
@@ -361,13 +341,15 @@ namespace ApolloTests.Data.Rating
                 }
                 if(factorName== "Policy Term Factor")
                 {
-                    factor["parsedValue"] = $"TermFactorPremium: {premium:0}";
+                    factor.parsedValue = $"TermFactorPremium: {premium:0}";
                 }
-                factor.Add("currentPremium", premium);
+                factor.CurrentPremium = premium;
 
             }
-            rateResults.Add("TotalPremium", premium);
-
+            var rateResults = new RatingResult() { CoverageCode = coverageCode, CoverageName = coverageType.TypeName };
+            rateResults.Factors = factors;
+            rateResults.TotalPremium = premium;
+            rateResults.Factors = rateResults.Factors.OrderBy(it => it.IndexOnFormula).ToList();
             return rateResults;
         }
 
@@ -380,7 +362,8 @@ namespace ApolloTests.Data.Rating
             "Manual Premium",
             "Full Term Premium",
             "Written Premium",
-            "Rating Stated Value"
+            "Rating Stated Value",
+            "First Party Benefits premium"
         };
         /// <summary>
         /// Any factor in this dictionary will only be calculated once and will be reused across the whole policy
@@ -389,14 +372,13 @@ namespace ApolloTests.Data.Rating
         /// <summary>
         /// Finds all Known Field's values in the Apollo System
         /// </summary>
-        private void loadResolvedAlgorithmFactors(String CoverageCode, ref JObject rateResult)
+        private List<Factor.Resolvable> loadResolvedAlgorithmFactors(String CoverageCode)
         {
 
             var algorithmPage = getTable(CoverageCode);
 
 
-            var result = new JObject();
-            
+            var factors = new List<Factor.Resolvable>();
             //Iterate through every factor in the algorithm and get all of it's known KnownFields' value
             foreach (var row in algorithmPage)
             {
@@ -406,41 +388,71 @@ namespace ApolloTests.Data.Rating
                 {
                     continue;
                 }
-                Factor factorObj= Factor.GetFactor(factor);
-               
+                Factor factorObj= Factor.GetFactor(factor, ObjectContainer);
+                
+
+                
                 //if factor exists in the CrossPolicyFactors dictionary, load it into resolvableObj and if it's not null (meaning it was loaded), it'll be used
-                if(CrossPolicyFactors.ContainsKey(factor) &&  CrossPolicyFactors[factor] is var resolvableObj && resolvableObj != null)
+                if (CrossPolicyFactors.ContainsKey(factor) &&  CrossPolicyFactors[factor] is var resolvableObj && resolvableObj != null)
                 {
-                    result.Add(factor, resolvableObj.ToJObject());
+                    resolvableObj.FullName= factor;
+                    factors.Add(resolvableObj);
                     continue;
                 }
 
                 var resolvable = factorObj.GetResolvable(this);
+
+                if (factorObj.Condition != null)
+                {
+                    factorObj.ConditionResolution = this.interpreter.Eval<bool>(factorObj.Condition);
+
+                    if (!factorObj.ConditionResolution ?? true)
+                    {
+                        resolvable.FullName = factor;
+                        factors.Add(resolvable);
+                        continue;
+
+
+                    }
+                    Log.Info($"skipping factor {factor} because condition resolved to false {factorObj.Condition}");
+                }
+
                 try
                 {
-                    var resolvedObj = resolvable.Resolve();
-                    result.Add(factor, resolvedObj);
+                    resolvable.Resolve();
                     if(CrossPolicyFactors.ContainsKey(factor))
                     {
                         CrossPolicyFactors[factor] = resolvable;
                     }
 
                 }
-                catch(Exception)
+                catch(Exception ex)
                 {
 
-                    Log.Debug($"Error Resolving KnownFields for Factor: {resolvable.Name} for coverage code: {CoverageCode}");
-                    throw;
+                    Log.Debug($"Error Resolving KnownFields for Factor: {resolvable.FullName} for coverage code: {CoverageCode}");
+                    factorErrors.Add(ex, resolvable.FullName);
+                    resolvable.Error = ex;
+                }
+                finally
+                {
+                    //whether it failed or not, we add it to the factors
+                    resolvable.FullName = factor;
+                    factors.Add(resolvable);
                 }
 
             }
-            var errors = result.Values().Where(it => it["KnownFields"].Any() && it.Value<decimal?>("Value")==null);
-            if (errors.Any())
+
+            foreach(var factor in factors)
             {
-                throw new Exception("The following factors didn't resolve\n" + Log.stringify(errors));
+                if(factor.KnownFields!=null && factor.KnownFields.Any() && factor.Factor?.ConditionResolution != false && factor .Value==null)
+                {
+                    var ex = new Exception("The factor didn't resolve\n", factor.Error);
+                    factorErrors.Add(ex, factor.Name);
+                    factor.Error = ex;
+                }
             }
-           
-            rateResult.Add("Factors", result);
+
+            return factors;
             
         }
 
@@ -503,7 +515,7 @@ namespace ApolloTests.Data.Rating
         private string? getDefaultCoverageCode(CoverageType coverageType)
         {
             var DefaultCoverageAlgorithms = (JObject?)CoverageAlgorithms["All"]?.DeepClone()?? throw new NullReferenceException();
-            DefaultCoverageAlgorithms.Merge(CoverageAlgorithms?[GoverningStateCode]?? throw new NullReferenceException());
+            DefaultCoverageAlgorithms.Merge(CoverageAlgorithms?[GoverningStateCode]?? throw new NullReferenceException($"Couldn't find entry in Data/Rating/CoverageAlgorithms.json for {GoverningStateCode}"));
 
             JToken? coverageCode = null;
             if (DefaultCoverageAlgorithms?.TryGetValue(coverageType.TypeName, out coverageCode) ?? false)

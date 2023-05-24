@@ -3,7 +3,7 @@ Feature: MO
 
 A short summary of the feature
 
-@ratingTests @MO
+@ratingTests @CA
 Scenario: MO - Test Rating Algorithm
 
 	Given quote for LineId=7 state 'MO' and '<Algorithm or Coverage>' is set to Quoted
@@ -37,7 +37,7 @@ Scenario: MO - Test Rating Algorithm
 	| VA00072               |
 	| VA00048               |
 	| VA00049               |
-	| VAOOO50               |
+	| VA00050               |
 	| VA00051               |
 	| VA00052               |
 	| VA00053               |

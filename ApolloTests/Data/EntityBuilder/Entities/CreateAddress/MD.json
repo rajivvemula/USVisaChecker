@@ -1,0 +1,44 @@
+{
+  "line1": "1000 Hilltop Cir",
+  "line2": null,
+  "minorMunicipality": null,
+  "majorMunicipality": "College Park",
+  "postalCode": "20742",
+  "stateProvinceId": 90,
+  "stateProvince": {
+    "resource": "StateProvinceResource",
+    "id": 90,
+    "insertDateTime": "0001-01-01T00:00:00.000Z",
+    "insertedBy": null,
+    "insertedByPersonId": 0,
+    "updatedBy": null,
+    "updatedByPersonId": null,
+    "statusId": 0,
+    "code": "MD",
+    "name": "Maryland",
+    "description": null,
+    "referenceTypeId": null
+  },
+  "countryId": 0,
+  "country": {
+    "resource": "CountryResource",
+    "id": 0,
+    "insertDateTime": "0001-01-01T00:00:00.000Z",
+    "insertedBy": null,
+    "insertedByPersonId": 0,
+    "updatedBy": null,
+    "updatedByPersonId": null,
+    "statusId": 0,
+    "tags": [
+      "primary",
+      "mailing"
+    ],
+    "code": "USA",
+    "name": "United States",
+    "description": null,
+    "referenceTypeId": null
+  }
+}
+
+
+    

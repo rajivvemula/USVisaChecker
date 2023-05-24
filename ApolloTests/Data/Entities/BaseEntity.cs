@@ -17,6 +17,9 @@ namespace ApolloTests.Data.Entities
 {
     public abstract class BaseEntity
     {
+        [NotMapped]
+        [JsonIgnore]
+        public IObjectContainer ObjectContainer;
 
         [NotMapped]
         [JsonIgnore]
@@ -53,48 +56,43 @@ namespace ApolloTests.Data.Entities
             Context = context;
             ContextCosmos = context.CosmosContext;
             ContextSQL = context.SQLContext;
+            LoadOC(context.ObjectContainer);
         }
         public BaseEntity(SQLContext context):this()
         {
             Context = context;
             ContextCosmos = context.CosmosContext;
             ContextSQL = context.SQLContext;
+            LoadOC(context.ObjectContainer);
+
         }
         public BaseEntity(QuoteBuilder builder) : this(builder.SQLContext) { }
 
+        public BaseEntity(IObjectContainer OC)
+        {
+            LoadOC(OC);
+        }
+        public void LoadOC(IObjectContainer OC)
+        {
+            ObjectContainer = OC;
+            SQL = OC.Resolve<SQL>();
+            Cosmos = OC.Resolve<Cosmos>();
+            RestAPI = OC.Resolve<RestAPI>();
+            ServiceBus = OC.Resolve<ServiceBus>();
+            Functions = OC.Resolve<Functions>();
+
+        }
         public BaseEntity()
         {
-            SQL = GetSQLService();
-            Cosmos = GetCosmosService();
-            RestAPI = GetRestAPIService();
-            ServiceBus = GetServiceBusService();
-            Functions = Main.ObjectContainer.Resolve<Functions>();
-        }
-        public static SQL GetSQLService()
-        {
-            return Main.ObjectContainer.Resolve<SQL>();
 
         }
-        public static Cosmos GetCosmosService()
-        {
-            return Main.ObjectContainer.Resolve<Cosmos>();
-        }
 
-        public static RestAPI GetRestAPIService()
-        {
-            return Main.ObjectContainer.Resolve<RestAPI>();
-        }
-        public static ServiceBus GetServiceBusService()
-        {
-            return Main.ObjectContainer.Resolve<ServiceBus>();
-        }
 
-        public static void RunRatableObjectManagementFunction(string path)
+        public void RunRatableObjectManagementFunction(string path)
         {
-            var client = GetRestAPIService();
             var url = Main.Configuration.GetVariable("RATABLEOBJECTMANAGEMENTFUNCTION_URL");
             url = Path.Combine(url, path);
-            client.POST(url, null);
+            RestAPI.POST(url, null);
         }
 
 

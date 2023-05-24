@@ -17,6 +17,8 @@ namespace ApolloTests.Data.Entities.Context
     public class ApolloContext : DbContext
     {
         protected IConfiguration Config { get; }
+        public IObjectContainer ObjectContainer { get; }
+
         public SQLContext SQLContext { get; private set; }
         public CosmosContext CosmosContext { get; private set; }
 
@@ -32,9 +34,10 @@ namespace ApolloTests.Data.Entities.Context
             cosmos.SetCosmosContext(cosmos);
             cosmos.SetSQLContext(sql);
         }
-        public ApolloContext(IConfiguration config) : base()
+        public ApolloContext(IConfiguration config, IObjectContainer OC) : base()
         {
             Config = config;
+            ObjectContainer = OC;
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

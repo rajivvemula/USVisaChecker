@@ -3,7 +3,7 @@ Feature: IN
 
 A short summary of the feature
 
-@ratingTests @IN
+@ratingTests @CA
 Scenario: IN - Test Rating Algorithm
 
 	Given quote for LineId=7 state 'IN' and '<Algorithm or Coverage>' is set to Quoted

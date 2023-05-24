@@ -4,42 +4,49 @@ using HitachiQA.Driver;
 using HitachiQA.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.Json.Serialization;
-using TechTalk.SpecFlow.EnvironmentAccess;
+using System.Runtime.CompilerServices;
 
 namespace ApolloTests.Data.Rating
 {
     public class Factor:BaseEntity
     {
-        private static readonly dynamic Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader("Data/Rating/Factors.json").ReadToEnd()) ?? throw new NullReferenceException();
+        private static readonly JObject Factors = JsonConvert.DeserializeObject<JObject>(new StreamReader("Data/Rating/Factors.json").ReadToEnd()) ?? throw new NullReferenceException();
 
-        public string Name;
+        public string Name { get; set; }
         public List<string> NameUI;
-        public List<KnownField> KnownFields;
-        public bool CustomCalculation;
-        public readonly string? source;
-        public string? TableName;
-        public bool displayOnly;
+        public List<KnownField> KnownFields { get; set; }
+        public bool CustomCalculation{ get; set; }
+        public string? source{ get; set; }
+        public string? TableName{ get; set; }
+        public bool displayOnly{ get; set; }
+        public string? FactorColumnIdentifier { get; set; } = "Factor";
+        public string? Condition { get; set; }
+        public bool? ConditionResolution { get; set; }
 
-
-        public Factor(string name, IEnumerable<string> nameUI, IEnumerable<KnownField> knownFields, bool? CustomCalculation=false, string? source =null, string? tableName=null, bool? displayOnly = false)
+        [JsonConstructor]
+        public Factor(JArray knownFields)
+        {
+            KnownFields = knownFields ==null? new List<KnownField>() : knownFields.Select(it => KnownField.GetKnownField(it.Value<string>())).ToList();
+        }
+        public Factor(string name, IEnumerable<string> nameUI, IEnumerable<KnownField>? knownFields, bool? CustomCalculation = false, string? source = null, string? tableName = null, bool? displayOnly = false, string FactorColumnIdentifier = null)
         {
             this.Name = name;
             this.NameUI = nameUI.ToList();
-            this.KnownFields = knownFields.ToList();
+            this.KnownFields = (knownFields??new List<KnownField>()).ToList();
             this.CustomCalculation = CustomCalculation ?? false;
             this.source = source;
             this.TableName = tableName;
             this.displayOnly = displayOnly??false;
+            if(name=="Rate per vehicle")
+            {
+                Log.Info(FactorColumnIdentifier);
+            }
+            this.FactorColumnIdentifier = FactorColumnIdentifier ?? "Factor";
         }
 
-        public static Factor GetFactor(string name)
+        public static Factor GetFactor(string name, IObjectContainer OC)
         {
             var factors = GetFactors();
 
@@ -58,6 +65,7 @@ namespace ApolloTests.Data.Rating
                 throw new KeyNotFoundException($"Factor: {name} did not exist in  DataFiles/Rating/Factors.json"); 
             }
 
+            _factor.LoadOC(OC);
             return _factor;
 
 
@@ -66,21 +74,15 @@ namespace ApolloTests.Data.Rating
         public static List<Factor> GetFactors()
         {
             var _factors = new List<Factor>();
-                foreach (var factor in Factors)
-                {
-                    if (factor.Value.KnownFields == null) 
-                    { throw new KeyNotFoundException($"Factor: \n{factor}\n contains incorrectly named properties in DataFiles/Rating/Factors.json"); }
+            foreach (var factor in (JObject)Factors.DeepClone())
+            {
+                if (factor.Value.Value<JArray?>("KnownFields") == null && factor.Value.Value<bool?>("CustomCalculation") != true ) 
+                { throw new KeyNotFoundException($"Factor: \n{factor}\n contains incorrectly named properties in DataFiles/Rating/Factors.json"); }
 
-                    _factors.Add(new Factor(factor.Name, 
-                                            factor.Value.nameUI.ToObject<IEnumerable<string>>(), 
-                                            ((JArray)factor.Value.KnownFields).Select(it=>KnownField.GetKnownField(it.ToString())),
-                                            (bool?)factor.Value.CustomCalculation,
-                                            (string?)factor.Value.source,
-                                            (string?)factor.Value?.tableName,
-                                            (bool?)factor.Value?.displayOnly
-                                            ));
+                factor.Value["Name"] = factor.Key;
+                _factors.Add((factor.Value as JObject).ToObject<Factor>());
 
-                }
+            }
             
             return _factors;
            
@@ -97,7 +99,9 @@ namespace ApolloTests.Data.Rating
         }
         public class Resolvable : BaseEntity
         {
-            private readonly Factor Factor;
+
+            [JsonIgnore]
+            public Factor Factor { get; private set; }
             private readonly Engine Engine;
             public List<KnownField.Resolvable>? KnownFields;
             public Dictionary<string, string>? matchedRow;
@@ -106,6 +110,14 @@ namespace ApolloTests.Data.Rating
             public bool displayOnly => Factor.displayOnly;
             public decimal? Value { get; set; }
             public String? parsedValue { get; set; }
+            public Exception? Error { get; set; } = null;
+            public int? IndexOnFormula { get; set; }
+            public string FullName { get; set; }
+            public decimal? CurrentPremium { get; set; }
+            public string? testError { get; set; }
+            public string? Warning { get; set; }
+            public string Condition => Factor.Condition;
+            public bool Skipped => Factor.ConditionResolution == false;
 
             public string Name
             {
@@ -114,7 +126,7 @@ namespace ApolloTests.Data.Rating
                 {
                     if (Factor == null)
                     {
-                        Factor.GetFactor(value);
+                        Factor = Factor.GetFactor(value, ObjectContainer);
                     }
                 }
             }
@@ -126,19 +138,22 @@ namespace ApolloTests.Data.Rating
             {
                 this.Factor = factor;
                 this.Engine = engine;
+                LoadOC(factor.ObjectContainer);
             }
-
-            private const string LOWERBOUND = "Lower Bound";
-            private const string UPPERBOUND = "Upper Bound";
+            //space in the front is important
+            private string LOWERBOUND = " Lower Bound";
+            private string UPPERBOUND = " Upper Bound";
             private const string INTERPOLATIONUPPERMATCH = "Interpolation Upper Row Match";
-            public JObject Resolve()
+            public JObject Resolve(bool loadKnownFields = true)
             {
-
-                loadResolvedKnownFields();
+                if(loadKnownFields)
+                {
+                    loadResolvedKnownFields();
+                }
 
                 if (CustomCalculation)
                 {
-                    var method = this.GetType().GetProperty(Factor.source??throw new NullReferenceException(), BindingFlags.NonPublic | BindingFlags.Instance);
+                    var method = this.GetType().GetProperty(Factor.source ?? throw new NullReferenceException(), BindingFlags.NonPublic | BindingFlags.Instance);
 
 
                     if (method == null)
@@ -159,7 +174,7 @@ namespace ApolloTests.Data.Rating
                     {
                         factorTable = this.Engine.getTable(this.Factor.TableName.Replace("@CoverageCode", this.GetAlgorithmAssignment().CoverageCode));
                     }
-                    else if(this.Factor.Name.Contains('.'))
+                    else if (this.Factor.Name.Contains('.'))
                     {
                         factorTable = this.Engine.getTable(this.Factor.Name);
                     }
@@ -178,66 +193,47 @@ namespace ApolloTests.Data.Rating
                         Dictionary<string, bool> match = new Dictionary<string, bool>();
                         bool lowerBoundMatch = false;
                         bool upperBoundMatch = false;
+                        if (Factor.Name == "ExtraordinaryMedical")
+                        {
+                            UPPERBOUND = "Upper";
+                            LOWERBOUND = "Lower";
+                        }
                         for (int columnIndex = 0; columnIndex < row.Count; columnIndex++)
                         {
                             KeyValuePair<string, string> column = row.ElementAt(columnIndex);
-                            var columnToMatch = column.Key;
-                            if(columnToMatch.EndsWith("ID"))
+                            var knownFieldName = column.Key;
+                            if (knownFieldName.EndsWith("ID"))
                             {
                                 continue;
                             }
-                            if (columnToMatch.Contains(LOWERBOUND))
+                            if (knownFieldName.Contains(LOWERBOUND))
                             {
-                                columnToMatch = column.Key.Replace(" " + LOWERBOUND, "");
+                                knownFieldName = column.Key.Replace(LOWERBOUND, "");
                             }
-                            else if (columnToMatch.Contains(UPPERBOUND))
+                            else if (knownFieldName.Contains(UPPERBOUND))
                             {
-                                columnToMatch = column.Key.Replace(" " + UPPERBOUND, "");
+                                knownFieldName = column.Key.Replace(UPPERBOUND, "");
                             }
 
-                            if (!column.Key.Contains("Factor"))
+                            if (column.Key != Factor.FactorColumnIdentifier && !column.Key.Contains("Factor"))
                             {
-                                var knownField = this.KnownFields?.FirstOrDefault(it => it.Name == columnToMatch);
+                                var knownField = this.KnownFields?.FirstOrDefault(it => it.Name == knownFieldName);
 
                                 if (knownField == null)
                                 {
-                                    throw new NullReferenceException($"The column [{columnToMatch}] was not matched to any field on Data/Rating/KnownFields.json");
+                                    throw new NullReferenceException($"The column [{knownFieldName}] for factor {Factor.Name} was not matched to any field on Data/Rating/KnownFields.json");
+                                }
+                                else if (KnownFields.Any(knownField => knownField.Name == "FirstRow"))
+                                {
+                                    match.Add(column.Key, true);
+                                    continue;
                                 }
 
-                                /*if(knownField.Name == "Add On")
-                                {
-                                    Log.Debug(knownField.Value);
-                                    Log.Debug(column.Value);
-                                    throw new Exception();
-                                }*/
 
-                                if (knownField.TypeName == "Boolean")
-                                {
-                                    if(knownField.Value is string)
-                                    {
-                                        if(knownField.Value == "Yes")
-                                        {
-                                            knownField.parsedValue= "True";
-                                        }
-                                        else if(knownField.Value == "No")
-                                        {
-                                            knownField.parsedValue = "False";
-                                        }
-                                        else if(Boolean.TryParse(knownField.Value, out bool val))
-                                        {
-                                            knownField.parsedValue = val ? "Yes" : "No";
-                                        }
-                                        
-                                    }
-                                    else
-                                    {
-                                        knownField.parsedValue = ((bool)knownField.Value) ? "Yes" : "No";
-                                    }
-                                }
-                                else if (knownField.TypeName == "Currency")
+                                if (knownField.TypeName == "Currency")
                                 {
                                     //knownField.parsedValue = ((int)knownField.Value).ToString("C0");
-                                    knownField.parsedValue = ((int)knownField.Value).ToString("0.0000000000");
+                                    knownField.parsedValue.Add(((int)knownField.Value).ToString("0.0000000000"));
 
                                 }
                                 if (column.Key.Contains(LOWERBOUND) && knownField.Type != null && (decimal)knownField.Value >= decimal.Parse(column.Value))
@@ -248,9 +244,9 @@ namespace ApolloTests.Data.Rating
                                 {
                                     var columnValue = column.Value == "9999999" ? decimal.MaxValue : decimal.Parse(column.Value);
 
-                                    Dictionary<string,string>? nextLogicalRow = columnValue != decimal.MaxValue ? factorTable.FirstOrDefault(it => decimal.Parse(it[columnToMatch + $" {LOWERBOUND}"]) == columnValue + 1) : null;
+                                    Dictionary<string, string>? nextLogicalRow = columnValue != decimal.MaxValue ? factorTable.FirstOrDefault(it => decimal.Parse(it[knownFieldName + $"{LOWERBOUND}"]) == columnValue + 1) : null;
 
-                                    var nextRowLowerBound = nextLogicalRow == null? 0 : decimal.Parse(nextLogicalRow[columnToMatch + $" {LOWERBOUND}"]);
+                                    var nextRowLowerBound = nextLogicalRow == null ? 0 : decimal.Parse(nextLogicalRow[knownFieldName + $"{LOWERBOUND}"]);
 
                                     if (knownField.Type != null && (decimal)knownField.Value <= columnValue)
                                     {
@@ -272,15 +268,15 @@ namespace ApolloTests.Data.Rating
 
 
 
-                               /* if (knownField.TypeName == "Currency")
-                                {
-                                    Log.Debug($"column value: {column.Key}={column.Value}");
-                                    Log.Debug($"Knownfield value: {column.Key}={knownField.Value?.ToString()}");
-                                    Log.Debug($"Knownfield parsed: {column.Key}={knownField.parsedValue}");
+                                /* if (knownField.TypeName == "Currency")
+                                 {
+                                     Log.Debug($"column value: {column.Key}={column.Value}");
+                                     Log.Debug($"Knownfield value: {column.Key}={knownField.Value?.ToString()}");
+                                     Log.Debug($"Knownfield parsed: {column.Key}={knownField.parsedValue}");
 
 
-                                }
-*/
+                                 }
+ */
                                 if (lowerBoundMatch || upperBoundMatch)
                                 {
                                     match.Add(column.Key, true);
@@ -288,13 +284,13 @@ namespace ApolloTests.Data.Rating
                                     lowerBoundMatch = false;
                                     upperBoundMatch = false;
                                 }
-                                else if (column.Value != null && (column.Value?.ToLower() == knownField.Value?.ToString()?.ToLower() || column.Value?.ToLower() == knownField.parsedValue?.ToLower()))
+                                else if (column.Value != null && (column.Value?.ToLower() == knownField.Value?.ToString()?.ToLower() || knownField.parsedValue.Any(it => column.Value.Equals(it, StringComparison.InvariantCultureIgnoreCase))))
                                 {
                                     match.Add(column.Key, true);
                                 }
 
                                 //limits that exceed what's listed in the manual will count the highest limit possible as a match
-                                else if (columnIsLimit && tableLimits[column.Key].Count > 0 && int.Parse(string.Join("", column.Value?.Where(char.IsDigit)??throw new NullReferenceException())) == tableLimits[column.Key].Max() && ((int)knownField.Value)>tableLimits[column.Key].Max())
+                                else if (columnIsLimit && tableLimits[column.Key].Count > 0 && int.Parse(string.Join("", column.Value?.Where(char.IsDigit) ?? throw new NullReferenceException())) == tableLimits[column.Key].Max() && ((int)knownField.Value) > tableLimits[column.Key].Max())
                                 {
                                     match.Add(column.Key, true);
                                 }
@@ -311,13 +307,16 @@ namespace ApolloTests.Data.Rating
                         }
                         if (!match.ContainsValue(false))
                         {
-
-                            string? factorColName = row.Keys.ToList<string>().Find(column => column.Contains("Factor"));
-
+                            string? factorColName = row.Keys.ToList<string>().Find(column => column == Factor.FactorColumnIdentifier);
+                            if (factorColName == null)
+                            {
+                                factorColName = row.Keys.ToList<string>().Find(column => column.Contains(Factor.FactorColumnIdentifier));
+                            }
                             if (factorColName == null)
                             {
                                 throw new Exception($"Error finding Factor column in table {GetAlgorithmAssignment().CoverageCode}.{this.Name} \n columns: [{string.Join(", ", row.Keys)}]");
                             }
+
 
                             if (match.ContainsKey(INTERPOLATIONUPPERMATCH))
                             {
@@ -372,7 +371,7 @@ namespace ApolloTests.Data.Rating
                 var result = new Dictionary<string, List<int>>();
                 var limitColumns = factorTable[0].Where(it => it.Key.ToLower().Contains("limit") && !it.Key.ToLower().Contains("factor")).Select(it => it.Key).ToList();
 
-                if(limitColumns.Count==0)
+                if (limitColumns.Count == 0)
                 {
                     return result;
                 }
@@ -387,14 +386,14 @@ namespace ApolloTests.Data.Rating
 
                         int.TryParse(string.Join("", value.Where(char.IsDigit)), out int intVal);
 
-                        if(intVal>0)
+                        if (intVal > 0)
                         {
                             result[column].Add(intVal);
                         }
                     }
 
                 }
-                result = result.Select(it => new KeyValuePair<string, List<int>>(it.Key, it.Value.Distinct().ToList())).ToDictionary(kvp=> kvp.Key, kvp=> kvp.Value);
+                result = result.Select(it => new KeyValuePair<string, List<int>>(it.Key, it.Value.Distinct().ToList())).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
                 return result;
 
@@ -414,7 +413,7 @@ namespace ApolloTests.Data.Rating
                     {
                         resolvable.Resolve();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         throw new Exception($"Error Resolving KnownField {resolvable.Name}", ex);
                     }
@@ -424,25 +423,78 @@ namespace ApolloTests.Data.Rating
             }
 
             private Engine.AlgorithmAssignment GetAlgorithmAssignment()
-            { 
-               return (Engine.AlgorithmAssignment)this.Engine.interpreter.Eval("AlgorithmAssignment");
+            {
+                return (Engine.AlgorithmAssignment)this.Engine.interpreter.Eval("AlgorithmAssignment");
             }
             private decimal BaseRateFactor
             {
                 get
                 {
                     this.Factor.NameUI.Add($"{GetAlgorithmAssignment().CoverageCode} Base Rate Factor");
-                    return decimal.Parse(this.Engine.getTable($"{this.Engine.interpreter.Eval("CoverageCode")}.BaseRateFactors")[0]["Base Rate Factor"]);
+                    var table = Engine.getTable($"{this.Engine.interpreter.Eval("CoverageCode")}.BaseRateFactors");
+                    if(table.Count== 0)
+                    {
+                        return decimal.Parse(table[0]["Base Rate Factor"]);
+                    }
+                    else
+                    {
+                        this.Factor.KnownFields = table[0].Keys.Where(it=>it!="Base Rate Factor").Select(it => KnownField.GetKnownField(it)).ToList();
+                        this.Factor.CustomCalculation = false;
+                        this.Resolve();
+                        return this.Value??throw new Exception($"value returned null for BaseRateFactor of {this.Engine.interpreter.Eval("CoverageCode")}");
+                    }
                 }
             }
             private decimal BaseRateFactorPIP
             {
                 get
                 {
-                    this.Factor.NameUI.Add($"{GetAlgorithmAssignment().CoverageCode} Base Rate Factor");
-                    return decimal.Parse(this.Engine.getTable($"{this.Engine.interpreter.Eval("CoverageCode")}.BaseRateFactor")[0]["Base Rate Factor"]);
+                    try
+                    {
+
+                        var table = this.Engine.getTable($"{this.Engine.interpreter.Eval("CoverageCode")}.BaseRateFactor");
+                        this.Factor.NameUI.Add($"{GetAlgorithmAssignment().CoverageCode} Base Rate Factor");
+                        if (new[] { "NJ", "MI" }.Contains(this.Engine.GoverningStateCode))
+                        {
+                            string finalTypeConsidered;
+                            int category = KnownFields.Find(it => it.Name == "BodyCategoryTypeId").Value;
+                            int subCategory = KnownFields.Find(it => it.Name == "BodySubCategoryTypeId").Value;
+                            decimal GVW = KnownFields.Find(it => it.Name == "GVW/GCW").Value;
+
+                            if (
+                                (category == (int)VehicleTypeEnum.Car && subCategory != (int)BodySubCategoryTypeEnum.CSSTLI)
+                                || (((int)BodySubCategoryTypeEnum.CPSPick == subCategory || (int)BodySubCategoryTypeEnum.TRKPick == subCategory) && GVW <= 10000)
+                               )
+                            {
+                                finalTypeConsidered = "PPT";
+                            }
+                            else
+                            {
+                                finalTypeConsidered = "TTT";
+                            }
+                            Log.Info($"BaseRateFactorPIP.finalTypeConsidered: {finalTypeConsidered}");
+                            var factor = table.Find(it => it["Vehicle Type"] == finalTypeConsidered)["Factor"];
+                            return decimal.Parse(factor);
+
+                        }
+                        else
+                        {
+                            return decimal.Parse(table[0]["Base Rate Factor"]);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        var message = "error getting Base Factor for PIP";
+                        message += $"\nTableName: {this.Engine.interpreter.Eval("CoverageCode")}.BaseRateFactor";
+                        message += Log.stringify(this.Engine.getTable($"{this.Engine.interpreter.Eval("CoverageCode")}.BaseRateFactor"));
+                        message += "\n\n" + Log.stringify(this);
+                        throw new Exception(message, e);
+
+
+                    }
                 }
             }
+            private decimal BaseRateFactorPPI => decimal.Parse(this.Engine.getTable($"{Factor.TableName}")[0]["Base Rate Factor"]);
 
             private decimal MinimumRatingValueFactors
             {
@@ -457,14 +509,14 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    var vehicleType  = (string?)this.KnownFields?.First(it=> it.Name== "Vehicle Type").Value;
+                    var vehicleType = (string?)this.KnownFields?.First(it => it.Name == "Vehicle Type").Value;
                     vehicleType.NullGuard();
                     var algorithmTable = this.Engine.getTable($"{GetAlgorithmAssignment().CoverageCode}.VehicleType_MinimumRatingValueFactors");
 
                     var factor = algorithmTable.FirstOrDefault(it => it["Vehicle Type"] == vehicleType)?["Minimum Rating Value Factor"];
                     factor.NullGuard();
                     //Log.Debug(factor.Where(char.IsDigit));
-                    var minimumValue =  decimal.Parse(factor);
+                    var minimumValue = decimal.Parse(factor);
 
                     var vehicleValue = (decimal)this.KnownFields?.First(it => it.Name == "Stated Value").Value;
                     vehicleType.NullGuard();
@@ -478,9 +530,9 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    var ratableObj = this.Engine.root.RatableObject;
-                    var lifespan = ratableObj.TimeTo - ratableObj.TimeFrom;
-                    var totalDaysYear = DateTime.IsLeapYear(ratableObj.TimeTo.Year) && ratableObj.TimeTo.Month > 2 ? 366 : 365;
+                    var tether = this.Engine.root.Tether;
+                    var lifespan = tether.ExpirationDate - tether.EffectiveDate;
+                    var totalDaysYear = DateTime.IsLeapYear(tether.ExpirationDate.Year) && tether.ExpirationDate.Month > 2 ? 366 : 365;
                     this.parsedValue = $"{lifespan.TotalDays} / {totalDaysYear}";
 
 
@@ -508,7 +560,7 @@ namespace ApolloTests.Data.Rating
 
                         bool defensiveDriving = driver.OutputMetadata.GetQuestionResponse("IL-DefensiveDriving") == "true" ? true : false;
                         bool LastYearViolation = driver.OutputMetadata.GetQuestionResponse("IL-LastYearViolation") == "true" ? true : false;
-                        bool Last3YearsLicenseSuspended = driver.OutputMetadata.GetQuestionResponse( "IL-Last3YearsLicenseSuspended") == "true" ? true : false;
+                        bool Last3YearsLicenseSuspended = driver.OutputMetadata.GetQuestionResponse("IL-Last3YearsLicenseSuspended") == "true" ? true : false;
 
 
                         if (defensiveDriving && !LastYearViolation && !Last3YearsLicenseSuspended)
@@ -526,16 +578,16 @@ namespace ApolloTests.Data.Rating
                 {
                     this.Factor.NameUI.Add($"{this.GetAlgorithmAssignment().DriverRatingPlan} Driver Rating Plan");
 
-                    if(this.GetAlgorithmAssignment().DriverRatingPlan == "For Hire Public")
+                    if (this.GetAlgorithmAssignment().DriverRatingPlan == "For Hire Public")
                     {
                         this.Factor.NameUI.Add("For Hire Driver Rating Plan");
                     }
 
-                    if (this.Engine.root.GetVehicles().Count>=11)
+                    if (this.Engine.root.GetVehicles().Count >= 11)
                     {
                         return 1;
                     }
-                    else if(this.GetAlgorithmAssignment().DriverRatingPlan == "Unity")
+                    else if (this.GetAlgorithmAssignment().DriverRatingPlan == "Unity")
                     {
                         return 1;
                     }
@@ -543,14 +595,14 @@ namespace ApolloTests.Data.Rating
                     var driverFactors = new Dictionary<Entities.Risk.Driver, Factor.Resolvable>();
                     foreach (var driver in this.Engine.root.GetDrivers())
                     {
-                        if (bool.Parse(driver.OutputMetadata.GetQuestionResponse("ExcludeDriver")) == false) 
+                        if (bool.Parse(driver.OutputMetadata.GetQuestionResponse("ExcludeDriver")) == false)
                         {
-                            int points = driver.GetPoints(this.Engine.root, this.GetAlgorithmAssignment().DriverRatingPlan?? throw new NullReferenceException());
+                            int points = driver.GetPoints(this.Engine.root, this.GetAlgorithmAssignment().DriverRatingPlan ?? throw new NullReferenceException());
                             Log.Debug("Points: " + points);
 
                             this.Engine.interpreter.SetVariable("DriverRisk", driver);
 
-                            var factor = Factor.GetFactor("Individual Driver Rating Factor").GetResolvable(this.Engine);
+                            var factor = Factor.GetFactor("Individual Driver Rating Factor", ObjectContainer).GetResolvable(this.Engine);
 
                             factor.Resolve();
                             Log.Debug($"Driver: {driver.Driver.LicenseNo} {factor.Value}");
@@ -559,16 +611,16 @@ namespace ApolloTests.Data.Rating
                         }
                     }
 
-                    int powerUnitCount = this.Engine.root.GetVehicles().Where(it=>!it.Vehicle.IsNonPowered()).Count();
+                    int powerUnitCount = this.Engine.root.GetVehicles().Where(it => !it.Vehicle.IsNonPowered()).Count();
 
-                    List<decimal> factors = driverFactors.Select(it => it.Value.Value?? throw new NullReferenceException()).ToList();
+                    List<decimal> factors = driverFactors.Select(it => it.Value.Value ?? throw new NullReferenceException()).ToList();
 
                     decimal aggregateFactor = 0;
 
-                    if (driverFactors.Count()>= powerUnitCount)
+                    if (driverFactors.Count() >= powerUnitCount)
                     {
 
-                        for (int i=0; i < powerUnitCount; i++ )
+                        for (int i = 0; i < powerUnitCount; i++)
                         {
                             aggregateFactor += factors[i];
                         }
@@ -583,11 +635,11 @@ namespace ApolloTests.Data.Rating
 
                         var row = DT2.FirstOrDefault(it => it["Driver Rating Plan"] == this.GetAlgorithmAssignment().DriverRatingPlan);
 
-                        aggregateFactor += decimal.Parse(row?["Unassigned Driver Factor"]??throw new NullReferenceException()) * unassignedCount;
+                        aggregateFactor += decimal.Parse(row?["Unassigned Driver Factor"] ?? throw new NullReferenceException()) * unassignedCount;
                     }
 
-                   
-                    if(this.GetAlgorithmAssignment().DriverRatingPlan == "Standard")
+
+                    if (this.GetAlgorithmAssignment().DriverRatingPlan == "Standard")
                     {
                         return Math.Round((aggregateFactor / Math.Max(powerUnitCount, driverFactors.Count())), 4);
 
@@ -597,10 +649,10 @@ namespace ApolloTests.Data.Rating
                     {
                         return Math.Round((aggregateFactor / powerUnitCount), 4);
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         Log.Error($"Error dividing {aggregateFactor}/{powerUnitCount}");
-                        Log.Error($"Vehicles returned {string.Join(", ",this.Engine.root.GetVehicles())}");
+                        Log.Error($"Vehicles returned {string.Join(", ", this.Engine.root.GetVehicles())}");
                         throw;
                     }
                 }
@@ -612,7 +664,7 @@ namespace ApolloTests.Data.Rating
                     return 1;
                 }
             }
-            
+
             private decimal RenewalRateCapFactor
             {
                 get
@@ -624,11 +676,11 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    string[] CLASSIFICATION_NAMES = new string[] {  "CLASSIFICATION", "Classification", "CLASSIFICATION PECULIARITIES" };
-                    string[] EMPLOYEES_NAMES = new string[] { "EMPLOYEES" , "Employees" };
-                    string[] EQUIPMENT_NAMES = new string[] {  "EQUIPMENT", "Equipment" };
-                    string[] MANAGEMENT_NAMES = new string[] {  "MANAGEMENT", "Management" };
-                    string[] SAFETYORGANIZATION_NAMES = new string[] {  "SAFETYORGANIZATION", "Safety Organization", "SAFETY ORGANIZATION" };
+                    string[] CLASSIFICATION_NAMES = new string[] { "CLASSIFICATION", "Classification", "CLASSIFICATION PECULIARITIES" };
+                    string[] EMPLOYEES_NAMES = new string[] { "EMPLOYEES", "Employees" };
+                    string[] EQUIPMENT_NAMES = new string[] { "EQUIPMENT", "Equipment" };
+                    string[] MANAGEMENT_NAMES = new string[] { "MANAGEMENT", "Management" };
+                    string[] SAFETYORGANIZATION_NAMES = new string[] { "SAFETYORGANIZATION", "Safety Organization", "SAFETY ORGANIZATION" };
 
                     List<string[]> categories = new List<string[]>() { CLASSIFICATION_NAMES, EMPLOYEES_NAMES, EQUIPMENT_NAMES, MANAGEMENT_NAMES, SAFETYORGANIZATION_NAMES };
 
@@ -653,7 +705,7 @@ namespace ApolloTests.Data.Rating
                     {
                         //Log.Debug(JToken.FromObject(table));
                         var categoryRow = table.First(it => category.Contains((string)it["Schedule Rating Category"]));
-                        var categoryBoundaries = new decimal[] { -categoryRow?[credit], categoryRow?[debit]};
+                        var categoryBoundaries = new decimal[] { -categoryRow?[credit], categoryRow?[debit] };
 
                         var systemValue = (decimal)this.Engine.root[category[0]];
 
@@ -689,7 +741,7 @@ namespace ApolloTests.Data.Rating
 
 
 
-                    return 1+ (total/100);
+                    return 1 + (total / 100);
                 }
             }
             private decimal ExperienceRatingFactor
@@ -744,7 +796,7 @@ namespace ApolloTests.Data.Rating
                     if (isCombined == null)
                     {
 
-                        if(limitCount==1)
+                        if (limitCount == 1)
                         {
                             isCombined = true;
 
@@ -753,10 +805,10 @@ namespace ApolloTests.Data.Rating
                         {
                             isCombined = false;
                         }
-                        
+
                     }
 
-                    if(isCombined == true)
+                    if (isCombined == true)
                     {
                         this.Factor.NameUI.Add("Increased Limit Factor (Combined Single Limit)");
 
@@ -788,14 +840,14 @@ namespace ApolloTests.Data.Rating
                     }
 
                 }
-            } 
+            }
             private decimal StatedValue
             {
                 get
                 {
                     this.KnownFields.NullGuard();
                     var value = this.KnownFields[0].Resolve();
-                    
+
 
                     return (decimal)(value ?? 0);
                 }
@@ -835,15 +887,15 @@ namespace ApolloTests.Data.Rating
                                                     "VA00064"
                                                     };
 
-                    this.Engine.latestResults.NullGuard();
-                    var ratingAlgorithm = this.Engine.latestResults.Find(it => coverageCodes.Contains(it["CoverageCode"]?.ToString()));
-                    
+                    this.Engine.LatestOutput.NullGuard();
+                    var ratingAlgorithm = this.Engine.LatestOutput.Results.Find(it => coverageCodes.Contains(it.CoverageCode));
+
                     try
                     {
-                        return ratingAlgorithm?["Factors"]?["Manual Basic Limits Premium"]?["Value"]?.ToObject<decimal?>() ?? throw new NullReferenceException();
+                        return ratingAlgorithm.FindFactor("Manual Basic Limits Premium").Value ?? throw new NullReferenceException();
 
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         Log.Error($"Manual Basic Premium was not found in rating object: {ratingAlgorithm}");
                         throw;
@@ -859,15 +911,15 @@ namespace ApolloTests.Data.Rating
                     int pullingUnitCount = 0;
                     int semiTrailerCount = 0;
                     var vehicles = this.Engine.root.GetVehicles();
-                    foreach(var vehicle in vehicles)
+                    foreach (var vehicle in vehicles)
                     {
                         int GVW = int.Parse(vehicle.Vehicle.GrossVehicleWeight);
-                        if (vehicle.Vehicle.BodyCategoryTypeId == 5 && Engine.root.getLimits(vehicle.Vehicle).FirstOrDefault(it=> it.GetCoverageType().TypeName == "Collision" || it.GetCoverageType().TypeName == "Comprehensive") != null)
+                        if (vehicle.Vehicle.BodyCategoryTypeId == 5 && Engine.root.getLimits(vehicle.Vehicle).FirstOrDefault(it => it.GetCoverageType().TypeName == "Collision" || it.GetCoverageType().TypeName == "Comprehensive") != null)
                         {
                             semiTrailerCount++;
                             continue;
                         }
-                        else if(vehicle.Vehicle.BodySubCategoryTypeId == 23 || GVW >= 20001)
+                        else if (vehicle.Vehicle.BodySubCategoryTypeId == 23 || GVW >= 20001)
                         {
                             pullingUnitCount++;
                         }
@@ -882,18 +934,18 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    return this.KnownFields?.Find(it=> it.Name== "Limit")?.Value?? throw new NullReferenceException();
+                    return this.KnownFields?.Find(it => it.Name == "Limit")?.Value ?? throw new NullReferenceException();
                 }
             }
             private decimal BIPDPremium
             {
                 get
                 {
-                    var ratingAlgorithm = this.Engine?.latestResults?.Find(it => it["CoverageName"]?.ToString() == "Bodily Injury Property Damage (BIPD)");
+                    var ratingAlgorithm = this.Engine.LatestOutput.Results.Find(it => it.CoverageName == CoverageType.BIPD);
 
                     try
                     {
-                        return ratingAlgorithm?["Factors"]?["Manual Basic Limits Premium"]?["Value"]?.ToObject<decimal>() ?? throw new NullReferenceException();
+                        return ratingAlgorithm.FindFactor("Manual Basic Limits Premium").Value ?? throw new NullReferenceException();
                     }
                     catch (Exception)
                     {
@@ -907,11 +959,11 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    var ratingAlgorithm = this.Engine?.latestResults?.Find(it => it["CoverageName"]?.ToString() == "Bodily Injury Property Damage (BIPD)");
+                    var ratingAlgorithm = this.Engine.LatestOutput.Results.Find(it => it.CoverageName == CoverageType.BIPD);
 
                     try
                     {
-                        return 1 / ratingAlgorithm?["Factors"]?["Increased Limit Factor"]?["Value"]?.ToObject<decimal?>() ?? throw new NullReferenceException();
+                        return 1 / ratingAlgorithm.FindFactor("Increased Limit Factor").Value ?? throw new NullReferenceException();
                     }
                     catch (Exception)
                     {
@@ -924,12 +976,12 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    var ratingAlgorithm = this.Engine.latestResults?.Find(it => it["CoverageName"]?.ToString() == "Bodily Injury Property Damage (BIPD)");
+                    var ratingAlgorithm = this.Engine.LatestOutput.Results.Find(it => it.CoverageName == CoverageType.BIPD);
 
                     try
                     {
-                        var DrivingRating = ratingAlgorithm?["Factors"]?["Driver Rating"]?["Value"]?.ToObject<decimal>()?? throw new NullReferenceException();
-                        return 1 + ((DrivingRating -1) * 0.5M);
+                        var DrivingRating = ratingAlgorithm.FindFactor("Driver Rating").Value ?? throw new NullReferenceException();
+                        return 1 + ((DrivingRating - 1) * 0.5M);
                     }
                     catch (Exception)
                     {
@@ -950,7 +1002,7 @@ namespace ApolloTests.Data.Rating
                     var table = this.Engine.getTable(this.Factor.Name);
                     var relevantRows = table.Where(row => selections.Contains(row["Cargo that is Hauled"]));
 
-                    return relevantRows.Select(row=>decimal.Parse(row["Factor"])).Max();
+                    return relevantRows.Select(row => decimal.Parse(row["Factor"])).Max();
 
                 }
             }
@@ -959,14 +1011,14 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    var GVW = this.KnownFields?.First(it=> it.Name == "GVW/GCW");
+                    var GVW = this.KnownFields?.First(it => it.Name == "GVW/GCW");
                     GVW.NullGuard();
                     var BodySubCategoryTypeId = this.KnownFields?.First(it => it.Name == "BodySubCategoryTypeId");
                     BodySubCategoryTypeId.NullGuard();
                     var table = this.Engine.getTable(this.Factor.Name);
 
                     Dictionary<string, string>? row;
-                    switch((decimal)GVW.Value)
+                    switch ((decimal)GVW.Value)
                     {
                         //Truck Tractor
                         case decimal n when n <= 45000 && BodySubCategoryTypeId.Value == 23:
@@ -978,7 +1030,7 @@ namespace ApolloTests.Data.Rating
 
 
                         case decimal n when n <= 10000:
-                            row =  table.First(it => it["Truck Type"] == "Light Truck or PPT: 0 - 10k");
+                            row = table.First(it => it["Truck Type"] == "Light Truck or PPT: 0 - 10k");
                             return decimal.Parse(row["Factor"]);
 
                         case decimal n when n <= 20000:
@@ -1006,21 +1058,21 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    var radius = (int)(this.KnownFields?[0]?.Value?? throw new NullReferenceException());
+                    var radius = (int)(this.KnownFields?[0]?.Value ?? throw new NullReferenceException());
                     var table = this.Engine.getTable(this.Factor.Name);
 
-                    foreach(var row in table)
+                    foreach (var row in table)
                     {
                         var upper = int.Parse(row["Radius Higher (Inclusive)"]);
                         var lower = int.Parse(row["Radius Lower"]);
 
-                        if(radius> lower && radius<= upper)
+                        if (radius > lower && radius <= upper)
                         {
                             this.matchedRow = row;
                             return decimal.Parse(row["Factor"]);
                         }
                     }
-                    throw new Exception($"Radius: {radius} did not match any row in table \n {string.Join(",\n", table.Select(dict=> dict.Select(it=> $"{it.Key}:{it.Value}, ")))}");
+                    throw new Exception($"Radius: {radius} did not match any row in table \n {string.Join(",\n", table.Select(dict => dict.Select(it => $"{it.Key}:{it.Value}, ")))}");
                 }
             }
 
@@ -1065,14 +1117,14 @@ namespace ApolloTests.Data.Rating
                     var dailyLimit = Limit.SelectedLimits[0];
                     var numberOfDays = Limit.SelectedLimits[1];
                     var total = Limit.SelectedLimits[2];
-                    var downtime = (string?)KnownFields?[0].Value?? throw new NullReferenceException();
+                    var downtime = (string?)KnownFields?[0].Value ?? throw new NullReferenceException();
 
 
 
                     foreach (var row in table)
                     {
-                      
-                        if (   int.Parse(row[DAILYLIMIT]) == dailyLimit 
+
+                        if (int.Parse(row[DAILYLIMIT]) == dailyLimit
                             && int.Parse(row[NUMBEROFDAYS]) == numberOfDays
                             && int.Parse(row[TOTAL]) == total
                             && row[DOWNTIME].ToLower() == downtime.ToLower())
@@ -1084,6 +1136,64 @@ namespace ApolloTests.Data.Rating
                     throw new Exception($" dailyLimit: {dailyLimit}, numberOfDays: {numberOfDays}, total: {total}, downtime: {downtime} did not match any row in table");
 
 
+                }
+            }
+
+            private decimal BaseRateFactorFPB
+            {
+                get
+                {
+                    var rate = decimal.Parse(this.Engine.getTable(this.Factor.TableName)[0]["Rate"]);
+                    return rate;
+
+                }
+            }
+            private decimal PoweredVehicleCount
+            {
+                get
+                {
+                    var poweredVehicleCount = this.Engine.root.GetVehicles().Count(risk => !risk.Vehicle.IsNonPowered());
+                    if (poweredVehicleCount == 0)
+                    {
+                        throw new Exception("powered Vehicle count can't be 0");
+                    }
+                    return poweredVehicleCount;
+
+                }
+            }
+            private decimal IncreasedLimitFactors_FPB
+            {
+                get
+                {
+                    var isCombined= this.KnownFields.Find(it=> it.Name== "Combination").Value=="Y";
+                    if (!isCombined)
+                    {
+                        foreach(var knownField in KnownFields)
+                        {
+                            if(knownField.Name!= "MedBenefitLimit" && knownField.Type == typeof(int))
+                            {
+                                knownField.Value = 0;
+                            }
+                        }
+                    }
+                    Factor.CustomCalculation = false;
+                    this.Resolve(false);
+                    return Value??throw new NullReferenceException("IncreasedLimitFactors_FPB returned NULL as value");
+                }
+            }
+
+            private decimal ExtraordinaryMedical
+            {
+                get
+                {
+                    var applies = this.KnownFields.Find(it => it.Name == "CoverageAmount").Value >100000;
+                    if(!applies)
+                    {
+                        return 0;
+                    }
+                    Factor.CustomCalculation= false;
+                    this.Resolve();
+                    return Value ?? throw new NullReferenceException("ExtraordinaryMedical returned null as value");
                 }
             }
 

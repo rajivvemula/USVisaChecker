@@ -1,6 +1,6 @@
 ﻿using System;
 using TechTalk.SpecFlow;
-using ApolloTests.Data.Form;
+using ApolloTests.Data.Forms;
 using HitachiQA.Helpers;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +32,7 @@ namespace ApolloTests.StepDefinition.Forms
         private CosmosContext CosmosContext;
         private SQLContext SQLContext;
         private IUnitTestRuntimeProvider RuntimeProvider;
+        private FormService FormSvc;
 
         private IObjectContainer ObjectContainer;
         public FormsGenerateSteps(RestAPI restAPI, IConfiguration config, SQL SQL, TestContext TC, MiscHook miscHook, IObjectContainer objectContainer)
@@ -45,6 +46,7 @@ namespace ApolloTests.StepDefinition.Forms
             this.SQLContext = objectContainer.Resolve<SQLContext>();
             this.RuntimeProvider = objectContainer.Resolve<IUnitTestRuntimeProvider>();
             this.ObjectContainer = objectContainer;
+            this.FormSvc = objectContainer.Resolve<FormService>();
             //Log.Info(TC.Properties);
 
         }
@@ -56,7 +58,7 @@ namespace ApolloTests.StepDefinition.Forms
             this.name = name;
             this.LineId = LineId;
             var line = SQLContext.Line.Find(LineId);
-            this.Form = Form.GetForm(line, code, name);
+            this.Form = FormSvc.GetForm(line, code, name);
             string? testPointConfiguration = (string?)TestContext.Properties["__Tfs_TestConfigurationName__"];
             bool useNewEntities = testPointConfiguration?.Contains("FORM_CREATE_NEW_ENTITIES") == true;
             if(bool.TryParse(Configuration.GetVariable("FORM_CREATE_NEW_ENTITIES", true), out bool createNew))
@@ -72,11 +74,11 @@ namespace ApolloTests.StepDefinition.Forms
             catch(Exception ex)
             {
                 var msg = $"error creating/retireving policy for form: {code}  - {name} in line {LineId}\n";
-#if DEBUG
-                throw new Exception(msg, ex);
-#else
+                #if DEBUG   
+                throw;
+                #else
                 RuntimeProvider.TestInconclusive($"{msg} \n {ex.Message}\n {ex.StackTrace}\n");
-#endif
+                #endif
             }
             if (policy == null)
             {

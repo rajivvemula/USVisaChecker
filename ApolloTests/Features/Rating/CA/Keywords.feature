@@ -1,9 +1,15 @@
-@NoBrowser
+@NoBrowser 
 Feature: Keywords
 
 A short summary of the feature
 
- @ratingTestsignore @ignore
+
+Scenario: 01_Specific Quote Test Rating
+	Given quote with Id 107250 is loaded
+	When expected values are gathered
+	Then expected values should match the system output
+
+@ignore
 Scenario: Generate Keyword Feature File
 	When user loads all Keywords from the DB
 	Then All Keywords are added to this file for '<state>'
@@ -13,8 +19,7 @@ Scenario: Generate Keyword Feature File
 	| IL    |
 	| SC    |
 
-
-@testRatingKeywords @ratingTestsignore 
+@ignore
 Scenario: Test Rating Keyword
 	Given quote for line=7 and Keyword '<Keyword>' in '<State>' is set to Quoted
 

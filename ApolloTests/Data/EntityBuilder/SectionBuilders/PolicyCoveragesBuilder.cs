@@ -21,6 +21,10 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders
             {
                 case LineEnum.CommercialAuto:
                     this.AddBIPD();
+                    if(builder.State=="MI")
+                    {
+                        this.Find(it => it.CoverageType.TypeName == CoverageType.BIPD).SelectedLimits[0] = 510000;
+                    }
 
                     break;
                 case LineEnum.BusinessOwner:

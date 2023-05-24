@@ -6,7 +6,7 @@
     "CustomCalculation": true
   },
   "BaseRateFactor": {
-    "KnownFields": [],
+    "KnownFields": [ "BodyCategoryTypeId", "BodySubCategoryTypeId", "GVW/GCW" ],
     "nameUI": [ "Base Rate Factor" ],
     "source": "BaseRateFactorPIP",
     "CustomCalculation": true
@@ -370,7 +370,7 @@
     "CustomCalculation": true
   },
   "PIP2.IncreasedLimitFactor": {
-    "KnownFields": [ "Benefits Limit" ],
+    "KnownFields": [ "Benefits Limit", "Medical Expense Benefit" ],
     "nameUI": [ "Increased Limit Factor" ],
     "tableName": "PIP2.IncreasedLimitFactor"
   },
@@ -405,90 +405,169 @@
     "CustomCalculation": true
   },
   "Limit": {
-    "KnownFields": ["Limit"],
+    "KnownFields": [ "Limit" ],
     "nameUI": [ "Coverage Single Limit" ],
     "source": "Limit",
     "CustomCalculation": true
   },
-  "CR1.BaseRateFactor":{
-    "KnownFields": ["State"],
+  "CR1.BaseRateFactor": {
+    "KnownFields": [ "State" ],
     "nameUI": [ "Base Rate Factor" ]
-  }, 
+  },
   "CR2.IncreasedLimitFactor": {
     "KnownFields": [ "Auto Liability Limit" ],
     "nameUI": [ "Increased Limit Factor" ]
   },
-  "CR3.DeductibleFactor":{
+  "CR3.DeductibleFactor": {
     "KnownFields": [ "Deductible" ],
     "nameUI": [ "Deductible Factor" ]
   },
-  "CR4.CargoHauledFactor":{
+  "CR4.CargoHauledFactor": {
     "KnownFields": [ "Cargo that is Hauled" ],
     "nameUI": [ "Cargo Hauled Factor" ],
     "CustomCalculation": true,
     "source": "CargoHauledFactor"
   },
-  "CR5.CargoTruckFactor":{
+  "CR5.CargoTruckFactor": {
     "KnownFields": [ "GVW/GCW", "BodySubCategoryTypeId" ],
     "nameUI": [ "Cargo Truck Factor" ],
     "CustomCalculation": true,
     "source": "CargoTruckFactor"
   },
-  "CR6.CargoRadiusFactor":{
-    "KnownFields":["Radius"],
+  "CR6.CargoRadiusFactor": {
+    "KnownFields": [ "Radius" ],
     "nameUI": [ "Cargo Radius Factor" ],
     "CustomCalculation": true,
     "source": "CargoRadiusFactor"
   },
-  "CR7.TheftCoverage":{
-    "KnownFields":["Theft Coverage"],
+  "CR7.TheftCoverage": {
+    "KnownFields": [ "Theft Coverage" ],
     "nameUI": [ "Theft Excluded Coverage Factor" ]
   },
-  "CR8.NamedPerilsCoverage":{
-    "KnownFields":["Named Perils Coverage"],
+  "CR8.NamedPerilsCoverage": {
+    "KnownFields": [ "Named Perils Coverage" ],
     "nameUI": [ "Named Perils Coverage Factor" ]
   },
-  "CR9.EarnedFreightCoverage":{
-    "KnownFields":["Earned Freight Coverage"],
+  "CR9.EarnedFreightCoverage": {
+    "KnownFields": [ "Earned Freight Coverage" ],
     "nameUI": [ "Earned Freight Coverage Factor" ]
-  }, 
-  "IT1.BaseRateFactor":{
-    "KnownFields": ["State"],
+  },
+  "IT1.BaseRateFactor": {
+    "KnownFields": [ "State" ],
     "nameUI": [ "Base Rate Factor" ]
   },
   "IT2.IncreasedLimitFactor": {
     "KnownFields": [ "Auto Liability Limit" ],
     "nameUI": [ "Increased Limit Factor", "Limit Factor" ]
   },
-  "IT3.DeductibleFactor":{
+  "IT3.DeductibleFactor": {
     "KnownFields": [ "Deductible" ],
     "nameUI": [ "Deductible Factor" ]
   },
-  "IT4.CustomerCargoCoverage":{
+  "IT4.CustomerCargoCoverage": {
     "KnownFields": [ "Customer Cargo Coverage" ],
     "nameUI": [ "Customer Cargo Coverage" ]
   },
-  "IT5.DrivertoVehicleRatio":{
+  "IT5.DrivertoVehicleRatio": {
     "KnownFields": [ "Driver to Vehicle Ratio" ],
     "nameUI": [ "Driver to Vehicle Ratio" ],
     "CustomCalculation": true,
     "source": "DrivertoVehicleRatio"
   },
-  "IT6.HoursofOperationFactor":{
+  "IT6.HoursofOperationFactor": {
     "KnownFields": [ "Hours of Operation" ],
     "nameUI": [ "Hours of Operation" ]
   },
-  "RR1.BaseRateFactor":{
-    "KnownFields": ["Downtime" ],
+  "RR1.BaseRateFactor": {
+    "KnownFields": [ "Downtime" ],
     "nameUI": [ "Base Rate Factor" ],
-    "CustomCalculation":true,
-    "source":"BaseRateFactorRR1"
+    "CustomCalculation": true,
+    "source": "BaseRateFactorRR1"
   },
-  "RR2.StateFactor":{
+  "PPI1.BaseRateFactor": {
+    "KnownFields": [],
+    "nameUI": [ "Base Rate Factor" ],
+    "CustomCalculation": true,
+    "source": "BaseRateFactorPPI",
+    "tableName": "PPI1.BaseRateFactor"
+
+  },
+  "RR2.StateFactor": {
     "KnownFields": [ "State" ],
     "nameUI": [ "State Factor" ]
-  }
+  },
+  "PPI2.IncreasedLimitFactor": {
+    "KnownFields": [ "Per Occurrence Benefit" ],
+    "nameUI": [ "State Factor" ],
+    "tableName": "PPI2.IncreasedLimitFactor"
 
+  },
+  "Rate per vehicle": {
+    "KnownFields": [ "FirstRow" ],
+    "nameUI": [ "Base Rate Factor" ],
+    "factorColumnIdentifier": "Rate",
+    "tableName": "FPB.BaseRateFactors"
+  },
+  "PoweredVehicleCount": {
+    "CustomCalculation": true,
+    "source": "PoweredVehicleCount",
+    "nameUI": []
+  },
+  "FPB.IncreasedLimitFactors": {
+    "KnownFields": [
+      "AccDeathBenefit",
+      "CombinationAmount",
+      "FuneralExpenseBenefit",
+      "MedBenefitLimit",
+      "WorkLossBenefitMonthly",
+      "WorkLossBenefitTotal",
+      "Combination"
+    ],
+    "factorColumnIdentifier": "Rate",
+    "nameUI": [ "Increased Limit Factors" ],
+    "CustomCalculation": true,
+    "source": "IncreasedLimitFactors_FPB"
+
+  },
+  "ExtraordinaryMedical": {
+    "KnownFields": [
+      "Capacity",
+      "CoverageAmount",
+      "VehicleType"
+    ],
+    "factorColumnIdentifier": "Rate",
+    "nameUI": [ "Extraordinary Rate per vehicle" ],
+    "CustomCalculation": true,
+    "source": "ExtraordinaryMedical"
+  },
+  "WorkLossBenefit": {
+    "KnownFields": [
+      "WorkLossBenefitMonthly",
+      "WorkLossBenefitTotal"
+    ],
+    "factorColumnIdentifier": "Rate",
+    "nameUI": [ "Work Loss Rate" ],
+    "condition": "Limit.SelectedLimitName != \"Combined: Medical and Work Loss\""
+
+  },
+  "FuneralExpenseBenefit": {
+    "KnownFields": [
+      "FuneralExpenseBenefit"
+    ],
+    "factorColumnIdentifier": "Rate",
+    "nameUI": [ "Funeral Expense Rate" ],
+    "condition": "Limit.SelectedLimitName != \"Combined: Medical and Work Loss\""
+
+  },
+  "AccidentalDeathBenefit": {
+    "KnownFields": [
+      "AccDeathBenefit"
+    ],
+    "factorColumnIdentifier": "Rate",
+    "nameUI": [ "Accidental Death" ],
+    "condition": "Limit.SelectedLimitName != \"Combined: Medical and Work Loss\""
+
+  }
 
 
 

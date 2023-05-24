@@ -3,7 +3,7 @@ Feature: MD
 
 A short summary of the feature
 
-@ratingTests @MD
+@ratingTests @CA
 Scenario: MD - Test Rating Algorithm
 
 	Given quote for LineId=7 state 'MD' and '<Algorithm or Coverage>' is set to Quoted

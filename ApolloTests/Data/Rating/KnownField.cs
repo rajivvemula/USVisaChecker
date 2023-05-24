@@ -1,4 +1,5 @@
 ﻿using ApolloTests.Data.Entities;
+using ApolloTests.Data.Entities.Coverage;
 using ApolloTests.Data.Entities.Risk;
 using HitachiQA.Driver;
 using HitachiQA.Helpers;
@@ -58,6 +59,7 @@ namespace ApolloTests.Data.Rating
 
         public Resolvable GetResolvable(Engine engine)
         {
+            engine.LoadOC(engine.ObjectContainer);
             return new Resolvable(engine, this);
         }
 
@@ -88,8 +90,9 @@ namespace ApolloTests.Data.Rating
             public string Source => KnownField.Source;
             public Type? Type { get; set; }
             public dynamic? Value { get; set; }
-            public String? parsedValue { get; set; }
+            public List<string>? parsedValue { get; set; } = new();
             public String TypeName => KnownField?.TypeName ?? Type?.Name ?? "Null";
+            public Exception? Error { get; set; }
 
             public Resolvable(Engine engine, KnownField knownField)
             {
@@ -99,81 +102,130 @@ namespace ApolloTests.Data.Rating
 
             public dynamic? Resolve()
             {
-
-                var method = this.GetType().GetProperty(KnownField.Source, BindingFlags.NonPublic | BindingFlags.Instance);
-
-                dynamic resolvedValue;
-                if (method != null)
+                try
                 {
-                    resolvedValue = method.GetGetMethod(true)?.Invoke(this, null)??throw new NullReferenceException();
+                    var method = this.GetType().GetProperty(KnownField.Source, BindingFlags.NonPublic | BindingFlags.Instance);
 
-                }
-                else
-                {
-                    try
+                    dynamic resolvedValue;
+                    if (method != null)
                     {
-                        resolvedValue = Engine.interpreter.Eval(KnownField.Source);
-                        //Log.Debug($"{this.KnownField.Name } resolved to {resolvedValue}");
+                        resolvedValue = method.GetGetMethod(true)?.Invoke(this, null) ?? throw new NullReferenceException();
+
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        throw new Exception($"failed interpreting Field: {KnownField}\n", ex);
+                        try
+                        {
+                            resolvedValue = Engine.interpreter.Eval(KnownField.Source);
+                            //Log.Debug($"{this.KnownField.Name } resolved to {resolvedValue}");
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception($"failed interpreting Field: {KnownField}\n", ex);
+                        }
                     }
+
+
+
+                    if (resolvedValue is String)
+                    {
+                        Type = typeof(String);
+                        Value = (String)resolvedValue;
+
+                    }
+                    //instead of float, we want to use decimals
+                    /*                else if (resolvedValue is float)
+                                    {
+                                        result.Add("type", "float");
+                                        result.Add("resolvedValue", (float)resolvedValue);
+
+                                    }*/
+                    else if (resolvedValue is decimal)
+                    {
+                        Type = typeof(decimal);
+                        Value = (decimal)resolvedValue;
+
+                    }
+                    else if (resolvedValue is int || resolvedValue is Int64)
+                    {
+                        Type = typeof(int);
+                        Value = (int)resolvedValue;
+
+
+                    }
+                    else if (resolvedValue is long)
+                    {
+                        Type = typeof(long);
+                        Value = (long)resolvedValue;
+
+
+                    }
+                    else if (resolvedValue is bool)
+                    {
+                        Type = typeof(bool);
+                        Value = (bool)resolvedValue;
+
+                    }
+                    else if (resolvedValue is null)
+                    {
+                        Value = resolvedValue;
+
+                    }
+                    else
+                    {
+                        throw new Exception($"returned resolvedValue: {resolvedValue} for source:{KnownField} is type {resolvedValue.GetType().Name} which is not being casted");
+                    }
+
+                    if (TypeName == "Boolean")
+                    {
+                        if (Value is string)
+                        {
+                            if (Value == "Yes" | Value == "T")
+                            {
+                                parsedValue.Add("True");
+                                parsedValue.Add("T");
+                                parsedValue.Add("Yes");
+                                parsedValue.Add("Y");
+
+                            }
+                            else if (Value == "No" | Value == "F")
+                            {
+                                parsedValue.Add("False");
+                                parsedValue.Add("F");
+                                parsedValue.Add("No");
+                                parsedValue.Add("N");
+
+
+
+                            }
+                            else if (Boolean.TryParse(Value, out bool val))
+                            {
+                                parsedValue.Add(val ? "Yes" : "No");
+                                parsedValue.Add(val ? "T" : "F");
+                                parsedValue.Add(val ? "True" : "False");
+                                parsedValue.Add(val ? "Y" : "N");
+
+                            }
+
+                        }
+                        else
+                        {
+                            parsedValue.Add(((bool)Value) ? "Yes" : "No");
+                            parsedValue.Add(((bool)Value) ? "T" : "F");
+                            parsedValue.Add(((bool)Value) ? "True" : "False");
+                            parsedValue.Add(((bool)Value) ? "Y" : "N");
+
+
+                        }
+                    }
+
+                    return Value;
                 }
-
-
-
-                if (resolvedValue is String)
+                catch(Exception ex)
                 {
-                    Type = typeof(String);
-                    Value = (String)resolvedValue;
-
+                    this.Error = ex;
+                    throw;
                 }
-                //instead of float, we want to use decimals
-                /*                else if (resolvedValue is float)
-                                {
-                                    result.Add("type", "float");
-                                    result.Add("resolvedValue", (float)resolvedValue);
-
-                                }*/
-                else if (resolvedValue is decimal)
-                {
-                    Type = typeof(decimal);
-                    Value = (decimal)resolvedValue;
-
-                }
-                else if (resolvedValue is int || resolvedValue is Int64)
-                {
-                    Type = typeof(int);
-                    Value = (int)resolvedValue;
-
-
-                }
-                else if (resolvedValue is long)
-                {
-                    Type = typeof(long);
-                    Value = (long)resolvedValue;
-
-
-                }
-                else if (resolvedValue is bool)
-                {
-                    Type = typeof(bool);
-                    Value = (bool)resolvedValue;
-
-                }
-                else if (resolvedValue is null)
-                {
-                    Value = resolvedValue;
-
-                }
-                else
-                {
-                    throw new Exception($"returned resolvedValue: {resolvedValue} for source:{KnownField} is type {resolvedValue.GetType().Name} which is not being casted");
-                }
-
-                return Value;
-
             }
 
             private VehicleRisk GetCurrentVehicleRisk()
@@ -361,12 +413,12 @@ namespace ApolloTests.Data.Rating
             {
                 get
                 {
-                    this.parsedValue = this.Engine.root.GoverningStateName;
+                    this.parsedValue.Add(this.Engine.root.GoverningStateName);
                     return this.Engine.root.GoverningStateCode;
                 }
             }
 
-           private string MotorCarrierFilingType
+            private string MotorCarrierFilingType
             {
                 get
                 {
@@ -394,7 +446,86 @@ namespace ApolloTests.Data.Rating
                 }
             }
 
+            private int[] GetWorkLossBenefitLimit()
+            {
+                var limit = this.Engine.interpreter.Eval<Limit>("Limit");
+                if (IsFPBCombined())
+                {
+                    return new int[] { 0, 0 };
+                }
+                else
+                {
+                    var displayName = limit.GetLimitValueDisplayName(1);
 
+                    return displayName.Split('/').Select(it => int.Parse(it)).ToArray();
+                }
+            }
+            private bool IsFPBCombined()
+            {
+                var limit = this.Engine.interpreter.Eval<Limit>("Limit");
+                return limit.SelectedLimitName.Contains("Combined");
+            }
+            private int CombinationAmount
+            {
+                get
+                {
+                    var limit = this.Engine.interpreter.Eval<Limit>("Limit");
+                    if (IsFPBCombined())
+                    {
+                        return limit.SelectedLimits[0];
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+
+                }
+            }
+
+            private int WorkLossBenefitMonthly => GetWorkLossBenefitLimit()[0];
+
+            private int WorkLossBenefitTotal => GetWorkLossBenefitLimit()[1];
+
+            private string VehicleType
+            {
+                get
+                {
+                    string finalTypeConsidered;
+                    var vehicle = this.GetCurrentVehicleRisk().Vehicle;
+
+                    int category = vehicle.BodyCategoryTypeId;
+                    int subCategory = vehicle.BodySubCategoryTypeId;
+                    decimal GVW = decimal.Parse(vehicle.GrossVehicleWeight);
+
+                    if (
+                        (category == (int)VehicleTypeEnum.Car && subCategory != (int)BodySubCategoryTypeEnum.CSSTLI)
+                        || (((int)BodySubCategoryTypeEnum.CPSPick == subCategory || (int)BodySubCategoryTypeEnum.TRKPick == subCategory) && GVW <= 10000)
+                       )
+                    {
+                        finalTypeConsidered = "PPT";
+                    }
+                    else
+                    {
+                        finalTypeConsidered = "TTT";
+                    }
+                    return finalTypeConsidered;
+                }
+            }
+            private string CoverageUM_UIM
+            {
+                get
+                {
+                    var limit = this.Engine.interpreter.Eval<Limit>("Limit");
+                    if(limit.CoverageType.TypeName.Contains("uninsured", StringComparison.InvariantCultureIgnoreCase)) {
+                        return "UM";
+                    }
+                    if (limit.CoverageType.TypeName.Contains("underinsured", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return "UIM";
+                    }
+                    else throw new NotImplementedException(limit.CoverageType.TypeName);
+                }
+            }
         }
     }   
     

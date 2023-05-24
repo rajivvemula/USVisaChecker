@@ -19,7 +19,7 @@ namespace ApolloTests.StepDefinitions
         private SharedData Shared;
         private IObjectContainer ObjectContainer;
         private SQL SQL;
-
+        private KeywordMappingUtil KeywordMappingUtil;
         public KeywordsStepDefinitions(IObjectContainer container)
         {
             ObjectContainer = container;
@@ -28,6 +28,7 @@ namespace ApolloTests.StepDefinitions
             RestAPI = container.Resolve<RestAPI>();
             Shared = container.Resolve<SharedData>();
             SQL = container.Resolve<SQL>();
+            KeywordMappingUtil = container.Resolve<KeywordMappingUtil>();
         }
         [When(@"user loads all Keywords from the DB")]
         public void WhenUserLoadsAllKeywordsFromTheDB()

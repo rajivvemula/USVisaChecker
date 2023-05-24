@@ -15,31 +15,23 @@ namespace HitachiQA.Hooks
 
         }
 
-        [BeforeScenario]
-        public void initialize()
+        [BeforeFeature]
+        public static void initialize(IObjectContainer oc)
         {
+            var config = oc.Resolve<IConfiguration>();
             Console.WriteLine("Attempting to load Service Bus Client");
-            var SrvcBusUri = Configuration.GetVariable("SERVICE_BUS_NAMESPACE_URI", true);
+            var SrvcBusUri = config.GetVariable("SERVICE_BUS_NAMESPACE_URI", true);
             if(Main.IsValid(SrvcBusUri))
             {
                 SrvcBusUri.NullGuard();
                 var client = new ServiceBus(SrvcBusUri);
-                ObjectContainer.RegisterInstanceAs<ServiceBus>(client);
+                oc.RegisterInstanceAs<ServiceBus>(client);
                 Console.WriteLine("Loaded Service Bus Client");
 
             }else{ Console.WriteLine("No Service Bus Client Loaded"); }
 
         }
 
-        [AfterScenario]
-        public void tearDown()
-        {
-            if(ObjectContainer.IsRegistered<Cosmos>())
-            {
-                ObjectContainer.Resolve<Cosmos>().Dispose();
-            }
-            
-        }
 
     }
 }

@@ -51,8 +51,17 @@
   "Vehicle Type Description": {
     "source": "Vehicle.TypeName.Replace(\"Semi-Trailer\", \"SemiTrailer\")"
   },
-  "BodySubCategoryTypeId":{
-    "source":"Vehicle.BodySubCategoryTypeId"
+  "VehicleType": {
+    "source": "VehicleType"
+  },
+  "VehicleTypeId": {
+    "source": "Vehicle.TypeId"
+  },
+  "BodySubCategoryTypeId": {
+    "source": "Vehicle.BodySubCategoryTypeId"
+  },
+  "BodyCategoryTypeId": {
+    "source": "Vehicle.BodyCategoryTypeId"
   },
   "GVW/GCW": {
     "source": "Vehicle.GrossVehicleWeight==null? 0 : decimal.Parse(Vehicle.GrossVehicleWeight)"
@@ -65,7 +74,10 @@
     "type": "Currency"
   },
   "Seating Capacity": {
-    "source": "int.Parse(Vehicle.SeatingCapacity)"
+    "source": "string.IsNullOrWhiteSpace(Vehicle.SeatingCapacity) ? 0 : int.Parse(Vehicle.SeatingCapacity)"
+  },
+  "Capacity": {
+    "source": "string.IsNullOrWhiteSpace(Vehicle.SeatingCapacity) ? 0 : int.Parse(Vehicle.SeatingCapacity)"
   },
   //CAB response
   "Inspection Count": {
@@ -175,35 +187,78 @@
   "State": {
     "source": "State"
   },
-  "Auto Liability Limit":{
+  "Auto Liability Limit": {
     "source": "Limit.SelectedLimits[0]"
   },
-  "Cargo that is Hauled":{
+  "Cargo that is Hauled": {
     "source": "root.GetQuestionResponse(\"Haul\")"
   },
-  "Theft Coverage":{
+  "Theft Coverage": {
     "source": "Limit.GetQuestionResponse(\"IncludeCargoTheftCoverage\")"
   },
-  "Named Perils Coverage":{
+  "Named Perils Coverage": {
     "source": "Limit.GetQuestionResponse(\"IncludeCargoNamedPerilsCoverage\")"
   },
-  "Earned Freight Coverage":{
+  "Earned Freight Coverage": {
     "source": "((string)Limit.GetQuestionResponse(\"IncludeEarnedFreightCoverage\")).ToLower() == \"true\" ? \"Included\" : \"Excluded\""
   },
-  "Customer Cargo Coverage":{
+  "Customer Cargo Coverage": {
     "source": "Limit.GetQuestionResponse(\"CustomerCargoCoverage\")"
   },
-  "Driver Count":{
+  "Driver Count": {
     "source": "root.GetDrivers().Count"
   },
-  "Driver to Vehicle Ratio":{
+  "Driver to Vehicle Ratio": {
     "source": "DrivertoVehicleRatio"
   },
-  "Hours of Operation":{
+  "Hours of Operation": {
     "source": "Boolean.Parse((string)root.GetQuestionResponse(\"OnCall\")) ? 24 : 23"
   },
-  "Downtime":{
+  "Downtime": {
     "source": "Limit.GetQuestionResponse(\"RentalDowntimeIncluded\")"
+  },
+  "Medical Expense Benefit": {
+    "source": "Limit.SelectedLimits[0]"
+  },
+  "EAC Limit": {
+    "source": "Limit.SelectedLimits[1]"
+  },
+  "Per Occurrence Benefit": {
+    "source": "Limit.SelectedLimits[0]"
+  },
+  "FirstRow": {
+    "source": "0"
+  },
+  "AccDeathBenefit": {
+    "source": "Limit.SelectedLimits[3]"
+  },
+  "CombinationAmount": {
+    "source": "CombinationAmount"
+  },
+  "FuneralExpenseBenefit": {
+    "source": "Limit.SelectedLimits[2]"
+  },
+  "MedBenefitLimit": {
+    "source": "Limit.SelectedLimitName == \"Combined: Medical and Work Loss\"? 0: Limit.SelectedLimits[0]"
+  },
+  "WorkLossBenefitMonthly": {
+    "source": "WorkLossBenefitMonthly"
+  },
+  "WorkLossBenefitTotal": {
+    "source": "WorkLossBenefitTotal"
+  },
+  "Combination": {
+    "source": "Limit.SelectedLimitName == \"Combined: Medical and Work Loss\" ? \"Y\" : \"N\" "
+  },
+  "CoverageAmount": {
+    "source": "Limit.SelectedLimits[1]"
+  },
+  "Coverage": {
+    "source": "CoverageUM_UIM"
+  },
+  "Stacked": {
+    "source": "Limit.GetQuestionResponse(\"UIMBIStacked\")??Limit.GetQuestionResponse(\"UMBIPDStacked\")",
+    "type": "Boolean"
   }
 }
   

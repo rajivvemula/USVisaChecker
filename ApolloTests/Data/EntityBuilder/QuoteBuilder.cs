@@ -48,13 +48,10 @@ namespace ApolloTests.Data.EntityBuilder
         public Data.Entities.Quote? Quote { get; set; }
         public Line Line { get; set; }
         public string State { get; set; } = "IL";
-        public KeywordMappingUtil ClassCodeKeyword { get; set; }
-        public DateTimeOffset EffectiveDate { get; set; } = DateTimeOffset.Now.AddDays(1);
-        public DateTimeOffset ExpirationDate { get; set; } = DateTimeOffset.Now.AddDays(1).AddYears(1);
+        public KeywordMapping ClassCodeKeyword { get; set; }
 
         public HydratorUtil Hydrator = new HydratorUtil();
 
-        public IObjectContainer ObjectContainer { get; }
         public CosmosContext CosmosContext { get; }
         public SQLContext SQLContext { get; }
 
@@ -63,9 +60,10 @@ namespace ApolloTests.Data.EntityBuilder
         /// </summary>
         public QuoteBuilder(IObjectContainer OC, LineEnum line, string state, List<string>? coverageTypes=null)
         {
-            ObjectContainer = OC;
+            LoadOC(OC);
             CosmosContext = OC.Resolve<CosmosContext>();
             SQLContext = OC.Resolve<SQLContext>();
+            var keywordMappingUtil = OC.Resolve<KeywordMappingUtil>();
             coverageTypes ??= new();
             State = state;
             Line = this.SQLContext.Line.Find((int)line);
@@ -112,11 +110,11 @@ namespace ApolloTests.Data.EntityBuilder
                                 break;
 
                             case CoverageType.IN_TOW:
-                                ClassCodeKeyword ??= KeywordMappingUtil.GetUsingKeywordName(line, "Towing Services");
+                                ClassCodeKeyword ??= keywordMappingUtil.GetUsingKeywordName(line, "Towing Services");
                                 break;
 
                             case CoverageType.CARGO:
-                                ClassCodeKeyword ??= KeywordMappingUtil.GetUsingKeywordName(line, "Fulfillment Center");
+                                ClassCodeKeyword ??= keywordMappingUtil.GetUsingKeywordName(line, "Fulfillment Center");
                                 break;
 
                             case CoverageType.RENTAL_REIMBURSEMENT:
@@ -127,7 +125,7 @@ namespace ApolloTests.Data.EntityBuilder
                 }
             }
             //by default accounting services keyword is loaded
-            ClassCodeKeyword ??= KeywordMappingUtil.GetUsingKeywordName(line, "Accounting Services");
+            ClassCodeKeyword ??= keywordMappingUtil.GetUsingKeywordName(line, "Accounting Services");
             HydrateNewQuoteObject();
 
             //
@@ -136,13 +134,13 @@ namespace ApolloTests.Data.EntityBuilder
 
         }
         #region Secondary Constructors
-        public QuoteBuilder(IObjectContainer OC, LineEnum line, string state, KeywordMappingUtil classCodeKeyword) : this(OC, line, state, new List<string> { classCodeKeyword.CoverageType ?? CoverageType.BIPD })
+        public QuoteBuilder(IObjectContainer OC, LineEnum line, string state, KeywordMapping classCodeKeyword) : this(OC, line, state, new List<string> { classCodeKeyword.CoverageType ?? CoverageType.BIPD })
         {
             ClassCodeKeyword = classCodeKeyword;
             HydrateNewQuoteObject();
 
         }
-        public QuoteBuilder(IObjectContainer OC, LineEnum line, string state, string algorithmCode) : this(OC, line, state, KeywordMappingUtil.GetUsingAlgorithmCode(line, algorithmCode, state)) { }
+        public QuoteBuilder(IObjectContainer OC, LineEnum line, string state, string algorithmCode) : this(OC, line, state, OC.Resolve<KeywordMappingUtil>().GetUsingAlgorithmCode(line, algorithmCode, state)) { }
 
         #endregion
 
@@ -250,8 +248,6 @@ namespace ApolloTests.Data.EntityBuilder
             this.Hydrator.Interpreter.SetVariable("OrganizationName", $"Automation API org Run:{Main.RunId}-{DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
             this.Hydrator.Interpreter.SetVariable("LineId", this.Line.Id);
             this.Hydrator.Interpreter.SetVariable("SubLineId", this.Line.Id);
-            this.Hydrator.Interpreter.SetVariable("EffectiveDate", this.EffectiveDate);
-            this.Hydrator.Interpreter.SetVariable("ExpirationDate", this.ExpirationDate);
             String addressObjStr = new StreamReader($"Data/EntityBuilder/Entities/CreateAddress/{this.State.ToUpper()}.json").ReadToEnd();
             var addressObj = JObject.Parse(addressObjStr);
             this.Hydrator.Interpreter.SetVariable("AddressObject", addressObj);

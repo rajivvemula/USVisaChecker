@@ -3,13 +3,9 @@ Feature: IL
 
 A short summary of the feature
 
-Scenario: 01_Specific Quote Test Rating
-	Given quote with Id 103420 is loaded
-	When expected values are gathered
-	Then expected values should match the system output
 
 
-@ratingTests @IL
+@ratingTests @CA
 Scenario: IL - Test Rating Algorithm
 
 	Given quote for LineId=7 state 'IL' and '<Algorithm or Coverage>' is set to Quoted

@@ -22,8 +22,9 @@ namespace ApolloTests.Data.Entities.Context
         public DbSet<StoryboardSection> StoryboardSection { get; set; }
         public DbSet<Section> Section { get; set; }
         public DbSet<BusinessType> BusinessType { get; set; }
+        public DbSet<Coverage.LimitDeductible> LimitDeductible { get; set; }
 
-        public SQLContext(IConfiguration config) : base(config) { }
+        public SQLContext(IConfiguration config, IObjectContainer OC) : base(config, OC) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

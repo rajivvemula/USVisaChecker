@@ -3,7 +3,7 @@ Feature: MI
 
 A short summary of the feature
 
-@ratingTests @MI
+@ratingTests @CA
 Scenario: MI - Test Rating Algorithm
 
 	Given quote for LineId=7 state 'MI' and '<Algorithm or Coverage>' is set to Quoted

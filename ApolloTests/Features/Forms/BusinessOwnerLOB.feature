@@ -15,7 +15,7 @@ Scenario: Check System for untested forms
 # 5.) it will retireve documents in the mentioned policy and look for the previously generated document
 # 6.) it will request the actual document, parse the PDF and make sure it's not blank or Empty
 
-@formsTests
+@formsTests @BOP/GL
 Scenario: Form can be generated LineId_3
 	Given condition for form with code '<code>' and '<name>' and lineId=3 is met
 	When user attempts to generate form

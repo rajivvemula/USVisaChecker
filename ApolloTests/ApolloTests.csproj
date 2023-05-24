@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Rating\CA\IL - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Rating\CA\IN - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Rating\CA\MD - Copy.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Castle.Core" Version="5.1.1" />
     <PackageReference Include="Castle.Windsor" Version="5.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
@@ -61,10 +67,16 @@
     <None Update="Data\RatingManual\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Update="ReportTemplates\report.html">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
     <None Update="Data\EntityBuilder\Entities\CreateAddress\**">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   <None Update="specflow.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+  <None Update="StepDefinitions\AzureDevopsScripts\TestPlanSuiteStructure.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
   </ItemGroup>
@@ -73,17 +85,6 @@
 	 <Folder Include="Data\EntityBuilder\Entities\CreateAddress" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\HitachiQA\HitachiQA.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Features\Quote.UI.feature.cs">
-      <DependentUpon>Quote.UI.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Rating\CA\Keywords.feature.cs">
-      <DependentUpon>Keywords.feature</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

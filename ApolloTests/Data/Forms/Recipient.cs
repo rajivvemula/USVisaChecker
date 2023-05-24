@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ApolloTests.Data.Form
+namespace ApolloTests.Data.Forms
 {
     public class Recipient:BaseEntity
     {

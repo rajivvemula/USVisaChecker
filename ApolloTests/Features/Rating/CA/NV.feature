@@ -3,7 +3,7 @@ Feature: NV
 
 A short summary of the feature
 
-@ratingTests @NV
+@ratingTests @CA
 Scenario: NV - Test Rating Algorithm
 
 	Given quote for LineId=7 state 'NV' and '<Algorithm or Coverage>' is set to Quoted
@@ -16,31 +16,31 @@ Scenario: NV - Test Rating Algorithm
 	| In-Tow                |
 	| Rental Reimbursement  |
 	| Cargo Coverage        |
-	| VA00058               |
-	| VA00059               |
-	| VA00060               |
-	| VA00061               |
-	| VA00062               |
-	| VA00063               |
-	| VA00064               |
-	| VA00065               |
-	| VA00066               |
-	| VA00067               |
-	| VA00068               |
-	| VA00069               |
+	| VA00029               |
+	| VA00030               |
+	| VA00031               |
+	| VA00032               |
+	| VA00033               |
+	| VA00034               |
+	| VA00035               |
+	| VA00036               |
+	| VA00037               |
+	| VA00038               |
+	| VA00039               |
+	| VA00040               |
 	| VA00041               |
 	| VA00042               |
 	| VA00043               |
 	| VA00044               |
-	| VA00070               |
-	| VA00071               |
-	| VA00072               |
+	| VA00045               |
+	| VA00046               |
+	| VA00047               |
 	| VA00048               |
 	| VA00049               |
 	| VA00050               |
 	| VA00051               |
 	| VA00052               |
 	| VA00053               |
-	| VA00073               |
+	| VA00054               |
 	| VA00055               |
-	| VA00074               |
+	| VA00056               |

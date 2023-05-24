@@ -67,15 +67,29 @@ namespace ApolloTests.Data.Entities.Coverage
         {
             return CoverageType;
         }
-
+        public string GetLimitValueDisplayName(int indexOfValue)
+        {
+            var currentSelectionValue = string.Join(",",SelectedLimits);
+            return CoverageType.LimitDeductibles.FirstOrDefault(limitDeduc =>
+            {
+                return limitDeduc.Value == currentSelectionValue;
+            })?.DisplayName.Split(',')[indexOfValue];
+        }
         public object GetQuestionResponse(string questionAlias)
         {
 
-            var questionResponse = QuestionResponses?.FirstOrDefault(it => it.QuestionAlias == questionAlias);
-
-            if (questionResponse == null)
+            var questionResponses = QuestionResponses?.Where(it => it.QuestionAlias == questionAlias);
+            
+            if (questionResponses==null || questionResponses.Count() == 0)
             {
-                Log.Debug($"{questionAlias}returned null");
+                Log.Debug($"{questionAlias} not found");
+                return null;
+            }
+
+            var questionResponse = questionResponses.FirstOrDefault(it => it.Response != null);
+            if (questionResponse==null)
+            {
+                Log.Debug($"{questionAlias} has null answer");
                 return null;
             }
             else

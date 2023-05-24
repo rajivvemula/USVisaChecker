@@ -1,6 +1,6 @@
 {
   "All": {
-    "Cargo Coverage":  "CR1",
+    "Cargo Coverage": "CR1",
     "In-Tow": "IT1",
     "Rental Reimbursement": "RR1",
     "Hired Car BIPD - Truckers": "OR00001",
@@ -16,12 +16,15 @@
     "Drive Other Car Collision": "OR00012",
     "Drive Other Car Other Than Collision": "OR00013",
     "Drive Other Car Medical Payments": "OR00014",
-    "Pollution": "OR00019"
+    "Pollution": "OR00019",
+    "Property Protection": "PPI",
+    "First Party Benefits": "FPB"
+
   },
   "IL": {
     "Uninsured Motorists BI": "UM00003",
     "Underinsured Motorists BI": "UM00004",
-    "Uninsured Motorists PD": "UM00006",
+    "Uninsured Motorists PD": "UM00006"
 
   },
   "CA": {
@@ -64,6 +67,33 @@
     "Uninsured Motorists BI": "UM00026",
     "Uninsured Motorists PD": "UM00026"
 
+  },
+  "MI": {
+    "Uninsured / Underinsured Motorists BI": "UM00026",
+    "Personal Injury Protection": "PIP1"
+  },
+  "NJ": {
+    "Uninsured / Underinsured Motorists BIPD": "UM00026",
+    "Personal Injury Protection": "PIP1"
+
+  },
+  "OH": {
+    "Uninsured Motorists BIPD": "UM00026",
+    "Underinsured Motorists BI ": "UM00026"
+  },
+  "SC": {
+    "Uninsured Motorists": "UM00026",
+    "Underinsured Motorists": "UM00026"
+  },
+  "PA": {
+    "Uninsured Motorists BIPD": "UM00026",
+    "Underinsured Motorists BI": "UM00026",
+    "Uninsured Motorists BI":  "UM00026"
   }
+
+
+
 }
+
+
 

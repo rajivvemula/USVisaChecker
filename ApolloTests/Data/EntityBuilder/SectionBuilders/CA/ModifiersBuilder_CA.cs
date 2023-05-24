@@ -20,6 +20,10 @@ namespace ApolloTests.Data.EntityBuilder.SectionBuilders.CA
 
         public JToken RunSendStrategy(Data.Entities.Quote quote)
         {
+            if(!Any())
+            {
+                return null;
+            }
             Hydrator.CurrentSection = Section;
             Hydrator.CurrentEntity = null;
             Hydrator.CurrentAnswers = null;

@@ -15,15 +15,16 @@ namespace HitachiQA.Hooks
 
         }
 
-        [BeforeScenario]
-        public void initialize()
+        [BeforeFeature]
+        public static void initialize(IObjectContainer oc)
         {
+            var config = oc.Resolve<IConfiguration>();
             Console.WriteLine("Attempting to load SQL Client");
-            var connectionString = Configuration.GetVariable("SQL_CONNECTION_STRING", true);
+            var connectionString = config.GetVariable("SQL_CONNECTION_STRING", true);
             if(connectionString != null)
             {
                 var client = new SQL(connectionString);
-                ObjectContainer.RegisterInstanceAs<SQL>(client);
+                oc.RegisterInstanceAs<SQL>(client);
                 Console.WriteLine("Loaded SQL Client");
             }
             else
@@ -31,16 +32,6 @@ namespace HitachiQA.Hooks
                 Console.WriteLine("No SQL Client Loaded");
             }
 
-        }
-
-        [AfterScenario]
-        public void tearDown()
-        {
-            if(ObjectContainer.IsRegistered<SQL>())
-            {
-                //ObjectContainer.Resolve<SQL>().Dispose();
-            }
-            
         }
 
     }

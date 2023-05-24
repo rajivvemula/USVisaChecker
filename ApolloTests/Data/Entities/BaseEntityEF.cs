@@ -34,6 +34,7 @@ namespace ApolloTests.Data.Entities
         public BaseEntityEF(CosmosContext context) : base(context) { }
         public BaseEntityEF(SQLContext context) : base(context) { }
         public BaseEntityEF(QuoteBuilder builder) : base(builder) { }
+        
         public BaseEntityEF() { }
 
         public void Reload() => Context.Entry(this).Reload();

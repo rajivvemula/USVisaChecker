@@ -34,7 +34,9 @@ namespace ApolloTests.Data.Entities
             QuestionResponses = new List<QuestionResponse>();
             BusinessInformation = new BusinessInformation();
             DecidedValueFactor = new DecidedValueFactor();
-        }
+            RatableObjectEffectiveDate = DateTimeOffset.Now.AddDays(1);
+            RatableObjectExpirationDate = DateTimeOffset.Now.AddDays(1).AddYears(1);
+    }
         [JsonIgnore]
         public string? id { get; set; }
 
@@ -127,11 +129,9 @@ namespace ApolloTests.Data.Entities
         public object IsIssued { get; set; }
 
         [JsonProperty("ratableObjectEffectiveDate")]
-        [HydratorAttr("EffectiveDate")]
         public DateTimeOffset RatableObjectEffectiveDate { get; set; }
 
         [JsonProperty("ratableObjectExpirationDate")]
-        [HydratorAttr("ExpirationDate")]
         public DateTimeOffset RatableObjectExpirationDate { get; set; }
 
         [JsonProperty("clientOffset")]
@@ -229,14 +229,14 @@ namespace ApolloTests.Data.Entities
             return context.Tether.OrderByDescending(it => it.Id).Last(it => it.TetherStatusCode == "ISSUED").CurrentQuote;
         }
 
-        public static int GetNCFRequest(long tetherID)
+        public int GetNCFRequest(long tetherID)
         {
-            return GetCosmosService().GetQuery("NcfRequest", $"SELECT * FROM c WHERE c.TetherId = {tetherID} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result.ElementAt(0)["Id"];
+            return Cosmos.GetQuery("NcfRequest", $"SELECT * FROM c WHERE c.TetherId = {tetherID} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result.ElementAt(0)["Id"];
         }
 
-        public static string GetNCFRResponse(long requestID)
+        public string GetNCFRResponse(long requestID)
         {
-            return GetCosmosService().GetQuery("NcfResponse", $"SELECT * FROM c WHERE c.RequestId = {requestID} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result.ElementAt(0)["RawScore"];
+            return Cosmos.GetQuery("NcfResponse", $"SELECT * FROM c WHERE c.RequestId = {requestID} ORDER BY c._ts DESC OFFSET 0 LIMIT 1").Result.ElementAt(0)["RawScore"];
         }
 
         public Policy PurchaseThis()
@@ -335,7 +335,10 @@ namespace ApolloTests.Data.Entities
                 }
             }
         }
-
+        public Limit? GetLimit(int coverageTypeId)
+        {
+           return getLimits().FirstOrDefault(it => it.CoverageTypeId == coverageTypeId);
+        }
         public List<Limit> getLimits()
         {
             var selectedCoverages = SelectedCoverages;

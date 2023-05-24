@@ -24,6 +24,8 @@ namespace ApolloTests.Data.Entities.Coverage
 
         public int SortOrder { get; set; }
 
+        public virtual List<LimitDeductible> LimitDeductibles { get; set;}
+
 
         [NotMapped]
         [JsonIgnore]

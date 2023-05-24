@@ -189,7 +189,9 @@ $releaseJson = @"
         "Dev1",
         "Dev2",
         "Dev3",
-        "Dev4"
+        "Dev4",
+        "Dev5",
+        "Dev6"
     ],
     "environmentsMetadata": [],
     "variables": {},

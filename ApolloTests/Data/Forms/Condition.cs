@@ -8,12 +8,12 @@ using ApolloTests.Data.Entities.Coverage;
 using ApolloTests.Data.Entities.Tether;
 using ApolloTests.Data.Entities;
 using static Polly.RetrySyntax;
-namespace ApolloTests.Data.Form
+namespace ApolloTests.Data.Forms
 {
     public class Condition:BaseEntity
     {
         public String? stateCode;
-        public List<string> coverageTypes;
+        public List<string> coverageTypes= new List<string>();
         //Key=alias value=response
         public Dictionary<string, string>? questionResponses;
         public Boolean splitLimitBIPD;
@@ -36,28 +36,6 @@ namespace ApolloTests.Data.Form
             } }
 
         public Condition() { }
-        
-
-        /**
-         * used by Data.Forms.Form.cs to parse the conditions from Data.Forms.Form.json for each specific form
-         */
-        [JsonConstructor]
-        public Condition(String stateCode, List<string> coverageTypes, Dictionary<string, string> questionResponses, Boolean splitLimitBIPD, Boolean endorsement, Boolean issuedEndorsement, Boolean materializedBillToday,Boolean canceled, Boolean canceledFuture, Boolean reinstated, Boolean rescindedCancelation, Dictionary<string, string> vehicle)
-        {
-            this.stateCode = stateCode?.ToUpper();
-            this.coverageTypes = coverageTypes == null ? new List<string>(): coverageTypes;
-            this.questionResponses = questionResponses;
-            this.splitLimitBIPD = splitLimitBIPD;
-            this.endorsement = endorsement;
-            this.materializedBillToday = materializedBillToday;
-            this.canceled = canceled;
-            this.vehicle = vehicle;
-            this.reinstated = reinstated;
-            this.canceledFuture = canceledFuture;
-            this.issuedEndorsement = issuedEndorsement;
-            this.rescindedCancelation = rescindedCancelation;
-        }
-
 
 
 
@@ -571,7 +549,7 @@ namespace ApolloTests.Data.Form
         /// <summary>
         /// this static variable holds all the valid Tether Objects that have a materialized bill for today
         /// </summary>
-        private static readonly List<Dictionary<string, dynamic>> MaterializedBills = GetSQLService().executeQuery($@"SELECT BAAP.TetherId, AB.*  
+        private List<Dictionary<string, dynamic>> MaterializedBills => SQL.executeQuery($@"SELECT BAAP.TetherId, AB.*  
                                             FROM [billing].[BillingAccountArrangementPolicy] BAAP
                                             LEFT JOIN billing.ArrangementBill AB on AB.BillingAccountArrangementId = BAAP.BillingAccountArrangementId
                                             WHERE CONVERT(VARCHAR(10),AB.BillStatusUpdateDateTime ,110) = CONVERT(VARCHAR(10),GETDATE(),110)

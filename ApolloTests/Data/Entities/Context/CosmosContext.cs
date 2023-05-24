@@ -26,13 +26,13 @@ namespace ApolloTests.Data.Entities.Context
         public DbSet<DriverRisk> Drivers { get; set; }
         public DbSet<BuildingRisk> Buildings { get; set; } 
         public DbSet<Risk.LocationRisk> Locations { get; set; }
-        public CosmosContext(IConfiguration config) : base(config) { }
+        public CosmosContext(IConfiguration config, IObjectContainer OC) : base(config, OC) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Quote>().ToContainer("Application");
             modelBuilder.Entity<Quote>().HasDiscriminator(it => it.Discriminator).HasValue("ApplicationEntity");
-            modelBuilder.Entity<Quote>().OwnsMany<Limit>(limit => limit.SelectedCoverages, inner => inner.OwnsMany<Limit>(limit => limit.RiskCoverages));
+            modelBuilder.Entity<Quote>().OwnsMany<Limit>(limit => limit.SelectedCoverages, inner => inner.OwnsMany<Limit>(limit => limit.RiskCoverages) );
 
 
             modelBuilder.Entity<Policy>().ToContainer("RatableObject");

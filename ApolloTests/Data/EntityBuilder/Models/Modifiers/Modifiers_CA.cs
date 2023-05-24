@@ -17,7 +17,21 @@ namespace ApolloTests.Data.EntityBuilder.Models.Modifiers
         public const string ExperienceModifier = "EXPERIENCE";
 
 
-
+        public bool Any()
+        {
+            var modifiers = new[]
+            {
+                scheduleModifiers.SAFETYORGANIZATION,
+                scheduleModifiers.CLASSIFICATION,
+                scheduleModifiers.MANAGEMENT,
+                scheduleModifiers.EMPLOYEES,
+                scheduleModifiers.EQUIPMENT,
+                scheduleModifiers.TOTAL,
+                experienceModifier
+            };
+            //if any modifier has an AdjustmentPercentage, return true, otherwise return false
+            return modifiers.Any(modifier => modifier.AdjustmentPercentage != null);
+        }
         public ScheduleModifiers scheduleModifiers { get; set; } = new ScheduleModifiers();
 
         public Modifier experienceModifier { get; set; } = new Modifier(ExperienceModifier);
