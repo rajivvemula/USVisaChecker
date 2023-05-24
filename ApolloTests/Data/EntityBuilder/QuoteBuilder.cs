@@ -344,7 +344,7 @@ namespace ApolloTests.Data.EntityBuilder
                                 AND s.[Code]=@stateCode
                                 AND (@effectiveDate BETWEEN rt.TimeFrom AND rt.TimeTo)
                                 AND rt.LineId = @lineId
-                                ", ("@stateCode", stateCode), ("@lineId", Line.Id), ("@effectiveDate", EffectiveDate.ToString("d")));
+                                ", ("@stateCode", stateCode), ("@lineId", Line.Id), ("@effectiveDate", Quote.RatableObjectEffectiveDate.ToString("d")));
             if(!result.Any())
             {
                 throw new Exception($"Rates tables are not loaded for state: {stateCode}");
