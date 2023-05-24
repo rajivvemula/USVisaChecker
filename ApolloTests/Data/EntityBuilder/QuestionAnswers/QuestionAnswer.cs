@@ -143,6 +143,9 @@
 
             public const string ServicesProvide = "ServicesProvide";
 
+            public const string NJ_VehicleComm = "NJ-VehicleComm";
+
+
             #endregion Operations
 
             #region Vehicles

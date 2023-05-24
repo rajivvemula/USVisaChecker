@@ -165,6 +165,7 @@ namespace ApolloTests.Data.Rating
             interpreter.SetVariable("root", this.root);
 
         }
+       
 
         public RatingOutput LatestOutput { get; set; }
 

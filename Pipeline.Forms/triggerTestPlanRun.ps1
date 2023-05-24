@@ -111,6 +111,10 @@ echo "retrieved target testpoints"
 
 foreach($configurationGroup in $configurationGroups)
 {
+if($configurationGroup.Group[0].configuration.name -eq "DONT_RUN")
+{
+    continue;
+}
 $testpointIds =@()
 
 foreach ($point in $configurationGroup.Group) {

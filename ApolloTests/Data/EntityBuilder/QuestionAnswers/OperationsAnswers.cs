@@ -120,6 +120,9 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
 
         public QuestionAnswer ServicesProvide { get; set; } = new QuestionAnswer(Alias.ServicesProvide, "Moving Services Only");
 
+        public QuestionAnswer NJ_VehicleComm { get; set; } = new QuestionAnswer(Alias.NJ_VehicleComm, "false");
+
+
         #endregion
 
         #region BOP/GL
