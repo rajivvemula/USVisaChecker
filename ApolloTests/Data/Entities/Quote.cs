@@ -36,7 +36,7 @@ namespace ApolloTests.Data.Entities
             DecidedValueFactor = new DecidedValueFactor();
             RatableObjectEffectiveDate = DateTimeOffset.Now.AddDays(1);
             RatableObjectExpirationDate = DateTimeOffset.Now.AddDays(1).AddYears(1);
-    }
+        }
         [JsonIgnore]
         public string? id { get; set; }
 

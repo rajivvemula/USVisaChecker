@@ -107,7 +107,7 @@ namespace ApolloTests.Data.Rating
 
         }
 
-        public static List<Dictionary<String, String>> GetAlorithm(String tableName)
+        public List<Dictionary<String, String>> GetAlorithm(String tableName)
         {
 
             var table = HitachiQA.Helpers.Functions.ParseExcel(@$"Data\RatingManual\Algorithms\{tableName}.xlsx").ToList();

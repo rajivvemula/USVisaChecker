@@ -38,6 +38,7 @@ namespace ApolloTests.Data.Entities.Context
             modelBuilder.Entity<Policy>().ToContainer("RatableObject");
             modelBuilder.Entity<Policy>().HasDiscriminator(it => it.Discriminator).HasValue("RatableObjectEntity");
             
+
             modelBuilder.Entity<Claim>().ToContainer("Claim");
             modelBuilder.Entity<Claim>().HasDiscriminator(it => it.Discriminator).HasValue("ClaimEntity");
 

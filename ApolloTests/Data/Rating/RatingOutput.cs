@@ -22,7 +22,11 @@ namespace ApolloTests.Data.Rating
             var scenarioctx = OC.Resolve<ScenarioContext>();
             var testctx = OC.Resolve<TestContext>();
             fileName = string.Format($"ReportTemplates/{featurectx.FeatureInfo.Title}_{scenarioctx.ScenarioInfo.Title}").Replace(" ", "_");
-            fileName+= ".html";
+            if(scenarioctx.ScenarioInfo.Arguments.Count>0)
+            {
+                fileName += "_"+scenarioctx.ScenarioInfo.Arguments[0].ToString();
+            }
+            fileName += ".html";
             testctx.AddResultFile(fileName);
 
         }

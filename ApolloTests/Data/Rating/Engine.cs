@@ -17,141 +17,31 @@ namespace ApolloTests.Data.Rating
         //private static JObject PersistedData = JsonConvert.DeserializeObject<JObject>(new StreamReader( @"StepDefinition\Rating\persistedData.json").ReadToEnd()) ?? throw new NullReferenceException();
         private static JObject CoverageAlgorithms = JsonConvert.DeserializeObject<JObject>(new StreamReader( @"Data/Rating/CoverageAlgorithms.json").ReadToEnd()) ?? throw new NullReferenceException();
 
-        /// <returns>
-        /// Returns specified table from the Rating Manual
-        /// </returns>
-        public static List<Dictionary<String, String>> GetAlorithm(String tableName)
-        {
-            
-            var table = Functions.ParseExcel(@$"Data\RatingManual\Algorithms\{tableName}.xlsx").ToList();
-
-            return table;
-        }
-        public IEnumerable<Dictionary<String, String>> GetTable(String tableName, string stateCode, string? effectiveDate)
-        {
-
-            string whereClause;
-
-            int lineId = 7;
-
-            if(string.IsNullOrEmpty(effectiveDate))
-            {
-
-                whereClause = $@"WHERE LineId ={lineId} AND 
-                                    CarrierPartyId = 4 AND 
-                                    StateProv.Code = '{stateCode}' AND
-                                    RatingTable.Name = '{tableName}' AND
-									RatingTable.Id = (
-										Select MAX(RatingTable.Id) 
-										FROM [rating].[ReferenceTable] RatingTable
-										LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
-                                        LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
-										WHERE LineId ={lineId} AND 
-										CarrierPartyId = 4 AND 
-										StateProv.Code = '{stateCode}' AND
-                                        RatingTable.Name = '{tableName}'
-									) ";
-            }
-            else
-            {
-
-                whereClause = $@"WHERE LineId =7 AND 
-                                    CarrierPartyId = 4 AND 
-                                    StateProv.Code = '{stateCode}' AND
-                                    RatingTable.Name = '{tableName}' AND
-                                    ('{effectiveDate}' BETWEEN RatingTable.TimeFrom AND RatingTable.TimeTo)";
-
-            }
-
-            var columns = SQL.executeQuery($@"SELECT tableColumn.AttributeName, tableColumn.AttributeColumn
-                                            FROM [rating].[ReferenceTable] RatingTable
-                                            LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
-                                            LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
-                                            LEFT JOIN [rating].ReferenceTableMap tableColumn on RatingTable.Id = tableColumn.ReferenceTableId
-                                            {whereClause} 
-                                            ;");
-
-            var sortOrderColumnRow = columns.Find(it => ((String)it["AttributeName"]).Contains("SortOrder"));
-
-            
-            var attributes = SQL.executeQuery($@"SELECT TableAttributes.*
-                                                FROM [rating].[ReferenceTable] RatingTable
-                                                LEFT JOIN [rating].[ReferenceTableStateProvince] RatingTableState on RatingTable.Id = RatingTableState.ReferenceTableId
-                                                LEFT JOIN [location].[StateProvince] StateProv on RatingTableState.StateProvinceId = StateProv.Id
-                                                LEFT JOIN [rating].[ReferenceTableAttribute] TableAttributes on RatingTable.Id = TableAttributes.ReferenceTableId
-                                                {whereClause} 
-                                                ;");
-            if(!columns.Any() || !attributes.Any())
-            {
-                throw new Exception("Table: "+ tableName + $" was not found for parameters: {whereClause}. ");
-            }
-
-            foreach (var row in attributes)
-            {
-                var rowDict = new Dictionary<string, string>();
-
-                foreach (var column in columns)
-                {
-                    try
-                    {
-                        var columnValue = row[column["AttributeColumn"]];
-                        var columnName = (String)column["AttributeName"];
-                        if (columnName.ToLower().Contains("sortorder"))
-                        {
-                            continue;
-                        }
-
-                        rowDict.Add(columnName, (columnValue is DBNull ? "" : (columnValue is string ? columnValue : columnValue.ToString()) ) ?? "");
-                    }
-                    catch (Exception)
-                    {
-
-                        Log.Error("Row-> " + JObject.FromObject(row));
-                        Log.Error("column-> " + column["AttributeColumn"]);
-                        Log.Error($"table Name-> : {tableName} Att Name: {column["AttributeName"]} value:{row[column["AttributeColumn"]]} ");
-                        throw;
-                    }
-                }
-
-                yield return rowDict;
-
-            }
-
-        }
-        public List<Dictionary<String, String>> getTable(String tableName)
-        {
-           if(!tableName.Contains('.'))
-           {
-                return GetAlorithm(tableName);
-           }
-           return GetTable(tableName, GoverningStateCode, this.EffectiveDate.ToString("d")).ToList();
-        }
 
         /// <summary>
         ///  Interpreter used to evaluate strings of code <br/>
         ///  This Interpreter will be used dynamically changing it's variables to accomodate current context. <br/>
         ///  for example, Vehile will be set multiple times depending on current vehicle under rating. <br/>
         /// </summary>
-        public readonly Interpreter interpreter;
-
+        public Interpreter interpreter { get; }
+        public RatingManualService Manual { get; }
+    
         //properties public in order to be mentioned in the json files
-        public readonly Quote root;
-
-        public readonly string GoverningStateCode;
-        public readonly DateTimeOffset EffectiveDate;
-        public readonly Dictionary<Exception,string> factorErrors = new();
+        public Quote root { get; set; }
+        public string GoverningStateCode { get; set; }
+        public DateTimeOffset EffectiveDate { get; set; }
+        public Dictionary<Exception, string> factorErrors { get; set; }
+        public RatingOutput LatestOutput { get; set; }
 
         /// <summary>
         /// Rating Engine to calculate premium using Known Field's values and mapping them to the Rating Manuals. <br/><br/>
         /// constructed with a root object which in the future could be a Policy or Quote. <br/><br/>
         /// <param name="CoverageCode"> To be removed in the future, (iteration through all policy coverages need to be implemented)</param>
         /// </summary>
-        public Engine(Quote root): base(root.ContextCosmos)
+        public Engine(ObjectContainer OC): base(OC)
         {
-            this.root = root;
-            this.GoverningStateCode = root.GoverningStateCode;
-            this.EffectiveDate = root.Tether.EffectiveDate;
             this.interpreter = new Interpreter();
+            Manual = OC.Resolve<RatingManualService>();
             interpreter.Reference(typeof(JObject));
             interpreter.Reference(typeof(AlgorithmAssignment));
             interpreter.Reference(typeof(Limit));
@@ -161,19 +51,21 @@ namespace ApolloTests.Data.Rating
             interpreter.Reference(typeof(Line));
             interpreter.Reference(typeof(SubLine));
             interpreter.Reference(typeof(Policy));
-
-            interpreter.SetVariable("root", this.root);
-
         }
        
 
-        public RatingOutput LatestOutput { get; set; }
 
         /// <summary>
         /// Run the engine to calculate premium using Known Field's values and mapping them to the Rating Manuals. <br/><br/>
         /// </summary>
-        public RatingOutput Run()
+        public RatingOutput Run(Quote quote)
         {
+            this.root = quote;
+            this.GoverningStateCode = quote.GoverningStateCode;
+            this.EffectiveDate = quote.Tether.EffectiveDate;
+            this.factorErrors = new Dictionary<Exception, string>();
+            interpreter.SetVariable("root", quote);
+
             LatestOutput = new RatingOutput(ObjectContainer);
             var vehicles = root.GetVehicles();
             var limits = root.getLimits();
@@ -225,7 +117,17 @@ namespace ApolloTests.Data.Rating
             }
             return LatestOutput;
         }
-
+        /// <returns>
+        /// Returns specified table from the Rating Manual
+        /// </returns>
+        public List<Dictionary<String, String>> getTable(String tableName)
+        {
+            if (!tableName.Contains('.'))
+            {
+                return Manual.GetAlorithm(tableName);
+            }
+            return Manual.GetTable(tableName, GoverningStateCode, this.EffectiveDate.ToString("d")).ToList();
+        }
 
         private RatingResult RunForLimit(Limit limit)
         {
@@ -513,6 +415,10 @@ namespace ApolloTests.Data.Rating
             return result;
         }
 
+        /// <returns>
+        ///  the corresponding algorithm code
+        /// </returns>
+        /// 
         private string? getDefaultCoverageCode(CoverageType coverageType)
         {
             var DefaultCoverageAlgorithms = (JObject?)CoverageAlgorithms["All"]?.DeepClone()?? throw new NullReferenceException();
@@ -527,21 +433,6 @@ namespace ApolloTests.Data.Rating
             throw new Exception($"couldn't find algorithm Assignment for Coverage Type: {coverageType.TypeName} on state {GoverningStateCode}\n please check Data/Rating/CoverageAlgorithms.json");
             
         }
-
-        public class AlgorithmAssignment
-        {
-            public string? ClassCode { get; set; }
-            public string? RatingGroup { get; set; }
-            public string? DriverRatingPlan { get; set; }
-            public string? IncreasedLimitGroup { get; set; }
-            public string? CoverageCode { get; set; }
-
-        }
-        /// <returns>
-        ///  the corresponding algorithm code
-        /// </returns>
-        /// 
-
         public static int? parseRatingFactorNumericalValues(String value)
         {
             if (value.Contains("+"))
@@ -557,5 +448,18 @@ namespace ApolloTests.Data.Rating
                 return null;
             }
         }
+
+        public class AlgorithmAssignment
+        {
+            public string? ClassCode { get; set; }
+            public string? RatingGroup { get; set; }
+            public string? DriverRatingPlan { get; set; }
+            public string? IncreasedLimitGroup { get; set; }
+            public string? CoverageCode { get; set; }
+
+        }
+
+
+
     }
 }

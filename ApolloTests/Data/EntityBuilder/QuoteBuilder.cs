@@ -266,8 +266,8 @@ namespace ApolloTests.Data.EntityBuilder
             JObject response = RestAPI.POST("/quote/create", this.Quote) ?? throw new NullReferenceException();
             try
             {
-                JObject app = this.Cosmos.GetQuery($"Application", $"select * from c where c.Id = {response.Value<long>("id")}").Result[0];
-                Log.Info(app);
+                //JObject app = this.Cosmos.GetQuery($"Application", $"select * from c where c.Id = {response.Value<long>("id")}").Result[0];
+                //Log.Info(app);
                 Quote = CosmosContext.Quotes.First(it => it.Id == response.Value<long>("id"));
             }
             catch (Exception ex)

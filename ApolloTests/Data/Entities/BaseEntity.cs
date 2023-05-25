@@ -41,10 +41,14 @@ namespace ApolloTests.Data.Entities
         [JsonIgnore]
         public ServiceBus ServiceBus;
 
+        public SQLContext GetContextSQL() => ObjectContainer.Resolve<SQLContext>();
+        public CosmosContext GetContextCosmos() => ObjectContainer.Resolve<CosmosContext>();
 
+        //
+        // This properties must stay intact in order for EF to provide the Context (No setter)
+        //
         [JsonIgnore]
         public CosmosContext ContextCosmos { get; }
-
         [JsonIgnore]
         public SQLContext ContextSQL { get; }
 
@@ -82,6 +86,8 @@ namespace ApolloTests.Data.Entities
             Functions = OC.Resolve<Functions>();
 
         }
+
+
         public BaseEntity()
         {
 

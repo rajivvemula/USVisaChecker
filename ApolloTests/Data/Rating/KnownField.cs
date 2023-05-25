@@ -256,7 +256,7 @@ namespace ApolloTests.Data.Rating
                 {
                     var risk = GetCurrentVehicleRisk();
                     var locationID = (risk.OutputMetadata as OutputMetadataVehicle).VehicleDriverLocation.LocationId??throw new NullReferenceException($"Vehicle Risk: {risk.Id}\n LocationId returned null\n");
-                    var address = this.Engine.ContextSQL.Address.Find(locationID);
+                    var address = this.Engine.GetContextSQL().Address.Find(locationID);
 
                     var zip = address.PostalCode;
                     var data = Engine.getTable("TT.1");

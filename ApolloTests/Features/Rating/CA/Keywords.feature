@@ -5,7 +5,7 @@ A short summary of the feature
 
 
 Scenario: 01_Specific Quote Test Rating
-	Given quote with Id 107250 is loaded
+	Given quote with Id 110966 is loaded
 	When expected values are gathered
 	Then expected values should match the system output
 

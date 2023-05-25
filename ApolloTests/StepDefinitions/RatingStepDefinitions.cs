@@ -23,6 +23,7 @@ namespace ApolloTests.StepDefinitions
         private RestAPI RestAPI;
         private SharedData Shared;
         private IObjectContainer ObjectContainer;
+        private Engine Engine;
 
         public RatingStepDefinitions(IObjectContainer container)
         {
@@ -31,6 +32,8 @@ namespace ApolloTests.StepDefinitions
             SQLContext = container.Resolve<SQLContext>();
             RestAPI = container.Resolve<RestAPI>();
             Shared = container.Resolve<SharedData>();
+            Engine = container.Resolve<Engine>();
+
         }
 
 
@@ -92,13 +95,8 @@ namespace ApolloTests.StepDefinitions
         public void WhenExpectedValuesAreGathered()
         {
             var quote = Shared.GetValue<Quote>("Quote", "Quote");
-
-            
-            var expected = new Engine(quote).Run();
+            var expected = Engine.Run(quote);
             Shared.SetValue("Quote", "ExpectedRatingOutput", expected);
-
-           
-
         }
 
         [Then(@"expected values should match the system output")]
