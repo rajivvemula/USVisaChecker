@@ -367,11 +367,12 @@ namespace ApolloTests.StepDefinition.Forms
             public Test(Form form, Data.Entities.Policy policy, Recipient recipient)
             {
                 this.guid = Guid.NewGuid();
-                this.documentName = $"[{recipient.RecipientTypeCode}] [{form.Edition}] {form.name} {guid}";
+                this.documentName = $"Apollo-Test-Suite-Generated [{recipient.RecipientTypeCode}] [{form.Edition}] {form.name} {guid}";
                 this.Recipient = recipient;
                 this.body = this.GetDocGenBody(form, policy, recipient);
                
             }
+
             public Recipient Recipient;
             public DocGenBody? body;
             public long docGenResponseID;
