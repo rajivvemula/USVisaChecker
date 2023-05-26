@@ -122,6 +122,9 @@ namespace ApolloTests.Data.EntityBuilder.QuestionAnswers
 
         public QuestionAnswer NJ_VehicleComm { get; set; } = new QuestionAnswer(Alias.NJ_VehicleComm, "false");
 
+        public QuestionAnswer CO_PUC { get; set; } = new QuestionAnswer(Alias.CO_PUC, "false");
+
+
 
         #endregion
 

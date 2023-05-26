@@ -121,6 +121,15 @@ namespace ApolloTests.Data.EntityBuilder
                                 Vehicles[0].AddCollision = true;
                                 break;
                         }
+
+                        if(state=="CO")
+                        {
+                            if(PolicyCoverages.Any(it=> it.CoverageType.TypeName == CoverageType.MEDICAL_PAYMENTS))
+                            {
+                                PolicyCoverages.Find(it=> it.CoverageType.TypeName == CoverageType.MEDICAL_PAYMENTS).SelectedLimits = new List<int> { 5000 };
+                            }
+                        }
+
                         break;
                 }
             }

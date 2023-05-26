@@ -145,6 +145,10 @@
 
             public const string NJ_VehicleComm = "NJ-VehicleComm";
 
+            public const string CO_PUC = "CO-PUC";
+
+
+
 
             #endregion Operations
 
