@@ -61,8 +61,14 @@ namespace HitachiQA.Source.Helpers.ADOServices
                     {
                         var name = workItem["fields"].Value<string>("System.Title");
                         var testName = workItem["fields"].Value<string>("Microsoft.VSTS.TCM.AutomatedTestName");
-
-                        var existingTC =testCasesList.First(it=> it.Name== name || it.MethodFullName ==testName);
+                        TestCase existingTC;
+                        try
+                        {
+                            existingTC = testCasesList.First(it => it.Name == name || it.MethodFullName == testName);
+                        }catch(Exception ex)
+                        {
+                            throw new Exception($"Error finding locally (must be closed in ADO or added locally): \n{name}\n{testName}\n", ex);
+                        }
                         existingTC.WorkItem = (JObject)workItem;
                         if(existingTC.CheckIfFieldsMatchWorkItem(workItem))
                         {

@@ -18,7 +18,8 @@
     "Drive Other Car Medical Payments": "OR00014",
     "Pollution": "OR00019",
     "Property Protection": "PPI",
-    "First Party Benefits": "FPB"
+    "First Party Benefits": "FPB",
+    
 
   },
   "IL": {
@@ -31,6 +32,7 @@
     "Uninsured Motorists BI": "UM00021",
     "Underinsured Motorists BI": "UM00021",
     "Uninsured Motorists PD": "UM00014"
+
   },
   "GA": {
     "Uninsured Motorists BIPD": "UM00026"
@@ -65,7 +67,8 @@
   },
   "CO": {
     "Uninsured Motorists BI": "UM00026",
-    "Uninsured Motorists PD": "UM00026"
+    "Uninsured Motorists PD": "UM00026",
+    "Uninsured Motorists BIPD": "UM00026"
 
   },
   "MI": {
@@ -88,8 +91,15 @@
   "PA": {
     "Uninsured Motorists BIPD": "UM00026",
     "Underinsured Motorists BI": "UM00026",
-    "Uninsured Motorists BI":  "UM00026"
+    "Uninsured Motorists BI": "UM00026"
+  },
+  "FL": {
+    "Uninsured Motorists BI": "UM00026",
+    "Personal Injury Protection": "PIP1"
+
   }
+
+
 
 
 

@@ -1,12 +1,12 @@
 ﻿@NoBrowser
-Feature: SC
+Feature: AL
 
 A short summary of the feature
 
 @ratingTests @CA
-Scenario: SC - Test Rating Algorithm
+Scenario: AL - Test Rating Algorithm
 
-	Given quote for LineId=7 state 'SC' and '<Algorithm or Coverage>' is set to Quoted
+	Given quote for LineId=7 state 'AL' and '<Algorithm or Coverage>' is set to Quoted
 	When expected values are gathered
 	Then expected values should match the system output
 
@@ -34,8 +34,7 @@ Scenario: SC - Test Rating Algorithm
 	| VA00044               |
 	| VA00070               |
 	| VA00071               |
-	| VA00072				|
-	| VA00075				|
+	| VA00072               |
 	| VA00048               |
 	| VA00049               |
 	| VA00050               |
@@ -45,17 +44,3 @@ Scenario: SC - Test Rating Algorithm
 	| VA00073               |
 	| VA00055               |
 	| VA00074               |
-	| VA00076               |
-	| VA00077               |
-	| VA00078               |
-	| VA00079               |
-	| VA00080               |
-	| VA00081               |
-	| VA00082               |
-	| VA00083               |
-	| VA00084               |
-	| VA00085               |
-	| VA00086               |
-	| VA00087               |
-	| VA00088               |
-

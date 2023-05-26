@@ -567,10 +567,13 @@
     "nameUI": [ "Accidental Death" ],
     "condition": "Limit.SelectedLimitName != \"Combined: Medical and Work Loss\""
 
+  },
+
+
+  "ClassCode_LimitFactors": {
+    "KnownFields": [ "Class Code","Limit" ],
+    "nameUI": [ "Hours of Operation" ]
   }
-
-
-
 
 
 }

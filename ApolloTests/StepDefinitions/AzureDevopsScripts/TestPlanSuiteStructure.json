@@ -143,6 +143,30 @@
       "queryTags": [ "ratingTests", "CA", "FT_WI" ],
       "suiteType": "DynamicTestSuite"
     },
+    {
+      "name": "AL",
+      "path": [ "Rating", "CA" ],
+      "queryTags": [ "ratingTests", "CA", "FT_AL" ],
+      "suiteType": "DynamicTestSuite"
+    },
+    {
+      "name": "CO",
+      "path": [ "Rating", "CA" ],
+      "queryTags": [ "ratingTests", "CA", "FT_CO" ],
+      "suiteType": "DynamicTestSuite"
+    },
+    {
+      "name": "FL",
+      "path": [ "Rating", "CA" ],
+      "queryTags": [ "ratingTests", "CA", "FT_FL" ],
+      "suiteType": "DynamicTestSuite"
+    },
+    {
+      "name": "GA",
+      "path": [ "Rating", "CA" ],
+      "queryTags": [ "ratingTests", "CA", "FT_GA" ],
+      "suiteType": "DynamicTestSuite"
+    },
 
 
 

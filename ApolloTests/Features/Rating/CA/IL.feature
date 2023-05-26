@@ -4,7 +4,6 @@ Feature: IL
 A short summary of the feature
 
 
-
 @ratingTests @CA
 Scenario: IL - Test Rating Algorithm
 
