@@ -1,5 +1,12 @@
 # Introduction 
-Test Automation for the Apollo Project using Behavior Driven Development. 
+The following is a list of known data patterns used in the feature files for our reference:
+1. Own or Lease field of the "Given user starts a quote with:" step
+Pattern: Adding strings seperated by the semicolon (;) character will indicate which checkboxes GeneralInfoSteps.HandleOwnOrLease() will select.
+(Ex: entering "Vehicles;Furniture;Inventory or Stock;Tools or Equipment" would select each option)
+2. The Business Phone and Email fields of the "Then user fills out About You page with these values:" step
+Pattern: If the double bracket notation is used, PL_Gen_AboutYou.HandleAboutYouPage() will pass the contents of the passed in value to General_ParamValueInterpreter.ExtractParamValue() which will return a derived value.
+(Ex: entering "[[BlackListedEmail]]" would return a random blacklisted email from the db)
+
 
 ## NuGet Packages
 Please install the following packages

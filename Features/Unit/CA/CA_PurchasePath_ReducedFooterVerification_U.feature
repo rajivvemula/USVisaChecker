@@ -1,0 +1,76 @@
+﻿Feature: CA_PurchasePath_ReducedFooterVerification_U
+ Verify the elements present in the footer section from Introduction page to Thank you page
+
+@CA @Unit @FL
+Scenario: CA Audio System Installation issued policy in FL
+	Given user starts a quote with:
+		| Industry                  | Employees | Location                              | Own or Lease | ZIP Code | LOB |
+		| Audio System Installation | 2         | I Run My Business From Property I Own | Vehicles     | 33603    | CA  |
+	Then user verifies the appearance of the Start Your Quote page
+	Then user verifies the elements present in footer section
+	Then user fills in the Start Your Quote page with these values:
+		| Name of Business | DBA | Policy Start Date |
+		|                  |     |                   |
+	Then user clicks continue from the Start Your Quote page
+	Then user verifies the appearance of the Introduction page
+	Then user verifies the elements present in footer section
+	And user fills in the Introduction page with these values:
+		| Year Business Started | How Business Structured    | Address1           | Address2 | City  | Select an Address | Mailing Address |
+		| 1900                  | Individual/Sole Proprietor | 802 E Frierson Ave |          | Tampa |                   | Yes             |
+	Then user clicks continue from CA Introduction
+	Then user verifies the appearance of the Vehicles page
+	Then user verifies the elements present in footer section
+	And user creates a vehicle or trailer with variable values:
+		| VIN               | Parking Address | Vehicle Worth | Plowing Snow |
+		| 3D3KR19D97G838924 | Florida         | 12000         | No           |
+	Then user clicks Let's Continue
+	Then User verifies appearance of the Drivers Page
+	Then user verifies the elements present in footer section
+	And user creates a driver with these values:
+		| FirstName | LastName | DLState | DOB        | CDL | ILDDC | ILViolation | ILDLRevoked | Accident | DLNumber      |
+		| Theresa   | Lark     | FL      | 03/13/1986 |     |       |             |             | No       | D132564987456 |
+	Then user clicks continue from the Drivers page
+	Then user verifies the elements present in footer section
+	Then user fills out the Operations page:
+		| Question                                                                                    | Answer           |
+		| What is the furthest any of your vehicles travel in any one direction from their home base? | 50 miles or less |
+		| How many auto insurance claims did your business file in the last 3 years?                  | 0                |
+	Then user continues to the Contact page
+	Then user verifies appearance of the contacts page
+	Then user verifies the elements present in footer section
+	And user enters contact information:
+		| Question                        | Answer                 |
+		| First Name                      | Ariana                 |
+		| Last Name                       | Grande                 |
+		| Business Email                  | AGrande@gmail.com      |
+		| Business Phone                  | (555) 867-5309         |
+		| Business Website                |                        |
+		| Business has an account manager |                        |
+		| Want Save Money                 | Yes                    |
+		| Owner's First Name              | FN                     |
+		| Owner's Last Name               | LN                     |
+		| Owner's Address                 | 1879 Watson Blvd Apt 1 |
+		| Owner's Address 2               |                        |
+		| Owner's Zip Code                | 31093                  |
+		| Owner's City                    | Warner Robins          |
+		| Owner's State                   | Georgia                |
+	Then user clicks continue from the Summary page
+	Then user verifies the appearance of the Quote Page
+	Then user verifies the elements present in footer section
+	And user completes their Quote
+		| Question         | Answer                         |
+		| Yearly           | No                             |
+		| Policy Coverages | $100,000 Combined Single Limit |
+	Then user clicks continue from the Quote page
+	Then user verifies the appearance of the Additional Information page
+	Then user verifies the elements present in footer section
+	And user fills out the Additional Information page:
+		| VIN | OLF   | Who Holds Vehicle |
+		| Yes | Owned | Myself            |
+	Then user clicks continue from Additional Information
+	Then user goes to purchase a plan using the following information:
+		| Payment Plan | Card Type |
+		| 12 Monthly   | Visa      |
+	Then user clicks purchase
+	Then user verifies the elements present in footer section
+	Then user verifies the Thank You Page
