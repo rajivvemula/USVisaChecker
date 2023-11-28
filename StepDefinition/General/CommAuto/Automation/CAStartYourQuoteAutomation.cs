@@ -1,8 +1,8 @@
-﻿using BiBerkLOB.Pages.CommAuto;
-using BiBerkLOB.Pages;
+﻿using BiBerkLOB.Pages;
+using BiBerkLOB.Pages.CommAuto;
+using BiBerkLOB.Source.Helpers;
 using HitachiQA;
 using HitachiQA.Helpers;
-using BiBerkLOB.Source.Helpers;
 
 namespace BiBerkLOB.StepDefinition.General.CommAuto.Automation;
 

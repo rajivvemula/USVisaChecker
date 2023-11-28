@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using HitachiQA.Helpers;
 using System.Linq;
-using System.Threading.Tasks;
-using OpenQA.Selenium.Interactions;
-using BiBerkLOB.StepDefinition.General.GenAutomation;
 using System.Threading;
-using DocumentFormat.OpenXml.Bibliography;
+using System.Threading.Tasks;
+using HitachiQA.Helpers;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
 
 namespace HitachiQA.Driver
 {

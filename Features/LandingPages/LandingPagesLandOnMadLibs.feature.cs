@@ -125,20 +125,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 10
  testRunner.Then(string.Format("user verifies the following title for the Landing Page: {0}", title), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table856 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table534 = new TechTalk.SpecFlow.Table(new string[] {
                             "Industry",
                             "Employees",
                             "Location",
                             "Own or Lease",
                             "ZIP Code"});
-                table856.AddRow(new string[] {
+                table534.AddRow(new string[] {
                             "Actor",
                             "11",
                             "I Lease a Space From Others",
                             "",
                             "06457"});
 #line 12
- testRunner.Given("user starts a quote on the Landing Page with:", ((string)(null)), table856, "Given ");
+ testRunner.Given("user starts a quote on the Landing Page with:", ((string)(null)), table534, "Given ");
 #line hidden
 #line 15
  testRunner.Then(string.Format("user will land on madlibs path with recommendation view as {0} and \'Available and" +

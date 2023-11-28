@@ -119,7 +119,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table258 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table149 = new TechTalk.SpecFlow.Table(new string[] {
                             "Industry",
                             "Employees",
                             "Location",
@@ -127,7 +127,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Own or Lease",
                             "ZIP Code",
                             "LOB"});
-                table258.AddRow(new string[] {
+                table149.AddRow(new string[] {
                             "Arbitration or Mediation",
                             "3",
                             "I Run My Business Out of My Home",
@@ -136,21 +136,21 @@ this.ScenarioInitialize(scenarioInfo);
                             "89109",
                             "CA"});
 #line 6
- testRunner.Given("user starts a quote with:", ((string)(null)), table258, "Given ");
+ testRunner.Given("user starts a quote with:", ((string)(null)), table149, "Given ");
 #line hidden
 #line 9
  testRunner.Then("user verifies the appearance of the Start Your Quote page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table259 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table150 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name of Business",
                             "DBA",
                             "Policy Start Date"});
-                table259.AddRow(new string[] {
+                table150.AddRow(new string[] {
                             "TEST CA QUOTE",
                             "TEST CA DBA",
                             ""});
 #line 10
- testRunner.Then("user fills in the Start Your Quote page with these values:", ((string)(null)), table259, "Then ");
+ testRunner.Then("user fills in the Start Your Quote page with these values:", ((string)(null)), table150, "Then ");
 #line hidden
 #line 16
  testRunner.Then("user clicks continue from the Start Your Quote page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -158,14 +158,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 17
  testRunner.Then("user verifies the appearance of the Introduction page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table260 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table151 = new TechTalk.SpecFlow.Table(new string[] {
                             "Year Business Started",
                             "How Business Structured",
                             "Address1",
                             "Address2",
                             "City",
                             "Select an Address"});
-                table260.AddRow(new string[] {
+                table151.AddRow(new string[] {
                             "1999",
                             "Partnership",
                             "333 Celeste Ave",
@@ -173,7 +173,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Las Vegas",
                             "Original"});
 #line 18
- testRunner.And("user fills in the Introduction page with these values:", ((string)(null)), table260, "And ");
+ testRunner.And("user fills in the Introduction page with these values:", ((string)(null)), table151, "And ");
 #line hidden
 #line 21
  testRunner.Then("user clicks continue from CA Introduction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -181,14 +181,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 22
  testRunner.Then("user verifies the appearance of the Vehicles page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table261 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table152 = new TechTalk.SpecFlow.Table(new string[] {
                             "VIN",
                             "Parking Address"});
-                table261.AddRow(new string[] {
+                table152.AddRow(new string[] {
                             "1FMCU02Z58KA43824",
                             "Nevada"});
 #line 23
- testRunner.And("user creates a vehicle or trailer with variable values:", ((string)(null)), table261, "And ");
+ testRunner.And("user creates a vehicle or trailer with variable values:", ((string)(null)), table152, "And ");
 #line hidden
 #line 26
  testRunner.Then("user clicks Let\'s Continue", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -196,7 +196,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 27
  testRunner.Then("User verifies appearance of the Drivers Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table262 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
                             "FirstName",
                             "LastName",
                             "DLState",
@@ -207,7 +207,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "ILDLRevoked",
                             "Accident",
                             "DLNumber"});
-                table262.AddRow(new string[] {
+                table153.AddRow(new string[] {
                             "TEST FN",
                             "TEST LN",
                             "NV",
@@ -219,23 +219,23 @@ this.ScenarioInitialize(scenarioInfo);
                             "No",
                             "123456789091"});
 #line 28
- testRunner.And("user creates a driver with these values:", ((string)(null)), table262, "And ");
+ testRunner.And("user creates a driver with these values:", ((string)(null)), table153, "And ");
 #line hidden
 #line 31
  testRunner.Then("user clicks continue from the Drivers page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table263 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table154 = new TechTalk.SpecFlow.Table(new string[] {
                             "Question",
                             "Answer"});
-                table263.AddRow(new string[] {
+                table154.AddRow(new string[] {
                             "What is the furthest any of your vehicles travel in any one direction from their " +
                                 "home base?",
                             "50 miles or less"});
-                table263.AddRow(new string[] {
+                table154.AddRow(new string[] {
                             "How many auto insurance claims did your business file in the last 3 years?",
                             "0"});
 #line 32
- testRunner.Then("user fills out the Operations page:", ((string)(null)), table263, "Then ");
+ testRunner.Then("user fills out the Operations page:", ((string)(null)), table154, "Then ");
 #line hidden
 #line 36
  testRunner.Then("user continues to the Contact page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -243,56 +243,56 @@ this.ScenarioInitialize(scenarioInfo);
 #line 37
  testRunner.Then("user verifies appearance of the contacts page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table264 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
                             "Question",
                             "Answer"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "First Name",
                             "TEST FN"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Last Name",
                             "TEST LN"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Business Email",
                             "QAAutomation@biberk.com"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Business Phone",
                             "(123) 123-1321"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Business Website",
                             ""});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Business has an account manager",
                             ""});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Want Save Money",
                             "Yes"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Owner\'s First Name",
                             "TEST FN"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Owner\'s Last Name",
                             "TEST LN"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Owner\'s Address",
                             "33 Celeste Ave"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Owner\'s Address 2",
                             ""});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Owner\'s Zip Code",
                             "89109"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Owner\'s City",
                             "Las Vegas"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Owner\'s State",
                             "Nevada"});
-                table264.AddRow(new string[] {
+                table155.AddRow(new string[] {
                             "Select an Address",
                             "Original"});
 #line 38
- testRunner.And("user enters contact information:", ((string)(null)), table264, "And ");
+ testRunner.And("user enters contact information:", ((string)(null)), table155, "And ");
 #line hidden
 #line 55
  testRunner.Then("user verifies the appearance of the Summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -303,44 +303,44 @@ this.ScenarioInitialize(scenarioInfo);
 #line 57
  testRunner.Then("user verifies the appearance of the Quote Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table265 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table156 = new TechTalk.SpecFlow.Table(new string[] {
                             "Question",
                             "Answer"});
-                table265.AddRow(new string[] {
+                table156.AddRow(new string[] {
                             "Yearly",
                             "No"});
-                table265.AddRow(new string[] {
+                table156.AddRow(new string[] {
                             "Policy Coverages",
                             "$300,000 Combined Single Limit"});
-                table265.AddRow(new string[] {
+                table156.AddRow(new string[] {
                             "Vehicle 1 Coverage",
                             "$500 Comprehensive Deductible / $500 Collision Deductible"});
-                table265.AddRow(new string[] {
+                table156.AddRow(new string[] {
                             "Policy Medical",
                             "$2,000"});
 #line 58
- testRunner.And("user completes their Quote", ((string)(null)), table265, "And ");
+ testRunner.And("user completes their Quote", ((string)(null)), table156, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table266 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
                             "Question",
                             "Answer"});
-                table266.AddRow(new string[] {
+                table157.AddRow(new string[] {
                             "Bodily Injury and Property Damage Liability",
                             "Yes"});
-                table266.AddRow(new string[] {
+                table157.AddRow(new string[] {
                             "Medical Payments",
                             "Yes"});
-                table266.AddRow(new string[] {
+                table157.AddRow(new string[] {
                             "Comp/Collision-ACV (One Vehicle)",
                             "Yes"});
-                table266.AddRow(new string[] {
+                table157.AddRow(new string[] {
                             "Uninsured/Underinsured Motorist",
                             "Yes"});
-                table266.AddRow(new string[] {
+                table157.AddRow(new string[] {
                             "Rental Reimbursement",
                             "No"});
 #line 64
- testRunner.Then("user verifies proposal email modal", ((string)(null)), table266, "Then ");
+ testRunner.Then("user verifies proposal email modal", ((string)(null)), table157, "Then ");
 #line hidden
 #line 71
  testRunner.Then("user clicks continue from the Quote page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -348,28 +348,28 @@ this.ScenarioInitialize(scenarioInfo);
 #line 72
  testRunner.Then("user verifies the appearance of the Additional Information page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table267 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table158 = new TechTalk.SpecFlow.Table(new string[] {
                             "VIN",
                             "OLF",
                             "Who Holds Vehicle"});
-                table267.AddRow(new string[] {
+                table158.AddRow(new string[] {
                             "Yes",
                             "Owned",
                             "The Business"});
 #line 73
- testRunner.And("user fills out the Additional Information page:", ((string)(null)), table267, "And ");
+ testRunner.And("user fills out the Additional Information page:", ((string)(null)), table158, "And ");
 #line hidden
 #line 76
  testRunner.Then("user clicks continue from Additional Information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table268 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table159 = new TechTalk.SpecFlow.Table(new string[] {
                             "Payment Plan",
                             "Card Type"});
-                table268.AddRow(new string[] {
+                table159.AddRow(new string[] {
                             "12 Monthly",
                             "Visa"});
 #line 77
- testRunner.Then("user goes to purchase a plan using the following information:", ((string)(null)), table268, "Then ");
+ testRunner.Then("user goes to purchase a plan using the following information:", ((string)(null)), table159, "Then ");
 #line hidden
 #line 80
  testRunner.Then("user clicks purchase", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

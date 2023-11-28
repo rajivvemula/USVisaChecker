@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using BiBerkLOB.StepDefinition.General.PL;
-using BiBerkLOB.StepDefinition.General.PL.Automation;
 using HitachiQA;
-using TechTalk.SpecFlow;
 
 namespace BiBerkLOB.Pages.PL
 {
@@ -43,9 +40,6 @@ namespace BiBerkLOB.Pages.PL
         [DefaultValue("")] public string CurrentlyHavePL { get; set; } = "";
         [DefaultValue("")] public string HowManyClaims { get; set; } = "";
         [DefaultValue("")] public string CurrentlyProLiability { get; set; } = "";
-
-        //Your Services----------------------------------------------
-        [Clearable] public List<PLYourServicesObject> PLServicesObjectList { get; set; } = new List<PLYourServicesObject>();
 
         //About You----------------------------------------------
         [DefaultValue("")] public string ContactFirstName { get; set; } = "";

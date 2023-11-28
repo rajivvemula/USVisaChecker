@@ -5,21 +5,28 @@
 		<PublishChromeDriver>true</PublishChromeDriver>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Remove="CaseyTests\**" />
+	  <Compile Remove="Data\**" />
+	  <Compile Remove="Features\BSP\**" />
+	  <EmbeddedResource Remove="CaseyTests\**" />
+	  <EmbeddedResource Remove="Data\**" />
+	  <EmbeddedResource Remove="Features\BSP\**" />
+	  <None Remove="CaseyTests\**" />
+	  <None Remove="Data\**" />
+	  <None Remove="Features\BSP\**" />
+	  <SpecFlowFeatureFiles Remove="CaseyTests\**" />
+	  <SpecFlowFeatureFiles Remove="Data\**" />
+	  <SpecFlowFeatureFiles Remove="Features\BSP\**" />
+	  <SpecFlowObsoleteCodeBehindFiles Remove="CaseyTests\**" />
+	  <SpecFlowObsoleteCodeBehindFiles Remove="Data\**" />
+	  <SpecFlowObsoleteCodeBehindFiles Remove="Features\BSP\**" />
+	</ItemGroup>
+
 
 	<ItemGroup>
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Autopay\Autopay_EnrollmentPage.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Comm Auto\Issued\TransportationAndWarehousing_Issued\CA_DeliveryCourierService_I.feature.cs" />
 		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Comm Auto\Referred\TransportationAndWarehousing_Referred\CA_MilkHaulingUnder300Miles_R - Copy.feature.cs" />
 		<SpecFlowObsoleteCodeBehindFiles Remove="Features\EO\PLCoveragePageVerification.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Unit\BackupCopy2 - Copy.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Unit\BackupCopy3 - Copy.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Unit\Other\Industries\Industries_AB - Copy.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Unit\PieChartBackupAppearance - Copy - Copy.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Unit\PieChartBackupAppearance - Copy.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Workman%27s Comp\Declined\GetCoverageTaxicabMoreThanOneVehicle.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Workman%27s Comp\Issued\ConstructionSpecialtyTradeContractors_I\SidingInstallation_IneligibleQuote.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Workman%27s Comp\Issued\ServiceIndustries_I\Attorney_Issued.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Workman%27s Comp\Issued\ServiceIndustries_I\WindowTreatmentInstallation_InelgibleQuote.feature.cs" />
 		<SpecFlowObsoleteCodeBehindFiles Remove="Features\PestControl - Copy.feature.cs" />
 		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\Accountant_Claims_IneligibleQuote.feature.cs" />
 		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\ActuarialServices_NonEligibleRisk_IneligibleQuote.feature.cs" />
@@ -52,7 +59,7 @@
 		<PackageReference Include="RestSharp" Version="108.0.1" />
 		<PackageReference Include="Selenium.Support" Version="4.1.0" />
 		<PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
-		<PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="117.0.5938.9200" />
+		<PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="119.0.6045.10500" />
 		<PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.31.0.1" />
 		<PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="100.0.1185.36" />
 		<PackageReference Include="SpecFlow.MsTest" Version="3.9.69" />
@@ -76,59 +83,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="CaseyTests\" />
-		<Folder Include="Data\" />
-		<Folder Include="Features\BOP\Issued\" />
-		<Folder Include="Features\BOP\Declined\" />
-		<Folder Include="Features\BOP\Unit\" />
-		<Folder Include="Features\BOP\Referred\" />
-		<Folder Include="Features\BSP\Unit\" />
+		<Folder Include="Components\" />
 		<Folder Include="Features\Comm Auto\Declined\AutoServicesAndDealers_Declined\" />
 		<Folder Include="Features\Comm Auto\Declined\EducationAndPublicWorksOrganizations_Declined\" />
+		<Folder Include="Features\Comm Auto\Declined\For-HireTrucking_Declined\" />
+		<Folder Include="Features\Comm Auto\Declined\HospitalityEntertainmentRecreation_Declined\" />
+		<Folder Include="Features\Comm Auto\Declined\TransportationAndWarehousing_Declined\" />
+		<Folder Include="Features\Comm Auto\Issued\ConstructionSpecialtyTradeContractors_Issued\" />
 		<Folder Include="Features\Comm Auto\Issued\HospitalityAndEntertainment_Recreation\" />
-		<Folder Include="Features\GL\" />
-		<Folder Include="Features\BOP\" />
-		<Folder Include="Features\PL\Declined\ServiceIndustries\" />
-		<Folder Include="Features\PL\Declined\" />
-		<Folder Include="Features\PL\Issued\HospitalityAndEntertainment_Issued\" />
-		<Folder Include="Features\PL\Referred\ServiceIndustries_Referred\" />
-		<Folder Include="Features\UM\" />
-		<Folder Include="Features\Unit\Other\BSP\" />
-		<Folder Include="Features\Unit\Other\Coverages\" />
-		<Folder Include="Features\Workman%27s Comp\Declined\EducationAndPublicWorksOrganizations_D\" />
-		<Folder Include="Features\Workman%27s Comp\Issued\CondominiumResidential_I\" />
-		<Folder Include="StepDefinition\General\CommAuto\Automation\Factories\" />
-		<Folder Include="StepDefinition\General\PL\Automation\Factories\" />
-		<Folder Include="StepDefinition\General\WC\Automation\Factories\" />
+		<Folder Include="Features\Comm Auto\Referred\HospitalityAndEntertainmentRecreation_Referred\" />
+		<Folder Include="StepDefinition\General\GenAutomation\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Features\Autopay\Autopay_EnrollmentPage.feature.cs">
-		  <DependentUpon>%(Filename)</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Comm Auto\Declined\TransportationAndWarehousing_Declined\CA_TruckingRetailtoHomesNoFurniture_D.feature.cs">
-			<DependentUpon>CA_TruckingRetailToHomesNoFurniture_D.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Comm Auto\Issued\TransportationAndWarehousing_Issued\CA_DeliveryCourierService_I.feature.cs">
-			<DependentUpon>%(Filename)</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Comm Auto\Referred\TransportationAndWarehousing_Referred\CA_TruckingLocalHaulingLessThan300Miles_R.feature.cs">
-			<DependentUpon>CA_TruckingLocalHaulingLessThan300Miles_R.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Unit\Other\FAQ\FAQs.feature.cs">
-			<DependentUpon>FAQs.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Unit\Other\Industries\Industries_CF.feature.cs">
-			<DependentUpon>Industries_CF.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Unit\Other\Industries\Industries_HI.feature.cs">
-			<DependentUpon>Industries_HI.feature</DependentUpon>
-		</Compile>
 		<Compile Update="Features\Workman's Comp\Issued\Manufacturing_I\WC_AwningsManufacturing_I.feature.cs">
 		  <DependentUpon>WC_AwningsManufacturing_I.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Workman%27s Comp\Referred\HospitalityAndEntertainmentRecreation_R\WC_DanceSchool_R.feature.cs">
-			<DependentUpon>%(Filename)</DependentUpon>
 		</Compile>
 		<Compile Update="Features\Workman's Comp\Issued\AutoServicesAndDealers_I\WC_AutoPartsRetail_I.feature.cs">
 			<DependentUpon>WC_AutoPartsRetail_I.feature</DependentUpon>
@@ -145,56 +114,12 @@
 		<Compile Update="Features\Workman's Comp\Issued\ServiceIndustries_I\WC_WindowTreatmentInstallation_I.feature.cs">
 			<DependentUpon>WC_WindowTreatmentInstallation_I.feature</DependentUpon>
 		</Compile>
-		<Compile Update="Pages\InsuranceCoveragePage.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Update="Pages\Other\AutopayEnrollment\AutopayEnrollmentPage.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Update="Pages\Other\AutopayEnrollment\AutopayComplete.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Update="Pages\Other\MadLibs\StateSmBusinessInsPage.cs">
-			<SubType>Code</SubType>
-		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-		<SpecFlowFeatureFiles Update="Features\Autopay\Autopay_EnrollmentPage.feature">
-		  <Visible>$(UsingMicrosoftNETSdk)</Visible>
-		  <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Comm Auto\Issued\TransportationAndWarehousing_Issued\CA_DeliveryCourierService_I.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Comm Auto\Referred\TransportationAndWarehousing_Referred\CA_TruckingLocalHaulingLessThan300Miles_R.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\SmokeTest\ValidateHomePage.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Unit\Other\Industries\Industries_CF.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Unit\Other\Industries\Industries_HI.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Unit\Other\Industries\Industries_CF.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
 		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\Manufacturing_I\WC_AwningsManufacturing_I.feature">
 		  <Visible>$(UsingMicrosoftNETSdk)</Visible>
 		  <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Workman%27s Comp\Referred\HospitalityAndEntertainmentRecreation_R\WC_DanceSchool_R.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
 		</SpecFlowFeatureFiles>
 		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\AutoServicesAndDealers_I\WC_AutoPartsRetail_I.feature">
 			<Visible>$(UsingMicrosoftNETSdk)</Visible>

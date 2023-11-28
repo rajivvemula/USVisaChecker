@@ -1,20 +1,15 @@
-﻿using BiBerkLOB.Pages;
-using BiBerkLOB.StepDefinition.General;
-using HitachiQA.Driver;
+﻿using System;
 using System.Linq;
-using BiBerkLOB.Source.Helpers;
-using BiBerkLOB.StepDefinition.General.GenAutomation;
-using TechTalk.SpecFlow;
-using BiBerkLOB.Pages.PL;
-using HitachiQA;
-using HitachiQA.Helpers;
-using OpenQA.Selenium.DevTools.V85.Database;
-using System;
-using BiBerkLOB.Pages.Other.MadLibs;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using BiBerkLOB.Source.Helpers.LegacyModels;
+using BiBerkLOB.Pages;
+using BiBerkLOB.Pages.Other.MadLibs;
+using BiBerkLOB.Source.Helpers;
+using BiBerkLOB.StepDefinition.General;
+using BiBerkLOB.StepDefinition.General.GenAutomation;
+using HitachiQA;
+using HitachiQA.Driver;
+using HitachiQA.Helpers;
+using TechTalk.SpecFlow;
 
 namespace BiBerkLOB.General
 {
@@ -39,32 +34,11 @@ namespace BiBerkLOB.General
         /*
         * Functional Steps--------------------------------------------------------------------------------------
         */
-        [Then(@"user clears the cache of the webpage")]
-        public void ThenUserClearsTheCacheOfTheWebpage()
-        {
-            UserActions.Navigate("/MUNCH");
-            ClearCacheMunchPage.MunchTitle.AssertElementIsVisible();
-            ClearCacheMunchPage.returnToHomePageButton.Click();
-        }
-
-        [Given(@"user lands on biBerk Home page")]
-        public void GivenUserLandedBiBerkHomePageAndUserClicksOnGetAQuoteCTA()
-        {
-            UserActions.GoHome();
-            HomePage.Logo.AssertElementIsVisible();
-        }
-
-        [Given(@"user lands biBerk Home page and clicks on Get a Quote")]
-        public void GivenUserLandsOnHomePageAndUserClicksOnGetAQuoteCTA()
-        {
-            UserActions.GoHome();
-            HomePage.QuoteCTA.Click();
-        }
 
         [Given(@"user starts a quote with:")]
         public void GivenUserStartsQuote(Table table)
         {
-            _madLibsAutomation.RecViewContext.RecommendationView.NavigateToLandingPage();
+            //_madLibsAutomation.RecViewContext.RecommendationView.NavigateToLandingPage();
 
             General_SiteWide.AssertUrlSegmentWithCorrectHost(AppSettings.GetAQuoteUrlBaseSegment);
             AutomationHelper.WaitForAngularAppToRender();
@@ -77,21 +51,6 @@ namespace BiBerkLOB.General
         public void GivenUserStartsAQuoteOnTheLandingPage(Table table)
         {
             GetTableAndEnterQuoteInfo(table);
-        }
-
-        [Then(@"user verifies confirmation popup is displayed")]
-        public void VerifyPopUpIsVisible(Table table)
-        {
-            var row = table.Rows[0];
-            var text = row["Text"];
-            switch (text)
-            {
-                case "We emailed you a link to your saved application.":
-                    PL_BusinessDetailsPage.EmailConfirmationPopUpByText(text).AssertElementIsVisible();
-                    break;
-                default:
-                    break;
-            }
         }
 
         [Given(@"user has navigated to the following Landing Page URL to get the quote: (.*)")]
@@ -107,39 +66,10 @@ namespace BiBerkLOB.General
             _madLibsAutomation.VerifyMadlibsPathWithRecommendationViewByLOB(view, availability, lob);
         }
 
-        [Then(@"user verifies the following title for the Landing Page: (.*)")]
-        public void ThenUserVerifiesTheFollowingTitleForTheLandingPage(string title)
-        {
-            Assert.IsTrue(HowManyEmpPage.PageHeader.GetElementText().Equals(title));
-        }
-
         [Then(@"user should see a 404 page")]
         public void ThenUserShouldSeeAPage()
         {
             Reusable_PurchasePath.Error404.AssertElementIsVisible();
-        }
-
-        [When(@"user responds with (.*) to the over 1000 employees modal")]
-        public void WhenUserRespondsWithToTheOverEmployeesModal(string decision)
-        {
-            WhereDoesYourBusPage.WhereDoesYourBusQst.AssertElementIsVisible();
-            HowManyEmpPage.BackCTA.Click();
-            HowManyEmpPage.HowManyEmpDoYouHaveTxtbox.SetText(MadLibsSummaryObject.NoOfEmp.ToString());
-            HowManyEmpPage.NextCTA.Click();
-            HowManyEmpPage.Over1000EmployeesModal.AssertAllElements();
-            HowManyEmpPage.Over1000EmployeesModal.EnterResponse(decision);
-        }
-
-        [Then(@"the madlibs location screen will appear")]
-        public void ThenTheMadlibsLocationScreenWillAppear()
-        {
-            WhereDoesYourBusPage.WhereDoesYourBusQst.AssertElementIsVisible();
-        }
-
-        [Then(@"the over 1000 employees modal will be closed")]
-        public void ThenTheOverEmployeesModalWillBeClosed()
-        {
-            HowManyEmpPage.Over1000EmployeesQuestion.AssertElementNotPresent();
         }
 
         [Then(@"user waits for the app to finish loading")]

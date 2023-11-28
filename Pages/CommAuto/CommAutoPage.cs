@@ -1,9 +1,8 @@
-﻿using BiBerkLOB.StepDefinition.General.Other.Coverages;
+﻿using BiBerkLOB.Pages.Other;
+using BiBerkLOB.Source.Driver.SimpleInteractions;
+using BiBerkLOB.StepDefinition.General.Other.Coverages;
 using HitachiQA.Driver;
 using OpenQA.Selenium;
-using BiBerkLOB.Pages.Other;
-using BiBerkLOB.Source.Driver.SimpleInteractions;
-using TechTalk.SpecFlow;
 
 namespace BiBerkLOB.Pages.CommAuto
 {
