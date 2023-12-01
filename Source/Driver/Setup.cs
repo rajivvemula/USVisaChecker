@@ -202,6 +202,8 @@ namespace HitachiQA.Driver
             JObject environmentVariables = JsonConvert.DeserializeObject<JObject>(new StreamReader(Path.Combine(SourceDir, jsonEnvironmentFileName.ToLower())).ReadToEnd());
             //apollo keyvault
             var apolloKeyVault = KeyVault.CreateInstance(environmentVariables?["APOLLO_KEYVAULT_URI"]?.ToString(), "APOLLOSECRET");
+            var apolloKeyVaultUserName = KeyVault.CreateInstance(environmentVariables?["APOLLO_USERCREDENTIALS_URI"]?.ToString(), "APOLLOUSERNAME");
+            var apolloKeyVaultPassword = KeyVault.CreateInstance(environmentVariables?["APOLLO_USERCREDENTIALS_URI"]?.ToString(), "APOLLOPASSWORD");
             //BSP key credential key vault
             var bspKeyVault = KeyVault.CreateInstance(environmentVariables?["APP_BSP_KEYVAULT_URI"]?.ToString(), "BSPSECRET");
             
@@ -221,6 +223,8 @@ namespace HitachiQA.Driver
                 //if the variable is a secret name we will load the secret
                 //as an environment variable if it does not already exist
                 apolloKeyVault?.StoreSecretFromJSONIfNecessary(variable);
+                apolloKeyVaultUserName?.StoreSecretFromJSONIfNecessary(variable);
+                apolloKeyVaultPassword?.StoreSecretFromJSONIfNecessary(variable);
                 bspKeyVault?.StoreSecretFromJSONIfNecessary(variable);
             }
         }

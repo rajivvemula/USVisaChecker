@@ -8,6 +8,7 @@ using HitachiQA.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using Polly;
 
 namespace HitachiQA.Driver
 {
@@ -628,6 +629,16 @@ namespace HitachiQA.Driver
         {
             var jsExecutor = new JSExecutor(Setup.driver);
             return (bool)jsExecutor.Execute("return (window.innerHeight + window.scrollY) >= document.body.scrollHeight;");
+        }
+
+        public static void WaitForNetworkIdle(int timeoutSeconds = 120, int idleTimeMilis = 2000)
+        {
+            Policy.HandleResult(result: false).WaitAndRetry(timeoutSeconds * 5, (int _) => TimeSpan.FromMilliseconds(200.0)).Execute(delegate
+            {
+                bool flag = (bool)((IJavaScriptExecutor)Setup.driver).ExecuteScript("return document.readyState == 'complete'");
+                bool flag2 = (bool)((IJavaScriptExecutor)Setup.driver).ExecuteScript("return performance.getEntriesByType('resource').map(x => x.startTime + x.duration).every(x => x < performance.now() - arguments[0])", idleTimeMilis);
+                return flag && flag2;
+            });
         }
     }
 }
