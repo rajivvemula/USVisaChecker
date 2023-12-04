@@ -63,6 +63,13 @@ public static class AutomationHelper
         }
     }
 
+    //Wait for Apollo Grid Loading
+    public static void WaitForGridLoading(int waitSeconds = UserActions.DEFAULT_PAGE_WAIT_SECONDS)
+    {
+        var loadingElement = new Element(By.XPath("//div[@role='progressbar']"));
+        loadingElement.WaitForElementToAppearThenDisappear(waitSeconds);
+    }
+
     // Wait for the biberkloading Icon to disapear
     public static void LegacyWaitForLoading(int waitSeconds = UserActions.DEFAULT_PAGE_WAIT_SECONDS)
     {
