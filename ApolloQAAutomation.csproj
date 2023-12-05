@@ -93,6 +93,7 @@
 		<Folder Include="Features\Comm Auto\Issued\ConstructionSpecialtyTradeContractors_Issued\" />
 		<Folder Include="Features\Comm Auto\Issued\HospitalityAndEntertainment_Recreation\" />
 		<Folder Include="Features\Comm Auto\Referred\HospitalityAndEntertainmentRecreation_Referred\" />
+		<Folder Include="Features\Quote\" />
 		<Folder Include="StepDefinition\General\GenAutomation\" />
 	</ItemGroup>
 

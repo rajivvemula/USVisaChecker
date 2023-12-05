@@ -337,6 +337,11 @@ namespace HitachiQA.Driver
             return Assert.AreEqual(currentSelection, expectedOptionText);
         }
 
+        public int GetCountOfMatDropdownOptions()
+        {
+            List<String> dropdownOptions = UserActions.GetAllMatDropdownOptions(locator).ToList();
+            return dropdownOptions.Count;
+        }
         //Checkbox Validations
         public bool IsSelected(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
         {

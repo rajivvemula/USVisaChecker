@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using HitachiQA.Driver;
 
 namespace ApolloQAAutomation.Pages
@@ -28,6 +24,18 @@ namespace ApolloQAAutomation.Pages
         public static Element HeaderPersonBtn => new("//button[.//mat-icon[text()='person']]");
         public static Element HeaderAppsBtn => new("(//div[contains(.//mat-icon, 'apps')])[1]");
 
+        // Your Details
+        public static Element YourDetailsHeader => new("//h3[text()='Your Details']");
+        public static Element YourDetailsEmail => new("//h3[contains(text(), 'Your Details')]/following::p[contains(text(),'Email')]");
+        public static Element YourDetailsFirstName => new("//h3[contains(text(), 'Your Details')]/following::p[contains(text(),'First Name')]");
+        public static Element YourDetailsLastName => new("//h3[contains(text(), 'Your Details')]/following::p[contains(text(),'Last Name')]");
+
+        // User Roles
+        public static Element UserRolesHeader => new("//h3[contains(text(), 'User Roles')]");
+
+        //Your User Profile
+        public static Element YourUserProfileHeader => new("//h3[text()='Your User Profile']");
+
         public static List<Element> HeaderElements = new()
         {
             ApolloIcon, 
@@ -40,7 +48,13 @@ namespace ApolloQAAutomation.Pages
             HeaderNotificationsBtn, 
             HeaderAddBtn, 
             HeaderPersonBtn, 
-            HeaderAppsBtn
+            HeaderAppsBtn,
+            YourDetailsHeader,
+            YourDetailsEmail,
+            YourDetailsFirstName,
+            YourDetailsLastName,
+            UserRolesHeader,
+            YourUserProfileHeader
         };
     }
 }
