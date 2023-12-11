@@ -6,21 +6,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="CaseyTests\**" />
-	  <Compile Remove="Data\**" />
-	  <Compile Remove="Features\BSP\**" />
-	  <EmbeddedResource Remove="CaseyTests\**" />
-	  <EmbeddedResource Remove="Data\**" />
-	  <EmbeddedResource Remove="Features\BSP\**" />
-	  <None Remove="CaseyTests\**" />
-	  <None Remove="Data\**" />
-	  <None Remove="Features\BSP\**" />
-	  <SpecFlowFeatureFiles Remove="CaseyTests\**" />
-	  <SpecFlowFeatureFiles Remove="Data\**" />
-	  <SpecFlowFeatureFiles Remove="Features\BSP\**" />
-	  <SpecFlowObsoleteCodeBehindFiles Remove="CaseyTests\**" />
-	  <SpecFlowObsoleteCodeBehindFiles Remove="Data\**" />
-	  <SpecFlowObsoleteCodeBehindFiles Remove="Features\BSP\**" />
+		<Compile Remove="Data\**" />
+		<EmbeddedResource Remove="Data\**" />
+		<None Remove="Data\**" />
+		<SpecFlowFeatureFiles Remove="Data\**" />
+		<SpecFlowObsoleteCodeBehindFiles Remove="Data\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -61,15 +51,41 @@
 		</None>
 		<!--DO NOT DELETE-->
 		<None Update="local.env.json">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Components\" />
 		<Folder Include="Features\Quote\" />
-		<Folder Include="Features\Quote\Comm Auto\" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\Manufacturing_I\WC_AwningsManufacturing_I.feature">
+			<Visible>$(UsingMicrosoftNETSdk)</Visible>
+			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+		</SpecFlowFeatureFiles>
+		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\AutoServicesAndDealers_I\WC_AutoPartsRetail_I.feature">
+			<Visible>$(UsingMicrosoftNETSdk)</Visible>
+			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+		</SpecFlowFeatureFiles>
+		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Referred\TransportationAndWarehousing_R\WC_TaxicabMoreThanOneVehicle_R.feature">
+			<Visible>$(UsingMicrosoftNETSdk)</Visible>
+			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+		</SpecFlowFeatureFiles>
+		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\ConstructionSpecialtyTradeContractors_I\WC_SidingInstallation_I.feature">
+			<Visible>$(UsingMicrosoftNETSdk)</Visible>
+			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+		</SpecFlowFeatureFiles>
+		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\ServiceIndustries_I\WC_Attorney_I.feature">
+			<Visible>$(UsingMicrosoftNETSdk)</Visible>
+			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+		</SpecFlowFeatureFiles>
+		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\ServiceIndustries_I\WC_WindowTreatmentInstallation_I.feature">
+			<Visible>$(UsingMicrosoftNETSdk)</Visible>
+			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+		</SpecFlowFeatureFiles>
+	</ItemGroup>
+
 
 	<!--
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
