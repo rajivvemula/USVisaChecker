@@ -23,23 +23,6 @@
 	  <SpecFlowObsoleteCodeBehindFiles Remove="Features\BSP\**" />
 	</ItemGroup>
 
-
-	<ItemGroup>
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\EO\PLCoveragePageVerification.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\PestControl - Copy.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\Accountant_Claims_IneligibleQuote.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\ActuarialServices_NonEligibleRisk_IneligibleQuote.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\AcupressureServices_IneligibleQuote.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\AdultLivingFacility_NoMedicalCare_IneligibleQuote.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\BakeryStoreRetail_IneligibleQuote.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\BakeShop_Retail_IneligibleQuote.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\ClothingStoreRetail_IneligibleQuote.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\EcommerceIneligibleQuote.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Workman's Comp\Issued\Manufacturing_I\WC_Electroplating_I.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Workman's Comp\Issued\Manufacturing_I\WC_Manufacturing_BeefJerky_I - Copy.feature.cs" />
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Workman's Comp\Referred\HospitalityAndEntertainmentRecreation_R\WC_DanceSchool_R.feature.cs" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Azure.Core" Version="1.24.0" />
 		<PackageReference Include="Azure.Identity" Version="1.6.0" />
@@ -86,55 +69,6 @@
 		<Folder Include="Components\" />
 		<Folder Include="Features\Quote\" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Features\Workman's Comp\Issued\Manufacturing_I\WC_AwningsManufacturing_I.feature.cs">
-		  <DependentUpon>WC_AwningsManufacturing_I.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Workman's Comp\Issued\AutoServicesAndDealers_I\WC_AutoPartsRetail_I.feature.cs">
-			<DependentUpon>WC_AutoPartsRetail_I.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Workman's Comp\Referred\TransportationAndWarehousing_R\WC_TaxicabMoreThanOneVehicle_R.feature.cs">
-			<DependentUpon>WC_TaxicabMoreThanOneVehicle_R.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Workman's Comp\Issued\ConstructionSpecialtyTradeContractors_I\WC_SidingInstallation_I.feature.cs">
-			<DependentUpon>WC_SidingInstallation_I.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Workman's Comp\Issued\ServiceIndustries_I\WC_Attorney_I.feature.cs">
-			<DependentUpon>WC_Attorney_I.feature</DependentUpon>
-		</Compile>
-		<Compile Update="Features\Workman's Comp\Issued\ServiceIndustries_I\WC_WindowTreatmentInstallation_I.feature.cs">
-			<DependentUpon>WC_WindowTreatmentInstallation_I.feature</DependentUpon>
-		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\Manufacturing_I\WC_AwningsManufacturing_I.feature">
-		  <Visible>$(UsingMicrosoftNETSdk)</Visible>
-		  <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\AutoServicesAndDealers_I\WC_AutoPartsRetail_I.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Referred\TransportationAndWarehousing_R\WC_TaxicabMoreThanOneVehicle_R.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\ConstructionSpecialtyTradeContractors_I\WC_SidingInstallation_I.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\ServiceIndustries_I\WC_Attorney_I.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-		<SpecFlowFeatureFiles Update="Features\Workman's Comp\Issued\ServiceIndustries_I\WC_WindowTreatmentInstallation_I.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
-	</ItemGroup>
-
 
 	<!--
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
