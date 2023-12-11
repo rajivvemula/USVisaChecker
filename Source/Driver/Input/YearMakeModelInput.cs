@@ -1,6 +1,4 @@
 ﻿using System;
-using BiBerkLOB.Pages;
-using BiBerkLOB.Pages.CommAuto;
 using HitachiQA.Driver;
 using HitachiQA.Driver.Input;
 

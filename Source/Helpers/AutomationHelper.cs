@@ -158,13 +158,6 @@ public static class AutomationHelper
         }
     }
 
-    public static void WaitForAngularAppToRender()
-    {
-        // angular apps use server side rendering for SEO
-        // this is to wait for the browser to properly load the page
-        Reusable_PurchasePath.BrowserRenderedMarker.AssertElementIsPresent(UserActions.DEFAULT_PP_APP_BROWSER_LOAD_WAIT_SECONDS);
-    }
-
     public static decimal ParsePriceFromText(Element price)
     {
         string priceText = price.GetInnerText();

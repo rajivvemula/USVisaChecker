@@ -25,7 +25,6 @@
 
 
 	<ItemGroup>
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Comm Auto\Referred\TransportationAndWarehousing_Referred\CA_MilkHaulingUnder300Miles_R - Copy.feature.cs" />
 		<SpecFlowObsoleteCodeBehindFiles Remove="Features\EO\PLCoveragePageVerification.feature.cs" />
 		<SpecFlowObsoleteCodeBehindFiles Remove="Features\PestControl - Copy.feature.cs" />
 		<SpecFlowObsoleteCodeBehindFiles Remove="Features\System-Generated Files\Accountant_Claims_IneligibleQuote.feature.cs" />
@@ -85,16 +84,7 @@
 
 	<ItemGroup>
 		<Folder Include="Components\" />
-		<Folder Include="Features\Comm Auto\Declined\AutoServicesAndDealers_Declined\" />
-		<Folder Include="Features\Comm Auto\Declined\EducationAndPublicWorksOrganizations_Declined\" />
-		<Folder Include="Features\Comm Auto\Declined\For-HireTrucking_Declined\" />
-		<Folder Include="Features\Comm Auto\Declined\HospitalityEntertainmentRecreation_Declined\" />
-		<Folder Include="Features\Comm Auto\Declined\TransportationAndWarehousing_Declined\" />
-		<Folder Include="Features\Comm Auto\Issued\ConstructionSpecialtyTradeContractors_Issued\" />
-		<Folder Include="Features\Comm Auto\Issued\HospitalityAndEntertainment_Recreation\" />
-		<Folder Include="Features\Comm Auto\Referred\HospitalityAndEntertainmentRecreation_Referred\" />
 		<Folder Include="Features\Quote\" />
-		<Folder Include="StepDefinition\General\GenAutomation\" />
 	</ItemGroup>
 
 	<ItemGroup>

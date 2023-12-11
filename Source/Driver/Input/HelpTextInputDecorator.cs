@@ -5,9 +5,9 @@
 /// </summary>
 public class HelpTextInputDecorator : InputSectionExtrasDecorator
 {
-    private Element _helpTrigger;
-    private Element _helpText;
-    private Element? _closeBtn;
+    private readonly Element _helpTrigger;
+    private readonly Element _helpText;
+    private readonly Element? _closeBtn;
 
     public HelpTextInputDecorator(InputSection input, Element helpTrigger, Element helpText, Element closeBtn = null) : base(input)
     {

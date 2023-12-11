@@ -32,14 +32,12 @@ namespace HitachiQA.Driver
 
         private readonly RetryTestRunnerWrapper _retryWrapper;
         private readonly ContextObjectResetter _resetter;
-        private readonly QuoteIDRetriever _quoteID;
 
-        public Setup(IObjectContainer objectContainer, RetryTestRunnerWrapper retry, ContextObjectResetter resetter, QuoteIDRetriever quoteID)
+        public Setup(IObjectContainer objectContainer, RetryTestRunnerWrapper retry, ContextObjectResetter resetter)
         {
             _objectContainer = objectContainer;
             _retryWrapper = retry;
             _resetter = resetter;
-            _quoteID = quoteID;
         }
 
         [BeforeTestRun]
@@ -76,7 +74,6 @@ namespace HitachiQA.Driver
             if (scenarioContext.TestError != null)
             {
                 TakeErrorScreenShot(fileNameBase);
-                Log.Info(_quoteID.GetLOBQuoteID());
             }
 
             LogReasonIfRetryTriggered();
