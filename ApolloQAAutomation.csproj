@@ -68,6 +68,7 @@
 	<ItemGroup>
 		<Folder Include="Components\" />
 		<Folder Include="Features\Quote\" />
+		<Folder Include="Features\Quote\Comm Auto\" />
 	</ItemGroup>
 
 	<!--
