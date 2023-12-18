@@ -15,7 +15,7 @@ namespace HitachiQA.Driver
     class UserActions
     {
         // Max time to wait for web load times (page advancement, saving changes, etc)
-        public const int DEFAULT_PAGE_WAIT_SECONDS = 90;
+        public const int DEFAULT_PAGE_WAIT_SECONDS = 2;
         // Max time to wait for changes within page (javascript interactions, pop up appears, click succeeds, etc)
         public const int DEFAULT_WAIT_SECONDS = 6;
         // Max time to wait for the browser to transition from server-side render to app fully loaded

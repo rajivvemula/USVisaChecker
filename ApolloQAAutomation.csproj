@@ -7,10 +7,15 @@
 
 	<ItemGroup>
 		<Compile Remove="Data\**" />
+		<Compile Remove="Features\Quote\**" />
 		<EmbeddedResource Remove="Data\**" />
+		<EmbeddedResource Remove="Features\Quote\**" />
 		<None Remove="Data\**" />
+		<None Remove="Features\Quote\**" />
 		<SpecFlowFeatureFiles Remove="Data\**" />
+		<SpecFlowFeatureFiles Remove="Features\Quote\**" />
 		<SpecFlowObsoleteCodeBehindFiles Remove="Data\**" />
+		<SpecFlowObsoleteCodeBehindFiles Remove="Features\Quote\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -53,10 +58,6 @@
 		<None Update="local.env.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Features\Quote\" />
 	</ItemGroup>
 
 	<ItemGroup>
